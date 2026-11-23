@@ -222,7 +222,7 @@ jobs:
       - name: Install Flutter dependencies
         working-directory: apps/flutter/app
         shell: pwsh
-        run: fvm flutter pub get --enforce-lockfile
+        run: fvm flutter pub get
 
       - name: Analyze Flutter app
         working-directory: apps/flutter/app
