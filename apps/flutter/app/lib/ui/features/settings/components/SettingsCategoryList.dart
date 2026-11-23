@@ -8,6 +8,7 @@ import '../../../theme/OperitGlassSurface.dart';
 import '../models/SettingsModels.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
+
 class SettingsCategoryList extends StatelessWidget {
   const SettingsCategoryList({
     super.key,
@@ -187,12 +188,7 @@ class SettingsCategoryTile extends StatelessWidget {
                     ],
                   ),
                 ),
-                if (prominent)
-                  Icon(
-                    OperitIcons.chevron_right_rounded,
-                    size: 22,
-                    color: foreground,
-                  ),
+                if (prominent) const SizedBox(width: 4),
               ],
             ),
           ),

@@ -26,12 +26,14 @@ class _SttConfigDialog extends StatefulWidget {
     )
     loadModels,
   }) {
-    return showDialog<core_proxy.SttConfig>(
-      context: context,
-      builder: (context) => _SttConfigDialog(
-        config: config,
-        providerCatalogEntries: providerCatalogEntries,
-        loadModels: loadModels,
+    return Navigator.of(context).push<core_proxy.SttConfig>(
+      MaterialPageRoute<core_proxy.SttConfig>(
+        fullscreenDialog: true,
+        builder: (context) => _SttConfigDialog(
+          config: config,
+          providerCatalogEntries: providerCatalogEntries,
+          loadModels: loadModels,
+        ),
       ),
     );
   }
@@ -161,91 +163,163 @@ class _SttConfigDialogState extends State<_SttConfigDialog> {
     _loadAvailableModels();
   }
 
+  List<ProviderCatalogChoice> get _providerChoices {
+    return widget.providerCatalogEntries
+        .map(
+          (entry) => ProviderCatalogChoice(
+            id: entry.providerTypeId,
+            label: entry.displayName,
+            subtitle: entry.providerTypeId,
+            logoProviderTypeId: entry.providerTypeId,
+          ),
+        )
+        .toList(growable: false);
+  }
+
+  ProviderCatalogChoice? get _selectedProviderChoice {
+    for (final choice in _providerChoices) {
+      if (choice.id == _providerType) {
+        return choice;
+      }
+    }
+    return null;
+  }
+
+  Future<void> _pickProviderType() async {
+    final providerType = await showProviderCatalogChoicePicker(
+      context: context,
+      choices: _providerChoices,
+      selectedId: _providerType,
+      title: '选择 STT 供应商',
+    );
+    if (providerType == null || !mounted) {
+      return;
+    }
+    _selectProviderType(providerType);
+  }
+
   /// Builds the STT provider configuration form.
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     final localModel = _isLocalSttProviderType(_providerType);
-    return AlertDialog(
-      title: Text(widget.config == null ? '新建 STT 供应商' : '编辑 STT 供应商'),
-      content: SizedBox(
-        width: 560,
-        child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                OperitFormStyles.dropdownButtonFormField<String>(
-                  context,
-                  key: ValueKey<String>(_providerType),
-                  initialValue: _providerType,
-                  decoration: const InputDecoration(labelText: '供应商类型'),
-                  items: _sttProviderCatalogItems(
-                    widget.providerCatalogEntries,
-                  ),
-                  onChanged: (value) {
-                    if (value != null) {
-                      _selectProviderType(value);
-                    }
-                  },
-                ),
-                const SizedBox(height: 10),
-                _field(_nameController, '供应商名称', requiredField: true),
-                if (!localModel) ...<Widget>[
-                  _field(_endpointController, 'Endpoint', requiredField: true),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: ApiKeyTextField(
-                      controller: _apiKeyController,
-                      labelText: 'API Key',
+    final editing = widget.config != null;
+    return Scaffold(
+      backgroundColor: colorScheme.surface,
+      appBar: AppBar(
+        backgroundColor: colorScheme.surface,
+        surfaceTintColor: Colors.transparent,
+        scrolledUnderElevation: 0,
+        leading: IconButton(
+          tooltip: '返回',
+          onPressed: () => Navigator.of(context).pop(),
+          icon: const Icon(OperitIcons.chevron_left_rounded),
+        ),
+        title: Text(editing ? '编辑 STT 供应商' : '新建 STT 供应商'),
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: TextButton(
+              onPressed: _loadingModels || _modelLoadError != null
+                  ? null
+                  : _submit,
+              child: const Text(
+                '保存',
+                style: TextStyle(fontWeight: FontWeight.w700),
+              ),
+            ),
+          ),
+        ],
+      ),
+      body: SafeArea(
+        top: false,
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 720),
+            child: Form(
+              key: _formKey,
+              child: ListView(
+                padding: const EdgeInsets.fromLTRB(18, 8, 18, 32),
+                children: <Widget>[
+                  Text(
+                    editing ? '调整 STT 连接' : '添加 STT 供应商',
+                    style: theme.textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: -0.4,
                     ),
                   ),
-                ],
-                _buildModelField(localModel),
-                if (!localModel)
-                  ExpansionTile(
-                    tilePadding: EdgeInsets.zero,
-                    childrenPadding: EdgeInsets.zero,
-                    title: Text(
-                      'Multipart 请求配置',
-                      style: Theme.of(context).textTheme.titleSmall,
+                  const SizedBox(height: 6),
+                  Text(
+                    '配置语音识别服务、模型和请求字段映射。',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                      height: 1.45,
                     ),
+                  ),
+                  const SizedBox(height: 20),
+                  ProviderCatalogChoiceField(
+                    label: '供应商类型',
+                    choice: _selectedProviderChoice,
+                    onTap: _pickProviderType,
+                  ),
+                  const SizedBox(height: 16),
+                  _SpeechProviderSection(
+                    title: '基础信息',
+                    description: '用于区分不同的语音识别服务与凭据。',
                     children: <Widget>[
-                      _field(
-                        _fileFieldController,
-                        '音频字段名',
-                        requiredField: true,
-                      ),
-                      _field(
-                        _modelFieldController,
-                        '模型字段名',
-                        helperText: '留空表示接口不接收模型参数',
-                        onChanged: (_) => setState(() {}),
-                      ),
-                      _field(_languageFieldController, '语言字段名'),
-                      _field(
-                        _responsePathController,
-                        '识别文本 JSONPath',
-                        requiredField: true,
-                      ),
-                      _field(_headersController, 'Headers JSON', minLines: 3),
+                      _field(_nameController, '供应商名称', requiredField: true),
+                      if (!localModel) ...<Widget>[
+                        _field(
+                          _endpointController,
+                          'Endpoint',
+                          requiredField: true,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: ApiKeyTextField(
+                            controller: _apiKeyController,
+                            labelText: 'API Key',
+                          ),
+                        ),
+                      ],
+                      _buildModelField(localModel),
                     ],
                   ),
-              ],
+                  if (!localModel) ...<Widget>[
+                    const SizedBox(height: 14),
+                    _SpeechProviderSection(
+                      title: 'Multipart 请求配置',
+                      description: '定义音频、模型、语言字段以及识别文本的 JSON 路径。',
+                      children: <Widget>[
+                        _field(
+                          _fileFieldController,
+                          '音频字段名',
+                          requiredField: true,
+                        ),
+                        _field(
+                          _modelFieldController,
+                          '模型字段名',
+                          helperText: '留空表示接口不接收模型参数',
+                          onChanged: (_) => setState(() {}),
+                        ),
+                        _field(_languageFieldController, '语言字段名'),
+                        _field(
+                          _responsePathController,
+                          '识别文本 JSONPath',
+                          requiredField: true,
+                        ),
+                        _field(_headersController, 'Headers JSON', minLines: 3),
+                      ],
+                    ),
+                  ],
+                ],
+              ),
             ),
           ),
         ),
       ),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: const Text('取消'),
-        ),
-        FilledButton(
-          onPressed: _loadingModels || _modelLoadError != null ? null : _submit,
-          child: const Text('保存'),
-        ),
-      ],
     );
   }
 
@@ -440,20 +514,6 @@ class _SttConfigDialogState extends State<_SttConfigDialog> {
 /// Returns whether one STT provider type uses installed local models.
 bool _isLocalSttProviderType(String providerType) {
   return providerType.trim().toUpperCase() == 'LOCAL_MODEL';
-}
-
-/// Builds STT provider catalog dropdown entries.
-List<DropdownMenuItem<String>> _sttProviderCatalogItems(
-  List<core_proxy.SttProviderCatalogEntry> entries,
-) {
-  return entries
-      .map(
-        (entry) => DropdownMenuItem<String>(
-          value: entry.providerTypeId,
-          child: Text(entry.displayName),
-        ),
-      )
-      .toList(growable: false);
 }
 
 /// Returns one exact STT provider catalog entry.

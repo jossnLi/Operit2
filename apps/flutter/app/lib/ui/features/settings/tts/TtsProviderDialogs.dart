@@ -785,10 +785,14 @@ class _TtsConfigDialog extends StatefulWidget {
     required BuildContext context,
     required List<core_proxy.TtsProviderCatalogEntry> providerCatalogEntries,
   }) {
-    return showDialog<core_proxy.CoreOperitModelTtsConfigTtsConfig>(
-      context: context,
-      builder: (context) =>
-          _TtsConfigDialog(providerCatalogEntries: providerCatalogEntries),
+    return Navigator.of(
+      context,
+    ).push<core_proxy.CoreOperitModelTtsConfigTtsConfig>(
+      MaterialPageRoute<core_proxy.CoreOperitModelTtsConfigTtsConfig>(
+        fullscreenDialog: true,
+        builder: (context) =>
+            _TtsConfigDialog(providerCatalogEntries: providerCatalogEntries),
+      ),
     );
   }
 
@@ -863,8 +867,67 @@ class _TtsConfigDialogState extends State<_TtsConfigDialog> {
     super.dispose();
   }
 
+  List<ProviderCatalogChoice> get _providerChoices {
+    return widget.providerCatalogEntries
+        .map(
+          (entry) => ProviderCatalogChoice(
+            id: entry.providerTypeId,
+            label: entry.displayName,
+            subtitle: entry.providerTypeId,
+            logoProviderTypeId: entry.providerTypeId,
+          ),
+        )
+        .toList(growable: false);
+  }
+
+  ProviderCatalogChoice? get _selectedProviderChoice {
+    for (final choice in _providerChoices) {
+      if (choice.id == _providerType) {
+        return choice;
+      }
+    }
+    return null;
+  }
+
+  void _applyProviderType(String providerType) {
+    final catalog = _requiredTtsProviderCatalog(
+      widget.providerCatalogEntries,
+      providerType,
+    );
+    setState(() {
+      _providerType = catalog.providerTypeId;
+      _nameController.text = catalog.displayName;
+      _endpointController.text = catalog.defaultEndpoint;
+      _modelController.text = catalog.defaultModel;
+      _voiceController.clear();
+      _formatController.text = catalog.defaultResponseFormat;
+      _httpMethodController.text = catalog.defaultHttpMethod;
+      _contentTypeController.text = catalog.defaultContentType;
+      _requestBodyController.text = catalog.defaultRequestBody;
+      _headersController.text = _encodeJsonList(catalog.defaultHeaders);
+      _responsePipelineController.text = _encodeJsonList(
+        catalog.defaultResponsePipeline,
+      );
+    });
+  }
+
+  Future<void> _pickProviderType() async {
+    final providerType = await showProviderCatalogChoicePicker(
+      context: context,
+      choices: _providerChoices,
+      selectedId: _providerType,
+      title: '选择 TTS 供应商',
+    );
+    if (providerType == null || !mounted) {
+      return;
+    }
+    _applyProviderType(providerType);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     final catalog = _requiredTtsProviderCatalog(
       widget.providerCatalogEntries,
       _providerType,
@@ -878,111 +941,160 @@ class _TtsConfigDialogState extends State<_TtsConfigDialog> {
     final requireVoice =
         isLocalModelTts ||
         (!isSystemTts && _ttsProviderCatalogUsesPlaceholder(catalog, 'voice'));
-    return AlertDialog(
-      title: const Text('新建 TTS 供应商'),
-      content: SizedBox(
-        width: 560,
-        child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                OperitFormStyles.dropdownButtonFormField<String>(
-                  context,
-                  initialValue: _providerType,
-                  decoration: const InputDecoration(labelText: '供应商类型'),
-                  items: _providerCatalogItems(widget.providerCatalogEntries),
-                  onChanged: (value) {
-                    if (value == null) {
-                      return;
-                    }
-                    final catalog = _requiredTtsProviderCatalog(
-                      widget.providerCatalogEntries,
-                      value,
-                    );
-                    setState(() {
-                      _providerType = catalog.providerTypeId;
-                      _nameController.text = catalog.displayName;
-                      _endpointController.text = catalog.defaultEndpoint;
-                      _modelController.text = catalog.defaultModel;
-                      _voiceController.clear();
-                      _formatController.text = catalog.defaultResponseFormat;
-                      _httpMethodController.text = catalog.defaultHttpMethod;
-                      _contentTypeController.text = catalog.defaultContentType;
-                      _requestBodyController.text = catalog.defaultRequestBody;
-                      _headersController.text = _encodeJsonList(
-                        catalog.defaultHeaders,
-                      );
-                      _responsePipelineController.text = _encodeJsonList(
-                        catalog.defaultResponsePipeline,
-                      );
-                    });
-                  },
-                ),
-                const SizedBox(height: 10),
-                _field(_nameController, '供应商名称', requiredField: true),
-                if (isLocalModelTts) ...[
-                  _field(_modelController, '模型 ID@版本', requiredField: true),
-                  _field(_voiceController, 'Speaker ID', requiredField: true),
-                ] else if (!isSystemTts) ...[
-                  _field(_endpointController, 'Endpoint', requiredField: true),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: ApiKeyTextField(
-                      controller: _apiKeyController,
-                      labelText: 'API Key',
+    return Scaffold(
+      backgroundColor: colorScheme.surface,
+      appBar: AppBar(
+        backgroundColor: colorScheme.surface,
+        surfaceTintColor: Colors.transparent,
+        scrolledUnderElevation: 0,
+        leading: IconButton(
+          tooltip: '返回',
+          onPressed: () => Navigator.of(context).pop(),
+          icon: const Icon(OperitIcons.chevron_left_rounded),
+        ),
+        title: const Text('新建 TTS 供应商'),
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: TextButton(
+              onPressed: _submit,
+              child: const Text(
+                '保存',
+                style: TextStyle(fontWeight: FontWeight.w700),
+              ),
+            ),
+          ),
+        ],
+      ),
+      body: SafeArea(
+        top: false,
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 720),
+            child: Form(
+              key: _formKey,
+              child: ListView(
+                padding: const EdgeInsets.fromLTRB(18, 8, 18, 32),
+                children: <Widget>[
+                  Text(
+                    '添加 TTS 供应商',
+                    style: theme.textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: -0.4,
                     ),
                   ),
-                  _field(
-                    _modelController,
-                    '模型 / Locale',
-                    requiredField: requireModel,
+                  const SizedBox(height: 6),
+                  Text(
+                    '配置语音合成服务、音色和输出格式。',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                      height: 1.45,
+                    ),
                   ),
-                  _field(_voiceController, '音色', requiredField: requireVoice),
-                ] else ...[
-                  _field(_modelController, '语言标签（可选，例如 zh-CN）'),
-                  _field(_voiceController, '系统声音名称（可选）'),
+                  const SizedBox(height: 20),
+                  ProviderCatalogChoiceField(
+                    label: '供应商类型',
+                    choice: _selectedProviderChoice,
+                    onTap: _pickProviderType,
+                  ),
+                  const SizedBox(height: 16),
+                  _SpeechProviderSection(
+                    title: '基础信息',
+                    description: '用于区分不同的语音服务与凭据。',
+                    children: <Widget>[
+                      _field(_nameController, '供应商名称', requiredField: true),
+                      if (isLocalModelTts) ...<Widget>[
+                        _field(
+                          _modelController,
+                          '模型 ID@版本',
+                          requiredField: true,
+                        ),
+                        _field(
+                          _voiceController,
+                          'Speaker ID',
+                          requiredField: true,
+                        ),
+                      ] else if (!isSystemTts) ...<Widget>[
+                        _field(
+                          _endpointController,
+                          'Endpoint',
+                          requiredField: true,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: ApiKeyTextField(
+                            controller: _apiKeyController,
+                            labelText: 'API Key',
+                          ),
+                        ),
+                        _field(
+                          _modelController,
+                          '模型 / Locale',
+                          requiredField: requireModel,
+                        ),
+                        _field(
+                          _voiceController,
+                          '音色',
+                          requiredField: requireVoice,
+                        ),
+                      ] else ...<Widget>[
+                        _field(_modelController, '语言标签（可选，例如 zh-CN）'),
+                        _field(_voiceController, '系统声音名称（可选）'),
+                      ],
+                    ],
+                  ),
+                  const SizedBox(height: 14),
+                  _SpeechProviderSection(
+                    title: '语音参数',
+                    description: '设置音频编码和播放速度。',
+                    children: <Widget>[
+                      _field(_formatController, '音频格式', requiredField: true),
+                      _field(
+                        _speedController,
+                        '速度',
+                        requiredField: true,
+                        numberField: true,
+                      ),
+                    ],
+                  ),
+                  if (isHttpTts) ...<Widget>[
+                    const SizedBox(height: 14),
+                    _SpeechProviderSection(
+                      title: 'HTTP 请求',
+                      description: '按供应商接口定义请求体、Headers 和响应解析。',
+                      children: <Widget>[
+                        _field(
+                          _httpMethodController,
+                          'HTTP 方法',
+                          requiredField: true,
+                          onChanged: (_) => setState(() {}),
+                        ),
+                        _field(_contentTypeController, 'Content-Type'),
+                        _field(
+                          _requestBodyController,
+                          '请求体模板',
+                          requiredField:
+                              isHttpTts &&
+                              _httpMethodController.text.trim().toUpperCase() ==
+                                  'POST',
+                          minLines: 4,
+                        ),
+                        _field(_headersController, 'Headers JSON', minLines: 3),
+                        _field(
+                          _responsePipelineController,
+                          '响应管道 JSON',
+                          minLines: 4,
+                        ),
+                      ],
+                    ),
+                  ],
                 ],
-                if (isHttpTts) ...[
-                  _field(
-                    _httpMethodController,
-                    'HTTP 方法',
-                    requiredField: true,
-                    onChanged: (_) => setState(() {}),
-                  ),
-                  _field(_contentTypeController, 'Content-Type'),
-                  _field(
-                    _requestBodyController,
-                    '请求体模板',
-                    requiredField:
-                        isHttpTts &&
-                        _httpMethodController.text.trim().toUpperCase() ==
-                            'POST',
-                    minLines: 4,
-                  ),
-                  _field(_headersController, 'Headers JSON', minLines: 3),
-                  _field(_responsePipelineController, '响应管道 JSON', minLines: 4),
-                ],
-                _field(_formatController, '音频格式', requiredField: true),
-                _field(
-                  _speedController,
-                  '速度',
-                  requiredField: true,
-                  numberField: true,
-                ),
-              ],
+              ),
             ),
           ),
         ),
       ),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: const Text('取消'),
-        ),
-        FilledButton(onPressed: _submit, child: const Text('保存')),
-      ],
     );
   }
 
@@ -1064,6 +1176,55 @@ class _TtsConfigDialogState extends State<_TtsConfigDialog> {
         responsePipeline: responsePipeline,
         createdAt: now,
         updatedAt: now,
+      ),
+    );
+  }
+}
+
+class _SpeechProviderSection extends StatelessWidget {
+  const _SpeechProviderSection({
+    required this.title,
+    required this.description,
+    required this.children,
+  });
+
+  final String title;
+  final String description;
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    return Container(
+      padding: const EdgeInsets.fromLTRB(14, 14, 14, 2),
+      decoration: BoxDecoration(
+        color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.28),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(
+          color: colorScheme.outlineVariant.withValues(alpha: 0.22),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Text(
+            title,
+            style: theme.textTheme.titleSmall?.copyWith(
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const SizedBox(height: 3),
+          Text(
+            description,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: colorScheme.onSurfaceVariant,
+              height: 1.4,
+            ),
+          ),
+          const SizedBox(height: 14),
+          ...children,
+        ],
       ),
     );
   }

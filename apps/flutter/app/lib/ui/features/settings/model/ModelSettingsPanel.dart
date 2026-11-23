@@ -26,6 +26,7 @@ import 'ProviderTypePicker.dart';
 import '../tts/TtsSettingsPanel.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
+
 class ModelSettingsPanel extends StatefulWidget {
   const ModelSettingsPanel({super.key, GeneratedCoreProxyClients? clients})
     : clients =
@@ -949,7 +950,8 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
     final invalidFields = _formKey.currentState!.validateGranularly();
     if (invalidFields.any(
       (field) =>
-          field.context.findAncestorWidgetOfExactType<ExpansionTile>()
+          field.context
+              .findAncestorWidgetOfExactType<ExpansionTile>()
               ?.controller ==
           _advancedController,
     )) {
@@ -1152,7 +1154,12 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
                         controller: _advancedController,
                         maintainState: true,
                         tilePadding: const EdgeInsets.symmetric(horizontal: 16),
-                        childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 14),
+                        childrenPadding: const EdgeInsets.fromLTRB(
+                          16,
+                          0,
+                          16,
+                          14,
+                        ),
                         shape: const Border(),
                         collapsedShape: const Border(),
                         title: Text(
@@ -2307,7 +2314,9 @@ class _CatalogStatusLine extends StatelessWidget {
     return Row(
       children: <Widget>[
         Icon(
-          failed ? OperitIcons.error_outline_rounded : OperitIcons.info_outline_rounded,
+          failed
+              ? OperitIcons.error_outline_rounded
+              : OperitIcons.info_outline_rounded,
           size: 14,
           color: color,
         ),
@@ -2864,18 +2873,20 @@ class _ProviderDetailScreen extends StatefulWidget {
     )
     onDeleteModel,
   }) {
-    return showDialog<void>(
-      context: context,
-      builder: (context) => _ProviderDetailScreen(
-        providerId: providerId,
-        initialData: initialData,
-        reload: reload,
-        onSelectModel: onSelectModel,
-        onAddModel: onAddModel,
-        onEditProvider: onEditProvider,
-        onDeleteProvider: onDeleteProvider,
-        clients: clients,
-        onDeleteModel: onDeleteModel,
+    return Navigator.of(context).push<void>(
+      MaterialPageRoute<void>(
+        fullscreenDialog: true,
+        builder: (context) => _ProviderDetailScreen(
+          providerId: providerId,
+          initialData: initialData,
+          reload: reload,
+          onSelectModel: onSelectModel,
+          onAddModel: onAddModel,
+          onEditProvider: onEditProvider,
+          onDeleteProvider: onDeleteProvider,
+          clients: clients,
+          onDeleteModel: onDeleteModel,
+        ),
       ),
     );
   }
@@ -3397,92 +3408,97 @@ class _ProviderDetailScreenState extends State<_ProviderDetailScreen> {
     final colorScheme = Theme.of(context).colorScheme;
     final provider = _provider;
     if (provider == null) {
-      return const Dialog(
-        child: SizedBox(
-          width: 420,
-          height: 220,
-          child: Center(child: M3LoadingIndicator(size: 32)),
+      return Scaffold(
+        backgroundColor: colorScheme.surface,
+        appBar: AppBar(
+          backgroundColor: colorScheme.surface,
+          surfaceTintColor: Colors.transparent,
+          scrolledUnderElevation: 0,
+          leading: IconButton(
+            tooltip: '返回',
+            onPressed: () => Navigator.of(context).pop(),
+            icon: const Icon(OperitIcons.chevron_left_rounded),
+          ),
+          title: const Text('供应商详情'),
         ),
+        body: const Center(child: M3LoadingIndicator(size: 32)),
       );
     }
-    final viewport = MediaQuery.sizeOf(context);
-    final dialogWidth = (viewport.width - 32).clamp(320.0, 760.0).toDouble();
-    final dialogHeight = (viewport.height - 48).clamp(320.0, 700.0).toDouble();
-    return Dialog(
-      constraints: BoxConstraints(maxWidth: dialogWidth),
-      insetPadding: const EdgeInsets.all(16),
-      child: SizedBox(
-        width: dialogWidth,
-        height: dialogHeight,
+    return Scaffold(
+      backgroundColor: colorScheme.surface,
+      appBar: AppBar(
+        backgroundColor: colorScheme.surface,
+        surfaceTintColor: Colors.transparent,
+        scrolledUnderElevation: 0,
+        leading: IconButton(
+          tooltip: '返回',
+          onPressed: () => Navigator.of(context).pop(),
+          icon: const Icon(OperitIcons.chevron_left_rounded),
+        ),
+        title: _ProviderHeaderCapsule(
+          provider: provider,
+          modelCountLabel: l10n.settingsModelProviderModelCount(
+            provider.models.length,
+          ),
+        ),
+        actions: <Widget>[
+          IconButton(
+            tooltip: l10n.settingsModelAddModel,
+            onPressed: () => unawaited(_run(() => widget.onAddModel(provider))),
+            icon: const Icon(OperitIcons.playlist_add_rounded),
+          ),
+          PopupMenuButton<_ProviderDetailAction>(
+            tooltip: '更多',
+            icon: const Icon(OperitIcons.more_horiz_rounded),
+            onSelected: (action) {
+              switch (action) {
+                case _ProviderDetailAction.edit:
+                  unawaited(_run(() => widget.onEditProvider(provider)));
+                  break;
+                case _ProviderDetailAction.delete:
+                  unawaited(_run(() => widget.onDeleteProvider(provider)));
+                  break;
+              }
+            },
+            itemBuilder: (context) => <PopupMenuEntry<_ProviderDetailAction>>[
+              PopupMenuItem<_ProviderDetailAction>(
+                value: _ProviderDetailAction.edit,
+                child: Row(
+                  children: <Widget>[
+                    const Icon(OperitIcons.edit_outlined, size: 18),
+                    const SizedBox(width: 10),
+                    Text(l10n.edit),
+                  ],
+                ),
+              ),
+              PopupMenuItem<_ProviderDetailAction>(
+                value: _ProviderDetailAction.delete,
+                child: Row(
+                  children: <Widget>[
+                    Icon(
+                      OperitIcons.delete_outline_rounded,
+                      size: 18,
+                      color: colorScheme.error,
+                    ),
+                    const SizedBox(width: 10),
+                    Text(
+                      l10n.delete,
+                      style: TextStyle(color: colorScheme.error),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(width: 4),
+        ],
+      ),
+      body: SafeArea(
+        top: false,
         child: Stack(
           children: <Widget>[
             Column(
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 10, 8, 10),
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: _ProviderHeaderCapsule(
-                            provider: provider,
-                            modelCountLabel: l10n
-                                .settingsModelProviderModelCount(
-                                  provider.models.length,
-                                ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      _CapsuleActionButton(
-                        label: l10n.settingsModelAddModel,
-                        tooltip: l10n.settingsModelAddModel,
-                        primary: true,
-                        onTap: () => _run(() => widget.onAddModel(provider)),
-                      ),
-                      const SizedBox(width: 8),
-                      _CapsuleActionButton(
-                        label: l10n.edit,
-                        tooltip: l10n.settingsModelEditProvider,
-                        onTap: () =>
-                            _run(() => widget.onEditProvider(provider)),
-                      ),
-                      const SizedBox(width: 8),
-                      _CapsuleActionButton(
-                        label: l10n.delete,
-                        tooltip: l10n.settingsModelDeleteProviderConfirmAction,
-                        onTap: () =>
-                            _run(() => widget.onDeleteProvider(provider)),
-                      ),
-                      const SizedBox(width: 4),
-                      IconButton(
-                        tooltip: MaterialLocalizations.of(
-                          context,
-                        ).closeButtonTooltip,
-                        style: IconButton.styleFrom(
-                          hoverColor: colorScheme.surfaceContainerHighest
-                              .withValues(
-                                alpha:
-                                    Theme.of(context).brightness ==
-                                        Brightness.dark
-                                    ? 0.35
-                                    : 0.5,
-                              ),
-                          shape: const CircleBorder(),
-                        ),
-                        icon: _LucideIcon(
-                          _kSvgClose,
-                          size: 16,
-                          color: colorScheme.onSurfaceVariant,
-                        ),
-                        visualDensity: VisualDensity.compact,
-                        onPressed: () => Navigator.of(context).pop(),
-                      ),
-                    ],
-                  ),
-                ),
-                const Divider(height: 1),
                 if (provider.models.isNotEmpty)
                   _ModelListToolbar(
                     selecting: _selecting,
@@ -3522,7 +3538,10 @@ class _ProviderDetailScreenState extends State<_ProviderDetailScreen> {
                                     _run(() => widget.onAddModel(provider)),
                                 style:
                                     SettingsControlStyles.sectionFilledButton(),
-                                icon: const Icon(OperitIcons.playlist_add_rounded, size: 18),
+                                icon: const Icon(
+                                  OperitIcons.playlist_add_rounded,
+                                  size: 18,
+                                ),
                                 label: Text(l10n.settingsModelAddModel),
                               ),
                             ],
@@ -3572,6 +3591,8 @@ class _ProviderDetailScreenState extends State<_ProviderDetailScreen> {
     );
   }
 }
+
+enum _ProviderDetailAction { edit, delete }
 
 /// Whether two capability sets switch the same things on.
 bool _sameCapabilities(
@@ -4794,7 +4815,9 @@ class _TestResultBubbleState extends State<_TestResultBubble> {
                         icon: AnimatedSwitcher(
                           duration: const Duration(milliseconds: 160),
                           child: Icon(
-                            _copied ? OperitIcons.check_rounded : OperitIcons.content_copy_outlined,
+                            _copied
+                                ? OperitIcons.check_rounded
+                                : OperitIcons.content_copy_outlined,
                             key: ValueKey<bool>(_copied),
                             size: 14,
                             color: _copied
@@ -4825,13 +4848,15 @@ class _TestResultBubbleState extends State<_TestResultBubble> {
                             child: Icon(
                               item.success
                                   ? OperitIcons.check_rounded
-                                  : connectionTestRestriction(item.error) != null
+                                  : connectionTestRestriction(item.error) !=
+                                        null
                                   ? OperitIcons.pause_rounded
                                   : OperitIcons.close_rounded,
                               size: 13,
                               color: item.success
                                   ? _testPassedColor(isDark)
-                                  : connectionTestRestriction(item.error) != null
+                                  : connectionTestRestriction(item.error) !=
+                                        null
                                   ? _testRestrictedColor(isDark)
                                   : colorScheme.error,
                             ),
@@ -7487,7 +7512,11 @@ class _FollowChatQuickOption extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 9),
           child: Row(
             children: <Widget>[
-              Icon(OperitIcons.link_rounded, size: 20, color: colorScheme.primary),
+              Icon(
+                OperitIcons.link_rounded,
+                size: 20,
+                color: colorScheme.primary,
+              ),
               const SizedBox(width: 10),
               Expanded(
                 child: Column(
@@ -7510,7 +7539,11 @@ class _FollowChatQuickOption extends StatelessWidget {
                 ),
               ),
               if (selected)
-                Icon(OperitIcons.check_circle_outline_rounded, size: 20, color: colorScheme.primary),
+                Icon(
+                  OperitIcons.check_circle_outline_rounded,
+                  size: 20,
+                  color: colorScheme.primary,
+                ),
             ],
           ),
         ),
@@ -7598,7 +7631,9 @@ class _FunctionModelOptionTile extends StatelessWidget {
                 SizedBox(
                   width: 24,
                   child: Icon(
-                    selected ? OperitIcons.check_circle_outline_rounded : OperitIcons.circle_outlined,
+                    selected
+                        ? OperitIcons.check_circle_outline_rounded
+                        : OperitIcons.circle_outlined,
                     size: 20,
                     color: selected
                         ? colorScheme.primary

@@ -7,11 +7,49 @@ import 'ProviderLogo.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
 
+/// One provider choice shared by LLM, TTS, and STT configuration pages.
+class ProviderCatalogChoice {
+  const ProviderCatalogChoice({
+    required this.id,
+    required this.label,
+    required this.logoProviderTypeId,
+    this.subtitle = '',
+  });
+
+  final String id;
+  final String label;
+  final String subtitle;
+  final String logoProviderTypeId;
+}
+
 /// Opens a searchable, ChatGPT-style provider catalog picker.
 Future<String?> showProviderTypePicker({
   required BuildContext context,
   required List<core_proxy.ProviderCatalogEntry> entries,
   String? selectedProviderTypeId,
+}) {
+  return showProviderCatalogChoicePicker(
+    context: context,
+    selectedId: selectedProviderTypeId,
+    choices: entries
+        .map(
+          (entry) => ProviderCatalogChoice(
+            id: entry.providerTypeId,
+            label: entry.displayName,
+            subtitle: entry.providerTypeId,
+            logoProviderTypeId: entry.providerTypeId,
+          ),
+        )
+        .toList(growable: false),
+  );
+}
+
+/// Opens a searchable provider picker for any provider catalog family.
+Future<String?> showProviderCatalogChoicePicker({
+  required BuildContext context,
+  required List<ProviderCatalogChoice> choices,
+  String? selectedId,
+  String title = '选择供应商',
 }) {
   return showModalBottomSheet<String>(
     context: context,
@@ -19,9 +57,10 @@ Future<String?> showProviderTypePicker({
     useSafeArea: true,
     backgroundColor: Colors.transparent,
     barrierColor: Colors.black.withValues(alpha: 0.34),
-    builder: (context) => _ProviderTypePickerSheet(
-      entries: entries,
-      selectedProviderTypeId: selectedProviderTypeId,
+    builder: (context) => _ProviderCatalogChoiceSheet(
+      choices: choices,
+      selectedId: selectedId,
+      title: title,
     ),
   );
 }
@@ -133,21 +172,131 @@ class ProviderTypePickerField extends StatelessWidget {
   }
 }
 
-class _ProviderTypePickerSheet extends StatefulWidget {
-  const _ProviderTypePickerSheet({
-    required this.entries,
-    required this.selectedProviderTypeId,
+/// Displays a provider choice and opens the shared searchable picker.
+class ProviderCatalogChoiceField extends StatelessWidget {
+  const ProviderCatalogChoiceField({
+    super.key,
+    required this.label,
+    required this.choice,
+    required this.onTap,
+    this.emptyLabel = '选择供应商',
   });
 
-  final List<core_proxy.ProviderCatalogEntry> entries;
-  final String? selectedProviderTypeId;
+  final String label;
+  final ProviderCatalogChoice? choice;
+  final VoidCallback onTap;
+  final String emptyLabel;
 
   @override
-  State<_ProviderTypePickerSheet> createState() =>
-      _ProviderTypePickerSheetState();
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final selected = choice;
+    return Material(
+      color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.34),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: BorderSide(
+          color: colorScheme.outlineVariant.withValues(alpha: 0.24),
+        ),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
+          child: Row(
+            children: <Widget>[
+              if (selected != null)
+                ProviderLogo(
+                  providerTypeId: selected.logoProviderTypeId,
+                  fallbackName: selected.label,
+                  size: 42,
+                )
+              else
+                Container(
+                  width: 42,
+                  height: 42,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: colorScheme.surface,
+                  ),
+                  child: Icon(
+                    OperitIcons.dns_outlined,
+                    size: 20,
+                    color: colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      label,
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      selected?.label ?? emptyLabel,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        color: colorScheme.onSurface,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    if (selected != null && selected.subtitle.isNotEmpty) ...[
+                      const SizedBox(height: 2),
+                      Text(
+                        selected.subtitle,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: colorScheme.onSurfaceVariant.withValues(
+                            alpha: 0.72,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              Icon(
+                OperitIcons.expand_more_rounded,
+                size: 20,
+                color: colorScheme.onSurfaceVariant,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
 
-class _ProviderTypePickerSheetState extends State<_ProviderTypePickerSheet> {
+class _ProviderCatalogChoiceSheet extends StatefulWidget {
+  const _ProviderCatalogChoiceSheet({
+    required this.choices,
+    required this.selectedId,
+    required this.title,
+  });
+
+  final List<ProviderCatalogChoice> choices;
+  final String? selectedId;
+  final String title;
+
+  @override
+  State<_ProviderCatalogChoiceSheet> createState() =>
+      _ProviderCatalogChoiceSheetState();
+}
+
+class _ProviderCatalogChoiceSheetState
+    extends State<_ProviderCatalogChoiceSheet> {
   final TextEditingController _searchController = TextEditingController();
   String _query = '';
 
@@ -157,15 +306,16 @@ class _ProviderTypePickerSheetState extends State<_ProviderTypePickerSheet> {
     super.dispose();
   }
 
-  List<core_proxy.ProviderCatalogEntry> get _visibleEntries {
+  List<ProviderCatalogChoice> get _visibleChoices {
     final query = _query.trim().toLowerCase();
     if (query.isEmpty) {
-      return widget.entries;
+      return widget.choices;
     }
-    return widget.entries
-        .where((entry) {
-          return entry.displayName.toLowerCase().contains(query) ||
-              entry.providerTypeId.toLowerCase().contains(query);
+    return widget.choices
+        .where((choice) {
+          return choice.label.toLowerCase().contains(query) ||
+              choice.subtitle.toLowerCase().contains(query) ||
+              choice.id.toLowerCase().contains(query);
         })
         .toList(growable: false);
   }
@@ -174,7 +324,7 @@ class _ProviderTypePickerSheetState extends State<_ProviderTypePickerSheet> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final entries = _visibleEntries;
+    final choices = _visibleChoices;
     return Padding(
       padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom),
       child: FractionallySizedBox(
@@ -203,7 +353,7 @@ class _ProviderTypePickerSheetState extends State<_ProviderTypePickerSheet> {
                     children: <Widget>[
                       Expanded(
                         child: Text(
-                          '选择供应商',
+                          widget.title,
                           style: theme.textTheme.titleLarge?.copyWith(
                             fontWeight: FontWeight.w700,
                             letterSpacing: -0.2,
@@ -257,7 +407,7 @@ class _ProviderTypePickerSheetState extends State<_ProviderTypePickerSheet> {
                   ),
                 ),
                 Expanded(
-                  child: entries.isEmpty
+                  child: choices.isEmpty
                       ? Center(
                           child: Text(
                             '没有匹配的供应商',
@@ -268,14 +418,12 @@ class _ProviderTypePickerSheetState extends State<_ProviderTypePickerSheet> {
                         )
                       : ListView.separated(
                           padding: const EdgeInsets.fromLTRB(12, 0, 12, 18),
-                          itemCount: entries.length,
+                          itemCount: choices.length,
                           separatorBuilder: (context, index) =>
                               const SizedBox(height: 4),
                           itemBuilder: (context, index) {
-                            final entry = entries[index];
-                            final selected =
-                                entry.providerTypeId ==
-                                widget.selectedProviderTypeId;
+                            final choice = choices[index];
+                            final selected = choice.id == widget.selectedId;
                             return Material(
                               color: selected
                                   ? colorScheme.primary.withValues(alpha: 0.10)
@@ -283,9 +431,8 @@ class _ProviderTypePickerSheetState extends State<_ProviderTypePickerSheet> {
                               borderRadius: BorderRadius.circular(14),
                               clipBehavior: Clip.antiAlias,
                               child: InkWell(
-                                onTap: () => Navigator.of(
-                                  context,
-                                ).pop(entry.providerTypeId),
+                                onTap: () =>
+                                    Navigator.of(context).pop(choice.id),
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 12,
@@ -294,8 +441,9 @@ class _ProviderTypePickerSheetState extends State<_ProviderTypePickerSheet> {
                                   child: Row(
                                     children: <Widget>[
                                       ProviderLogo(
-                                        providerTypeId: entry.providerTypeId,
-                                        fallbackName: entry.displayName,
+                                        providerTypeId:
+                                            choice.logoProviderTypeId,
+                                        fallbackName: choice.label,
                                         size: 40,
                                       ),
                                       const SizedBox(width: 12),
@@ -305,26 +453,26 @@ class _ProviderTypePickerSheetState extends State<_ProviderTypePickerSheet> {
                                               CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Text(
-                                              entry.displayName,
+                                              choice.label,
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
                                               style: theme.textTheme.bodyLarge
                                                   ?.copyWith(
-                                                    fontWeight:
-                                                        FontWeight.w600,
+                                                    fontWeight: FontWeight.w600,
                                                   ),
                                             ),
                                             const SizedBox(height: 2),
-                                            Text(
-                                              entry.providerTypeId,
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: theme.textTheme.bodySmall
-                                                  ?.copyWith(
-                                                    color: colorScheme
-                                                        .onSurfaceVariant,
-                                                  ),
-                                            ),
+                                            if (choice.subtitle.isNotEmpty)
+                                              Text(
+                                                choice.subtitle,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: theme.textTheme.bodySmall
+                                                    ?.copyWith(
+                                                      color: colorScheme
+                                                          .onSurfaceVariant,
+                                                    ),
+                                              ),
                                           ],
                                         ),
                                       ),

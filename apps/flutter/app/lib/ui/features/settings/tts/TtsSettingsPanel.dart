@@ -14,6 +14,7 @@ import '../../../theme/OperitGlassSurface.dart';
 import '../../chat/tts/TtsPlaybackController.dart';
 import '../components/ApiKeyTextField.dart';
 import '../components/SettingsControlStyles.dart';
+import '../model/ProviderTypePicker.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
 part 'TtsProviderWidgets.dart';
@@ -88,7 +89,9 @@ class _TtsProviderSectionState extends State<TtsProviderSection> {
     });
   }
 
-  Future<void> _testTtsConfig(core_proxy.CoreOperitModelTtsConfigTtsConfig config) async {
+  Future<void> _testTtsConfig(
+    core_proxy.CoreOperitModelTtsConfigTtsConfig config,
+  ) async {
     final configId = config.id.trim();
     if (configId.isEmpty) {
       ScaffoldMessenger.of(
@@ -129,7 +132,9 @@ class _TtsProviderSectionState extends State<TtsProviderSection> {
     }
   }
 
-  Future<void> _save(core_proxy.CoreOperitModelTtsConfigTtsConfig config) async {
+  Future<void> _save(
+    core_proxy.CoreOperitModelTtsConfigTtsConfig config,
+  ) async {
     final manager = widget.clients.preferencesTtsConfigManager;
     if (config.id.isEmpty) {
       await manager.createTtsConfig(config: config);

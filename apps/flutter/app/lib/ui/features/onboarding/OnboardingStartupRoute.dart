@@ -28,6 +28,7 @@ import '../settings/model/ProviderTypePicker.dart';
 import '../../theme/OperitFormStyles.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
+
 enum _AiSetupPage {
   intro,
   agreement,
@@ -1774,6 +1775,12 @@ class _AiSetupSharedChrome extends StatelessWidget {
         final introBrandTop =
             (constraints.maxHeight - introBrandHeight) * 0.5 -
             introLiftDistance * introLift;
+        final introContentTop =
+            introBrandTop +
+            scaledIntroLogoSize +
+            18 +
+            scaledIntroTitleFontSize * 1.18 +
+            26;
         final logoSize = lerpDouble(scaledIntroLogoSize, 28, chromeProgress)!;
         final chromeLogoTop = (chromeBarHeight - 28) * 0.5;
         final logoTop = lerpDouble(
@@ -2044,13 +2051,35 @@ class _AiSetupIntroPage extends StatelessWidget {
           return LayoutBuilder(
             builder: (context, constraints) {
               final compact = constraints.maxHeight < 640;
+              final brandCompact = constraints.maxHeight < 560;
+              final introProgress = CurvedAnimation(
+                parent: animation,
+                curve: const Interval(0, 0.68, curve: Curves.easeOutCubic),
+              ).value;
+              final introLift = CurvedAnimation(
+                parent: animation,
+                curve: const Interval(0.78, 0.92, curve: Curves.easeInOutCubic),
+              ).value;
+              final introLogoSize = brandCompact ? 82.0 : 96.0;
+              final introTitleFontSize =
+                  textTheme.headlineMedium?.fontSize ?? 28;
+              final introScale = lerpDouble(0.96, 1, introProgress)!;
+              final scaledIntroLogoSize = introLogoSize * introScale;
+              final scaledIntroTitleFontSize = introTitleFontSize * introScale;
+              final introBrandHeight =
+                  scaledIntroLogoSize + 18 + scaledIntroTitleFontSize * 1.18;
+              final introLiftDistance = brandCompact ? 108.0 : 132.0;
+              final introBrandTop =
+                  (constraints.maxHeight - introBrandHeight) * 0.5 -
+                  introLiftDistance * introLift;
+              final introContentTop =
+                  introBrandTop +
+                  scaledIntroLogoSize +
+                  18 +
+                  scaledIntroTitleFontSize * 1.18 +
+                  26;
               return SingleChildScrollView(
-                padding: EdgeInsets.fromLTRB(
-                  16,
-                  constraints.maxHeight * 0.46,
-                  16,
-                  16,
-                ),
+                padding: EdgeInsets.fromLTRB(16, introContentTop, 16, 16),
                 child: Center(
                   child: ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 440),
@@ -2089,7 +2118,8 @@ class _AiSetupIntroPage extends StatelessWidget {
                                 const _ChatGptFeatureCard(
                                   icon: OperitIcons.chat_bubble_outline_rounded,
                                   title: '智能对话与深度思考',
-                                  description: '支持主流顶尖模型切换，理解长上下文，随时激发创作灵感与分析问题',
+                                  description:
+                                      '支持主流顶尖模型切换，理解长上下文，随时激发创作灵感与分析问题',
                                 ),
                                 SizedBox(height: compact ? 8 : 12),
                                 const _ChatGptFeatureCard(
@@ -2158,11 +2188,7 @@ class _ChatGptFeatureCard extends StatelessWidget {
               shape: BoxShape.circle,
             ),
             child: Center(
-              child: Icon(
-                icon,
-                color: colorScheme.primary,
-                size: 20,
-              ),
+              child: Icon(icon, color: colorScheme.primary, size: 20),
             ),
           ),
           const SizedBox(width: 14),
@@ -3142,7 +3168,9 @@ class _SetupModeTile extends StatelessWidget {
                     shape: BoxShape.circle,
                     color: selected
                         ? colorScheme.primary.withValues(alpha: 0.14)
-                        : colorScheme.surfaceContainerHighest.withValues(alpha: 0.6),
+                        : colorScheme.surfaceContainerHighest.withValues(
+                            alpha: 0.6,
+                          ),
                   ),
                   child: Center(
                     child: Icon(
@@ -3407,7 +3435,10 @@ class _AiSetupModelPage extends StatelessWidget {
                                           strokeWidth: 2,
                                         ),
                                       )
-                                    : const Icon(OperitIcons.sync_rounded, size: 18),
+                                    : const Icon(
+                                        OperitIcons.sync_rounded,
+                                        size: 18,
+                                      ),
                                 label: Text(
                                   loadingModels ? '正在拉取模型' : '拉取可用模型',
                                 ),
@@ -3639,7 +3670,9 @@ class _PermissionTile extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 10),
       child: ListTile(
         leading: Icon(
-          granted ? OperitIcons.check_circle_rounded : OperitIcons.radio_button_unchecked_rounded,
+          granted
+              ? OperitIcons.check_circle_rounded
+              : OperitIcons.radio_button_unchecked_rounded,
           color: granted ? colorScheme.primary : colorScheme.onSurfaceVariant,
         ),
         title: Row(
