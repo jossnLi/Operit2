@@ -253,7 +253,23 @@ void main() {
       await tester.ensureVisible(advanced);
       await tester.tap(advanced);
       await tester.pumpAndSettle();
-      await tester.ensureVisible(toggle);
+      final editorScrollView = find
+          .ancestor(
+            of: find.byTooltip('返回').last,
+            matching: find.byType(Scaffold),
+          )
+          .first;
+      final editorScrollable = find
+          .descendant(of: editorScrollView, matching: find.byType(Scrollable))
+          .first;
+      await tester.scrollUntilVisible(
+        toggle,
+        300,
+        scrollable: editorScrollable,
+      );
+      await tester.pumpAndSettle();
+      final viewport = tester.getRect(editorScrollView);
+      expect(viewport.contains(tester.getCenter(toggle)), isTrue);
       await tester.tap(toggle);
       await tester.pumpAndSettle();
       await tester.ensureVisible(advanced);
