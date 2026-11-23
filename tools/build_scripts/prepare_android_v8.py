@@ -384,25 +384,30 @@ def find_host_clang():
 
 def find_libclang():
     """Locate libclang 21.1+ for the source bindings generation."""
+    for env_var in ("OPERIT_LIBCLANG_DIR", "LIBCLANG_PATH"):
+        if env_var in os.environ:
+            candidate = Path(os.environ[env_var])
+            if candidate.is_dir() and any(candidate.glob("libclang*")):
+                return candidate
     if IS_WINDOWS:
-        directory = (Path(os.environ["OPERIT_LIBCLANG_DIR"])
-                     if "OPERIT_LIBCLANG_DIR" in os.environ else None)
-        if not directory or not (directory / "libclang.dll").is_file():
-            raise RuntimeError("Set OPERIT_LIBCLANG_DIR to the directory containing libclang.dll (21.1+)")
-        return directory
-    pattern = "libclang.so*"
+        raise RuntimeError("Set OPERIT_LIBCLANG_DIR to the directory containing libclang.dll (21.1+)")
+    pattern = "libclang*"
     if sys.platform == "darwin":
         llvm = find_host_clang()
         candidates = [llvm / "lib"]
     else:
-        candidates = [Path("/usr/lib/llvm21/lib")]
+        candidates = [Path("/usr/lib/llvm-21/lib"), Path("/usr/lib/llvm21/lib")]
         candidates += sorted(Path("/usr/lib").glob("llvm*/lib"), reverse=True)
         candidates += [Path("/usr/lib/x86_64-linux-gnu"), Path("/usr/lib64"), Path("/usr/lib")]
     libraries = []
     for directory in candidates:
         libraries += sorted(directory.glob(pattern))
     for library in libraries:
-        match = re.search(r"libclang\.so\.(\d+)", library.name)
+        # Check if parent dir has llvm-21 or higher
+        parent_match = re.search(r"llvm-?(\d+)", str(library.parent))
+        if parent_match and int(parent_match.group(1)) >= 21:
+            return library.parent
+        match = re.search(r"libclang(?:-|\.so\.)(\d+)", library.name)
         if match and int(match.group(1)) >= 21:
             return library.parent
     if sys.platform == "darwin" and libraries:
