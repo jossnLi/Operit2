@@ -84,6 +84,15 @@ jobs:
           name: operit2-android-runtime-${{ github.sha }}
           path: apps/flutter/app/android/app/src/main
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Create repository virtual environment
+        shell: pwsh
+        run: python -m venv .venv
+
       - name: Install bootstrap Dart
         uses: dart-lang/setup-dart@v1
         with:
