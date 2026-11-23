@@ -288,8 +288,9 @@ class _AppContentState extends State<AppContent> {
                 final titleContent = widget.topBarController.titleContent;
                 final actions = widget.topBarController.actions;
                 final navigationIcon = widget.canGoBack
-                    ? OperitIcons.arrow_back_rounded
-                    : widget.useTabletLayout
+                    ? OperitIcons.chevron_left_rounded
+                    : widget.useTabletLayout ||
+                          !widget.currentScreen.showTopBarNavigation
                     ? null
                     : OperitIcons.view_sidebar_outlined;
                 final shouldFlipNavigationIcon =

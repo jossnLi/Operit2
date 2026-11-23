@@ -28,6 +28,7 @@ abstract class OperitScreen {
     this.keepAlive = false,
     this.retainInBackStack = false,
     this.handlesBottomSafeArea = false,
+    this.showTopBarNavigation = true,
   });
 
   final String routeTypeName;
@@ -40,6 +41,9 @@ abstract class OperitScreen {
 
   /// Lets a page extend its surfaces while keeping its own controls inset.
   final bool handlesBottomSafeArea;
+
+  /// Whether the shared top bar shows the drawer button on a root page.
+  final bool showTopBarNavigation;
 
   Map<String, Object?> routeArgs() {
     return const <String, Object?>{};
@@ -235,7 +239,12 @@ class MarketCreatorScreenRoute extends OperitScreen {
 
 class SettingsScreenRoute extends OperitScreen {
   const SettingsScreenRoute({this.category})
-    : super(routeTypeName: 'Settings', title: '设置', keepAlive: true);
+    : super(
+        routeTypeName: 'Settings',
+        title: '设置',
+        keepAlive: true,
+        showTopBarNavigation: false,
+      );
 
   final SettingsCategory? category;
 

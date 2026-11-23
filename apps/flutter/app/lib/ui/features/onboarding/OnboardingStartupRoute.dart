@@ -24,6 +24,7 @@ import '../../common/ChatBackupDirectoryPanel.dart';
 import '../../common/ChatBackupRestorePanel.dart';
 import '../../common/components/CommonNetworkErrorView.dart';
 import '../../main/navigation/StartupRouteStrategy.dart';
+import '../settings/model/ProviderTypePicker.dart';
 import '../../theme/OperitFormStyles.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
@@ -1920,24 +1921,33 @@ class _AiSetupSharedChrome extends StatelessWidget {
               ),
             ),
             Positioned(
-              left: 0,
+              left: 4,
               bottom: 2,
               child: IgnorePointer(
                 ignoring: chromeProgress == 0,
                 child: Opacity(
                   opacity: progressOpacity,
-                  child: IconButton(
+                  child: TextButton(
                     onPressed: currentPage == 0 ? null : onBack,
-                    icon: const Icon(OperitIcons.arrow_back_rounded),
-                    color: colorScheme.primary,
-                    disabledColor: colorScheme.onSurface.withValues(alpha: 0.3),
-                    tooltip: '上一页',
+                    style: TextButton.styleFrom(
+                      minimumSize: const Size(0, 40),
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      foregroundColor: colorScheme.primary,
+                      disabledForegroundColor: colorScheme.onSurface.withValues(
+                        alpha: 0.3,
+                      ),
+                    ),
+                    child: const Text(
+                      '返回',
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
                   ),
                 ),
               ),
             ),
             Positioned(
-              left: 58,
+              left: 62,
               right: buttonWidth + 8,
               bottom: 5,
               child: IgnorePointer(
@@ -2034,18 +2044,19 @@ class _AiSetupIntroPage extends StatelessWidget {
           return LayoutBuilder(
             builder: (context, constraints) {
               final compact = constraints.maxHeight < 640;
-              return Center(
-                child: SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: compact ? 8 : 16,
-                  ),
+              return SingleChildScrollView(
+                padding: EdgeInsets.fromLTRB(
+                  16,
+                  constraints.maxHeight * 0.46,
+                  16,
+                  16,
+                ),
+                child: Center(
                   child: ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 440),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        SizedBox(height: compact ? 144 : 172),
                         Opacity(
                           opacity: (bodyProgress * (1 - exitProgress))
                               .clamp(0.0, 1.0)
@@ -3229,6 +3240,15 @@ class _AiSetupModelPage extends StatelessWidget {
     return const <core_proxy.ProviderEndpointOption>[];
   }
 
+  core_proxy.ProviderCatalogEntry? get _selectedCatalogEntry {
+    for (final entry in catalogEntries) {
+      if (entry.providerTypeId == selectedProviderTypeId) {
+        return entry;
+      }
+    }
+    return null;
+  }
+
   /// Opens endpoint options and applies the chosen endpoint text.
   Future<void> _showEndpointOptionsDialog(
     BuildContext context,
@@ -3301,25 +3321,18 @@ class _AiSetupModelPage extends StatelessWidget {
                   description: '选择模型供应商，填写 API Key，拉取并设置默认模型。',
                 ),
                 const SizedBox(height: 22),
-                OperitFormStyles.dropdownButtonFormField<String>(
-                  context,
-                  initialValue: selectedProviderTypeId,
-                  isExpanded: true,
-                  decoration: const InputDecoration(labelText: '模型供应商'),
-                  items: catalogEntries
-                      .map(
-                        (entry) => DropdownMenuItem<String>(
-                          value: entry.providerTypeId,
-                          child: Text(entry.displayName),
-                        ),
-                      )
-                      .toList(growable: false),
-                  onChanged: onProviderChanged,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return '请选择模型供应商';
+                ProviderTypePickerField(
+                  label: '模型供应商',
+                  entry: _selectedCatalogEntry,
+                  onTap: () async {
+                    final providerTypeId = await showProviderTypePicker(
+                      context: context,
+                      entries: catalogEntries,
+                      selectedProviderTypeId: selectedProviderTypeId,
+                    );
+                    if (providerTypeId != null) {
+                      onProviderChanged(providerTypeId);
                     }
-                    return null;
                   },
                 ),
                 const SizedBox(height: 14),

@@ -15,7 +15,6 @@ import '../../../common/components/CommonNetworkErrorView.dart';
 import '../../../common/ApiErrorText.dart';
 import '../../../common/ThinkingLevelText.dart';
 import '../../../common/components/M3LoadingIndicator.dart';
-import '../../../theme/OperitFormStyles.dart';
 import '../../../theme/OperitGlassSurface.dart';
 import '../components/ApiKeyTextField.dart';
 import '../components/SettingsControlStyles.dart';
@@ -23,6 +22,7 @@ import 'CodexLoginDialog.dart';
 import 'ApiKeyPoolEditor.dart';
 import 'ModelConnectionTestCapabilities.dart';
 import 'ProviderLogo.dart';
+import 'ProviderTypePicker.dart';
 import '../tts/TtsSettingsPanel.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
@@ -180,7 +180,7 @@ class ModelSettingsPanelState extends State<ModelSettingsPanel> {
     if (!mounted) {
       return;
     }
-    final result = await _ProviderEditorDialog.show(
+    final result = await _ProviderEditorPage.show(
       context: context,
       catalogEntries: catalogEntries,
       occupiedProviderNames: _occupiedProviderNames(providers, null),
@@ -239,7 +239,7 @@ class ModelSettingsPanelState extends State<ModelSettingsPanel> {
     if (!mounted) {
       return;
     }
-    final result = await _ProviderEditorDialog.show(
+    final result = await _ProviderEditorPage.show(
       context: context,
       catalogEntries: catalogEntries,
       occupiedProviderNames: _occupiedProviderNames(providers, provider.id),
@@ -669,8 +669,8 @@ class _ProviderEditDeleteResult extends _ProviderEditResult {
   const _ProviderEditDeleteResult();
 }
 
-class _ProviderEditorDialog extends StatefulWidget {
-  const _ProviderEditorDialog({
+class _ProviderEditorPage extends StatefulWidget {
+  const _ProviderEditorPage({
     required this.catalogEntries,
     required this.occupiedProviderNames,
     required this.clients,
@@ -689,22 +689,24 @@ class _ProviderEditorDialog extends StatefulWidget {
     required GeneratedCoreProxyClients clients,
     core_proxy.ProviderProfile? provider,
   }) {
-    return showDialog<_ProviderEditResult>(
-      context: context,
-      builder: (context) => _ProviderEditorDialog(
-        catalogEntries: catalogEntries,
-        occupiedProviderNames: occupiedProviderNames,
-        clients: clients,
-        provider: provider,
+    return Navigator.of(context).push<_ProviderEditResult>(
+      MaterialPageRoute<_ProviderEditResult>(
+        fullscreenDialog: true,
+        builder: (context) => _ProviderEditorPage(
+          catalogEntries: catalogEntries,
+          occupiedProviderNames: occupiedProviderNames,
+          clients: clients,
+          provider: provider,
+        ),
       ),
     );
   }
 
   @override
-  State<_ProviderEditorDialog> createState() => _ProviderEditorDialogState();
+  State<_ProviderEditorPage> createState() => _ProviderEditorPageState();
 }
 
-class _ProviderEditorDialogState extends State<_ProviderEditorDialog> {
+class _ProviderEditorPageState extends State<_ProviderEditorPage> {
   final _formKey = GlobalKey<FormState>();
   final _advancedController = ExpansibleController();
   late final TextEditingController _nameController;
@@ -815,6 +817,18 @@ class _ProviderEditorDialogState extends State<_ProviderEditorDialog> {
     if (providerTypeId == 'OPENAI_CODEX') {
       unawaited(_refreshCodexStatus());
     }
+  }
+
+  Future<void> _pickProviderType() async {
+    final providerTypeId = await showProviderTypePicker(
+      context: context,
+      entries: widget.catalogEntries,
+      selectedProviderTypeId: _selectedProviderTypeId,
+    );
+    if (providerTypeId == null || !mounted) {
+      return;
+    }
+    _onProviderTypeChanged(providerTypeId);
   }
 
   bool get _isCodexProvider => _selectedProviderTypeId == 'OPENAI_CODEX';
@@ -968,188 +982,309 @@ class _ProviderEditorDialogState extends State<_ProviderEditorDialog> {
     final l10n = AppLocalizations.of(context)!;
     final editing = widget.provider != null;
     final endpointOptions = _selectedEndpointOptions;
-    return AlertDialog(
-      title: Text(
-        editing
-            ? l10n.settingsModelEditProvider
-            : l10n.settingsModelCreateProvider,
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final selectedCatalog = _selectedCatalog();
+    return Scaffold(
+      backgroundColor: colorScheme.surface,
+      appBar: AppBar(
+        backgroundColor: colorScheme.surface,
+        surfaceTintColor: Colors.transparent,
+        scrolledUnderElevation: 0,
+        leading: IconButton(
+          tooltip: '返回',
+          onPressed: () => Navigator.of(context).pop(),
+          icon: const Icon(OperitIcons.chevron_left_rounded),
+        ),
+        title: Text(
+          editing
+              ? l10n.settingsModelEditProvider
+              : l10n.settingsModelCreateProvider,
+        ),
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: TextButton(
+              onPressed: _keyTesting ? null : _save,
+              child: Text(
+                l10n.save,
+                style: const TextStyle(fontWeight: FontWeight.w700),
+              ),
+            ),
+          ),
+        ],
       ),
-      content: SizedBox(
-        width: 680,
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.only(top: 12, bottom: 8),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                _DialogTextField(
-                  controller: _nameController,
-                  label: l10n.settingsModelProfileName,
-                  requiredField: true,
-                  validator: (value) {
-                    final isDuplicate = widget.occupiedProviderNames.contains(
-                      value!.trim(),
-                    );
-                    return isDuplicate
-                        ? l10n.settingsModelDuplicateProviderName
-                        : null;
-                  },
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 12),
-                  child: OperitFormStyles.dropdownButtonFormField<String>(
-                    context,
-                    isExpanded: true,
-                    initialValue: _selectedProviderTypeId,
-                    style: OperitFormStyles.dropdownTextStyle(context),
-                    decoration: InputDecoration(
-                      labelText: l10n.settingsModelProviderType,
-                    ),
-                    items: widget.catalogEntries
-                        .map(
-                          (entry) => DropdownMenuItem<String>(
-                            value: entry.providerTypeId,
-                            child: Text(_providerCatalogLabel(l10n, entry)),
-                          ),
-                        )
-                        .toList(growable: false),
-                    onChanged: _onProviderTypeChanged,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return l10n.settingsModelProviderType;
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                _DialogTextField(
-                  controller: _endpointController,
-                  label: l10n.settingsModelApiEndpoint,
-                  requiredField: !_isLocalProvider,
-                  readOnly: _isCodexProvider,
-                  keyboardType: TextInputType.url,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.deny(RegExp(r'\s')),
-                  ],
-                  suffixIcon: _isCodexProvider
-                      ? const Icon(OperitIcons.lock_outline_rounded, size: 20)
-                      : (endpointOptions.isEmpty
-                            ? null
-                            : IconButton(
-                                tooltip: l10n.settingsModelApiEndpoint,
-                                icon: const Icon(OperitIcons.arrow_drop_down_rounded),
-                                onPressed: _showEndpointOptionsDialog,
-                              )),
-                ),
-                if (_isCodexProvider)
-                  _CodexLoginField(
-                    status: _codexStatus,
-                    onLogin: _openCodexLogin,
-                  )
-                else if (!_useKeyPool || _isLocalProvider)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
-                    child: ApiKeyTextField(
-                      key: ValueKey<String?>(_selectedProviderTypeId),
-                      controller: _apiKeyController,
-                      labelText: l10n.settingsModelApiKey,
+      body: SafeArea(
+        top: false,
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 720),
+            child: Form(
+              key: _formKey,
+              child: ListView(
+                padding: const EdgeInsets.fromLTRB(18, 8, 18, 32),
+                children: <Widget>[
+                  Text(
+                    editing ? '调整模型连接' : '连接一个模型服务',
+                    style: theme.textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: -0.4,
                     ),
                   ),
-                Theme(
-                  data: Theme.of(context).copyWith(
-                    dividerColor: Colors.transparent,
-                    dividerTheme: const DividerThemeData(
-                      color: Colors.transparent,
+                  const SizedBox(height: 6),
+                  Text(
+                    '选择供应商并填写连接信息。保存后即可在模型与 AI 中使用。',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                      height: 1.45,
                     ),
                   ),
-                  child: ExpansionTile(
-                    controller: _advancedController,
-                    maintainState: true,
-                    tilePadding: EdgeInsets.zero,
-                    childrenPadding: const EdgeInsets.only(top: 8),
-                    shape: const Border(),
-                    collapsedShape: const Border(),
-                    title: Text(
-                      l10n.settingsAdvanced,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w700,
+                  const SizedBox(height: 20),
+                  ProviderTypePickerField(
+                    label: l10n.settingsModelProviderType,
+                    entry: selectedCatalog,
+                    onTap: _pickProviderType,
+                  ),
+                  if (selectedCatalog != null) ...<Widget>[
+                    const SizedBox(height: 8),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                      child: Text(
+                        '默认地址 · ${selectedCatalog.defaultEndpoint}',
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: colorScheme.onSurfaceVariant,
+                        ),
                       ),
                     ),
+                  ],
+                  const SizedBox(height: 20),
+                  _ProviderEditorSection(
+                    title: '连接信息',
+                    description: '名称仅用于本机区分不同的供应商配置。',
                     children: <Widget>[
                       _DialogTextField(
-                        controller: _customHeadersController,
-                        label: l10n.settingsModelCustomHeaders,
-                        maxLines: 4,
+                        controller: _nameController,
+                        label: l10n.settingsModelProfileName,
+                        requiredField: true,
+                        validator: (value) {
+                          final isDuplicate = widget.occupiedProviderNames
+                              .contains(value!.trim());
+                          return isDuplicate
+                              ? l10n.settingsModelDuplicateProviderName
+                              : null;
+                        },
                       ),
-                      Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: _DialogTextField(
-                              controller: _requestLimitController,
-                              label: l10n.settingsModelRequestLimit,
-                              numberOnly: true,
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: _DialogTextField(
-                              controller: _maxConcurrentController,
-                              label: l10n.settingsModelMaxConcurrent,
-                              numberOnly: true,
-                            ),
-                          ),
+                      _DialogTextField(
+                        controller: _endpointController,
+                        label: l10n.settingsModelApiEndpoint,
+                        requiredField: !_isLocalProvider,
+                        readOnly: _isCodexProvider,
+                        keyboardType: TextInputType.url,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.deny(RegExp(r'\s')),
                         ],
+                        suffixIcon: _isCodexProvider
+                            ? const Icon(
+                                OperitIcons.lock_outline_rounded,
+                                size: 20,
+                              )
+                            : (endpointOptions.isEmpty
+                                  ? null
+                                  : IconButton(
+                                      tooltip: l10n.settingsModelApiEndpoint,
+                                      icon: const Icon(
+                                        OperitIcons.arrow_drop_down_rounded,
+                                      ),
+                                      onPressed: _showEndpointOptionsDialog,
+                                    )),
                       ),
-                      if (!_isCodexProvider && !_isLocalProvider)
-                        ApiKeyPoolEditor(
-                          singleKey: _apiKeyController.text,
-                          onResetHealth: widget.provider == null
-                              ? null
-                              : () => widget
-                                    .clients
-                                    .preferencesModelConfigManager
-                                    .clearProviderApiKeyFailures(
-                                      providerId: widget.provider!.id,
-                                    ),
-                          enabled: _useKeyPool,
-                          entries: _keyPool,
-                          onEnabledChanged: (value) =>
-                              setState(() => _useKeyPool = value),
-                          onChanged: (entries) =>
-                              setState(() => _keyPool = entries),
-                          onTestingChanged: (value) =>
-                              setState(() => _keyTesting = value),
-                          onTestEntry: widget.provider?.models.isNotEmpty == true
-                              ? _testPoolEntry
-                              : null,
+                      if (_isCodexProvider)
+                        _CodexLoginField(
+                          status: _codexStatus,
+                          onLogin: _openCodexLogin,
+                        )
+                      else if (!_useKeyPool || _isLocalProvider)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 12),
+                          child: ApiKeyTextField(
+                            key: ValueKey<String?>(_selectedProviderTypeId),
+                            controller: _apiKeyController,
+                            labelText: l10n.settingsModelApiKey,
+                          ),
+                        )
+                      else
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 12),
+                          child: Text(
+                            'API Key 池已启用，可在下方高级设置中管理多个密钥。',
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: colorScheme.onSurfaceVariant,
+                            ),
+                          ),
                         ),
                     ],
                   ),
-                ),
-              ],
+                  const SizedBox(height: 14),
+                  Material(
+                    color: colorScheme.surfaceContainerHighest.withValues(
+                      alpha: 0.28,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18),
+                      side: BorderSide(
+                        color: colorScheme.outlineVariant.withValues(
+                          alpha: 0.22,
+                        ),
+                      ),
+                    ),
+                    clipBehavior: Clip.antiAlias,
+                    child: Theme(
+                      data: theme.copyWith(
+                        dividerColor: Colors.transparent,
+                        dividerTheme: const DividerThemeData(
+                          color: Colors.transparent,
+                        ),
+                      ),
+                      child: ExpansionTile(
+                        controller: _advancedController,
+                        maintainState: true,
+                        tilePadding: const EdgeInsets.symmetric(horizontal: 16),
+                        childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 14),
+                        shape: const Border(),
+                        collapsedShape: const Border(),
+                        title: Text(
+                          l10n.settingsAdvanced,
+                          style: theme.textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        children: <Widget>[
+                          _DialogTextField(
+                            controller: _customHeadersController,
+                            label: l10n.settingsModelCustomHeaders,
+                            maxLines: 4,
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: _DialogTextField(
+                                  controller: _requestLimitController,
+                                  label: l10n.settingsModelRequestLimit,
+                                  numberOnly: true,
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: _DialogTextField(
+                                  controller: _maxConcurrentController,
+                                  label: l10n.settingsModelMaxConcurrent,
+                                  numberOnly: true,
+                                ),
+                              ),
+                            ],
+                          ),
+                          if (!_isCodexProvider && !_isLocalProvider)
+                            ApiKeyPoolEditor(
+                              singleKey: _apiKeyController.text,
+                              onResetHealth: widget.provider == null
+                                  ? null
+                                  : () => widget
+                                        .clients
+                                        .preferencesModelConfigManager
+                                        .clearProviderApiKeyFailures(
+                                          providerId: widget.provider!.id,
+                                        ),
+                              enabled: _useKeyPool,
+                              entries: _keyPool,
+                              onEnabledChanged: (value) =>
+                                  setState(() => _useKeyPool = value),
+                              onChanged: (entries) =>
+                                  setState(() => _keyPool = entries),
+                              onTestingChanged: (value) =>
+                                  setState(() => _keyTesting = value),
+                              onTestEntry:
+                                  widget.provider?.models.isNotEmpty == true
+                                  ? _testPoolEntry
+                                  : null,
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  if (editing) ...<Widget>[
+                    const SizedBox(height: 18),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: TextButton.icon(
+                        style: TextButton.styleFrom(
+                          foregroundColor: colorScheme.error,
+                        ),
+                        onPressed: () => Navigator.of(
+                          context,
+                        ).pop(const _ProviderEditDeleteResult()),
+                        icon: const Icon(OperitIcons.delete_outline_rounded),
+                        label: Text(l10n.delete),
+                      ),
+                    ),
+                  ],
+                ],
+              ),
             ),
           ),
         ),
       ),
-      actions: <Widget>[
-        if (editing)
-          TextButton.icon(
-            onPressed: () =>
-                Navigator.of(context).pop(const _ProviderEditDeleteResult()),
-            icon: const Icon(OperitIcons.delete_outline_rounded),
-            label: Text(l10n.delete),
+    );
+  }
+}
+
+class _ProviderEditorSection extends StatelessWidget {
+  const _ProviderEditorSection({
+    required this.title,
+    required this.description,
+    required this.children,
+  });
+
+  final String title;
+  final String description;
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    return Container(
+      padding: const EdgeInsets.fromLTRB(14, 14, 14, 2),
+      decoration: BoxDecoration(
+        color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.28),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(
+          color: colorScheme.outlineVariant.withValues(alpha: 0.22),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Text(
+            title,
+            style: theme.textTheme.titleSmall?.copyWith(
+              fontWeight: FontWeight.w700,
+            ),
           ),
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: Text(l10n.cancel),
-        ),
-        FilledButton(
-          onPressed: _keyTesting ? null : _save,
-          child: Text(l10n.save),
-        ),
-      ],
+          const SizedBox(height: 3),
+          Text(
+            description,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: colorScheme.onSurfaceVariant,
+              height: 1.4,
+            ),
+          ),
+          const SizedBox(height: 14),
+          ...children,
+        ],
+      ),
     );
   }
 }
@@ -7980,61 +8115,6 @@ String _functionTypeTitle(
       l10n.settingsModelFunctionAudioRecognition,
     core_proxy.FunctionType.videoRecognition =>
       l10n.settingsModelFunctionVideoRecognition,
-  };
-}
-
-String _providerCatalogLabel(
-  AppLocalizations l10n,
-  core_proxy.ProviderCatalogEntry entry,
-) {
-  return l10n.settingsModelProviderTypeOption(
-    _providerTypeLocalName(l10n, entry.providerTypeId),
-    entry.displayName,
-  );
-}
-
-String _providerTypeLocalName(AppLocalizations l10n, String providerTypeId) {
-  return switch (providerTypeId) {
-    'OPENAI' => l10n.settingsModelProviderTypeOpenai,
-    'XAI' => l10n.settingsModelProviderTypeXai,
-    'OPENAI_RESPONSES' => l10n.settingsModelProviderTypeOpenaiResponses,
-    'OPENAI_CODEX' => l10n.settingsModelProviderTypeOpenaiCodex,
-    'OPENAI_RESPONSES_GENERIC' =>
-      l10n.settingsModelProviderTypeOpenaiResponsesGeneric,
-    'OPENAI_GENERIC' => l10n.settingsModelProviderTypeOpenaiGeneric,
-    'ANTHROPIC' => l10n.settingsModelProviderTypeAnthropic,
-    'ANTHROPIC_GENERIC' => l10n.settingsModelProviderTypeAnthropicGeneric,
-    'GOOGLE' => l10n.settingsModelProviderTypeGoogle,
-    'GEMINI_GENERIC' => l10n.settingsModelProviderTypeGeminiGeneric,
-    'BAIDU' => l10n.settingsModelProviderTypeBaidu,
-    'ALIYUN' => l10n.settingsModelProviderTypeAliyun,
-    'XUNFEI' => l10n.settingsModelProviderTypeXunfei,
-    'ZHIPU' => l10n.settingsModelProviderTypeZhipu,
-    'BAICHUAN' => l10n.settingsModelProviderTypeBaichuan,
-    'MOONSHOT' => l10n.settingsModelProviderTypeMoonshot,
-    'MIMO' => l10n.settingsModelProviderTypeMimo,
-    'DEEPSEEK' => l10n.settingsModelProviderTypeDeepseek,
-    'MISTRAL' => l10n.settingsModelProviderTypeMistral,
-    'SILICONFLOW' => l10n.settingsModelProviderTypeSiliconflow,
-    'OPENROUTER' => l10n.settingsModelProviderTypeOpenrouter,
-    'OPENCODE' => l10n.settingsModelProviderTypeOpencode,
-    'FOUR_ROUTER' => l10n.settingsModelProviderTypeFourRouter,
-    'NOUS_PORTAL' => l10n.settingsModelProviderTypeNousPortal,
-    'INFINIAI' => l10n.settingsModelProviderTypeInfiniai,
-    'ALIPAY_BAILING' => l10n.settingsModelProviderTypeAlipayBailing,
-    'DOUBAO' => l10n.settingsModelProviderTypeDoubao,
-    'NVIDIA' => l10n.settingsModelProviderTypeNvidia,
-    'LMSTUDIO' => l10n.settingsModelProviderTypeLmstudio,
-    'OLLAMA' => l10n.settingsModelProviderTypeOllama,
-    'OPENAI_LOCAL' => l10n.settingsModelProviderTypeOpenaiLocal,
-    'LOCAL_MODEL' => l10n.settingsModelProviderTypeLocalModel,
-    'MNN' => l10n.settingsModelProviderTypeMnn,
-    'LLAMA_CPP' => l10n.settingsModelProviderTypeLlamaCpp,
-    'PPINFRA' => l10n.settingsModelProviderTypePpinfra,
-    'NOVITA' => l10n.settingsModelProviderTypeNovita,
-    'MINIMAX' => l10n.settingsModelProviderTypeMinimax,
-    'OTHER' => l10n.settingsModelProviderTypeOther,
-    _ => providerTypeId,
   };
 }
 
