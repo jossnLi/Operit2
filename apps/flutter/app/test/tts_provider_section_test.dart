@@ -131,7 +131,7 @@ void main() {
       await tester.tap(find.text('SiliconFlow'));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byTooltip('编辑供应商'));
+      await tester.tap(find.byTooltip('编辑供应商').last);
       await tester.pumpAndSettle();
 
       expect(find.text('编辑 TTS 供应商'), findsOneWidget);

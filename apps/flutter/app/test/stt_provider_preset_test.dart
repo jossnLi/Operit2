@@ -46,7 +46,7 @@ void main() {
           widget is TextField && widget.decoration?.labelText == 'API Key',
     );
     await tester.enterText(apiKey, 'test-key');
-    await tester.tap(find.widgetWithText(FilledButton, '保存'));
+    await tester.tap(find.widgetWithText(TextButton, '保存'));
     await tester.pumpAndSettle();
 
     final config = bridge.saved!;

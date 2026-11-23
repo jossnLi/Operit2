@@ -241,7 +241,9 @@ void main() {
       final l10n = AppLocalizations.of(panelKey.currentContext!)!;
       await tester.tap(find.text('Test Provider'));
       await tester.pumpAndSettle();
-      await tester.tap(find.byTooltip(l10n.settingsModelEditProvider));
+      await tester.tap(find.byTooltip('更多'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text(l10n.edit).last);
       await tester.pumpAndSettle();
       final advanced = find.text(l10n.settingsAdvanced);
       final toggle = find.byKey(const ValueKey('api-key-pool-toggle'));
@@ -320,9 +322,6 @@ void main() {
         var panelKey = GlobalKey<ModelSettingsPanelState>();
         await _pumpModelSettings(tester, bridge, panelKey);
         final l10n = AppLocalizations.of(panelKey.currentContext!)!;
-        final closeTooltip = MaterialLocalizations.of(
-          panelKey.currentContext!,
-        ).closeButtonTooltip;
         final statusLabel = success
             ? l10n.settingsModelConnectionTestPassed
             : l10n.settingsModelConnectionTestFailed;
@@ -338,7 +337,7 @@ void main() {
         await tester.pumpAndSettle();
         expect(status, findsOneWidget);
         expect(bridge.connectionTestCalls, 1);
-        await tester.tap(find.byTooltip(closeTooltip).last);
+        await tester.tap(find.byTooltip('返回').last);
         await tester.pumpAndSettle();
 
         panelKey = GlobalKey<ModelSettingsPanelState>();
@@ -373,9 +372,6 @@ void main() {
         final panelKey = GlobalKey<ModelSettingsPanelState>();
         await _pumpModelSettings(tester, bridge, panelKey);
         final l10n = AppLocalizations.of(panelKey.currentContext!)!;
-        final closeTooltip = MaterialLocalizations.of(
-          panelKey.currentContext!,
-        ).closeButtonTooltip;
         final restricted = find.byWidgetPredicate(
           (widget) =>
               widget is Semantics &&
@@ -392,7 +388,7 @@ void main() {
           findsOneWidget,
         );
         expect(bridge.connectionTestCalls, 1);
-        await tester.tap(find.byTooltip(closeTooltip).last);
+        await tester.tap(find.byTooltip('返回').last);
         await tester.pumpAndSettle();
         await tester.tap(find.text('Test Provider'));
         await tester.pumpAndSettle();
@@ -420,15 +416,12 @@ void main() {
     final panelKey = GlobalKey<ModelSettingsPanelState>();
     await _pumpModelSettings(tester, bridge, panelKey);
     final l10n = AppLocalizations.of(panelKey.currentContext!)!;
-    final closeTooltip = MaterialLocalizations.of(
-      panelKey.currentContext!,
-    ).closeButtonTooltip;
     await tester.tap(find.text('Test Provider'));
     await tester.pumpAndSettle();
     await tester.tap(find.text(l10n.settingsModelTestAll));
     await tester.pump();
     expect(bridge.connectionTestCalls, 1);
-    await tester.tap(find.byTooltip(closeTooltip).last);
+    await tester.tap(find.byTooltip('返回').last);
     await tester.pumpAndSettle();
     gate.complete();
     await tester.pumpAndSettle();
@@ -472,9 +465,6 @@ void main() {
       );
       await tester.pumpAndSettle();
       final l10n = AppLocalizations.of(panelKey.currentContext!)!;
-      final closeTooltip = MaterialLocalizations.of(
-        panelKey.currentContext!,
-      ).closeButtonTooltip;
       final originalSnapshot = await panelKey.currentState!.loadFuture;
       expect(
         originalSnapshot.summaries.single.capabilities.directImage,
@@ -493,7 +483,7 @@ void main() {
       expect(updatedSnapshot.summaries.single.capabilities.directImage, isTrue);
       expect(updatedSnapshot.currentConfig!.capabilities.directImage, isTrue);
 
-      await tester.tap(find.byTooltip(closeTooltip).last);
+      await tester.tap(find.byTooltip('返回').last);
       await tester.pumpAndSettle();
       await tester.ensureVisible(
         find.text(l10n.settingsModelFunctionMappingsSection),
@@ -532,14 +522,14 @@ void main() {
         expect(snapshot.providers, isNotEmpty);
         expect(bridge.resolutionCalls, 0);
         final l10n = AppLocalizations.of(panelKey.currentContext!)!;
+        final missingBinding = l10n.settingsModelFunctionMappingsMissing(
+          bridge.chatBinding.providerId,
+          bridge.chatBinding.modelId,
+        );
+        expect(find.text('模型配置失败'), findsOneWidget);
         expect(
-          find.text(
-            l10n.settingsModelFunctionMappingsMissing(
-              bridge.chatBinding.providerId,
-              bridge.chatBinding.modelId,
-            ),
-          ),
-          findsWidgets,
+          find.widgetWithText(SelectableText, '原始错误：\n$missingBinding'),
+          findsOneWidget,
         );
         expect(find.text('Test Provider'), findsOneWidget);
         expect(tester.takeException(), isNull);

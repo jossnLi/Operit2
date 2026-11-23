@@ -180,7 +180,7 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    await tester.tap(find.text('开始'));
+    await tester.tap(find.text('开始探索'));
     await tester.pumpAndSettle();
 
     expect(find.text('2/4'), findsOneWidget);
@@ -249,7 +249,7 @@ Future<AppLocalizations> _pumpStoragePage(WidgetTester tester) async {
     ),
   );
   await tester.pumpAndSettle();
-  await tester.tap(find.text('开始'));
+  await tester.tap(find.text('开始探索'));
   await tester.pumpAndSettle();
   // The agreement countdown starts once its page is visible.
   await tester.pump(const Duration(seconds: 6));

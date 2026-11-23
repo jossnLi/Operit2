@@ -31,7 +31,7 @@ void main() {
       await tester.pumpWidget(const OperitApp());
       await tester.pumpAndSettle();
       expect(find.byType(MaterialApp), findsOneWidget);
-      expect(find.text('让日常任务，从这里变得简单'), findsOneWidget);
+      expect(find.text('智能驱动的个人工作台 · 随行更高效'), findsOneWidget);
       expect(find.byType(TextField), findsNothing);
       expect(calls, ['localRuntimeStorageDefaults']);
       expect(tester.takeException(), isNull);
