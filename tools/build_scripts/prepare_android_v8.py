@@ -546,6 +546,27 @@ def build(cache, config, ndk):
     return (cache / "build").resolve() / config["target"] / "release/gn_out"
 
 
+def _has_prebuilt_artifacts(directory):
+    """Check if pre-built V8 artifacts exist in the directory (from a Linux CI job)."""
+    required = ("librusty_v8.a", "src_binding.rs")
+    if all((directory / name).is_file() for name in required):
+        return True
+    # If the artifact was unzipped into cache_root directly or another subpath, search for it
+    candidates = list(directory.parent.parent.glob(f"**/{directory.name}/librusty_v8.a"))
+    if candidates:
+        found_dir = candidates[0].parent
+        if (found_dir / "src_binding.rs").is_file():
+            # Copy or link artifacts to expected directory
+            directory.mkdir(parents=True, exist_ok=True)
+            for name in required:
+                src = found_dir / name
+                dst = directory / name
+                if src != dst and not dst.is_file():
+                    shutil.copyfile(src, dst)
+            return True
+    return False
+
+
 def prepare(target, env_file, cache_root=CACHE_ROOT):
     cache = cache_root / version_from_lock()
     cache.mkdir(parents=True, exist_ok=True)
@@ -553,15 +574,22 @@ def prepare(target, env_file, cache_root=CACHE_ROOT):
     with (cache / "build.lock").open("a") as lock:
         if fcntl:
             fcntl.flock(lock, fcntl.LOCK_EX)
-        ndk = find_ndk(cache)
-        config = configuration(version_from_lock(), target, ndk)
         directory = cache / target
-        if not cache_valid(directory, config):
-            print(f"Building V8 {config['version']} for {target} (first build takes time)",
+        # On Windows, V8 cannot be built from source for Android (Chromium's GN
+        # configs only support Linux hosts).  If pre-built artifacts were
+        # downloaded from a companion Linux CI job, use them directly.
+        if IS_WINDOWS and _has_prebuilt_artifacts(directory):
+            print(f"Using pre-built V8 artifacts (Linux CI): {directory}",
                   file=sys.stderr, flush=True)
-            store_artifacts(build(cache, config, ndk), directory, config)
         else:
-            print(f"Using verified V8 cache: {directory}", file=sys.stderr, flush=True)
+            ndk = find_ndk(cache)
+            config = configuration(version_from_lock(), target, ndk)
+            if not cache_valid(directory, config):
+                print(f"Building V8 {config['version']} for {target} (first build takes time)",
+                      file=sys.stderr, flush=True)
+                store_artifacts(build(cache, config, ndk), directory, config)
+            else:
+                print(f"Using verified V8 cache: {directory}", file=sys.stderr, flush=True)
         values = {"RUSTY_V8_ARCHIVE": str(directory / "librusty_v8.a"),
                   "RUSTY_V8_ARCHIVE_SHA256": digest(directory / "librusty_v8.a"),
                   "RUSTY_V8_SRC_BINDING_PATH": str(directory / "src_binding.rs")}
