@@ -99,7 +99,6 @@ jobs:
           echo "/usr/lib/llvm-21/bin" >> $GITHUB_PATH
           echo "LIBCLANG_PATH=/usr/lib/llvm-21/lib" >> $GITHUB_ENV
           echo "OPERIT_LIBCLANG_DIR=/usr/lib/llvm-21/lib" >> $GITHUB_ENV
-          echo "OPERIT_ANDROID_V8_LLVM=/usr/lib/llvm-21" >> $GITHUB_ENV
 
       - name: Cache source-built Android V8
         id: v8-cache
