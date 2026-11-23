@@ -1600,21 +1600,18 @@ class _AiSetupGuidePageState extends State<_AiSetupGuidePage>
       return BoxDecoration(color: colorScheme.surface);
     }
     return BoxDecoration(
-      gradient: LinearGradient(
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
+      color: colorScheme.surface,
+      gradient: RadialGradient(
+        center: const Alignment(0, -0.6),
+        radius: 1.2,
         colors: <Color>[
           Color.alphaBlend(
-            colorScheme.primary.withValues(alpha: 0.08),
+            colorScheme.primary.withValues(alpha: 0.07),
             colorScheme.surface,
           ),
           colorScheme.surface,
-          Color.alphaBlend(
-            colorScheme.tertiary.withValues(alpha: 0.06),
-            colorScheme.surface,
-          ),
         ],
-        stops: const <double>[0, 0.52, 1],
+        stops: const <double>[0, 1.0],
       ),
     );
   }
@@ -1642,11 +1639,15 @@ class _AiSetupProgressPill extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final progress = (currentPage + 1) / pageCount;
     return Container(
-      height: 40,
-      padding: const EdgeInsets.symmetric(horizontal: 12),
+      height: 38,
+      padding: const EdgeInsets.symmetric(horizontal: 14),
       decoration: BoxDecoration(
-        color: trackColor.withValues(alpha: 0.72),
-        borderRadius: BorderRadius.circular(99),
+        color: trackColor.withValues(alpha: 0.5),
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(
+          color: textColor.withValues(alpha: 0.08),
+          width: 0.8,
+        ),
       ),
       child: Row(
         children: <Widget>[
@@ -1661,29 +1662,31 @@ class _AiSetupProgressPill extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: textTheme.labelSmall?.copyWith(
                     color: textColor,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     letterSpacing: 0,
                     height: 1,
                   ),
                 ),
                 const SizedBox(height: 5),
-                LinearProgressIndicator(
-                  value: progress,
-                  minHeight: 3,
-                  color: color,
-                  backgroundColor: textColor.withValues(alpha: 0.16),
+                ClipRRect(
                   borderRadius: BorderRadius.circular(99),
+                  child: LinearProgressIndicator(
+                    value: progress,
+                    minHeight: 2.5,
+                    color: color,
+                    backgroundColor: textColor.withValues(alpha: 0.12),
+                  ),
                 ),
               ],
             ),
           ),
-          const SizedBox(width: 10),
+          const SizedBox(width: 12),
           Text(
             '${currentPage + 1}/$pageCount',
             maxLines: 1,
             style: textTheme.labelSmall?.copyWith(
-              color: textColor,
-              fontWeight: FontWeight.w800,
+              color: textColor.withValues(alpha: 0.85),
+              fontWeight: FontWeight.w700,
               letterSpacing: 0,
             ),
           ),
@@ -1771,8 +1774,10 @@ class _AiSetupSharedChrome extends StatelessWidget {
         final chromeTitleFontSize = textTheme.titleMedium?.fontSize ?? 16;
         final introBrandHeight =
             scaledIntroLogoSize + 18 + scaledIntroTitleFontSize * 1.18;
+        final introLiftDistance = compact ? 108.0 : 132.0;
         final introBrandTop =
-            (constraints.maxHeight - introBrandHeight) * 0.5 - 76 * introLift;
+            (constraints.maxHeight - introBrandHeight) * 0.5 -
+            introLiftDistance * introLift;
         final logoSize = lerpDouble(scaledIntroLogoSize, 28, chromeProgress)!;
         final chromeLogoTop = (chromeBarHeight - 28) * 0.5;
         final logoTop = lerpDouble(
@@ -1802,16 +1807,25 @@ class _AiSetupSharedChrome extends StatelessWidget {
           chromeProgress,
         )!;
         final titleAlignmentX = lerpDouble(0, -1, chromeProgress)!;
-        final buttonWidth = constraints.maxWidth < 360 ? 124.0 : 132.0;
-        final buttonHeight = lerpDouble(44, 46, chromeProgress)!;
+        final introButtonWidth = constraints.maxWidth < 360 ? 152.0 : 176.0;
+        final normalButtonWidth = constraints.maxWidth < 360 ? 124.0 : 132.0;
+        final buttonWidth = lerpDouble(
+          introButtonWidth,
+          normalButtonWidth,
+          chromeProgress,
+        )!;
+        const buttonHeight = 46.0;
         final buttonLeft = lerpDouble(
           (constraints.maxWidth - buttonWidth) * 0.5,
           constraints.maxWidth - buttonWidth,
           chromeProgress,
         )!;
+        final introButtonTop =
+            constraints.maxHeight - buttonHeight - (compact ? 12 : 20);
+        final normalButtonTop = constraints.maxHeight - buttonHeight;
         final buttonTop = lerpDouble(
-          constraints.maxHeight * 0.5 + (compact ? 146 : 170),
-          constraints.maxHeight - buttonHeight,
+          introButtonTop,
+          normalButtonTop,
           chromeProgress,
         )!;
         final progressOpacity = introActive
@@ -1956,9 +1970,9 @@ class _AiSetupSharedChrome extends StatelessWidget {
                 child: FilledButton(
                   onPressed: canGoForward ? onPrimary : null,
                   style: FilledButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
+                      borderRadius: BorderRadius.circular(999),
                     ),
                   ),
                   child: AnimatedSwitcher(
@@ -1975,10 +1989,11 @@ class _AiSetupSharedChrome extends StatelessWidget {
                         Flexible(
                           child: Text(
                             introActive && chromeProgress < 0.5
-                                ? '开始'
+                                ? '开始探索'
                                 : primaryActionLabel,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(fontWeight: FontWeight.w600),
                           ),
                         ),
                         const SizedBox(width: 6),
@@ -2030,16 +2045,19 @@ class _AiSetupIntroPage extends StatelessWidget {
           ).value;
           return LayoutBuilder(
             builder: (context, constraints) {
-              final compact = constraints.maxHeight < 560;
+              final compact = constraints.maxHeight < 640;
               return Center(
                 child: SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(vertical: compact ? 16 : 24),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: compact ? 8 : 16,
+                  ),
                   child: ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 440),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        SizedBox(height: compact ? 126 : 154),
+                        SizedBox(height: compact ? 144 : 172),
                         Opacity(
                           opacity: (bodyProgress * (1 - exitProgress))
                               .clamp(0.0, 1.0)
@@ -2049,31 +2067,45 @@ class _AiSetupIntroPage extends StatelessWidget {
                               0,
                               18 * (1 - bodyProgress) - 22 * exitProgress,
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  ConstrainedBox(
-                                    constraints: const BoxConstraints(
-                                      maxWidth: 420,
-                                    ),
-                                    child: Text(
-                                      '让日常任务，从这里变得简单',
-                                      textAlign: TextAlign.center,
-                                      maxLines: 1,
-                                      style: textTheme.titleSmall?.copyWith(
-                                        color: bodyColor,
-                                        height: 1.2,
-                                        fontWeight: FontWeight.w700,
-                                        letterSpacing: 0,
-                                      ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                ConstrainedBox(
+                                  constraints: const BoxConstraints(
+                                    maxWidth: 420,
+                                  ),
+                                  child: Text(
+                                    '智能驱动的个人工作台 · 随行更高效',
+                                    textAlign: TextAlign.center,
+                                    maxLines: 1,
+                                    style: textTheme.titleSmall?.copyWith(
+                                      color: bodyColor,
+                                      height: 1.2,
+                                      fontWeight: FontWeight.w600,
+                                      letterSpacing: 0.1,
                                     ),
                                   ),
-                                ],
-                              ),
+                                ),
+                                SizedBox(height: compact ? 16 : 22),
+                                const _ChatGptFeatureCard(
+                                  icon: Icons.chat_bubble_outline_rounded,
+                                  title: '智能对话与深度思考',
+                                  description: '支持主流顶尖模型切换，理解长上下文，随时激发创作灵感与分析问题',
+                                ),
+                                SizedBox(height: compact ? 8 : 12),
+                                const _ChatGptFeatureCard(
+                                  icon: Icons.terminal_rounded,
+                                  title: '随身运行与本地沙盒',
+                                  description: '内置独立安全终端与插件扩展，数据完全保留在本地，私密可控',
+                                ),
+                                SizedBox(height: compact ? 8 : 12),
+                                const _ChatGptFeatureCard(
+                                  icon: Icons.devices_rounded,
+                                  title: '多端互联与设备空间',
+                                  description: '局域网点对点免密协同配对，模型配置与对话数据多端实时同步',
+                                ),
+                                SizedBox(height: compact ? 68 : 84),
+                              ],
                             ),
                           ),
                         ),
@@ -2085,6 +2117,81 @@ class _AiSetupIntroPage extends StatelessWidget {
             },
           );
         },
+      ),
+    );
+  }
+}
+
+class _ChatGptFeatureCard extends StatelessWidget {
+  const _ChatGptFeatureCard({
+    required this.icon,
+    required this.title,
+    required this.description,
+  });
+
+  final IconData icon;
+  final String title;
+  final String description;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      decoration: BoxDecoration(
+        color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.38),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: colorScheme.outlineVariant.withValues(alpha: 0.35),
+          width: 0.8,
+        ),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            width: 38,
+            height: 38,
+            decoration: BoxDecoration(
+              color: colorScheme.primary.withValues(alpha: 0.10),
+              shape: BoxShape.circle,
+            ),
+            child: Center(
+              child: Icon(
+                icon,
+                color: colorScheme.primary,
+                size: 20,
+              ),
+            ),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(
+                  title,
+                  style: textTheme.titleSmall?.copyWith(
+                    color: colorScheme.onSurface,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: -0.1,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  description,
+                  style: textTheme.bodySmall?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                    height: 1.28,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -2108,7 +2215,7 @@ class _SetupSectionHeader extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(2, 2, 2, 0),
+      padding: const EdgeInsets.fromLTRB(4, 2, 4, 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -2116,43 +2223,43 @@ class _SetupSectionHeader extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Container(
-                width: 32,
-                height: 32,
+                width: 30,
+                height: 30,
                 decoration: BoxDecoration(
                   color: colorScheme.primary.withValues(alpha: 0.10),
-                  borderRadius: BorderRadius.circular(12),
+                  shape: BoxShape.circle,
                 ),
-                child: Icon(icon, color: colorScheme.primary, size: 18),
+                child: Icon(icon, color: colorScheme.primary, size: 16),
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: 8),
               Text(
                 eyebrow,
-                style: textTheme.labelLarge?.copyWith(
+                style: textTheme.labelMedium?.copyWith(
                   color: colorScheme.primary,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: 0,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 0.2,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 12),
           Text(
             title,
             style: textTheme.headlineSmall?.copyWith(
               color: colorScheme.onSurface,
-              fontWeight: FontWeight.w800,
-              height: 1.08,
-              letterSpacing: 0,
+              fontWeight: FontWeight.w700,
+              height: 1.15,
+              letterSpacing: -0.3,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 6),
           ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 480),
+            constraints: const BoxConstraints(maxWidth: 500),
             child: Text(
               description,
               style: textTheme.bodyMedium?.copyWith(
                 color: colorScheme.onSurfaceVariant,
-                height: 1.36,
+                height: 1.4,
               ),
             ),
           ),
@@ -3006,59 +3113,84 @@ class _SetupModeTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
-    return Material(
-      color: selected
-          ? colorScheme.primaryContainer.withValues(alpha: 0.46)
-          : colorScheme.surfaceContainerHighest.withValues(alpha: 0.42),
-      borderRadius: BorderRadius.circular(22),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(22),
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-          child: Row(
-            children: <Widget>[
-              Icon(
-                icon,
-                size: 24,
-                color: selected
-                    ? colorScheme.primary
-                    : colorScheme.onSurfaceVariant,
-              ),
-              const SizedBox(width: 14),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      title,
-                      style: textTheme.titleMedium?.copyWith(
-                        color: colorScheme.onSurface,
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: 0,
-                      ),
+    return Container(
+      decoration: BoxDecoration(
+        color: selected
+            ? colorScheme.primary.withValues(alpha: 0.08)
+            : colorScheme.surfaceContainerHighest.withValues(alpha: 0.25),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: selected
+              ? colorScheme.primary
+              : colorScheme.outlineVariant.withValues(alpha: 0.35),
+          width: selected ? 1.2 : 0.8,
+        ),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(16),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(16),
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
+            child: Row(
+              children: <Widget>[
+                Container(
+                  width: 38,
+                  height: 38,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: selected
+                        ? colorScheme.primary.withValues(alpha: 0.14)
+                        : colorScheme.surfaceContainerHighest.withValues(alpha: 0.6),
+                  ),
+                  child: Center(
+                    child: Icon(
+                      icon,
+                      size: 20,
+                      color: selected
+                          ? colorScheme.primary
+                          : colorScheme.onSurfaceVariant,
                     ),
-                    const SizedBox(height: 3),
-                    Text(
-                      subtitle,
-                      style: textTheme.bodySmall?.copyWith(
-                        color: colorScheme.onSurfaceVariant,
-                        height: 1.32,
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-              const SizedBox(width: 12),
-              Icon(
-                selected
-                    ? Icons.check_circle_rounded
-                    : Icons.radio_button_unchecked_rounded,
-                color: selected
-                    ? colorScheme.primary
-                    : colorScheme.onSurfaceVariant,
-              ),
-            ],
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        title,
+                        style: textTheme.titleMedium?.copyWith(
+                          color: colorScheme.onSurface,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: -0.1,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        subtitle,
+                        style: textTheme.bodySmall?.copyWith(
+                          color: colorScheme.onSurfaceVariant,
+                          height: 1.30,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Icon(
+                  selected
+                      ? Icons.check_circle_rounded
+                      : Icons.radio_button_unchecked_rounded,
+                  size: 22,
+                  color: selected
+                      ? colorScheme.primary
+                      : colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
+                ),
+              ],
+            ),
           ),
         ),
       ),
