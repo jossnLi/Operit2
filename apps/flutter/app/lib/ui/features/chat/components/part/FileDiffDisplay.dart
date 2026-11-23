@@ -155,8 +155,8 @@ class FileDiffDisplay extends StatelessWidget {
                         if (onToggleExpand != null)
                           Icon(
                             isExpanded
-                                ? Icons.unfold_less
-                                : Icons.unfold_more,
+                                ? Icons.unfold_less_rounded
+                                : Icons.unfold_more_rounded,
                             size: 14,
                             color: theme.colorScheme.onSurfaceVariant
                                 .withValues(alpha: 0.7),

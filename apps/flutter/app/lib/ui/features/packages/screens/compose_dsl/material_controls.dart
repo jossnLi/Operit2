@@ -319,7 +319,7 @@ extension _ComposeMaterialControls on _ComposeProgramExecutorState {
         onPressed: onPressed,
         deleteIcon: _actionId(dismissAction) == null
             ? null
-            : const Icon(Icons.close, size: 18),
+            : const Icon(Icons.close_rounded, size: 18),
         onDeleted: _actionId(dismissAction) == null
             ? null
             : () => _invokeAction(dismissAction),

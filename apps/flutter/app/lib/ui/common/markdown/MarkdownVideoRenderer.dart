@@ -281,8 +281,8 @@ class _MarkdownVideoRendererState extends State<MarkdownVideoRenderer> {
                                     onPressed: _togglePlayback,
                                     icon: Icon(
                                       controller.value.isPlaying
-                                          ? Icons.pause
-                                          : Icons.play_arrow,
+                                          ? Icons.pause_rounded
+                                          : Icons.play_arrow_rounded,
                                     ),
                                     tooltip: controller.value.isPlaying
                                         ? 'Pause'

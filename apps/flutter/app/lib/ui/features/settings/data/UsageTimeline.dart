@@ -894,33 +894,33 @@ class _UsageTimelineState extends State<UsageTimeline> {
                   IconButton(
                     tooltip: l10n.settingsDataTimelineEarlier,
                     onPressed: _start <= _lower ? null : () => _pan(-1),
-                    icon: const Icon(Icons.chevron_left),
+                    icon: const Icon(Icons.chevron_left_rounded),
                   ),
                   IconButton(
                     tooltip: l10n.zoomIn,
                     onPressed: _end - _start <= 5 * _minuteMs
                         ? null
                         : () => _zoom(0.5),
-                    icon: const Icon(Icons.zoom_in),
+                    icon: const Icon(Icons.zoom_in_rounded),
                   ),
                   IconButton(
                     tooltip: l10n.zoomOut,
                     onPressed: _end - _start >= _upper - _lower
                         ? null
                         : () => _zoom(2),
-                    icon: const Icon(Icons.zoom_out),
+                    icon: const Icon(Icons.zoom_out_rounded),
                   ),
                   IconButton(
                     tooltip: l10n.settingsDataTimelineLater,
                     onPressed: _end >= _upper ? null : () => _pan(1),
-                    icon: const Icon(Icons.chevron_right),
+                    icon: const Icon(Icons.chevron_right_rounded),
                   ),
                   TextButton.icon(
                     onPressed: () => setState(() {
                       _preset = 180;
                       _resetWindow();
                     }),
-                    icon: const Icon(Icons.update, size: 18),
+                    icon: const Icon(Icons.update_rounded, size: 18),
                     label: Text(l10n.settingsDataTimelineRecent),
                   ),
                 ],

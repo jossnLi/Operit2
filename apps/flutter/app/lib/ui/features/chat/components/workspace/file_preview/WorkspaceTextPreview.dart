@@ -241,12 +241,12 @@ class _WorkspaceTextPreviewState extends State<WorkspaceTextPreview> {
             _buildToolbarButton(
               tooltip: l10n.workspaceUndo,
               onPressed: !_showMarkdown && history.canUndo ? _undo : null,
-              icon: Icons.undo,
+              icon: Icons.undo_rounded,
             ),
             _buildToolbarButton(
               tooltip: l10n.workspaceRedo,
               onPressed: !_showMarkdown && history.canRedo ? _redo : null,
-              icon: Icons.redo,
+              icon: Icons.redo_rounded,
             ),
             const Spacer(),
             if (isMarkdown)
@@ -271,7 +271,7 @@ class _WorkspaceTextPreviewState extends State<WorkspaceTextPreview> {
               _buildToolbarButton(
                 tooltip: l10n.save,
                 onPressed: _document.isDirty ? _save : null,
-                icon: _document.isDirty ? Icons.save : Icons.save_outlined,
+                icon: _document.isDirty ? Icons.save_outlined : Icons.save_outlined,
               ),
           ],
         ),

@@ -140,7 +140,7 @@ class _WorkspaceTerminalContentState extends State<WorkspaceTerminalContent> {
                   const SizedBox(height: 12),
                   FilledButton.icon(
                     onPressed: _restartSession,
-                    icon: const Icon(Icons.refresh),
+                    icon: const Icon(Icons.refresh_rounded),
                     label: const Text('重试'),
                   ),
                 ],

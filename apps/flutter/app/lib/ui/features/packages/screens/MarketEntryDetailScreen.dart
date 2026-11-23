@@ -694,7 +694,7 @@ class _MarketEntryDetailScreenState extends State<MarketEntryDetailScreen> {
                     _replyTo = null;
                   }),
             style: SettingsControlStyles.sectionFilledButton(),
-            icon: const Icon(Icons.rate_review_outlined, size: 18),
+            icon: const Icon(Icons.edit_note_rounded, size: 18),
             label: const Text('写评论'),
           ),
         ],

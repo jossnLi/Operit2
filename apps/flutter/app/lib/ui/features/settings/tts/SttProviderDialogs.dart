@@ -280,7 +280,7 @@ class _SttConfigDialogState extends State<_SttConfigDialog> {
             ),
             IconButton(
               onPressed: _loadAvailableModels,
-              icon: const Icon(Icons.refresh),
+              icon: const Icon(Icons.refresh_rounded),
               tooltip: '重新加载模型',
             ),
           ],
@@ -297,7 +297,7 @@ class _SttConfigDialogState extends State<_SttConfigDialog> {
             ? null
             : PopupMenuButton<String>(
                 tooltip: '选择预设模型',
-                icon: const Icon(Icons.arrow_drop_down),
+                icon: const Icon(Icons.keyboard_arrow_down_rounded),
                 onSelected: (model) => _modelController.text = model,
                 itemBuilder: (context) => _availableModels
                     .map(

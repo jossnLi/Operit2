@@ -873,7 +873,7 @@ class _CodexHoverTooltipCard extends StatelessWidget {
                 ),
                 if (entry.isFavorite) ...[
                   const SizedBox(width: 4),
-                  const Icon(Icons.star, size: 11, color: Colors.amber),
+                  const Icon(Icons.star_outline_rounded, size: 11, color: Colors.amber),
                 ],
               ],
             ),

@@ -397,7 +397,7 @@ class _MacNoticeCard extends StatelessWidget {
                   ),
                   IconButton(
                     onPressed: onDismiss,
-                    icon: const Icon(Icons.close),
+                    icon: const Icon(Icons.close_rounded),
                     iconSize: 14,
                     visualDensity: VisualDensity.compact,
                     constraints: const BoxConstraints.tightFor(
@@ -480,7 +480,7 @@ class _NoticeBody extends StatelessWidget {
               ),
             TextButton.icon(
               onPressed: () => onExpandedChanged(!expanded),
-              icon: Icon(expanded ? Icons.expand_less : Icons.expand_more),
+              icon: Icon(expanded ? Icons.expand_less_rounded : Icons.expand_more_rounded),
               label: Text(label),
               style: TextButton.styleFrom(
                 visualDensity: VisualDensity.compact,

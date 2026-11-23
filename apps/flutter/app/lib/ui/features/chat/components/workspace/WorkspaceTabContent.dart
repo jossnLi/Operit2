@@ -194,7 +194,7 @@ class WorkspaceTabContent extends StatelessWidget {
         final terminalType = tab.terminalType;
         if (sessionId == null || terminalType == null) {
           return _WorkspaceSimplePane(
-            icon: Icons.terminal,
+            icon: Icons.terminal_rounded,
             title: l10n.terminal,
             subtitle: '终端会话未指定。',
           );
@@ -224,7 +224,7 @@ class WorkspaceTabContent extends StatelessWidget {
         final request = tab.webVisitRequest;
         if (request == null) {
           return _WorkspaceSimplePane(
-            icon: Icons.travel_explore,
+            icon: Icons.travel_explore_outlined,
             title: 'visit_web',
             subtitle: 'visit_web 请求未指定。',
           );

@@ -82,7 +82,7 @@ class ScreenRouteRegistry {
         routeId: routeIdOf(aiChat),
         surface: NavigationSurface.mainSidebarAi,
         title: l10n.aiChat,
-        icon: Icons.chat_bubble_outline,
+        icon: Icons.chat_bubble_outline_rounded,
         order: 10,
       ),
       NavigationEntrySpec(

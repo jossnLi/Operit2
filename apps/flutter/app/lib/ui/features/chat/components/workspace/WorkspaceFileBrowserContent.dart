@@ -98,7 +98,7 @@ class _WorkspaceFileBrowserContentState
               onPressed: _history.isEmpty || _selectingCurrentDirectory
                   ? null
                   : _openPreviousPath,
-              icon: Icons.arrow_back,
+              icon: Icons.arrow_back_rounded,
             ),
             onRefresh: _selectingCurrentDirectory
                 ? null
@@ -141,7 +141,7 @@ class _WorkspaceFileBrowserContentState
                       }
                       if (snapshot.hasError) {
                         return _WorkspaceFileMessage(
-                          icon: Icons.error_outline,
+                          icon: Icons.error_outline_rounded,
                           message: snapshot.error.toString(),
                         );
                       }
@@ -184,7 +184,7 @@ class _WorkspaceFileBrowserContentState
                                 ),
                                 leading: entry.isDirectory
                                     ? const Icon(
-                                        Icons.folder,
+                                        Icons.folder_outlined,
                                         size: 17,
                                         color: Color(0xFFD4AD6A),
                                       )
@@ -202,7 +202,7 @@ class _WorkspaceFileBrowserContentState
                                 ),
                                 trailing: entry.isDirectory
                                     ? Icon(
-                                        Icons.chevron_right,
+                                        Icons.chevron_right_rounded,
                                         size: 16,
                                         color:
                                             theme.colorScheme.onSurfaceVariant,
@@ -422,7 +422,7 @@ class _WorkspaceFileBrowserContentState
                           height: 16,
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
-                      : const Icon(Icons.check),
+                      : const Icon(Icons.check_rounded),
                   label: Text(l10n.workspaceBindExistingTitle),
                 ),
                 if (widget.onPickLocalDirectory != null)
@@ -430,7 +430,7 @@ class _WorkspaceFileBrowserContentState
                     onPressed: _selectingCurrentDirectory
                         ? null
                         : _pickLocalDirectory,
-                    icon: const Icon(Icons.folder_open),
+                    icon: const Icon(Icons.folder_open_outlined),
                     label: Text(l10n.workspacePickLocalFolder),
                   ),
               ],

@@ -135,7 +135,7 @@ class _BubbleImageAdjustEditorState extends State<BubbleImageAdjustEditor> {
                     IconButton(
                       tooltip: l10n.settingsAppearanceBubbleImageFitSource,
                       onPressed: () => _transform.value = Matrix4.identity(),
-                      icon: const Icon(Icons.fit_screen),
+                      icon: const Icon(Icons.fit_screen_rounded),
                     ),
                   ],
                 ),

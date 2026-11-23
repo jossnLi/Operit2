@@ -57,7 +57,7 @@ class WorkspaceFilePreviewActionBar extends StatelessWidget {
                           dimension: 18,
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
-                      : const Icon(Icons.open_in_new, size: 18),
+                      : const Icon(Icons.open_in_new_rounded, size: 18),
                   visualDensity: VisualDensity.compact,
                   style: const ButtonStyle(
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -72,7 +72,7 @@ class WorkspaceFilePreviewActionBar extends StatelessWidget {
             IconButton(
               tooltip: openInBrowserTooltip ?? l10n.openInBrowser,
               onPressed: canOpenInBrowser ? onOpenInBrowser : null,
-              icon: const Icon(Icons.open_in_browser, size: 18),
+              icon: const Icon(Icons.open_in_browser_rounded, size: 18),
               visualDensity: VisualDensity.compact,
               style: const ButtonStyle(
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,

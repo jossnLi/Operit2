@@ -73,7 +73,7 @@ class WorkspacePathBar extends StatelessWidget {
             onPressed: editing
                 ? () => onSubmitted?.call(controller?.text ?? path)
                 : onEditToggle,
-            icon: editing ? Icons.check : Icons.edit_outlined,
+            icon: editing ? Icons.check_rounded : Icons.edit_outlined,
           ),
         ],
       ),
@@ -154,7 +154,7 @@ class _WorkspacePathStrip extends StatelessWidget {
                 tooltip: l10n.refresh,
                 compact: compactActions,
                 onPressed: onRefresh,
-                icon: Icons.refresh,
+                icon: Icons.refresh_rounded,
               ),
             Expanded(
               child: scrollable

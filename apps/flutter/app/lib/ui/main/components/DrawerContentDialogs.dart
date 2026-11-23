@@ -200,25 +200,25 @@ class ConversationActionDialog extends StatelessWidget {
             const Divider(height: 16),
             if (canOpenInWindow)
               _ConversationActionTile(
-                icon: Icons.open_in_new,
+                icon: Icons.open_in_new_rounded,
                 label: '在新窗口打开',
                 onTap: () =>
                     Navigator.of(context).pop(ConversationAction.openInWindow),
               ),
             _ConversationActionTile(
-              icon: Icons.edit,
+              icon: Icons.edit_outlined,
               label: l10n.editTitle,
               onTap: () => Navigator.of(context).pop(ConversationAction.rename),
             ),
             _ConversationActionTile(
-              icon: Icons.keyboard_arrow_up,
+              icon: Icons.keyboard_arrow_up_rounded,
               label: l10n.moveUp,
               onTap: canMoveUp
                   ? () => Navigator.of(context).pop(ConversationAction.moveUp)
                   : null,
             ),
             _ConversationActionTile(
-              icon: Icons.keyboard_arrow_down,
+              icon: Icons.keyboard_arrow_down_rounded,
               label: l10n.moveDown,
               onTap: canMoveDown
                   ? () => Navigator.of(context).pop(ConversationAction.moveDown)
@@ -239,20 +239,20 @@ class ConversationActionDialog extends StatelessWidget {
                 ).pop(ConversationAction.moveToWorkspace),
               ),
             _ConversationActionTile(
-              icon: Icons.push_pin,
+              icon: Icons.push_pin_outlined,
               label: history.pinned ? l10n.unpin : l10n.pin,
               onTap: () =>
                   Navigator.of(context).pop(ConversationAction.togglePinned),
             ),
             _ConversationActionTile(
-              icon: history.locked ? Icons.lock_open : Icons.lock,
+              icon: history.locked ? Icons.lock_open_rounded : Icons.lock_outline_rounded,
               label: history.locked ? l10n.unlock : l10n.lock,
               onTap: () =>
                   Navigator.of(context).pop(ConversationAction.toggleLocked),
             ),
             if (history.workspaceId?.trim().isNotEmpty == true)
               _ConversationActionTile(
-                icon: Icons.link_off,
+                icon: Icons.link_off_rounded,
                 label: l10n.workspaceUnbindTitle,
                 onTap: () => Navigator.of(
                   context,
@@ -260,14 +260,14 @@ class ConversationActionDialog extends StatelessWidget {
               ),
             if (history.parentChatId != null)
               _ConversationActionTile(
-                icon: Icons.vertical_align_top,
+                icon: Icons.vertical_align_top_rounded,
                 label: l10n.chatPromoteToRoot,
                 onTap: () => Navigator.of(
                   context,
                 ).pop(ConversationAction.promoteToRoot),
               ),
             _ConversationActionTile(
-              icon: Icons.delete_outline,
+              icon: Icons.delete_outline_rounded,
               label: l10n.delete,
               danger: true,
               onTap: () => Navigator.of(context).pop(ConversationAction.delete),

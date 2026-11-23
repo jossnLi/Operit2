@@ -83,7 +83,7 @@ class _WorkspaceBrowserDownloadSheetState
             ),
             if (items.isEmpty)
               WorkspaceBrowserPopupEmpty(
-                icon: Icons.download,
+                icon: Icons.download_rounded,
                 text: l10n.noDownloadTasks,
               )
             else
@@ -242,7 +242,7 @@ class _DownloadCard extends StatelessWidget {
                     height: 44,
                     child: PopupMenuButton<_DownloadAction>(
                       tooltip: l10n.menu,
-                      icon: const Icon(Icons.more_vert),
+                      icon: const Icon(Icons.more_horiz_rounded),
                       padding: EdgeInsets.zero,
                       // These constraints size the popup route, never the trigger icon.
                       constraints: const BoxConstraints(
@@ -348,7 +348,7 @@ class _DownloadCard extends StatelessWidget {
                   if (completed) ...<Widget>[
                     FilledButton.tonalIcon(
                       onPressed: onOpen,
-                      icon: const Icon(Icons.open_in_new, size: 18),
+                      icon: const Icon(Icons.open_in_new_rounded, size: 18),
                       label: Text(l10n.openFile),
                     ),
                     OutlinedButton(

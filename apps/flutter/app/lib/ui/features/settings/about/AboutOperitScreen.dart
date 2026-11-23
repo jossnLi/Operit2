@@ -186,7 +186,7 @@ class _AboutUpdateAction extends StatelessWidget {
             : '点击检查最新版本';
         return ListTile(
           contentPadding: EdgeInsets.zero,
-          leading: Icon(Icons.system_update_alt, color: colors.primary),
+          leading: Icon(Icons.system_update_alt_rounded, color: colors.primary),
           title: const Text('检查更新'),
           subtitle: Text(subtitle),
           trailing: checking
@@ -194,7 +194,7 @@ class _AboutUpdateAction extends StatelessWidget {
                   dimension: 18,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
-              : Icon(Icons.chevron_right, color: colors.onSurfaceVariant),
+              : Icon(Icons.chevron_right_rounded, color: colors.onSurfaceVariant),
           onTap: checking ? null : () => _openUpdates(context, controller),
         );
       },

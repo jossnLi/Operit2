@@ -148,7 +148,7 @@ class _ChatBackupRestorePanelState extends State<ChatBackupRestorePanel> {
     final source = _source;
     final restoreButton = FilledButton.icon(
       onPressed: _busy || _selected == null ? null : _restore,
-      icon: const Icon(Icons.restore),
+      icon: const Icon(Icons.restore_rounded),
       label: Text(l10n.chatRestoreSelected),
     );
     final browser = Column(
@@ -175,7 +175,7 @@ class _ChatBackupRestorePanelState extends State<ChatBackupRestorePanel> {
             if (source != null && !_restored)
               TextButton.icon(
                 onPressed: _busy ? null : () => _load(() async => source),
-                icon: const Icon(Icons.refresh),
+                icon: const Icon(Icons.refresh_rounded),
                 label: Text(l10n.chatRestoreRefresh),
               ),
           ],
@@ -207,8 +207,8 @@ class _ChatBackupRestorePanelState extends State<ChatBackupRestorePanel> {
               onTap: () => setState(() => _selected = snapshot),
               leading: Icon(
                 _selected == snapshot
-                    ? Icons.radio_button_checked
-                    : Icons.radio_button_unchecked,
+                    ? Icons.radio_button_checked_rounded
+                    : Icons.radio_button_unchecked_rounded,
               ),
               title: Text(
                 '${material.formatMediumDate(DateTime.fromMillisecondsSinceEpoch(snapshot.createdAt))} 路 '

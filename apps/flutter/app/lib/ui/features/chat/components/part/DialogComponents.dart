@@ -42,7 +42,7 @@ class _ContentDetailDialogState extends State<ContentDetailDialog> {
           TextButton.icon(
             onPressed: () => setState(() => _splitView = !_splitView),
             icon: Icon(
-              _splitView ? Icons.view_agenda : Icons.view_column,
+              _splitView ? Icons.view_agenda_outlined : Icons.view_column_outlined,
               size: 16,
             ),
             label: Text(_splitView ? 'Unified' : 'Split'),

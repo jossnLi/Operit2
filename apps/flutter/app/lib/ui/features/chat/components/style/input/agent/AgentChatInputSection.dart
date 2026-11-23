@@ -924,7 +924,7 @@ class _InputBody extends StatelessWidget {
       attachment: KeyedSubtree(
         key: attachmentKey,
         child: _IconTapTarget(
-          icon: Icons.add,
+          icon: Icons.add_rounded,
           color: colorScheme.onSurfaceVariant.withValues(alpha: 0.9),
           onTap: onAttach,
           imageAsset: OperitTheme.of(
@@ -989,11 +989,11 @@ class _InputBody extends StatelessWidget {
                     canSend: canSendMessage,
                   ),
             icon: isSpeechRecording
-                ? Icons.stop
+                ? Icons.stop_rounded
                 : isSpeechTranscribing
-                ? Icons.graphic_eq
+                ? Icons.graphic_eq_rounded
                 : showMissingHost
-                ? Icons.device_unknown
+                ? Icons.device_unknown_rounded
                 : _actionIcon(
                     showCancelAction: showCancelAction,
                     showQueueAction: showQueueAction,
@@ -1055,7 +1055,7 @@ class _InputBody extends StatelessWidget {
                   ),
                   child: Center(
                     child: Icon(
-                      Icons.attach_file,
+                      Icons.attach_file_rounded,
                       color: colorScheme.primary.withValues(alpha: 0.9),
                     ),
                   ),
@@ -1169,14 +1169,14 @@ class _AttachmentPackageSelectorDialogState
                     decoration: InputDecoration(
                       hintText: l10n.attachmentPackageSearchPlaceholder,
                       prefixIcon: Icon(
-                        Icons.search,
+                        Icons.search_rounded,
                         color: colorScheme.onSurfaceVariant,
                       ),
                       suffixIcon: _searchController.text.isEmpty
                           ? null
                           : IconButton(
                               onPressed: _searchController.clear,
-                              icon: const Icon(Icons.clear),
+                              icon: const Icon(Icons.close_rounded),
                               tooltip: l10n.clearSearch,
                             ),
                     ),
@@ -1262,7 +1262,7 @@ class _AttachmentPackageOptionTile extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
           child: Row(
             children: <Widget>[
-              Icon(Icons.auto_awesome, size: 20, color: colorScheme.primary),
+              Icon(Icons.auto_awesome_rounded, size: 20, color: colorScheme.primary),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
@@ -1562,7 +1562,7 @@ class _AttachmentRemoveButton extends StatelessWidget {
         containedInkWell: true,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(3, 2, 5, 2),
-          child: Icon(Icons.close, size: 10, color: color),
+          child: Icon(Icons.close_rounded, size: 10, color: color),
         ),
       ),
     );
@@ -1594,7 +1594,7 @@ class _AttachmentImageRemoveButton extends StatelessWidget {
           child: const SizedBox(
             width: 18,
             height: 18,
-            child: Icon(Icons.close, size: 10, color: Colors.white),
+            child: Icon(Icons.close_rounded, size: 10, color: Colors.white),
           ),
         ),
       ),
@@ -1609,9 +1609,9 @@ bool _isAttachmentImage(String mimeType) {
 
 IconData _attachmentIcon(String mimeType) {
   if (_isAttachmentImage(mimeType)) {
-    return Icons.image;
+    return Icons.image_outlined;
   }
-  return Icons.description;
+  return Icons.description_outlined;
 }
 
 class _PopupPlacement {
@@ -1753,13 +1753,13 @@ IconData _actionIcon({
   required bool canSend,
 }) {
   if (showCancelAction) {
-    return Icons.close;
+    return Icons.close_rounded;
   }
   if (showQueueAction) {
-    return Icons.add;
+    return Icons.add_rounded;
   }
   if (canSend) {
-    return Icons.arrow_upward;
+    return Icons.arrow_upward_rounded;
   }
-  return Icons.mic;
+  return Icons.mic_none_rounded;
 }

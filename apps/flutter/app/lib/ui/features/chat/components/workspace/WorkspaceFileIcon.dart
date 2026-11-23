@@ -177,7 +177,7 @@ Widget buildWorkspaceFileIcon(String name, {double size = 14}) {
   // get recognizable colored symbols alongside the shared language SVGs.
   final (IconData, Color)? assetIcon;
   if (lowerName == '.env' || lowerName.startsWith('.env.')) {
-    assetIcon = (Icons.tune, const Color(0xFFE5C07B));
+    assetIcon = (Icons.tune_rounded, const Color(0xFFE5C07B));
   } else {
     assetIcon = switch (ext) {
       'png' ||
@@ -226,8 +226,8 @@ Widget buildWorkspaceFileIcon(String name, {double size = 14}) {
       'otf' ||
       'woff' ||
       'woff2' => (Icons.font_download_outlined, const Color(0xFFA78BCA)),
-      'vue' => (Icons.code, const Color(0xFF73B991)),
-      'xml' || 'xhtml' => (Icons.code, const Color(0xFFE79A65)),
+      'vue' => (Icons.code_rounded, const Color(0xFF73B991)),
+      'xml' || 'xhtml' => (Icons.code_rounded, const Color(0xFFE79A65)),
       'ini' ||
       'conf' ||
       'config' ||

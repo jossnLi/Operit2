@@ -158,7 +158,7 @@ class UnhandledErrorDialog extends StatelessWidget {
       constraints: const BoxConstraints(maxWidth: 840),
       scrollable: true,
       icon: Icon(
-        Icons.error_outline,
+        Icons.error_outline_rounded,
         color: Theme.of(context).colorScheme.error,
       ),
       title: const Text('Operit2 encountered an error'),
@@ -183,7 +183,7 @@ class UnhandledErrorDialog extends StatelessWidget {
       actions: <Widget>[
         TextButton.icon(
           onPressed: _copyDetails,
-          icon: const Icon(Icons.copy),
+          icon: const Icon(Icons.content_copy_outlined),
           label: const Text('Copy details'),
         ),
         FilledButton(
@@ -234,7 +234,7 @@ class StartupErrorApplication extends StatelessWidget {
                       onPressed: () => Clipboard.setData(
                         ClipboardData(text: report.details),
                       ),
-                      icon: const Icon(Icons.copy),
+                      icon: const Icon(Icons.content_copy_outlined),
                       label: const Text('Copy details'),
                     ),
                   ],

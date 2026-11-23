@@ -259,7 +259,7 @@ class _PeerQrCodeDialogState extends State<PeerQrCodeDialog> {
                       if (mounted) setState(() => _copied = true);
                     },
               icon: Icon(
-                _copied ? Icons.check_rounded : Icons.copy_rounded,
+                _copied ? Icons.check_rounded : Icons.content_copy_outlined,
                 size: 18,
               ),
               label: Text(_copied ? l10n.peerQrCopied : l10n.peerQrCopy),

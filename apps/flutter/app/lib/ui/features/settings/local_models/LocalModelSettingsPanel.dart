@@ -379,7 +379,7 @@ class _LocalModelSettingsPanelState extends State<LocalModelSettingsPanel>
           ),
           FilledButton.tonalIcon(
             onPressed: () => Navigator.of(context).pop(true),
-            icon: const Icon(Icons.delete_outline),
+            icon: const Icon(Icons.delete_outline_rounded),
             label: Text(l10n.delete),
           ),
         ],
@@ -417,7 +417,7 @@ class _LocalModelSettingsPanelState extends State<LocalModelSettingsPanel>
                     const SizedBox(height: 12),
                     OutlinedButton.icon(
                       onPressed: _reload,
-                      icon: const Icon(Icons.refresh),
+                      icon: const Icon(Icons.refresh_rounded),
                       label: Text(l10n.retry),
                     ),
                   ],
@@ -492,13 +492,13 @@ class _LocalModelSettingsPanelState extends State<LocalModelSettingsPanel>
                           setState(() => _catalogQuery = value),
                       decoration: InputDecoration(
                         isDense: true,
-                        prefixIcon: const Icon(Icons.search, size: 20),
+                        prefixIcon: const Icon(Icons.search_rounded, size: 20),
                         hintText: l10n.localModelsSearchCatalog,
                         suffixIcon: _catalogQuery.isEmpty
                             ? null
                             : IconButton(
                                 tooltip: l10n.clear,
-                                icon: const Icon(Icons.close, size: 18),
+                                icon: const Icon(Icons.close_rounded, size: 18),
                                 onPressed: () {
                                   _searchController.clear();
                                   setState(() => _catalogQuery = '');
@@ -624,7 +624,7 @@ class _LocalModelSettingsPanelState extends State<LocalModelSettingsPanel>
                       child: Column(
                         children: [
                           Icon(
-                            Icons.search_off_outlined,
+                            Icons.search_off_rounded,
                             size: 36,
                             color: colors.onSurfaceVariant,
                           ),
@@ -693,7 +693,7 @@ class _LocalModelSettingsPanelState extends State<LocalModelSettingsPanel>
           style: OutlinedButton.styleFrom(
             padding: const EdgeInsets.symmetric(horizontal: 14),
           ),
-          icon: const Icon(Icons.travel_explore, size: 18),
+          icon: const Icon(Icons.travel_explore_outlined, size: 18),
           label: Text(l10n.localModelsAddModel),
         ),
       ],
@@ -737,7 +737,7 @@ class _LocalModelSettingsPanelState extends State<LocalModelSettingsPanel>
                 ),
                 IconButton(
                   onPressed: _reload,
-                  icon: const Icon(Icons.refresh, size: 20),
+                  icon: const Icon(Icons.refresh_rounded, size: 20),
                   tooltip: l10n.refresh,
                 ),
               ],
@@ -869,7 +869,7 @@ class _LocalModelSettingsPanelState extends State<LocalModelSettingsPanel>
                   onPressed: !isBusy && status.platformCompatible
                       ? () => _openChatInference(status)
                       : null,
-                  icon: const Icon(Icons.play_arrow, size: 18),
+                  icon: const Icon(Icons.play_arrow_rounded, size: 18),
                   label: Text(l10n.localModelsRunChat),
                 )
               : null
@@ -881,7 +881,7 @@ class _LocalModelSettingsPanelState extends State<LocalModelSettingsPanel>
                 ? () => _install(manifest)
                 : null,
             icon: Icon(
-              isPaused ? Icons.play_arrow : Icons.download_outlined,
+              isPaused ? Icons.play_arrow_rounded : Icons.download_outlined,
               size: 18,
             ),
             label: Text(
@@ -962,7 +962,7 @@ class _LocalModelSettingsPanelState extends State<LocalModelSettingsPanel>
                         onPressed: isCancelling
                             ? null
                             : () => _pauseInstall(manifest),
-                        icon: const Icon(Icons.pause),
+                        icon: const Icon(Icons.pause_rounded),
                         tooltip: l10n.localModelsPauseDownload,
                       ),
                     ?primaryAction,
@@ -1205,7 +1205,7 @@ class _LocalModelSettingsPanelState extends State<LocalModelSettingsPanel>
               onPressed: _activeOperations.isEmpty
                   ? () => _deleteEngine(engine)
                   : null,
-              icon: Icon(Icons.delete_outline, color: colors.error),
+              icon: Icon(Icons.delete_outline_rounded, color: colors.error),
               tooltip: l10n.localModelsDeleteEngine,
             ),
           ],
@@ -1376,9 +1376,9 @@ core_proxy.LocalModelInstallStatus? _findInstallStatus(
 /// Returns an icon for one local model capability.
 IconData _modelKindIcon(core_proxy.LocalModelKind kind) {
   return switch (kind) {
-    core_proxy.LocalModelKind.speechToText => Icons.mic_outlined,
+    core_proxy.LocalModelKind.speechToText => Icons.mic_none_rounded,
     core_proxy.LocalModelKind.textToSpeech => Icons.record_voice_over_outlined,
-    core_proxy.LocalModelKind.chat => Icons.chat_bubble_outline,
+    core_proxy.LocalModelKind.chat => Icons.chat_bubble_outline_rounded,
     core_proxy.LocalModelKind.embedding => Icons.data_array_outlined,
   };
 }
@@ -1559,12 +1559,12 @@ class _LocalModelHubDialogState extends State<_LocalModelHubDialog> {
               segments: <ButtonSegment<int>>[
                 ButtonSegment<int>(
                   value: 0,
-                  icon: const Icon(Icons.search, size: 16),
+                  icon: const Icon(Icons.search_rounded, size: 16),
                   label: Text(l10n.search),
                 ),
                 ButtonSegment<int>(
                   value: 1,
-                  icon: const Icon(Icons.link, size: 16),
+                  icon: const Icon(Icons.link_rounded, size: 16),
                   label: Text(l10n.localModelsHubRepositoryTab),
                 ),
               ],
@@ -1621,7 +1621,7 @@ class _LocalModelHubDialogState extends State<_LocalModelHubDialog> {
                     decoration: InputDecoration(
                       hintText: l10n.localModelsHubSearchHint,
                       isDense: true,
-                      prefixIcon: const Icon(Icons.search, size: 20),
+                      prefixIcon: const Icon(Icons.search_rounded, size: 20),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -1632,7 +1632,7 @@ class _LocalModelHubDialogState extends State<_LocalModelHubDialog> {
                 const SizedBox(width: 10),
                 FilledButton.icon(
                   onPressed: _isSearching ? null : _doSearch,
-                  icon: const Icon(Icons.search, size: 18),
+                  icon: const Icon(Icons.search_rounded, size: 18),
                   label: Text(l10n.search),
                 ),
               ],
@@ -1824,7 +1824,7 @@ class _LocalModelHubDialogState extends State<_LocalModelHubDialog> {
                           ),
                           _buildTagChip(
                             context,
-                            icon: Icons.favorite_border,
+                            icon: Icons.favorite_border_rounded,
                             label: '${item.likes}',
                           ),
                         ],
@@ -2144,7 +2144,7 @@ class _LocalChatInferenceDialogState extends State<_LocalChatInferenceDialog> {
         ),
         FilledButton.icon(
           onPressed: _busy || _loading ? null : _run,
-          icon: const Icon(Icons.play_arrow),
+          icon: const Icon(Icons.play_arrow_rounded),
           label: Text(l10n.localModelsGenerate),
         ),
         TextButton(

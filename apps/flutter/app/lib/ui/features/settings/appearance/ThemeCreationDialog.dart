@@ -310,8 +310,8 @@ class _ThemeCreationDialogState extends State<ThemeCreationDialog> {
                     );
                     final selectedIcon = Icon(
                       selected
-                          ? Icons.check_circle
-                          : Icons.radio_button_unchecked,
+                          ? Icons.check_circle_outline_rounded
+                          : Icons.radio_button_unchecked_rounded,
                       size: 18,
                       color: selected ? scheme.primary : scheme.outline,
                     );

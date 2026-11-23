@@ -236,37 +236,37 @@ class _ChatAttachmentMenuPopupState extends State<ChatAttachmentMenuPopup> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             _nativeItem(
-              Icons.image,
+              Icons.image_outlined,
               l10n.attachmentPhoto,
               widget.onAttachImage,
             ),
             _nativeItem(
-              Icons.photo_camera,
+              Icons.photo_camera_outlined,
               l10n.attachmentCamera,
               widget.onTakePhoto,
             ),
             _nativeItem(
-              Icons.description,
+              Icons.description_outlined,
               l10n.attachmentFile,
               widget.onAttachFile,
             ),
             _nativeItem(
-              Icons.screenshot_monitor,
+              Icons.desktop_windows_outlined,
               l10n.attachmentScreenContent,
               widget.onAttachScreenContent,
             ),
             _nativeItem(
-              Icons.notifications,
+              Icons.notifications_none_rounded,
               l10n.attachmentNotifications,
               widget.onAttachNotifications,
             ),
             _nativeItem(
-              Icons.location_on,
+              Icons.location_on_outlined,
               l10n.attachmentLocation,
               widget.onAttachLocation,
             ),
             _nativeItem(
-              Icons.auto_awesome,
+              Icons.auto_awesome_rounded,
               l10n.attachmentPackage,
               widget.onAttachPackage,
             ),

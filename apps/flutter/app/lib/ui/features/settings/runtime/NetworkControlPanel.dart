@@ -262,7 +262,7 @@ class _NetworkControlPanelState extends State<NetworkControlPanel> {
               IconButton(
                 tooltip: l10n.settingsRuntimeControlDeleteRole,
                 style: SettingsControlStyles.entityIconButton(),
-                icon: const Icon(Icons.delete_outline, size: 20),
+                icon: const Icon(Icons.delete_outline_rounded, size: 20),
                 onPressed: () => _deleteIdentity(role, l10n),
               ),
             ],
@@ -483,7 +483,7 @@ class _NetworkControlPanelState extends State<NetworkControlPanel> {
               padding: const EdgeInsets.only(top: 2),
               child: Icon(
                 record.accepted
-                    ? Icons.check_circle_outline
+                    ? Icons.check_circle_outline_rounded
                     : Icons.block_outlined,
                 size: 18,
                 color: resultColor,
@@ -535,7 +535,7 @@ class _NetworkControlPanelState extends State<NetworkControlPanel> {
               ),
             ),
             Icon(
-              Icons.chevron_right,
+              Icons.chevron_right_rounded,
               size: 18,
               color: theme.colorScheme.onSurfaceVariant,
             ),

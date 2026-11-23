@@ -199,12 +199,12 @@ class _UsageStatisticsDetailScreenState
                 IconButton(
                   tooltip: l10n.refresh,
                   onPressed: _resetting ? null : _reload,
-                  icon: const Icon(Icons.refresh),
+                  icon: const Icon(Icons.refresh_rounded),
                 ),
                 IconButton(
                   tooltip: l10n.settingsDataResetTokenStats,
                   onPressed: _resetting ? null : _resetStatistics,
-                  icon: const Icon(Icons.restart_alt),
+                  icon: const Icon(Icons.restart_alt_rounded),
                 ),
               ],
             ),
@@ -761,7 +761,7 @@ class _DateRangePickerDialogState extends State<_DateRangePickerDialog> {
                 ),
                 title: Text(_usageDateRangeLabel(l10n, range)),
                 trailing: _range == range
-                    ? Icon(Icons.check_circle, color: colorScheme.primary)
+                    ? Icon(Icons.check_circle_outline_rounded, color: colorScheme.primary)
                     : null,
                 onTap: () => _selectRange(range),
               ),

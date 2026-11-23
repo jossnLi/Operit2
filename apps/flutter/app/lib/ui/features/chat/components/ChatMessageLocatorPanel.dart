@@ -387,7 +387,7 @@ class _ChatMessageLocatorPanelState extends State<ChatMessageLocatorPanel> {
                       Row(
                         children: [
                           if (active) ...[
-                            Icon(Icons.circle, size: 5, color: colors.primary),
+                            Icon(Icons.circle_outlined, size: 5, color: colors.primary),
                             const SizedBox(width: 6),
                           ],
                           Expanded(

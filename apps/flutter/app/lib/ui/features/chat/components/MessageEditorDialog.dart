@@ -140,7 +140,7 @@ class _MessageEditorDialogState extends State<MessageEditorDialog> {
           ),
           FilledButton.icon(
             onPressed: _submitting ? null : () => _submit(widget.onResend),
-            icon: const Icon(Icons.send, size: 14),
+            icon: const Icon(Icons.arrow_upward_rounded, size: 14),
             label: const Text('保存并重发'),
           ),
         ] else
@@ -292,7 +292,7 @@ class _VisualEditor extends StatelessWidget {
                       ),
                     ])
                   : null,
-              icon: const Icon(Icons.add, size: 16),
+              icon: const Icon(Icons.add_rounded, size: 16),
               label: const Text('添加文本'),
             ),
             const SizedBox(width: 8),
@@ -408,7 +408,7 @@ class _TextPartEditorState extends State<_TextPartEditor> {
         ),
         suffixIcon: IconButton(
           onPressed: widget.enabled ? widget.onDelete : null,
-          icon: const Icon(Icons.delete, size: 16),
+          icon: const Icon(Icons.delete_outline_rounded, size: 16),
           tooltip: '删除',
           visualDensity: VisualDensity.compact,
           padding: EdgeInsets.zero,
@@ -457,7 +457,7 @@ class _XmlTagItemState extends State<_XmlTagItem> {
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               child: Row(
                 children: <Widget>[
-                  Icon(Icons.code, size: 18, color: colorScheme.primary),
+                  Icon(Icons.code_rounded, size: 18, color: colorScheme.primary),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Column(
@@ -486,18 +486,18 @@ class _XmlTagItemState extends State<_XmlTagItem> {
                   ),
                   IconButton(
                     onPressed: widget.enabled ? widget.onEdit : null,
-                    icon: const Icon(Icons.edit, size: 16),
+                    icon: const Icon(Icons.edit_outlined, size: 16),
                     tooltip: '编辑',
                   ),
                   IconButton(
                     onPressed: widget.enabled ? widget.onDelete : null,
-                    icon: const Icon(Icons.delete, size: 16),
+                    icon: const Icon(Icons.delete_outline_rounded, size: 16),
                     tooltip: '删除',
                   ),
                   Icon(
                     _expanded
-                        ? Icons.keyboard_arrow_up
-                        : Icons.keyboard_arrow_down,
+                        ? Icons.keyboard_arrow_up_rounded
+                        : Icons.keyboard_arrow_down_rounded,
                     color: colorScheme.onSurfaceVariant,
                   ),
                 ],

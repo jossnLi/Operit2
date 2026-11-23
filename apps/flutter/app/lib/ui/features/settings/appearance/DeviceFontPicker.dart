@@ -121,7 +121,7 @@ class _DeviceFontPickerState extends State<DeviceFontPicker> {
             TextField(
               controller: _search,
               decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.search),
+                prefixIcon: const Icon(Icons.search_rounded),
                 hintText: l10n.search,
               ),
               onChanged: (value) =>
@@ -180,7 +180,7 @@ class _DeviceFontPickerState extends State<DeviceFontPicker> {
                                 ),
                               )
                             : _selected?.name == name
-                            ? const Icon(Icons.check)
+                            ? const Icon(Icons.check_rounded)
                             : null,
                         onTap: () => _select(name),
                       );

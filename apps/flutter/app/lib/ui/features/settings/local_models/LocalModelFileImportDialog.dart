@@ -254,7 +254,7 @@ class _LocalModelFileImportDialogState
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Icon(
-                    Icons.info_outline,
+                    Icons.info_outline_rounded,
                     size: 16,
                     color: colors.onSurfaceVariant,
                   ),
@@ -359,7 +359,7 @@ class _LocalModelFileImportDialogState
                   child: Icon(
                     hasFiles
                         ? Icons.drive_folder_upload_outlined
-                        : Icons.chevron_right,
+                        : Icons.chevron_right_rounded,
                     size: 20,
                     color: colors.onSurfaceVariant,
                   ),

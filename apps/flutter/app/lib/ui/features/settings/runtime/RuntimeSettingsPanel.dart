@@ -1801,12 +1801,12 @@ class _IdentityChipAvatar extends StatelessWidget {
         ),
       ),
       child: githubUrl == null || githubUrl.isEmpty
-          ? Icon(Icons.person_outline, size: 24, color: colorScheme.primary)
+          ? Icon(Icons.person_outline_rounded, size: 24, color: colorScheme.primary)
           : Image.network(
               githubUrl,
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) => Icon(
-                Icons.person_outline,
+                Icons.person_outline_rounded,
                 size: 24,
                 color: colorScheme.primary,
               ),
@@ -2060,7 +2060,7 @@ class _DeviceRowMenu extends StatelessWidget {
         tooltip: AppLocalizations.of(context)!.deviceSpaceManageDevice,
         onPressed: controller.open,
         visualDensity: VisualDensity.compact,
-        icon: const Icon(Icons.more_vert_outlined),
+        icon: const Icon(Icons.more_horiz_rounded),
       ),
       menuChildren: actions,
     );
@@ -2127,7 +2127,7 @@ IconData _remoteProbeIconData(_PairedRemoteProbeState state) {
     _PairedRemoteProbeState.online => Icons.cloud_done_outlined,
     _PairedRemoteProbeState.offline => Icons.cloud_off_outlined,
     _PairedRemoteProbeState.invalid => Icons.link_off_outlined,
-    _PairedRemoteProbeState.error => Icons.error_outline,
+    _PairedRemoteProbeState.error => Icons.error_outline_rounded,
     _PairedRemoteProbeState.removedFromSpace => Icons.person_remove_outlined,
   };
 }

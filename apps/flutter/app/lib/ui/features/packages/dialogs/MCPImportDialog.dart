@@ -80,12 +80,12 @@ class _MCPImportDialogState extends State<MCPImportDialog> {
                   ),
                   ButtonSegment<_MCPImportMode>(
                     value: _MCPImportMode.github,
-                    icon: Icon(Icons.code),
+                    icon: Icon(Icons.code_rounded),
                     label: Text('GitHub'),
                   ),
                   ButtonSegment<_MCPImportMode>(
                     value: _MCPImportMode.config,
-                    icon: Icon(Icons.data_object),
+                    icon: Icon(Icons.data_object_outlined),
                     label: Text('配置'),
                   ),
                   ButtonSegment<_MCPImportMode>(
@@ -144,7 +144,7 @@ class _MCPImportDialogState extends State<MCPImportDialog> {
                                 enabled: !_busy,
                                 decoration: const InputDecoration(
                                   labelText: 'GitHub 仓库 URL',
-                                  prefixIcon: Icon(Icons.link),
+                                  prefixIcon: Icon(Icons.link_rounded),
                                 ),
                                 validator: _required,
                               ),
@@ -154,7 +154,7 @@ class _MCPImportDialogState extends State<MCPImportDialog> {
                               enabled: !_busy,
                               decoration: const InputDecoration(
                                 labelText: 'MCP ID',
-                                prefixIcon: Icon(Icons.tag),
+                                prefixIcon: Icon(Icons.tag_rounded),
                               ),
                               validator: _required,
                             ),
@@ -164,7 +164,7 @@ class _MCPImportDialogState extends State<MCPImportDialog> {
                               enabled: !_busy,
                               decoration: const InputDecoration(
                                 labelText: '名称',
-                                prefixIcon: Icon(Icons.title),
+                                prefixIcon: Icon(Icons.title_rounded),
                               ),
                               validator: _required,
                             ),
@@ -706,7 +706,7 @@ class _FormConfigPane extends StatelessWidget {
           enabled: enabled,
           decoration: const InputDecoration(
             labelText: '服务 ID',
-            prefixIcon: Icon(Icons.tag),
+            prefixIcon: Icon(Icons.tag_rounded),
           ),
           validator: _required,
         ),
@@ -717,7 +717,7 @@ class _FormConfigPane extends StatelessWidget {
             enabled: enabled,
             decoration: const InputDecoration(
               labelText: 'URL',
-              prefixIcon: Icon(Icons.link),
+              prefixIcon: Icon(Icons.link_rounded),
             ),
             validator: _required,
           ),

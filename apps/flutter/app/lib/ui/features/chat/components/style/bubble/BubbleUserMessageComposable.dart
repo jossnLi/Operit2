@@ -608,7 +608,7 @@ class _MessageAvatar extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final square = avatarShape == UserPreferencesManager.AVATAR_SHAPE_SQUARE;
     final avatarImagePath = imagePath;
-    final icon = isProxySender ? Icons.assistant : Icons.person;
+    final icon = isProxySender ? Icons.auto_awesome_rounded : Icons.person_outline_rounded;
     final backgroundColor = isProxySender
         ? colorScheme.secondaryContainer
         : colorScheme.primaryContainer;
@@ -940,7 +940,7 @@ class _ReplyInfoView extends StatelessWidget {
         padding: const EdgeInsets.all(8),
         child: Row(
           children: <Widget>[
-            Icon(Icons.reply, size: 12, color: theme.colorScheme.primary),
+            Icon(Icons.reply_rounded, size: 12, color: theme.colorScheme.primary),
             const SizedBox(width: 4),
             Flexible(
               child: Text(
@@ -1016,22 +1016,22 @@ class AttachmentTag extends StatelessWidget {
 
 IconData _attachmentIcon(AttachmentData attachment) {
   if (attachment.type.startsWith('image/')) {
-    return Icons.image;
+    return Icons.image_outlined;
   }
   if (attachment.type.startsWith('audio/')) {
-    return Icons.volume_up;
+    return Icons.volume_up_outlined;
   }
   if (attachment.type.startsWith('video/')) {
-    return Icons.play_arrow;
+    return Icons.play_arrow_rounded;
   }
   if (attachment.type == 'text/json' &&
       attachment.filename == 'screen_content.json') {
-    return Icons.screenshot_monitor;
+    return Icons.desktop_windows_outlined;
   }
   if (attachment.type == 'application/vnd.workspace-context+xml') {
-    return Icons.code;
+    return Icons.code_rounded;
   }
-  return Icons.description;
+  return Icons.description_outlined;
 }
 
 String _attachmentDisplayLabel(AttachmentData attachment) {

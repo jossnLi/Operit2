@@ -175,8 +175,8 @@ class _TtsProviderGroupTile extends StatelessWidget {
                   children: <Widget>[
                     Icon(
                       expanded
-                          ? Icons.keyboard_arrow_down
-                          : Icons.chevron_right,
+                          ? Icons.keyboard_arrow_down_rounded
+                          : Icons.chevron_right_rounded,
                       size: 18,
                       color: colorScheme.onSurfaceVariant,
                     ),
@@ -218,7 +218,7 @@ class _TtsProviderGroupTile extends StatelessWidget {
                       TextButton.icon(
                         onPressed: onAddVoice,
                         style: SettingsControlStyles.sectionTextButton(),
-                        icon: const Icon(Icons.playlist_add, size: 18),
+                        icon: const Icon(Icons.playlist_add_rounded, size: 18),
                         label: const Text('添加'),
                       ),
                       SettingsEntityIconButton(

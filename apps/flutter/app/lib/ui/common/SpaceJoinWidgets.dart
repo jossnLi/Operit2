@@ -290,7 +290,7 @@ class _SpaceJoinProgressDialogState extends State<SpaceJoinProgressDialog> {
                   if (request?.reviewerDeviceId != null) ...[
                     Row(
                       children: [
-                        const Icon(Icons.person_outline, size: 20),
+                        const Icon(Icons.person_outline_rounded, size: 20),
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
@@ -307,7 +307,7 @@ class _SpaceJoinProgressDialogState extends State<SpaceJoinProgressDialog> {
                   Row(
                     children: [
                       Icon(
-                        progressing ? Icons.schedule : Icons.info_outline,
+                        progressing ? Icons.schedule_rounded : Icons.info_outline_rounded,
                         size: 20,
                         color: colors.primary,
                       ),
@@ -638,7 +638,7 @@ class _SpaceJoinRequestsPanelState extends State<SpaceJoinRequestsPanel> {
             ].join('\n'),
           ),
           trailing: request.status == generated.SpaceJoinStatus.joined
-              ? const Icon(Icons.check_circle_outline)
+              ? const Icon(Icons.check_circle_outline_rounded)
               : const Icon(Icons.chevron_right_rounded),
           onTap: request.status == generated.SpaceJoinStatus.joined
               ? null

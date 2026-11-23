@@ -72,7 +72,7 @@ class _WorkspaceUserscriptSheetState extends State<WorkspaceUserscriptSheet> {
                 const Spacer(),
                 TextButton.icon(
                   onPressed: () => setState(() => _showInstall = !_showInstall),
-                  icon: const Icon(Icons.add),
+                  icon: const Icon(Icons.add_rounded),
                   label: const Text('安装'),
                 ),
               ],
@@ -203,7 +203,7 @@ class _WorkspaceUserscriptSheetState extends State<WorkspaceUserscriptSheet> {
                     for (final log in logs.take(20))
                       ListTile(
                         dense: true,
-                        leading: const Icon(Icons.notes, size: 18),
+                        leading: const Icon(Icons.notes_outlined, size: 18),
                         title: Text(log.scriptName),
                         subtitle: Text(log.message),
                       ),
@@ -340,7 +340,7 @@ class _UserscriptItemActions extends StatelessWidget {
                     height: 16,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
-                : const Icon(Icons.system_update_alt, size: 18),
+                : const Icon(Icons.system_update_alt_rounded, size: 18),
             visualDensity: VisualDensity.compact,
             constraints: const BoxConstraints.tightFor(width: 34, height: 34),
             padding: EdgeInsets.zero,
@@ -348,7 +348,7 @@ class _UserscriptItemActions extends StatelessWidget {
           IconButton(
             tooltip: '删除',
             onPressed: onRemove,
-            icon: const Icon(Icons.delete_outline, size: 18),
+            icon: const Icon(Icons.delete_outline_rounded, size: 18),
             visualDensity: VisualDensity.compact,
             constraints: const BoxConstraints.tightFor(width: 34, height: 34),
             padding: EdgeInsets.zero,
@@ -395,8 +395,8 @@ class _UserscriptPageRunSection extends StatelessWidget {
                     contentPadding: EdgeInsets.zero,
                     leading: Icon(
                       run.status == 'error'
-                          ? Icons.error_outline
-                          : Icons.check_circle_outline,
+                          ? Icons.error_outline_rounded
+                          : Icons.check_circle_outline_rounded,
                       size: 20,
                       color: run.status == 'error'
                           ? theme.colorScheme.error
@@ -448,7 +448,7 @@ class _UserscriptMenuCommandSection extends StatelessWidget {
                   IconButton(
                     tooltip: '刷新菜单',
                     onPressed: onRefresh,
-                    icon: const Icon(Icons.refresh, size: 18),
+                    icon: const Icon(Icons.refresh_rounded, size: 18),
                     visualDensity: VisualDensity.compact,
                     constraints: const BoxConstraints.tightFor(
                       width: 32,

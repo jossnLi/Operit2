@@ -1483,7 +1483,7 @@ class _ExtensionDetailScreenState extends State<ExtensionDetailScreen>
   Widget _overflowMenu(core_proxy.ExtensionCatalogEntry entry) {
     return PopupMenuButton<String>(
       tooltip: '更多',
-      icon: const Icon(Icons.more_vert_rounded),
+      icon: const Icon(Icons.more_horiz_rounded),
       onSelected: (value) {
         switch (value) {
           case 'copy-id':
@@ -1502,7 +1502,7 @@ class _ExtensionDetailScreenState extends State<ExtensionDetailScreen>
         PopupMenuItem<String>(
           value: 'copy-id',
           child: ListTile(
-            leading: Icon(Icons.copy_rounded),
+            leading: Icon(Icons.content_copy_outlined),
             title: Text('复制 ID'),
           ),
         ),

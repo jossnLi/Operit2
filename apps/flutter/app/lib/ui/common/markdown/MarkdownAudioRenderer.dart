@@ -207,8 +207,8 @@ class _MarkdownAudioRendererState extends State<MarkdownAudioRenderer> {
                           : _togglePlayback,
                       icon: Icon(
                         _failed
-                            ? Icons.music_off
-                            : (_isPlaying ? Icons.pause : Icons.play_arrow),
+                            ? Icons.music_off_outlined
+                            : (_isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded),
                       ),
                       tooltip: _failed
                           ? 'Open'

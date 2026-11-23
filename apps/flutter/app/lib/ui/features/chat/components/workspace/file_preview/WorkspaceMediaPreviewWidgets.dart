@@ -110,7 +110,7 @@ class _WorkspaceAudioPreviewState extends State<WorkspaceAudioPreview> {
                         _player.resume();
                       }
                     },
-                    icon: Icon(playing ? Icons.pause : Icons.play_arrow),
+                    icon: Icon(playing ? Icons.pause_rounded : Icons.play_arrow_rounded),
                   ),
                   const SizedBox(width: 14),
                   Text(_formatDuration(_duration)),
@@ -192,8 +192,8 @@ class _WorkspaceVideoPreviewState extends State<WorkspaceVideoPreview> {
                         },
                         icon: Icon(
                           controller.value.isPlaying
-                              ? Icons.pause
-                              : Icons.play_arrow,
+                              ? Icons.pause_rounded
+                              : Icons.play_arrow_rounded,
                         ),
                       );
                     },

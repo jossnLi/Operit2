@@ -40,7 +40,7 @@ class ThemeSurfaceProbe extends StatelessWidget {
           child: Row(
             children: <Widget>[
               const Expanded(child: Text('Message / 输入消息')),
-              Icon(Icons.arrow_upward, color: scheme.primary),
+              Icon(Icons.arrow_upward_rounded, color: scheme.primary),
             ],
           ),
         );

@@ -253,7 +253,7 @@ class _PackageManagerScreenState extends State<PackageManagerScreen>
             ),
           PopupMenuButton<_MoreAction>(
             tooltip: '更多',
-            icon: const Icon(Icons.more_vert_rounded),
+            icon: const Icon(Icons.more_horiz_rounded),
             onSelected: _onMoreSelected,
             itemBuilder: (context) => <PopupMenuEntry<_MoreAction>>[
               if (narrow)

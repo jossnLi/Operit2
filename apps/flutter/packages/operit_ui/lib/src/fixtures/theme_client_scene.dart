@@ -412,7 +412,7 @@ class _PreviewChatSurface extends StatelessWidget {
                 secondaryText: 'New Chat',
                 contentColor: scheme.onSurface,
               ),
-              navigationIcon: compact ? Icons.segment : Icons.chevron_left,
+              navigationIcon: compact ? Icons.view_sidebar_outlined : Icons.chevron_left_rounded,
               navigationTooltip: compact ? 'Navigation' : 'Collapse sidebar',
               onNavigationPressed: () {},
               flipNavigationIcon: compact,
@@ -661,7 +661,7 @@ class _PreviewBubble extends StatelessWidget {
           dimension: themeBubbleAvatarSize,
           child: Center(
             child: Icon(
-              user ? Icons.person : Icons.assistant,
+              user ? Icons.person_outline_rounded : Icons.auto_awesome_rounded,
               size: 22,
               color: user ? scheme.onPrimary : scheme.onTertiaryContainer,
             ),
@@ -771,7 +771,7 @@ class _PreviewComposerState extends State<_PreviewComposer> {
           targetSize: 34,
         ),
         attachment: ThemeComposerIconTarget(
-          icon: Icons.add,
+          icon: Icons.add_rounded,
           color: scheme.onSurfaceVariant.withValues(alpha: 0.9),
           onTap: () {},
           tooltip: '添加附件',
@@ -787,10 +787,10 @@ class _PreviewComposerState extends State<_PreviewComposer> {
               ? scheme.onError
               : scheme.onPrimary,
           icon: _previewActionState == 2
-              ? Icons.close
+              ? Icons.close_rounded
               : _previewActionState == 1
-              ? Icons.arrow_upward
-              : Icons.mic,
+              ? Icons.arrow_upward_rounded
+              : Icons.mic_none_rounded,
           tooltip: _previewActionState == 2
               ? '停止（点击切换状态预览）'
               : _previewActionState == 1
@@ -845,7 +845,7 @@ class _PreviewComposerState extends State<_PreviewComposer> {
               : const CircleBorder(),
           clipBehavior: Clip.antiAlias,
           child: ThemeComposerIconTarget(
-            icon: Icons.add,
+            icon: Icons.add_rounded,
             color: scheme.onSurfaceVariant.withValues(alpha: 0.9),
             onTap: () {},
             tooltip: '添加附件',
@@ -862,10 +862,10 @@ class _PreviewComposerState extends State<_PreviewComposer> {
               ? scheme.onError
               : scheme.onPrimary,
           icon: _previewActionState == 2
-              ? Icons.close
+              ? Icons.close_rounded
               : _previewActionState == 1
-              ? Icons.arrow_upward
-              : Icons.mic,
+              ? Icons.arrow_upward_rounded
+              : Icons.mic_none_rounded,
           tooltip: _previewActionState == 2
               ? '停止（点击切换状态预览）'
               : _previewActionState == 1

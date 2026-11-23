@@ -23,7 +23,7 @@ extension _ComposeNavigationNodes on _ComposeProgramExecutorState {
       elevation: _number(props['tonalElevation']),
       destinations: destinations.isEmpty
           ? const <Widget>[
-              NavigationDestination(icon: Icon(Icons.widgets), label: ''),
+              NavigationDestination(icon: Icon(Icons.widgets_outlined), label: ''),
             ]
           : destinations,
       onDestinationSelected: (index) {
@@ -71,7 +71,7 @@ extension _ComposeNavigationNodes on _ComposeProgramExecutorState {
         destinations: items.isEmpty
             ? const <NavigationRailDestination>[
                 NavigationRailDestination(
-                  icon: Icon(Icons.widgets),
+                  icon: Icon(Icons.widgets_outlined),
                   label: Text(''),
                 ),
               ]

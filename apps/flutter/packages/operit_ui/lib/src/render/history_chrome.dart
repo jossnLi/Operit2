@@ -118,7 +118,7 @@ class ThemeHistorySectionHeader extends StatelessWidget {
     required this.onToggleExpanded,
     this.workspaceStyle = false,
     this.avatar,
-    this.fallbackIcon = Icons.person_outline,
+    this.fallbackIcon = Icons.person_outline_rounded,
   });
 
   final String label;
@@ -159,7 +159,7 @@ class ThemeHistorySectionHeader extends StatelessWidget {
                 ),
                 const SizedBox(width: 9),
                 Icon(
-                  Icons.work_outline,
+                  Icons.work_outline_rounded,
                   size: 15,
                   color: appearance.itemColor.withValues(alpha: 0.82),
                 ),
@@ -179,7 +179,7 @@ class ThemeHistorySectionHeader extends StatelessWidget {
                 _ThemeHistoryCountBadge(count: count, appearance: appearance),
                 const SizedBox(width: 6),
                 Icon(
-                  expanded ? Icons.expand_less : Icons.expand_more,
+                  expanded ? Icons.expand_less_rounded : Icons.expand_more_rounded,
                   size: 18,
                   color: appearance.itemColor.withValues(alpha: 0.70),
                 ),
@@ -250,7 +250,7 @@ class ThemeHistorySectionHeader extends StatelessWidget {
               ),
             ),
             Icon(
-              expanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+              expanded ? Icons.keyboard_arrow_up_rounded : Icons.keyboard_arrow_down_rounded,
               size: 23,
               color: appearance.itemColor.withValues(alpha: 0.78),
             ),
@@ -342,10 +342,10 @@ class ThemeHistoryGroupHeader extends StatelessWidget {
           const SizedBox(width: 2),
           Icon(
             expanded
-                ? (workspaceStyle ? Icons.expand_less : Icons.keyboard_arrow_up)
+                ? (workspaceStyle ? Icons.expand_less_rounded : Icons.keyboard_arrow_up_rounded)
                 : (workspaceStyle
-                      ? Icons.expand_more
-                      : Icons.keyboard_arrow_down),
+                      ? Icons.expand_more_rounded
+                      : Icons.keyboard_arrow_down_rounded),
             size: workspaceStyle ? 17 : 20,
             color: appearance.itemColor.withValues(
               alpha: workspaceStyle ? 0.62 : 0.68,
@@ -492,7 +492,7 @@ class ThemeConversationRow extends StatelessWidget {
                 if (locked) ...<Widget>[
                   const SizedBox(width: 5),
                   Icon(
-                    Icons.lock_rounded,
+                    Icons.lock_outline_rounded,
                     size: 12,
                     color: titleColor.withValues(alpha: 0.60),
                   ),

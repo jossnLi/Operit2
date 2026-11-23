@@ -78,7 +78,7 @@ class _ParamItemView extends StatelessWidget {
                   }
                 },
                 icon: Icon(
-                  Icons.content_copy,
+                  Icons.content_copy_outlined,
                   size: 16,
                   color: theme.colorScheme.primary.withValues(alpha: 0.6),
                 ),

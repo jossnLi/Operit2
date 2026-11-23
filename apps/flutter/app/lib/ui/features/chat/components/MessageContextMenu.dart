@@ -228,7 +228,7 @@ class _MessageContextMenuState extends State<MessageContextMenu> {
       if (!isHidden)
         _menuItem(
           value: _MessageMenuAction.copy,
-          icon: Icons.content_copy,
+          icon: Icons.content_copy_outlined,
           label: '复制消息',
         ),
     ];
@@ -249,12 +249,12 @@ class _MessageContextMenuState extends State<MessageContextMenu> {
         if (!isHidden)
           _menuItem(
             value: _MessageMenuAction.editAndResend,
-            icon: Icons.edit,
+            icon: Icons.edit_outlined,
             label: '编辑并重发',
           ),
         _menuItem(
           value: _MessageMenuAction.rollback,
-          icon: Icons.delete_sweep,
+          icon: Icons.delete_sweep_outlined,
           label: '回滚到此处',
         ),
       ]);
@@ -263,18 +263,18 @@ class _MessageContextMenuState extends State<MessageContextMenu> {
       items.addAll(<PopupMenuEntry<_MessageMenuSelection>>[
         _menuItem(
           value: _MessageMenuAction.regenerate,
-          icon: Icons.refresh,
+          icon: Icons.refresh_rounded,
           label: '重新生成',
           enabled: !widget.isChatBusy && widget.onRegenerateMessage != null,
         ),
         _menuItem(
           value: _MessageMenuAction.modifyMemory,
-          icon: Icons.auto_fix_high,
+          icon: Icons.auto_awesome_rounded,
           label: '修改记忆',
         ),
         _menuItem(
           value: _MessageMenuAction.playVoice,
-          icon: Icons.volume_up,
+          icon: Icons.volume_up_outlined,
           label: '生成/播放语音',
         ),
       ]);
@@ -282,7 +282,7 @@ class _MessageContextMenuState extends State<MessageContextMenu> {
         items.add(
           _menuItem(
             value: _MessageMenuAction.deleteVariant,
-            icon: Icons.delete,
+            icon: Icons.delete_outline_rounded,
             label: '删除当前变体',
           ),
         );
@@ -291,7 +291,7 @@ class _MessageContextMenuState extends State<MessageContextMenu> {
     items.addAll(<PopupMenuEntry<_MessageMenuSelection>>[
       _menuItem(
         value: _MessageMenuAction.delete,
-        icon: Icons.delete,
+        icon: Icons.delete_outline_rounded,
         label: '删除',
       ),
     ]);
@@ -299,7 +299,7 @@ class _MessageContextMenuState extends State<MessageContextMenu> {
       items.add(
         _menuItem(
           value: _MessageMenuAction.reply,
-          icon: Icons.reply,
+          icon: Icons.reply_rounded,
           label: '回复',
         ),
       );
@@ -307,18 +307,18 @@ class _MessageContextMenuState extends State<MessageContextMenu> {
     items.addAll(<PopupMenuEntry<_MessageMenuSelection>>[
       _menuItem(
         value: _MessageMenuAction.insertSummary,
-        icon: Icons.summarize,
+        icon: Icons.summarize_outlined,
         label: '插入总结',
       ),
       _menuItem(
         value: _MessageMenuAction.createBranch,
-        icon: Icons.account_tree,
+        icon: Icons.account_tree_outlined,
         label: '创建分支',
       ),
-      _menuItem(value: _MessageMenuAction.info, icon: Icons.info, label: '信息'),
+      _menuItem(value: _MessageMenuAction.info, icon: Icons.info_outline_rounded, label: '信息'),
       _menuItem(
         value: _MessageMenuAction.multiSelect,
-        icon: Icons.check_circle,
+        icon: Icons.check_circle_outline_rounded,
         label: '多选',
       ),
     ]);

@@ -207,7 +207,7 @@ class _ToolPkgDesktopWidgetViewState extends State<ToolPkgDesktopWidgetView>
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(_error!),
-          IconButton(onPressed: _refresh, icon: const Icon(Icons.refresh)),
+          IconButton(onPressed: _refresh, icon: const Icon(Icons.refresh_rounded)),
         ],
       );
     }

@@ -63,7 +63,7 @@ class _SkillImportDialogState extends State<SkillImportDialog> {
                   segments: const <ButtonSegment<_SkillImportMode>>[
                     ButtonSegment<_SkillImportMode>(
                       value: _SkillImportMode.github,
-                      icon: Icon(Icons.code),
+                      icon: Icon(Icons.code_rounded),
                       label: Text('GitHub'),
                     ),
                     ButtonSegment<_SkillImportMode>(
@@ -73,7 +73,7 @@ class _SkillImportDialogState extends State<SkillImportDialog> {
                     ),
                     ButtonSegment<_SkillImportMode>(
                       value: _SkillImportMode.direct,
-                      icon: Icon(Icons.edit_note),
+                      icon: Icon(Icons.edit_note_rounded),
                       label: Text('手写'),
                     ),
                   ],
@@ -99,7 +99,7 @@ class _SkillImportDialogState extends State<SkillImportDialog> {
                       decoration: const InputDecoration(
                         labelText: '仓库链接',
                         hintText: 'https://github.com/username/repo',
-                        prefixIcon: Icon(Icons.link),
+                        prefixIcon: Icon(Icons.link_rounded),
                       ),
                       validator: _required,
                     ),
@@ -123,7 +123,7 @@ class _SkillImportDialogState extends State<SkillImportDialog> {
                           decoration: const InputDecoration(
                             labelText: '技能 ID',
                             hintText: 'my-skill',
-                            prefixIcon: Icon(Icons.tag),
+                            prefixIcon: Icon(Icons.tag_rounded),
                           ),
                           validator: _required,
                         ),
@@ -133,7 +133,7 @@ class _SkillImportDialogState extends State<SkillImportDialog> {
                           enabled: !_busy,
                           decoration: const InputDecoration(
                             labelText: '描述',
-                            prefixIcon: Icon(Icons.notes),
+                            prefixIcon: Icon(Icons.notes_outlined),
                           ),
                         ),
                         const SizedBox(height: 12),
@@ -163,7 +163,7 @@ class _SkillImportDialogState extends State<SkillImportDialog> {
                             ),
                             TextButton.icon(
                               onPressed: _busy ? null : _pickAttachments,
-                              icon: const Icon(Icons.attach_file, size: 18),
+                              icon: const Icon(Icons.attach_file_rounded, size: 18),
                               label: const Text('添加附件'),
                             ),
                           ],
@@ -195,7 +195,7 @@ class _SkillImportDialogState extends State<SkillImportDialog> {
                                               ];
                                             });
                                           },
-                                    icon: const Icon(Icons.close, size: 18),
+                                    icon: const Icon(Icons.close_rounded, size: 18),
                                   ),
                                 );
                               },

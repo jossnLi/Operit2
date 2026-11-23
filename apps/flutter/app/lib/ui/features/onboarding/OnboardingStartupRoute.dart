@@ -2577,7 +2577,7 @@ class _AiSetupStoragePage extends StatelessWidget {
               _StoragePathField(
                 controller: workspaceRootController,
                 label: '工作区目录',
-                icon: Icons.workspaces_outline,
+                icon: Icons.workspaces_outlined,
                 enabled: !loading && !saving,
                 onChanged: onPathChanged,
                 onBrowse: onChooseWorkspaceRoot,
@@ -3510,7 +3510,7 @@ class _PermissionTile extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 10),
       child: ListTile(
         leading: Icon(
-          granted ? Icons.check_circle_rounded : Icons.radio_button_unchecked,
+          granted ? Icons.check_circle_rounded : Icons.radio_button_unchecked_rounded,
           color: granted ? colorScheme.primary : colorScheme.onSurfaceVariant,
         ),
         title: Row(

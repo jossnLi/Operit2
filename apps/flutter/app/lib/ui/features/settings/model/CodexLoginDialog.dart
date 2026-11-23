@@ -219,7 +219,7 @@ class _CodexLoginDialogState extends State<CodexLoginDialog> {
                     Uri.parse(_device!.verificationUrl),
                     mode: LaunchMode.externalApplication,
                   ),
-                  icon: const Icon(Icons.open_in_browser),
+                  icon: const Icon(Icons.open_in_browser_rounded),
                   label: Text(l10n.settingsModelCodexOpenPage),
                 ),
               ),

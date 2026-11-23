@@ -285,7 +285,7 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
       await showDialog<void>(
         context: context,
         builder: (context) => AlertDialog(
-          icon: const Icon(Icons.check_circle_outline),
+          icon: const Icon(Icons.check_circle_outline_rounded),
           title: const Text('发布完成'),
           content: SelectableText(
             '已发布「${result.displayName}」\n'
@@ -391,7 +391,7 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
       await showDialog<void>(
         context: context,
         builder: (context) => AlertDialog(
-          icon: const Icon(Icons.check_circle_outline),
+          icon: const Icon(Icons.check_circle_outline_rounded),
           title: const Text('发布完成'),
           content: SelectableText(
             '已登记「${pending.result.displayName}」\n'
@@ -444,7 +444,7 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
         actions: <Widget>[
           IconButton(
             onPressed: _loading || _publishing ? null : _loadSources,
-            icon: const Icon(Icons.refresh),
+            icon: const Icon(Icons.refresh_rounded),
             tooltip: '刷新',
           ),
         ],
@@ -456,12 +456,12 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
           }
           if (error != null && _sources.isEmpty) {
             return EmptyState(
-              icon: Icons.error_outline,
+              icon: Icons.error_outline_rounded,
               title: '加载失败',
               message: error,
               action: TextButton.icon(
                 onPressed: _loadSources,
-                icon: const Icon(Icons.refresh),
+                icon: const Icon(Icons.refresh_rounded),
                 label: const Text('刷新'),
               ),
             );
@@ -536,7 +536,7 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
                   ),
                   ButtonSegment<_ArtifactPublishAssetSource>(
                     value: _ArtifactPublishAssetSource.githubReleaseAsset,
-                    icon: Icon(Icons.link_outlined),
+                    icon: Icon(Icons.link_rounded),
                     label: Text('引用 GitHub Release 资产'),
                   ),
                 ],
@@ -581,7 +581,7 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
                           dimension: 18,
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
-                      : const Icon(Icons.refresh),
+                      : const Icon(Icons.refresh_rounded),
                   label: Text(
                     _loadingGitHubReleaseCatalog
                         ? '正在读取 Release'
@@ -792,7 +792,7 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
                             dimension: 18,
                             child: CircularProgressIndicator(strokeWidth: 2),
                           )
-                        : const Icon(Icons.refresh),
+                        : const Icon(Icons.refresh_rounded),
                     label: Text(_retryingMarketRegistration ? '重试中' : '重试市场登记'),
                   ),
                 ],

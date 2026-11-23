@@ -224,17 +224,17 @@ class _WorkspaceHtmlPreviewToolbar extends StatelessWidget {
             const SizedBox(width: 6),
             _WorkspaceHtmlPreviewToolbarButton(
               tooltip: l10n.back,
-              icon: Icons.arrow_back,
+              icon: Icons.arrow_back_rounded,
               onPressed: canGoBack ? onBack : null,
             ),
             _WorkspaceHtmlPreviewToolbarButton(
               tooltip: l10n.forward,
-              icon: Icons.arrow_forward,
+              icon: Icons.arrow_forward_rounded,
               onPressed: canGoForward ? onForward : null,
             ),
             _WorkspaceHtmlPreviewToolbarButton(
               tooltip: l10n.refresh,
-              icon: Icons.refresh,
+              icon: Icons.refresh_rounded,
               onPressed: onRefresh,
             ),
             const Spacer(),

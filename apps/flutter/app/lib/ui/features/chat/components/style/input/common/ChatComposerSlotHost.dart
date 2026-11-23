@@ -116,7 +116,7 @@ class _ChatComposerSlotHostState extends State<ChatComposerSlotHost> {
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.error_outline, size: 14, color: errorColor),
+                    Icon(Icons.error_outline_rounded, size: 14, color: errorColor),
                     const SizedBox(width: 6),
                     Expanded(
                       child: Text(

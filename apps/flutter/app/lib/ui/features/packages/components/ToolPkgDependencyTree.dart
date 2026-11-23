@@ -240,7 +240,7 @@ class _DependencyTreeRow extends StatelessWidget {
                   contentPadding: EdgeInsets.zero,
                   leading: Icon(
                     source.optional
-                        ? Icons.link_outlined
+                        ? Icons.link_rounded
                         : Icons.account_tree_outlined,
                   ),
                   title: Text(

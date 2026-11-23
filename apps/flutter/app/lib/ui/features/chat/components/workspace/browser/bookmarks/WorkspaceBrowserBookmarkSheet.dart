@@ -27,13 +27,13 @@ class WorkspaceBrowserBookmarkSheet extends StatelessWidget {
         WorkspaceBrowserPopupHeader(title: l10n.bookmarks),
         if (items.isEmpty)
           WorkspaceBrowserPopupEmpty(
-            icon: Icons.bookmark,
+            icon: Icons.bookmark_outline_rounded,
             text: l10n.noBookmarks,
           )
         else
           for (final item in items)
             WorkspaceBrowserPopupRow(
-              icon: Icons.bookmark,
+              icon: Icons.bookmark_outline_rounded,
               title: item.title,
               subtitle: item.url,
               onTap: () => onOpen(item.url),
@@ -43,7 +43,7 @@ class WorkspaceBrowserBookmarkSheet extends StatelessWidget {
                   store.remove(item.url);
                   onChanged();
                 },
-                icon: const Icon(Icons.close, size: 17),
+                icon: const Icon(Icons.close_rounded, size: 17),
                 visualDensity: VisualDensity.compact,
                 style: const ButtonStyle(
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,

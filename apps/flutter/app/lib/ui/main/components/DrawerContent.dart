@@ -921,8 +921,8 @@ class _DrawerContentState extends State<DrawerContent> {
                 }),
                 child: Icon(
                   childrenExpanded
-                      ? Icons.keyboard_arrow_up
-                      : Icons.keyboard_arrow_down,
+                      ? Icons.keyboard_arrow_up_rounded
+                      : Icons.keyboard_arrow_down_rounded,
                   size: 16,
                   color: widget.appearance.itemColor.withValues(alpha: 0.78),
                 ),
@@ -982,7 +982,7 @@ class _DrawerContentState extends State<DrawerContent> {
               tooltip: widget.conversationsOnly ? '收起会话列表' : '收起侧边栏',
               onPressed: onCollapse,
               icon: Icon(
-                Icons.chevron_left,
+                Icons.chevron_left_rounded,
                 size: 20,
                 color: widget.appearance.itemColor.withValues(alpha: 0.82),
               ),
@@ -1402,7 +1402,7 @@ class _WorkspaceHeader extends StatelessWidget {
             ),
             const SizedBox(width: 4),
             Icon(
-              expanded ? Icons.expand_less : Icons.expand_more,
+              expanded ? Icons.expand_less_rounded : Icons.expand_more_rounded,
               size: 18,
               color: appearance.itemColor.withValues(alpha: 0.70),
             ),
@@ -1566,7 +1566,7 @@ class _WorkspaceActionsMenu extends StatelessWidget {
         actions: <SidebarMenuAction<_WorkspaceQuickAction>>[
           SidebarMenuAction(
             value: _WorkspaceQuickAction.createChat,
-            icon: Icons.add_comment_outlined,
+            icon: Icons.edit_note_rounded,
             label: '新建对话',
             enabled: canCreate,
           ),

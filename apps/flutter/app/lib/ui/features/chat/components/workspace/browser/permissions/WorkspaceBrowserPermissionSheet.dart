@@ -38,15 +38,15 @@ class WorkspaceBrowserPermissionSheet extends StatelessWidget {
             ),
             if (records.isEmpty)
               WorkspaceBrowserPopupEmpty(
-                icon: Icons.lock_outline,
+                icon: Icons.lock_outline_rounded,
                 text: l10n.noPermissionRecords,
               )
             else
               for (final record in records)
                 WorkspaceBrowserPopupRow(
                   icon: record.allowed
-                      ? Icons.check_circle_outline
-                      : Icons.block,
+                      ? Icons.check_circle_outline_rounded
+                      : Icons.block_rounded,
                   iconColor: record.allowed
                       ? theme.colorScheme.primary
                       : theme.colorScheme.error,

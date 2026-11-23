@@ -52,7 +52,7 @@ class _PackageToolRunDialogState extends State<PackageToolRunDialog> {
     final colorScheme = theme.colorScheme;
     final toolId = '${widget.packageName}:${widget.tool.name}';
     return AlertDialog(
-      icon: const Icon(Icons.play_circle_outline),
+      icon: const Icon(Icons.play_circle_outline_rounded),
       title: Text(widget.tool.name),
       content: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 560, maxHeight: 620),
@@ -117,7 +117,7 @@ class _PackageToolRunDialogState extends State<PackageToolRunDialog> {
                   height: 16,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
-              : const Icon(Icons.play_arrow),
+              : const Icon(Icons.play_arrow_rounded),
           label: Text(_executing ? '运行中' : '运行'),
         ),
       ],
@@ -222,7 +222,7 @@ class _ExecutionResultCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Icon(
-              result.success ? Icons.check_circle_outline : Icons.error_outline,
+              result.success ? Icons.check_circle_outline_rounded : Icons.error_outline_rounded,
               color: result.success ? colorScheme.primary : colorScheme.error,
               size: 20,
             ),

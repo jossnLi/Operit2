@@ -41,7 +41,7 @@ class _ChatShareImagePreviewDialogState
       actions: <Widget>[
         OutlinedButton.icon(
           onPressed: _busy ? null : _saveImage,
-          icon: const Icon(Icons.save_alt),
+          icon: const Icon(Icons.download_rounded),
           label: const Text('保存到文件'),
         ),
         Builder(

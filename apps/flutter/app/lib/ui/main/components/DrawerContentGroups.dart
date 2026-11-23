@@ -395,7 +395,7 @@ class _GroupSectionHeaderState extends State<_GroupSectionHeader> {
                               actions: <SidebarMenuAction<_GroupQuickAction>>[
                                 SidebarMenuAction(
                                   value: _GroupQuickAction.createChat,
-                                  icon: Icons.add_comment_outlined,
+                                  icon: Icons.edit_note_rounded,
                                   label: '新建对话',
                                   enabled: widget.canCreate,
                                 ),
@@ -432,8 +432,8 @@ class _GroupSectionHeaderState extends State<_GroupSectionHeader> {
                         const SizedBox(width: 2),
                         Icon(
                           widget.expanded
-                              ? Icons.expand_less
-                              : Icons.expand_more,
+                              ? Icons.expand_less_rounded
+                              : Icons.expand_more_rounded,
                           size: 17,
                           color: appearance.itemColor.withValues(alpha: 0.62),
                         ),

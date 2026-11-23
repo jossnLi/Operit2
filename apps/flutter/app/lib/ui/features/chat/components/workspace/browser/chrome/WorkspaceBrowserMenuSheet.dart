@@ -71,17 +71,17 @@ class _WorkspaceBrowserMenuSheetState extends State<WorkspaceBrowserMenuSheet> {
         children: <Widget>[
           if (widget.onOpenExternal != null)
             _MenuTile(
-              icon: Icons.open_in_new,
+              icon: Icons.open_in_new_rounded,
               title: l10n.openExternalApplication,
               onTap: widget.onOpenExternal!,
             ),
           _MenuTile(
-            icon: Icons.history,
+            icon: Icons.history_rounded,
             title: l10n.history,
             onTap: widget.onHistory,
           ),
           _MenuTile(
-            icon: Icons.star_border,
+            icon: Icons.star_outline_rounded,
             title: l10n.bookmarks,
             onTap: widget.onBookmarks,
           ),
@@ -106,7 +106,7 @@ class _WorkspaceBrowserMenuSheetState extends State<WorkspaceBrowserMenuSheet> {
               }
               if (snapshot.hasError) {
                 return ListTile(
-                  leading: const Icon(Icons.error_outline),
+                  leading: const Icon(Icons.error_outline_rounded),
                   title: const Text('加载脚本菜单失败'),
                   subtitle: Text('${snapshot.error}'),
                   textColor: Theme.of(context).colorScheme.error,
@@ -122,7 +122,7 @@ class _WorkspaceBrowserMenuSheetState extends State<WorkspaceBrowserMenuSheet> {
                 children: <Widget>[
                   for (final command in commands)
                     _MenuTile(
-                      icon: Icons.extension,
+                      icon: Icons.extension_outlined,
                       title: command.caption,
                       value: command.scriptName,
                       onTap: () => widget.onRunMenuCommand(command.index),
@@ -132,7 +132,7 @@ class _WorkspaceBrowserMenuSheetState extends State<WorkspaceBrowserMenuSheet> {
             },
           ),
           _MenuTile(
-            icon: Icons.lock_outline,
+            icon: Icons.lock_outline_rounded,
             title: l10n.permissionsTitle,
             onTap: widget.onPermissions,
           ),
@@ -207,7 +207,7 @@ class _MenuActionRow extends StatelessWidget {
             IconButton(
               tooltip: AppLocalizations.of(context)!.zoomOut,
               onPressed: onZoomOut,
-              icon: const Icon(Icons.remove, size: 18),
+              icon: const Icon(Icons.remove_rounded, size: 18),
               visualDensity: VisualDensity.compact,
               style: const ButtonStyle(
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -235,7 +235,7 @@ class _MenuActionRow extends StatelessWidget {
             IconButton(
               tooltip: AppLocalizations.of(context)!.zoomIn,
               onPressed: onZoomIn,
-              icon: const Icon(Icons.add, size: 18),
+              icon: const Icon(Icons.add_rounded, size: 18),
               visualDensity: VisualDensity.compact,
               style: const ButtonStyle(
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,

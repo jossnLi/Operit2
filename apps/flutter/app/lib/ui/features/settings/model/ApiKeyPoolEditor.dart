@@ -367,7 +367,7 @@ class _ApiKeyPoolEditorState extends State<ApiKeyPoolEditor> {
                                           .where((item) => item.id != entry.id)
                                           .toList(),
                                     ),
-                              icon: const Icon(Icons.delete_outline),
+                              icon: const Icon(Icons.delete_outline_rounded),
                             ),
                           ],
                         ),
@@ -387,7 +387,7 @@ class _ApiKeyPoolEditorState extends State<ApiKeyPoolEditor> {
                 children: [
                   TextButton.icon(
                     onPressed: _testing ? null : _edit,
-                    icon: const Icon(Icons.add),
+                    icon: const Icon(Icons.add_rounded),
                     label: Text(l10n.settingsModelAddApiKey),
                   ),
                   TextButton(

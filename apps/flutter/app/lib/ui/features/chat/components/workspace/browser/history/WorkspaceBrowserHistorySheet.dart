@@ -61,7 +61,7 @@ class _WorkspaceBrowserHistorySheetState
               style: theme.textTheme.bodySmall,
               textAlignVertical: TextAlignVertical.center,
               decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.search, size: 17),
+                prefixIcon: const Icon(Icons.search_rounded, size: 17),
                 prefixIconConstraints: const BoxConstraints(
                   minWidth: 32,
                   minHeight: 32,
@@ -80,11 +80,11 @@ class _WorkspaceBrowserHistorySheetState
           ),
         ),
         if (items.isEmpty)
-          WorkspaceBrowserPopupEmpty(icon: Icons.history, text: l10n.history)
+          WorkspaceBrowserPopupEmpty(icon: Icons.history_rounded, text: l10n.history)
         else
           for (final item in items)
             WorkspaceBrowserPopupRow(
-              icon: Icons.history,
+              icon: Icons.history_rounded,
               title: item.title,
               subtitle: item.url,
               detail:

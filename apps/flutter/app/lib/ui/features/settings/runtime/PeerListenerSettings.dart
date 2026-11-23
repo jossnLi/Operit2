@@ -378,7 +378,7 @@ class _PeerListenerSettingsState extends State<PeerListenerSettings> {
                                 );
                               }
                             : null,
-                        icon: const Icon(Icons.refresh),
+                        icon: const Icon(Icons.refresh_rounded),
                       ),
                     ),
                   ),
@@ -393,7 +393,7 @@ class _PeerListenerSettingsState extends State<PeerListenerSettings> {
                               );
                             }
                           : null,
-                      icon: const Icon(Icons.copy, size: 16),
+                      icon: const Icon(Icons.content_copy_outlined, size: 16),
                       label: Text(l10n.settingsPeerDiscoveryCopyKey),
                     ),
                   ),

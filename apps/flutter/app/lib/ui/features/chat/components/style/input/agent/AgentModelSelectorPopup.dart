@@ -686,7 +686,7 @@ class _AgentThinkingSliderRowState extends State<AgentThinkingSliderRow>
         child: Row(
           children: <Widget>[
             Icon(
-              Icons.psychology,
+              Icons.psychology_outlined,
               size: 16,
               color: on
                   ? colorScheme.primary
@@ -1031,7 +1031,7 @@ class _ThinkingNoteRow extends StatelessWidget {
         height: 40,
         child: Row(
           children: <Widget>[
-            Icon(Icons.psychology, size: 16, color: colorScheme.primary),
+            Icon(Icons.psychology_outlined, size: 16, color: colorScheme.primary),
             const SizedBox(width: 4),
             Text('${l10n.thinkingLevelLabel}:', style: textTheme.bodySmall),
             const SizedBox(width: 6),
@@ -1327,8 +1327,8 @@ class AgentModelProviderRow extends StatelessWidget {
                     const SizedBox(width: 2),
                     Icon(
                       expanded
-                          ? Icons.keyboard_arrow_up
-                          : Icons.keyboard_arrow_down,
+                          ? Icons.keyboard_arrow_up_rounded
+                          : Icons.keyboard_arrow_down_rounded,
                       size: 14,
                       color: colorScheme.onSurfaceVariant,
                     ),
@@ -1347,7 +1347,7 @@ class AgentModelProviderRow extends StatelessWidget {
                     ),
                     if (selected) ...<Widget>[
                       const SizedBox(width: 4),
-                      Icon(Icons.check, size: 12, color: colorScheme.primary),
+                      Icon(Icons.check_rounded, size: 12, color: colorScheme.primary),
                     ],
                   ],
                 ],
@@ -1479,7 +1479,7 @@ class _ModelFamilyRow extends StatelessWidget {
               ),
               const SizedBox(width: 2),
               Icon(
-                open ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                open ? Icons.keyboard_arrow_up_rounded : Icons.keyboard_arrow_down_rounded,
                 size: 12,
                 color: colorScheme.onSurfaceVariant,
               ),
@@ -1675,7 +1675,7 @@ class _ModelNameRow extends StatelessWidget {
             ..._modelMetaChips(context, summary),
             if (selected) ...<Widget>[
               const SizedBox(width: 4),
-              Icon(Icons.check, size: 11, color: colorScheme.primary),
+              Icon(Icons.check_rounded, size: 11, color: colorScheme.primary),
             ],
           ],
         ),
@@ -1819,8 +1819,8 @@ class _SettingsHeaderRow extends StatelessWidget {
               if (showChevron)
                 Icon(
                   expanded
-                      ? Icons.keyboard_arrow_up
-                      : Icons.keyboard_arrow_down,
+                      ? Icons.keyboard_arrow_up_rounded
+                      : Icons.keyboard_arrow_down_rounded,
                   size: 20,
                   color: colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
                 ),
@@ -1875,7 +1875,7 @@ class _InfoIconButton extends StatelessWidget {
         padding: EdgeInsets.zero,
         iconSize: 16,
         icon: Icon(
-          Icons.info_outline,
+          Icons.info_outline_rounded,
           color: Theme.of(
             context,
           ).colorScheme.onSurfaceVariant.withValues(alpha: 0.7),

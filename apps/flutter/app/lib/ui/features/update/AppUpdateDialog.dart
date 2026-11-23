@@ -80,7 +80,7 @@ class _AppUpdateDialogState extends State<AppUpdateDialog> {
           canPop: false,
           child: OperitDialogScaffold(
             title: '暂时无法完成更新',
-            icon: const Icon(Icons.info_outline),
+            icon: const Icon(Icons.info_outline_rounded),
             maxWidth: 480,
             actions: [
               FilledButton(
@@ -205,15 +205,15 @@ class _AppUpdateDialogState extends State<AppUpdateDialog> {
                 ),
                 icon: Icon(
                   controller.restartRequired
-                      ? Icons.restart_alt
-                      : Icons.open_in_new,
+                      ? Icons.restart_alt_rounded
+                      : Icons.open_in_new_rounded,
                 ),
                 label: Text(controller.restartRequired ? '重启并安装' : '重新打开安装器'),
               ),
             if (ready)
               FilledButton.icon(
                 onPressed: () => unawaited(controller.confirmInstall()),
-                icon: const Icon(Icons.system_update_alt),
+                icon: const Icon(Icons.system_update_alt_rounded),
                 label: const Text('重启并更新'),
               ),
           ],
@@ -256,9 +256,9 @@ class _AppUpdateDialogState extends State<AppUpdateDialog> {
                   children: [
                     Icon(
                       failed
-                          ? Icons.error_outline
+                          ? Icons.error_outline_rounded
                           : awaiting || ready
-                          ? Icons.check_circle_outline
+                          ? Icons.check_circle_outline_rounded
                           : Icons.downloading_rounded,
                       size: 20,
                       color: failed ? colors.error : colors.primary,
@@ -446,7 +446,7 @@ class _AppUpdateDialogState extends State<AppUpdateDialog> {
             }
           },
           icon: Icon(
-            ready ? Icons.restart_alt : Icons.system_update_alt_rounded,
+            ready ? Icons.restart_alt_rounded : Icons.system_update_alt_rounded,
           ),
           label: Text(ready ? '重启并更新' : '立即更新'),
         ),

@@ -39,7 +39,7 @@ class CanvasExpandableHeaderRow extends StatelessWidget {
                   turns: rotationTurns,
                   duration: const Duration(milliseconds: 300),
                   child: Icon(
-                    Icons.keyboard_arrow_right,
+                    Icons.chevron_right_rounded,
                     size: 18,
                     color: titleColor,
                   ),

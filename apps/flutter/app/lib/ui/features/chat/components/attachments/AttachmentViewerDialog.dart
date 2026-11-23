@@ -339,7 +339,7 @@ class _ImageLightboxViewerState extends State<_ImageLightboxViewer>
                     Padding(
                       padding: const EdgeInsets.only(right: 10),
                       child: _FrostedCircleButton(
-                        icon: Icons.copy_rounded,
+                        icon: Icons.content_copy_outlined,
                         tooltip: '复制文件位置\n${widget.attachment.fileLocation}',
                         onTap: () => Clipboard.setData(
                           ClipboardData(text: widget.attachment.fileLocation!),
@@ -543,7 +543,7 @@ class _GeneralAttachmentViewer extends StatelessWidget {
                         ),
                         if (isTextLike && attachment.content.isNotEmpty)
                           IconButton(
-                            icon: const Icon(Icons.copy_rounded, size: 18),
+                            icon: const Icon(Icons.content_copy_outlined, size: 18),
                             tooltip: '复制内容',
                             onPressed: () {
                               Clipboard.setData(
@@ -580,7 +580,7 @@ class _GeneralAttachmentViewer extends StatelessWidget {
                           ),
                           IconButton(
                             tooltip: '复制文件位置',
-                            icon: const Icon(Icons.copy_rounded, size: 18),
+                            icon: const Icon(Icons.content_copy_outlined, size: 18),
                             onPressed: () => Clipboard.setData(
                               ClipboardData(text: attachment.fileLocation!),
                             ),

@@ -127,7 +127,7 @@ class _UserProfileSummaryTileState extends State<UserProfileSummaryTile> {
                   ),
                 ),
                 const SizedBox(width: 8),
-                Icon(Icons.chevron_right, color: foreground, size: 20),
+                Icon(Icons.chevron_right_rounded, color: foreground, size: 20),
               ],
             ),
           ),
@@ -224,7 +224,7 @@ class UserProfileAvatar extends StatelessWidget {
       ),
       child: normalizedPath == null || normalizedPath.isEmpty
           ? Icon(
-              Icons.person_outline,
+              Icons.person_outline_rounded,
               size: size * 0.54,
               color: colorScheme.onSurfaceVariant,
             )

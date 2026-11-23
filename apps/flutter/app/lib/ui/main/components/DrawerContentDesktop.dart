@@ -59,7 +59,7 @@ extension _DesktopWorkspaceContent on _DrawerContentState {
                 ),
               ),
               Icon(
-                open ? Icons.expand_less : Icons.expand_more,
+                open ? Icons.expand_less_rounded : Icons.expand_more_rounded,
                 size: 18,
                 color: appearance.itemColor.withValues(alpha: 0.7),
               ),

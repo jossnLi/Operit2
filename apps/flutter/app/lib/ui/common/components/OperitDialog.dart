@@ -94,7 +94,7 @@ class OperitDialogScaffold extends StatelessWidget {
                         onPressed: closeButtonEnabled
                             ? onClose ?? () => Navigator.of(context).maybePop()
                             : null,
-                        icon: const Icon(Icons.close),
+                        icon: const Icon(Icons.close_rounded),
                       ),
                   ],
                 ),

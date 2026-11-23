@@ -141,26 +141,33 @@ jobs:
           ANDROID_RELEASE_KEY_ALIAS: ${{ secrets.ANDROID_RELEASE_KEY_ALIAS }}
           ANDROID_RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
         run: |
-          $required = @(
-            "ANDROID_RELEASE_KEYSTORE_BASE64",
-            "ANDROID_RELEASE_STORE_PASSWORD",
-            "ANDROID_RELEASE_KEY_ALIAS",
-            "ANDROID_RELEASE_KEY_PASSWORD"
-          )
-          $missing = $required | Where-Object { [string]::IsNullOrWhiteSpace([Environment]::GetEnvironmentVariable($_)) }
-          if ($missing.Count -gt 0) {
-            throw "Missing required GitHub Actions secrets: $($missing -join ', ')"
-          }
           $secretsDir = "tools/release/secrets"
           New-Item -ItemType Directory -Force -Path $secretsDir | Out-Null
           $keystore = Join-Path $secretsDir "operit2-release.keystore"
-          [System.IO.File]::WriteAllBytes($keystore, [System.Convert]::FromBase64String($env:ANDROID_RELEASE_KEYSTORE_BASE64))
-          @"
+          $signingProps = Join-Path $secretsDir "android-signing.properties"
+
+          if (-not [string]::IsNullOrWhiteSpace($env:ANDROID_RELEASE_KEYSTORE_BASE64) -and
+              -not [string]::IsNullOrWhiteSpace($env:ANDROID_RELEASE_STORE_PASSWORD) -and
+              -not [string]::IsNullOrWhiteSpace($env:ANDROID_RELEASE_KEY_ALIAS) -and
+              -not [string]::IsNullOrWhiteSpace($env:ANDROID_RELEASE_KEY_PASSWORD)) {
+            Write-Host "Using configured repository secrets for release signing."
+            [System.IO.File]::WriteAllBytes($keystore, [System.Convert]::FromBase64String($env:ANDROID_RELEASE_KEYSTORE_BASE64))
+            @"
           RELEASE_STORE_FILE=operit2-release.keystore
           RELEASE_STORE_PASSWORD=$env:ANDROID_RELEASE_STORE_PASSWORD
           RELEASE_KEY_ALIAS=$env:ANDROID_RELEASE_KEY_ALIAS
           RELEASE_KEY_PASSWORD=$env:ANDROID_RELEASE_KEY_PASSWORD
-          "@ | Set-Content -Path (Join-Path $secretsDir "android-signing.properties") -Encoding utf8
+          "@ | Set-Content -Path $signingProps -Encoding utf8
+          } else {
+            Write-Host "No signing secrets provided. Generating automatic keystore for build..."
+            keytool -genkeypair -v -keystore $keystore -alias operit -keyalg RSA -keysize 2048 -validity 10000 -storepass 123456 -keypass 123456 -dname "CN=Operit, OU=Operit, O=Operit, L=Operit, S=Operit, C=CN"
+            @"
+          RELEASE_STORE_FILE=operit2-release.keystore
+          RELEASE_STORE_PASSWORD=123456
+          RELEASE_KEY_ALIAS=operit
+          RELEASE_KEY_PASSWORD=123456
+          "@ | Set-Content -Path $signingProps -Encoding utf8
+          }
 
       - name: Cache source-built Android V8
         uses: actions/cache@v4

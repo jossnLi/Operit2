@@ -34,7 +34,7 @@ class ChatComposerSendActionMenu extends StatelessWidget {
         _SendActionMenuItem(
           value: ChatComposerSendAction.queue,
           itemKey: const ValueKey<String>('chat.send-option.queue'),
-          icon: Icons.schedule,
+          icon: Icons.schedule_rounded,
           title: l10n.chatQueueAddMessage,
           description: l10n.chatQueueAddMessageDescription,
           color: colorScheme.onSurfaceVariant,
@@ -42,7 +42,7 @@ class ChatComposerSendActionMenu extends StatelessWidget {
         _SendActionMenuItem(
           value: ChatComposerSendAction.guide,
           itemKey: const ValueKey<String>('chat.send-option.guide'),
-          icon: Icons.alt_route,
+          icon: Icons.alt_route_rounded,
           title: l10n.chatGuideCurrentTurn,
           description: l10n.chatGuideCurrentTurnDescription,
           color: colorScheme.primary,
@@ -50,7 +50,7 @@ class ChatComposerSendActionMenu extends StatelessWidget {
         _SendActionMenuItem(
           value: ChatComposerSendAction.sendNow,
           itemKey: const ValueKey<String>('chat.send-option.send-now'),
-          icon: Icons.send,
+          icon: Icons.arrow_upward_rounded,
           title: l10n.chatInterruptAndSend,
           description: l10n.chatInterruptAndSendDescription,
           color: colorScheme.error,
@@ -60,7 +60,7 @@ class ChatComposerSendActionMenu extends StatelessWidget {
         width: targetSize,
         height: targetSize,
         child: Icon(
-          Icons.expand_more,
+          Icons.expand_more_rounded,
           size: iconSize,
           color: colorScheme.onSurfaceVariant,
         ),

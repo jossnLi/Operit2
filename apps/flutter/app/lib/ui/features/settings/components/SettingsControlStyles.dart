@@ -227,7 +227,7 @@ class SettingsSectionAddButton extends StatelessWidget {
     required this.tooltip,
     required this.onPressed,
     this.label = '添加',
-    this.icon = Icons.add,
+    this.icon = Icons.add_rounded,
   });
 
   final String tooltip;
@@ -520,7 +520,7 @@ class SettingsToggleChip extends StatelessWidget {
             children: <Widget>[
               if (selected)
                 Icon(
-                  Icons.check,
+                  Icons.check_rounded,
                   size: 14,
                   color: isDark ? colorScheme.primary : colorScheme.onPrimaryContainer,
                 )

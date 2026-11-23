@@ -91,7 +91,7 @@ class WorkspaceOpenOnlyPreviewBody extends StatelessWidget {
                           dimension: 18,
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
-                      : const Icon(Icons.open_in_new),
+                      : const Icon(Icons.open_in_new_rounded),
                   label: Text(
                     opening ? l10n.workspaceFileOpening : l10n.openFile,
                   ),

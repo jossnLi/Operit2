@@ -1021,7 +1021,7 @@ class _NoticeRow extends StatelessWidget {
     color: colorScheme.error,
   ),
   'review_changes' => (
-    icon: Icons.rate_review_outlined,
+    icon: Icons.edit_note_rounded,
     label: '需要修改',
     color: colorScheme.tertiary,
   ),

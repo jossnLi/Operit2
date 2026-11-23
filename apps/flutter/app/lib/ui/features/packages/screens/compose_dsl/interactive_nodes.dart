@@ -139,7 +139,7 @@ extension _ComposeInteractiveNodes on _ComposeProgramExecutorState {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            const Icon(Icons.arrow_drop_down),
+            const Icon(Icons.keyboard_arrow_down_rounded),
           ],
         ),
       ),

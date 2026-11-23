@@ -304,12 +304,12 @@ class _RepoMarketPublishScreenState extends State<RepoMarketPublishScreen> {
           }
           if (error != null) {
             return EmptyState(
-              icon: Icons.error_outline,
+              icon: Icons.error_outline_rounded,
               title: '加载失败',
               message: error,
               action: TextButton.icon(
                 onPressed: _loadManifest,
-                icon: const Icon(Icons.refresh),
+                icon: const Icon(Icons.refresh_rounded),
                 label: const Text('刷新'),
               ),
             );

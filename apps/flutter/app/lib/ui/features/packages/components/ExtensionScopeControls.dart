@@ -11,7 +11,7 @@ Future<String?> chooseExtensionScope(BuildContext context) =>
           SimpleDialogOption(
             onPressed: () => Navigator.pop(context, 'device'),
             child: const ListTile(
-              leading: Icon(Icons.devices),
+              leading: Icon(Icons.devices_outlined),
               title: Text('仅本设备'),
               subtitle: Text('内容和配置仅保存在本设备，不同步到其他设备。'),
             ),

@@ -135,7 +135,7 @@ class _MessageCopyPreviewSheetState extends State<MessageCopyPreviewSheet> {
                 onPressed: copyText == null
                     ? null
                     : () => _copyText(context, copyText),
-                icon: const Icon(Icons.content_copy, size: 18),
+                icon: const Icon(Icons.content_copy_outlined, size: 18),
                 label: Text(
                   _format == MessageCopyFormat.plainText
                       ? '复制纯文本'

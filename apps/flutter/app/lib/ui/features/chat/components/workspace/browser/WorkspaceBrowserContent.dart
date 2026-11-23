@@ -262,7 +262,7 @@ class _WorkspaceBrowserContentState extends State<WorkspaceBrowserContent> {
                 l10n.downloads,
                 style: Theme.of(context).textTheme.labelMedium,
               ),
-              const Icon(Icons.chevron_right, size: 20),
+              const Icon(Icons.chevron_right_rounded, size: 20),
             ],
           ),
         ),

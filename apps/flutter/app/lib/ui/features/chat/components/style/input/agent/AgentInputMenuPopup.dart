@@ -305,7 +305,7 @@ class _AgentInputMenuPopupState extends State<AgentInputMenuPopup> {
                       children: <Widget>[
                         for (final toggle in data.pluginToggles)
                           _SwitchRow(
-                            icon: Icons.hub,
+                            icon: Icons.hub_outlined,
                             materialIconName: toggle.icon,
                             title: toggle.title ?? toggle.id,
                             value: toggle.isChecked ? '开' : '关',
@@ -626,8 +626,8 @@ class _ChatSessionSummarySectionState
                         const SizedBox(width: 6),
                         Icon(
                           _statsExpanded
-                              ? Icons.keyboard_arrow_up
-                              : Icons.keyboard_arrow_down,
+                              ? Icons.keyboard_arrow_up_rounded
+                              : Icons.keyboard_arrow_down_rounded,
                           size: 20,
                           color: colorScheme.onSurfaceVariant,
                         ),
@@ -843,8 +843,8 @@ class _MenuSection extends StatelessWidget {
                   const SizedBox(width: 6),
                   Icon(
                     expanded
-                        ? Icons.keyboard_arrow_up
-                        : Icons.keyboard_arrow_down,
+                        ? Icons.keyboard_arrow_up_rounded
+                        : Icons.keyboard_arrow_down_rounded,
                     size: 20,
                     color: colorScheme.onSurfaceVariant,
                   ),

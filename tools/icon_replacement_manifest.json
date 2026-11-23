@@ -1,0 +1,3698 @@
+[
+  {
+    "file": "apps/flutter/app/lib/core/errors/UnhandledErrorReporter.dart",
+    "line": 161,
+    "original": "error_outline",
+    "replacement": "error_outline_rounded",
+    "code_snippet": "Icons.error_outline,"
+  },
+  {
+    "file": "apps/flutter/app/lib/core/errors/UnhandledErrorReporter.dart",
+    "line": 186,
+    "original": "copy",
+    "replacement": "content_copy_outlined",
+    "code_snippet": "icon: const Icon(Icons.copy),"
+  },
+  {
+    "file": "apps/flutter/app/lib/core/errors/UnhandledErrorReporter.dart",
+    "line": 237,
+    "original": "copy",
+    "replacement": "content_copy_outlined",
+    "code_snippet": "icon: const Icon(Icons.copy),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/common/AppToastHost.dart",
+    "line": 400,
+    "original": "close",
+    "replacement": "close_rounded",
+    "code_snippet": "icon: const Icon(Icons.close),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/common/AppToastHost.dart",
+    "line": 483,
+    "original": "expand_less",
+    "replacement": "expand_less_rounded",
+    "code_snippet": "icon: Icon(expanded ? Icons.expand_less : Icons.expand_more),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/common/AppToastHost.dart",
+    "line": 483,
+    "original": "expand_more",
+    "replacement": "expand_more_rounded",
+    "code_snippet": "icon: Icon(expanded ? Icons.expand_less : Icons.expand_more),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/common/ChatBackupDirectoryPanel.dart",
+    "line": 100,
+    "original": "folder_open",
+    "replacement": "folder_open_outlined",
+    "code_snippet": ": const Icon(Icons.folder_open),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/common/ChatBackupRestorePanel.dart",
+    "line": 151,
+    "original": "restore",
+    "replacement": "restore_rounded",
+    "code_snippet": "icon: const Icon(Icons.restore),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/common/ChatBackupRestorePanel.dart",
+    "line": 178,
+    "original": "refresh",
+    "replacement": "refresh_rounded",
+    "code_snippet": "icon: const Icon(Icons.refresh),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/common/ChatBackupRestorePanel.dart",
+    "line": 210,
+    "original": "radio_button_checked",
+    "replacement": "radio_button_checked_rounded",
+    "code_snippet": "? Icons.radio_button_checked"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/common/ChatBackupRestorePanel.dart",
+    "line": 211,
+    "original": "radio_button_unchecked",
+    "replacement": "radio_button_unchecked_rounded",
+    "code_snippet": ": Icons.radio_button_unchecked,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/common/PeerQrCodeDialog.dart",
+    "line": 262,
+    "original": "copy_rounded",
+    "replacement": "content_copy_outlined",
+    "code_snippet": "_copied ? Icons.check_rounded : Icons.copy_rounded,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/common/SpaceJoinWidgets.dart",
+    "line": 293,
+    "original": "person_outline",
+    "replacement": "person_outline_rounded",
+    "code_snippet": "const Icon(Icons.person_outline, size: 20),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/common/SpaceJoinWidgets.dart",
+    "line": 310,
+    "original": "schedule",
+    "replacement": "schedule_rounded",
+    "code_snippet": "progressing ? Icons.schedule : Icons.info_outline,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/common/SpaceJoinWidgets.dart",
+    "line": 310,
+    "original": "info_outline",
+    "replacement": "info_outline_rounded",
+    "code_snippet": "progressing ? Icons.schedule : Icons.info_outline,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/common/SpaceJoinWidgets.dart",
+    "line": 641,
+    "original": "check_circle_outline",
+    "replacement": "check_circle_outline_rounded",
+    "code_snippet": "? const Icon(Icons.check_circle_outline)"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/common/components/OperitDialog.dart",
+    "line": 97,
+    "original": "close",
+    "replacement": "close_rounded",
+    "code_snippet": "icon: const Icon(Icons.close),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/common/markdown/MarkdownAudioRenderer.dart",
+    "line": 210,
+    "original": "music_off",
+    "replacement": "music_off_outlined",
+    "code_snippet": "? Icons.music_off"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/common/markdown/MarkdownAudioRenderer.dart",
+    "line": 211,
+    "original": "pause",
+    "replacement": "pause_rounded",
+    "code_snippet": ": (_isPlaying ? Icons.pause : Icons.play_arrow),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/common/markdown/MarkdownAudioRenderer.dart",
+    "line": 211,
+    "original": "play_arrow",
+    "replacement": "play_arrow_rounded",
+    "code_snippet": ": (_isPlaying ? Icons.pause : Icons.play_arrow),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/common/markdown/MarkdownImagePreview.dart",
+    "line": 87,
+    "original": "close",
+    "replacement": "close_rounded",
+    "code_snippet": "icon: const Icon(Icons.close),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/common/markdown/MarkdownImagePreview.dart",
+    "line": 110,
+    "original": "zoom_out",
+    "replacement": "zoom_out_rounded",
+    "code_snippet": "icon: const Icon(Icons.zoom_out),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/common/markdown/MarkdownImagePreview.dart",
+    "line": 117,
+    "original": "fit_screen",
+    "replacement": "fit_screen_rounded",
+    "code_snippet": "icon: const Icon(Icons.fit_screen),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/common/markdown/MarkdownImagePreview.dart",
+    "line": 123,
+    "original": "zoom_in",
+    "replacement": "zoom_in_rounded",
+    "code_snippet": "icon: const Icon(Icons.zoom_in),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/common/markdown/MarkdownVideoRenderer.dart",
+    "line": 284,
+    "original": "pause",
+    "replacement": "pause_rounded",
+    "code_snippet": "? Icons.pause"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/common/markdown/MarkdownVideoRenderer.dart",
+    "line": 285,
+    "original": "play_arrow",
+    "replacement": "play_arrow_rounded",
+    "code_snippet": ": Icons.play_arrow,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/ChatArea.dart",
+    "line": 1537,
+    "original": "arrow_back",
+    "replacement": "arrow_back_rounded",
+    "code_snippet": "icon: const Icon(Icons.arrow_back, size: 18),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/ChatArea.dart",
+    "line": 1556,
+    "original": "arrow_forward",
+    "replacement": "arrow_forward_rounded",
+    "code_snippet": "icon: const Icon(Icons.arrow_forward, size: 18),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/ChatArea.dart",
+    "line": 1651,
+    "original": "check_circle",
+    "replacement": "check_circle_outline_rounded",
+    "code_snippet": "selected ? Icons.check_circle : Icons.radio_button_unchecked,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/ChatArea.dart",
+    "line": 1651,
+    "original": "radio_button_unchecked",
+    "replacement": "radio_button_unchecked_rounded",
+    "code_snippet": "selected ? Icons.check_circle : Icons.radio_button_unchecked,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/ChatMessageLocatorPanel.dart",
+    "line": 390,
+    "original": "circle",
+    "replacement": "circle_outlined",
+    "code_snippet": "Icon(Icons.circle, size: 5, color: colors.primary),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/ChatMultiSelectBar.dart",
+    "line": 47,
+    "original": "close",
+    "replacement": "close_rounded",
+    "code_snippet": "icon: const Icon(Icons.close),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/ChatMultiSelectBar.dart",
+    "line": 61,
+    "original": "deselect",
+    "replacement": "deselect_rounded",
+    "code_snippet": "icon: Icon(allSelected ? Icons.deselect : Icons.select_all),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/ChatMultiSelectBar.dart",
+    "line": 61,
+    "original": "select_all",
+    "replacement": "select_all_rounded",
+    "code_snippet": "icon: Icon(allSelected ? Icons.deselect : Icons.select_all),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/ChatMultiSelectBar.dart",
+    "line": 67,
+    "original": "content_copy",
+    "replacement": "content_copy_outlined",
+    "code_snippet": "icon: const Icon(Icons.content_copy),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/ChatMultiSelectBar.dart",
+    "line": 73,
+    "original": "ios_share",
+    "replacement": "ios_share_rounded",
+    "code_snippet": "icon: const Icon(Icons.ios_share),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/ChatMultiSelectBar.dart",
+    "line": 79,
+    "original": "delete_outline",
+    "replacement": "delete_outline_rounded",
+    "code_snippet": "icon: const Icon(Icons.delete_outline),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/ChatScrollNavigator.dart",
+    "line": 876,
+    "original": "star",
+    "replacement": "star_outline_rounded",
+    "code_snippet": "const Icon(Icons.star, size: 11, color: Colors.amber),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/MessageContextMenu.dart",
+    "line": 231,
+    "original": "content_copy",
+    "replacement": "content_copy_outlined",
+    "code_snippet": "icon: Icons.content_copy,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/MessageContextMenu.dart",
+    "line": 252,
+    "original": "edit",
+    "replacement": "edit_outlined",
+    "code_snippet": "icon: Icons.edit,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/MessageContextMenu.dart",
+    "line": 257,
+    "original": "delete_sweep",
+    "replacement": "delete_sweep_outlined",
+    "code_snippet": "icon: Icons.delete_sweep,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/MessageContextMenu.dart",
+    "line": 266,
+    "original": "refresh",
+    "replacement": "refresh_rounded",
+    "code_snippet": "icon: Icons.refresh,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/MessageContextMenu.dart",
+    "line": 272,
+    "original": "auto_fix_high",
+    "replacement": "auto_awesome_rounded",
+    "code_snippet": "icon: Icons.auto_fix_high,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/MessageContextMenu.dart",
+    "line": 277,
+    "original": "volume_up",
+    "replacement": "volume_up_outlined",
+    "code_snippet": "icon: Icons.volume_up,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/MessageContextMenu.dart",
+    "line": 285,
+    "original": "delete",
+    "replacement": "delete_outline_rounded",
+    "code_snippet": "icon: Icons.delete,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/MessageContextMenu.dart",
+    "line": 294,
+    "original": "delete",
+    "replacement": "delete_outline_rounded",
+    "code_snippet": "icon: Icons.delete,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/MessageContextMenu.dart",
+    "line": 302,
+    "original": "reply",
+    "replacement": "reply_rounded",
+    "code_snippet": "icon: Icons.reply,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/MessageContextMenu.dart",
+    "line": 310,
+    "original": "summarize",
+    "replacement": "summarize_outlined",
+    "code_snippet": "icon: Icons.summarize,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/MessageContextMenu.dart",
+    "line": 315,
+    "original": "account_tree",
+    "replacement": "account_tree_outlined",
+    "code_snippet": "icon: Icons.account_tree,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/MessageContextMenu.dart",
+    "line": 318,
+    "original": "info",
+    "replacement": "info_outline_rounded",
+    "code_snippet": "_menuItem(value: _MessageMenuAction.info, icon: Icons.info, label: '信息'),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/MessageContextMenu.dart",
+    "line": 321,
+    "original": "check_circle",
+    "replacement": "check_circle_outline_rounded",
+    "code_snippet": "icon: Icons.check_circle,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/MessageCopyPreview.dart",
+    "line": 138,
+    "original": "content_copy",
+    "replacement": "content_copy_outlined",
+    "code_snippet": "icon: const Icon(Icons.content_copy, size: 18),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/MessageEditorDialog.dart",
+    "line": 143,
+    "original": "send",
+    "replacement": "arrow_upward_rounded",
+    "code_snippet": "icon: const Icon(Icons.send, size: 14),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/MessageEditorDialog.dart",
+    "line": 295,
+    "original": "add",
+    "replacement": "add_rounded",
+    "code_snippet": "icon: const Icon(Icons.add, size: 16),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/MessageEditorDialog.dart",
+    "line": 411,
+    "original": "delete",
+    "replacement": "delete_outline_rounded",
+    "code_snippet": "icon: const Icon(Icons.delete, size: 16),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/MessageEditorDialog.dart",
+    "line": 460,
+    "original": "code",
+    "replacement": "code_rounded",
+    "code_snippet": "Icon(Icons.code, size: 18, color: colorScheme.primary),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/MessageEditorDialog.dart",
+    "line": 489,
+    "original": "edit",
+    "replacement": "edit_outlined",
+    "code_snippet": "icon: const Icon(Icons.edit, size: 16),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/MessageEditorDialog.dart",
+    "line": 494,
+    "original": "delete",
+    "replacement": "delete_outline_rounded",
+    "code_snippet": "icon: const Icon(Icons.delete, size: 16),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/MessageEditorDialog.dart",
+    "line": 499,
+    "original": "keyboard_arrow_up",
+    "replacement": "keyboard_arrow_up_rounded",
+    "code_snippet": "? Icons.keyboard_arrow_up"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/MessageEditorDialog.dart",
+    "line": 500,
+    "original": "keyboard_arrow_down",
+    "replacement": "keyboard_arrow_down_rounded",
+    "code_snippet": ": Icons.keyboard_arrow_down,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/WorkspaceChangeConfirmDialog.dart",
+    "line": 116,
+    "original": "delete_outline",
+    "replacement": "delete_outline_rounded",
+    "code_snippet": "return Icons.delete_outline;"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/WorkspaceChangeConfirmDialog.dart",
+    "line": 119,
+    "original": "add_circle_outline",
+    "replacement": "add_circle_outline_rounded",
+    "code_snippet": "return Icons.add_circle_outline;"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/attachments/AttachmentViewerDialog.dart",
+    "line": 342,
+    "original": "copy_rounded",
+    "replacement": "content_copy_outlined",
+    "code_snippet": "icon: Icons.copy_rounded,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/attachments/AttachmentViewerDialog.dart",
+    "line": 546,
+    "original": "copy_rounded",
+    "replacement": "content_copy_outlined",
+    "code_snippet": "icon: const Icon(Icons.copy_rounded, size: 18),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/attachments/AttachmentViewerDialog.dart",
+    "line": 583,
+    "original": "copy_rounded",
+    "replacement": "content_copy_outlined",
+    "code_snippet": "icon: const Icon(Icons.copy_rounded, size: 18),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/attachments/ChatMessageImageAttachments.dart",
+    "line": 651,
+    "original": "copy_outlined",
+    "replacement": "content_copy_outlined",
+    "code_snippet": "icon: const Icon(Icons.copy_outlined, size: 16),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/part/CustomXmlRenderer.dart",
+    "line": 1299,
+    "original": "search",
+    "replacement": "search_rounded",
+    "code_snippet": "final icon = source.url.isEmpty ? Icons.search : Icons.language;"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/part/CustomXmlRenderer.dart",
+    "line": 1299,
+    "original": "language",
+    "replacement": "language_rounded",
+    "code_snippet": "final icon = source.url.isEmpty ? Icons.search : Icons.language;"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/part/CustomXmlRenderer.dart",
+    "line": 1370,
+    "original": "language",
+    "replacement": "language_rounded",
+    "code_snippet": "Icons.language,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/part/CustomXmlRenderer.dart",
+    "line": 1377,
+    "original": "language",
+    "replacement": "language_rounded",
+    "code_snippet": "Icons.language,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/part/CustomXmlRenderer.dart",
+    "line": 1401,
+    "original": "search",
+    "replacement": "search_rounded",
+    "code_snippet": "final icon = source.url.isEmpty ? Icons.search : Icons.language;"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/part/CustomXmlRenderer.dart",
+    "line": 1401,
+    "original": "language",
+    "replacement": "language_rounded",
+    "code_snippet": "final icon = source.url.isEmpty ? Icons.search : Icons.language;"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/part/CustomXmlRenderer.dart",
+    "line": 1890,
+    "original": "error",
+    "replacement": "error_outline_rounded",
+    "code_snippet": "icon: Icons.error,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/part/DialogComponents.dart",
+    "line": 45,
+    "original": "view_agenda",
+    "replacement": "view_agenda_outlined",
+    "code_snippet": "_splitView ? Icons.view_agenda : Icons.view_column,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/part/DialogComponents.dart",
+    "line": 45,
+    "original": "view_column",
+    "replacement": "view_column_outlined",
+    "code_snippet": "_splitView ? Icons.view_agenda : Icons.view_column,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/part/FileDiffDisplay.dart",
+    "line": 158,
+    "original": "unfold_less",
+    "replacement": "unfold_less_rounded",
+    "code_snippet": "? Icons.unfold_less"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/part/FileDiffDisplay.dart",
+    "line": 159,
+    "original": "unfold_more",
+    "replacement": "unfold_more_rounded",
+    "code_snippet": ": Icons.unfold_more,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/part/ParamVisualizer.dart",
+    "line": 81,
+    "original": "content_copy",
+    "replacement": "content_copy_outlined",
+    "code_snippet": "Icons.content_copy,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/part/ThinkToolsXmlNodeGrouper.dart",
+    "line": 449,
+    "original": "keyboard_arrow_right",
+    "replacement": "chevron_right_rounded",
+    "code_snippet": "Icons.keyboard_arrow_right,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/part/ToolDisplayComponents.dart",
+    "line": 289,
+    "original": "delete_outline",
+    "replacement": "delete_outline_rounded",
+    "code_snippet": "'delete' => Icons.delete_outline,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/part/ToolDisplayComponents.dart",
+    "line": 290,
+    "original": "search",
+    "replacement": "search_rounded",
+    "code_snippet": "'search' => Icons.search,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/part/ToolDisplayComponents.dart",
+    "line": 291,
+    "original": "terminal",
+    "replacement": "terminal_rounded",
+    "code_snippet": "'terminal' => Icons.terminal,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/part/ToolDisplayComponents.dart",
+    "line": 292,
+    "original": "language",
+    "replacement": "language_rounded",
+    "code_snippet": "'web' => Icons.language,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/part/ToolDisplayComponents.dart",
+    "line": 295,
+    "original": "schedule",
+    "replacement": "schedule_rounded",
+    "code_snippet": "'time' => Icons.schedule,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/part/ToolDisplayComponents.dart",
+    "line": 297,
+    "original": "content_paste",
+    "replacement": "content_paste_outlined",
+    "code_snippet": "'clipboard' => Icons.content_paste,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/part/ToolDisplayComponents.dart",
+    "line": 299,
+    "original": "info_outline",
+    "replacement": "info_outline_rounded",
+    "code_snippet": "'info' => Icons.info_outline,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/part/ToolDisplayComponents.dart",
+    "line": 302,
+    "original": "ads_click",
+    "replacement": "ads_click_outlined",
+    "code_snippet": "'double_tap' => Icons.ads_click,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/part/ToolDisplayComponents.dart",
+    "line": 466,
+    "original": "error_outline",
+    "replacement": "error_outline_rounded",
+    "code_snippet": "? Icons.error_outline"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/part/ToolDisplayComponents.dart",
+    "line": 467,
+    "original": "check",
+    "replacement": "check_rounded",
+    "code_snippet": ": Icons.check,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/part/ToolDisplayComponents.dart",
+    "line": 477,
+    "original": "chevron_right",
+    "replacement": "chevron_right_rounded",
+    "code_snippet": "child: const Icon(Icons.chevron_right, size: 16),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/part/ToolDisplayComponents.dart",
+    "line": 710,
+    "original": "chevron_right",
+    "replacement": "chevron_right_rounded",
+    "code_snippet": "Icons.chevron_right,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/part/ToolDisplayComponents.dart",
+    "line": 737,
+    "original": "copy",
+    "replacement": "content_copy_outlined",
+    "code_snippet": "icon: Icon(Icons.copy, size: 14, color: color),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/part/XmlCanvasBlockComponents.dart",
+    "line": 42,
+    "original": "keyboard_arrow_right",
+    "replacement": "chevron_right_rounded",
+    "code_snippet": "Icons.keyboard_arrow_right,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/share/ChatShareImagePreviewDialog.dart",
+    "line": 44,
+    "original": "save_alt",
+    "replacement": "download_rounded",
+    "code_snippet": "icon: const Icon(Icons.save_alt),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/SummaryMessageComposable.dart",
+    "line": 345,
+    "original": "keyboard_arrow_down",
+    "replacement": "keyboard_arrow_down_rounded",
+    "code_snippet": "Icons.keyboard_arrow_down,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/SummaryMessageComposable.dart",
+    "line": 474,
+    "original": "delete_outline",
+    "replacement": "delete_outline_rounded",
+    "code_snippet": "icon: Icons.delete_outline,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/SummaryMessageComposable.dart",
+    "line": 484,
+    "original": "keyboard_arrow_up",
+    "replacement": "keyboard_arrow_up_rounded",
+    "code_snippet": "icon: Icons.keyboard_arrow_up,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/bubble/BubbleUserMessageComposable.dart",
+    "line": 611,
+    "original": "assistant",
+    "replacement": "auto_awesome_rounded",
+    "code_snippet": "final icon = isProxySender ? Icons.assistant : Icons.person;"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/bubble/BubbleUserMessageComposable.dart",
+    "line": 611,
+    "original": "person",
+    "replacement": "person_outline_rounded",
+    "code_snippet": "final icon = isProxySender ? Icons.assistant : Icons.person;"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/bubble/BubbleUserMessageComposable.dart",
+    "line": 943,
+    "original": "reply",
+    "replacement": "reply_rounded",
+    "code_snippet": "Icon(Icons.reply, size: 12, color: theme.colorScheme.primary),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/bubble/BubbleUserMessageComposable.dart",
+    "line": 1019,
+    "original": "image",
+    "replacement": "image_outlined",
+    "code_snippet": "return Icons.image;"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/bubble/BubbleUserMessageComposable.dart",
+    "line": 1022,
+    "original": "volume_up",
+    "replacement": "volume_up_outlined",
+    "code_snippet": "return Icons.volume_up;"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/bubble/BubbleUserMessageComposable.dart",
+    "line": 1025,
+    "original": "play_arrow",
+    "replacement": "play_arrow_rounded",
+    "code_snippet": "return Icons.play_arrow;"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/bubble/BubbleUserMessageComposable.dart",
+    "line": 1029,
+    "original": "screenshot_monitor",
+    "replacement": "desktop_windows_outlined",
+    "code_snippet": "return Icons.screenshot_monitor;"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/bubble/BubbleUserMessageComposable.dart",
+    "line": 1032,
+    "original": "code",
+    "replacement": "code_rounded",
+    "code_snippet": "return Icons.code;"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/bubble/BubbleUserMessageComposable.dart",
+    "line": 1034,
+    "original": "description",
+    "replacement": "description_outlined",
+    "code_snippet": "return Icons.description;"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/cursor/UserMessageComposable.dart",
+    "line": 456,
+    "original": "reply",
+    "replacement": "reply_rounded",
+    "code_snippet": "Icon(Icons.reply, size: 12, color: theme.colorScheme.primary),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/cursor/UserMessageComposable.dart",
+    "line": 531,
+    "original": "image",
+    "replacement": "image_outlined",
+    "code_snippet": "return Icons.image;"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/cursor/UserMessageComposable.dart",
+    "line": 534,
+    "original": "volume_up",
+    "replacement": "volume_up_outlined",
+    "code_snippet": "return Icons.volume_up;"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/cursor/UserMessageComposable.dart",
+    "line": 537,
+    "original": "play_arrow",
+    "replacement": "play_arrow_rounded",
+    "code_snippet": "return Icons.play_arrow;"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/cursor/UserMessageComposable.dart",
+    "line": 541,
+    "original": "screenshot_monitor",
+    "replacement": "desktop_windows_outlined",
+    "code_snippet": "return Icons.screenshot_monitor;"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/cursor/UserMessageComposable.dart",
+    "line": 544,
+    "original": "code",
+    "replacement": "code_rounded",
+    "code_snippet": "return Icons.code;"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/cursor/UserMessageComposable.dart",
+    "line": 546,
+    "original": "description",
+    "replacement": "description_outlined",
+    "code_snippet": "return Icons.description;"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/agent/AgentChatInputSection.dart",
+    "line": 927,
+    "original": "add",
+    "replacement": "add_rounded",
+    "code_snippet": "icon: Icons.add,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/agent/AgentChatInputSection.dart",
+    "line": 992,
+    "original": "stop",
+    "replacement": "stop_rounded",
+    "code_snippet": "? Icons.stop"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/agent/AgentChatInputSection.dart",
+    "line": 994,
+    "original": "graphic_eq",
+    "replacement": "graphic_eq_rounded",
+    "code_snippet": "? Icons.graphic_eq"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/agent/AgentChatInputSection.dart",
+    "line": 996,
+    "original": "device_unknown",
+    "replacement": "device_unknown_rounded",
+    "code_snippet": "? Icons.device_unknown"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/agent/AgentChatInputSection.dart",
+    "line": 1058,
+    "original": "attach_file",
+    "replacement": "attach_file_rounded",
+    "code_snippet": "Icons.attach_file,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/agent/AgentChatInputSection.dart",
+    "line": 1172,
+    "original": "search",
+    "replacement": "search_rounded",
+    "code_snippet": "Icons.search,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/agent/AgentChatInputSection.dart",
+    "line": 1179,
+    "original": "clear",
+    "replacement": "close_rounded",
+    "code_snippet": "icon: const Icon(Icons.clear),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/agent/AgentChatInputSection.dart",
+    "line": 1265,
+    "original": "auto_awesome",
+    "replacement": "auto_awesome_rounded",
+    "code_snippet": "Icon(Icons.auto_awesome, size: 20, color: colorScheme.primary),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/agent/AgentChatInputSection.dart",
+    "line": 1565,
+    "original": "close",
+    "replacement": "close_rounded",
+    "code_snippet": "child: Icon(Icons.close, size: 10, color: color),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/agent/AgentChatInputSection.dart",
+    "line": 1597,
+    "original": "close",
+    "replacement": "close_rounded",
+    "code_snippet": "child: Icon(Icons.close, size: 10, color: Colors.white),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/agent/AgentChatInputSection.dart",
+    "line": 1612,
+    "original": "image",
+    "replacement": "image_outlined",
+    "code_snippet": "return Icons.image;"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/agent/AgentChatInputSection.dart",
+    "line": 1614,
+    "original": "description",
+    "replacement": "description_outlined",
+    "code_snippet": "return Icons.description;"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/agent/AgentChatInputSection.dart",
+    "line": 1756,
+    "original": "close",
+    "replacement": "close_rounded",
+    "code_snippet": "return Icons.close;"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/agent/AgentChatInputSection.dart",
+    "line": 1759,
+    "original": "add",
+    "replacement": "add_rounded",
+    "code_snippet": "return Icons.add;"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/agent/AgentChatInputSection.dart",
+    "line": 1762,
+    "original": "arrow_upward",
+    "replacement": "arrow_upward_rounded",
+    "code_snippet": "return Icons.arrow_upward;"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/agent/AgentChatInputSection.dart",
+    "line": 1764,
+    "original": "mic",
+    "replacement": "mic_none_rounded",
+    "code_snippet": "return Icons.mic;"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/agent/AgentInputMenuPopup.dart",
+    "line": 308,
+    "original": "hub",
+    "replacement": "hub_outlined",
+    "code_snippet": "icon: Icons.hub,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/agent/AgentInputMenuPopup.dart",
+    "line": 629,
+    "original": "keyboard_arrow_up",
+    "replacement": "keyboard_arrow_up_rounded",
+    "code_snippet": "? Icons.keyboard_arrow_up"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/agent/AgentInputMenuPopup.dart",
+    "line": 630,
+    "original": "keyboard_arrow_down",
+    "replacement": "keyboard_arrow_down_rounded",
+    "code_snippet": ": Icons.keyboard_arrow_down,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/agent/AgentInputMenuPopup.dart",
+    "line": 846,
+    "original": "keyboard_arrow_up",
+    "replacement": "keyboard_arrow_up_rounded",
+    "code_snippet": "? Icons.keyboard_arrow_up"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/agent/AgentInputMenuPopup.dart",
+    "line": 847,
+    "original": "keyboard_arrow_down",
+    "replacement": "keyboard_arrow_down_rounded",
+    "code_snippet": ": Icons.keyboard_arrow_down,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/agent/AgentModelSelectorPopup.dart",
+    "line": 689,
+    "original": "psychology",
+    "replacement": "psychology_outlined",
+    "code_snippet": "Icons.psychology,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/agent/AgentModelSelectorPopup.dart",
+    "line": 1034,
+    "original": "psychology",
+    "replacement": "psychology_outlined",
+    "code_snippet": "Icon(Icons.psychology, size: 16, color: colorScheme.primary),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/agent/AgentModelSelectorPopup.dart",
+    "line": 1330,
+    "original": "keyboard_arrow_up",
+    "replacement": "keyboard_arrow_up_rounded",
+    "code_snippet": "? Icons.keyboard_arrow_up"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/agent/AgentModelSelectorPopup.dart",
+    "line": 1331,
+    "original": "keyboard_arrow_down",
+    "replacement": "keyboard_arrow_down_rounded",
+    "code_snippet": ": Icons.keyboard_arrow_down,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/agent/AgentModelSelectorPopup.dart",
+    "line": 1350,
+    "original": "check",
+    "replacement": "check_rounded",
+    "code_snippet": "Icon(Icons.check, size: 12, color: colorScheme.primary),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/agent/AgentModelSelectorPopup.dart",
+    "line": 1482,
+    "original": "keyboard_arrow_up",
+    "replacement": "keyboard_arrow_up_rounded",
+    "code_snippet": "open ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/agent/AgentModelSelectorPopup.dart",
+    "line": 1482,
+    "original": "keyboard_arrow_down",
+    "replacement": "keyboard_arrow_down_rounded",
+    "code_snippet": "open ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/agent/AgentModelSelectorPopup.dart",
+    "line": 1678,
+    "original": "check",
+    "replacement": "check_rounded",
+    "code_snippet": "Icon(Icons.check, size: 11, color: colorScheme.primary),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/agent/AgentModelSelectorPopup.dart",
+    "line": 1822,
+    "original": "keyboard_arrow_up",
+    "replacement": "keyboard_arrow_up_rounded",
+    "code_snippet": "? Icons.keyboard_arrow_up"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/agent/AgentModelSelectorPopup.dart",
+    "line": 1823,
+    "original": "keyboard_arrow_down",
+    "replacement": "keyboard_arrow_down_rounded",
+    "code_snippet": ": Icons.keyboard_arrow_down,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/agent/AgentModelSelectorPopup.dart",
+    "line": 1878,
+    "original": "info_outline",
+    "replacement": "info_outline_rounded",
+    "code_snippet": "Icons.info_outline,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/classic/ClassicChatInputSection.dart",
+    "line": 643,
+    "original": "add",
+    "replacement": "add_rounded",
+    "code_snippet": "icon: Icons.add,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/classic/ClassicChatInputSection.dart",
+    "line": 712,
+    "original": "stop",
+    "replacement": "stop_rounded",
+    "code_snippet": "? Icons.stop"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/classic/ClassicChatInputSection.dart",
+    "line": 714,
+    "original": "graphic_eq",
+    "replacement": "graphic_eq_rounded",
+    "code_snippet": "? Icons.graphic_eq"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/classic/ClassicChatInputSection.dart",
+    "line": 716,
+    "original": "device_unknown",
+    "replacement": "device_unknown_rounded",
+    "code_snippet": "? Icons.device_unknown"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/classic/ClassicChatInputSection.dart",
+    "line": 778,
+    "original": "attach_file",
+    "replacement": "attach_file_rounded",
+    "code_snippet": "Icons.attach_file,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/classic/ClassicChatInputSection.dart",
+    "line": 972,
+    "original": "auto_awesome",
+    "replacement": "auto_awesome_rounded",
+    "code_snippet": "Icon(Icons.auto_awesome, size: 20, color: colorScheme.primary),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/classic/ClassicChatInputSection.dart",
+    "line": 1180,
+    "original": "close",
+    "replacement": "close_rounded",
+    "code_snippet": "child: Icon(Icons.close, size: 10, color: color),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/classic/ClassicChatInputSection.dart",
+    "line": 1212,
+    "original": "close",
+    "replacement": "close_rounded",
+    "code_snippet": "child: Icon(Icons.close, size: 10, color: Colors.white),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/classic/ClassicChatInputSection.dart",
+    "line": 1304,
+    "original": "image",
+    "replacement": "image_outlined",
+    "code_snippet": "return Icons.image;"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/classic/ClassicChatInputSection.dart",
+    "line": 1306,
+    "original": "description",
+    "replacement": "description_outlined",
+    "code_snippet": "return Icons.description;"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/classic/ClassicChatInputSection.dart",
+    "line": 1367,
+    "original": "close",
+    "replacement": "close_rounded",
+    "code_snippet": "return Icons.close;"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/classic/ClassicChatInputSection.dart",
+    "line": 1370,
+    "original": "add",
+    "replacement": "add_rounded",
+    "code_snippet": "return Icons.add;"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/classic/ClassicChatInputSection.dart",
+    "line": 1373,
+    "original": "send",
+    "replacement": "arrow_upward_rounded",
+    "code_snippet": "return Icons.send;"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/classic/ClassicChatInputSection.dart",
+    "line": 1375,
+    "original": "mic",
+    "replacement": "mic_none_rounded",
+    "code_snippet": "return Icons.mic;"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/common/ChatAttachmentMenuPopup.dart",
+    "line": 239,
+    "original": "image",
+    "replacement": "image_outlined",
+    "code_snippet": "Icons.image,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/common/ChatAttachmentMenuPopup.dart",
+    "line": 244,
+    "original": "photo_camera",
+    "replacement": "photo_camera_outlined",
+    "code_snippet": "Icons.photo_camera,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/common/ChatAttachmentMenuPopup.dart",
+    "line": 249,
+    "original": "description",
+    "replacement": "description_outlined",
+    "code_snippet": "Icons.description,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/common/ChatAttachmentMenuPopup.dart",
+    "line": 254,
+    "original": "screenshot_monitor",
+    "replacement": "desktop_windows_outlined",
+    "code_snippet": "Icons.screenshot_monitor,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/common/ChatAttachmentMenuPopup.dart",
+    "line": 259,
+    "original": "notifications",
+    "replacement": "notifications_none_rounded",
+    "code_snippet": "Icons.notifications,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/common/ChatAttachmentMenuPopup.dart",
+    "line": 264,
+    "original": "location_on",
+    "replacement": "location_on_outlined",
+    "code_snippet": "Icons.location_on,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/common/ChatAttachmentMenuPopup.dart",
+    "line": 269,
+    "original": "auto_awesome",
+    "replacement": "auto_awesome_rounded",
+    "code_snippet": "Icons.auto_awesome,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/common/ChatComposerSendActionMenu.dart",
+    "line": 37,
+    "original": "schedule",
+    "replacement": "schedule_rounded",
+    "code_snippet": "icon: Icons.schedule,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/common/ChatComposerSendActionMenu.dart",
+    "line": 45,
+    "original": "alt_route",
+    "replacement": "alt_route_rounded",
+    "code_snippet": "icon: Icons.alt_route,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/common/ChatComposerSendActionMenu.dart",
+    "line": 53,
+    "original": "send",
+    "replacement": "arrow_upward_rounded",
+    "code_snippet": "icon: Icons.send,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/common/ChatComposerSendActionMenu.dart",
+    "line": 63,
+    "original": "expand_more",
+    "replacement": "expand_more_rounded",
+    "code_snippet": "Icons.expand_more,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/common/ChatComposerSlotHost.dart",
+    "line": 119,
+    "original": "error_outline",
+    "replacement": "error_outline_rounded",
+    "code_snippet": "Icon(Icons.error_outline, size: 14, color: errorColor),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/common/MentionSuggestionPanel.dart",
+    "line": 361,
+    "original": "auto_awesome",
+    "replacement": "auto_awesome_rounded",
+    "code_snippet": "Icons.auto_awesome,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/common/MentionSuggestionPanel.dart",
+    "line": 432,
+    "original": "folder",
+    "replacement": "folder_outlined",
+    "code_snippet": "entry.isDirectory ? Icons.folder : Icons.description,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/style/input/common/MentionSuggestionPanel.dart",
+    "line": 432,
+    "original": "description",
+    "replacement": "description_outlined",
+    "code_snippet": "entry.isDirectory ? Icons.folder : Icons.description,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/WorkspaceFileBrowserContent.dart",
+    "line": 101,
+    "original": "arrow_back",
+    "replacement": "arrow_back_rounded",
+    "code_snippet": "icon: Icons.arrow_back,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/WorkspaceFileBrowserContent.dart",
+    "line": 144,
+    "original": "error_outline",
+    "replacement": "error_outline_rounded",
+    "code_snippet": "icon: Icons.error_outline,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/WorkspaceFileBrowserContent.dart",
+    "line": 187,
+    "original": "folder",
+    "replacement": "folder_outlined",
+    "code_snippet": "Icons.folder,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/WorkspaceFileBrowserContent.dart",
+    "line": 205,
+    "original": "chevron_right",
+    "replacement": "chevron_right_rounded",
+    "code_snippet": "Icons.chevron_right,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/WorkspaceFileBrowserContent.dart",
+    "line": 425,
+    "original": "check",
+    "replacement": "check_rounded",
+    "code_snippet": ": const Icon(Icons.check),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/WorkspaceFileBrowserContent.dart",
+    "line": 433,
+    "original": "folder_open",
+    "replacement": "folder_open_outlined",
+    "code_snippet": "icon: const Icon(Icons.folder_open),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/WorkspaceFileIcon.dart",
+    "line": 180,
+    "original": "tune",
+    "replacement": "tune_rounded",
+    "code_snippet": "assetIcon = (Icons.tune, const Color(0xFFE5C07B));"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/WorkspaceFileIcon.dart",
+    "line": 229,
+    "original": "code",
+    "replacement": "code_rounded",
+    "code_snippet": "'vue' => (Icons.code, const Color(0xFF73B991)),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/WorkspaceFileIcon.dart",
+    "line": 230,
+    "original": "code",
+    "replacement": "code_rounded",
+    "code_snippet": "'xml' || 'xhtml' => (Icons.code, const Color(0xFFE79A65)),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/WorkspaceFilePreviewContent.dart",
+    "line": 164,
+    "original": "error_outline",
+    "replacement": "error_outline_rounded",
+    "code_snippet": "icon: Icons.error_outline,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/WorkspaceFilePreviewContent.dart",
+    "line": 198,
+    "original": "error_outline",
+    "replacement": "error_outline_rounded",
+    "code_snippet": "icon: Icons.error_outline,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/WorkspaceFileTree.dart",
+    "line": 287,
+    "original": "copy_outlined",
+    "replacement": "content_copy_outlined",
+    "code_snippet": "icon: Icons.copy_outlined,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/WorkspaceFileTree.dart",
+    "line": 292,
+    "original": "content_cut",
+    "replacement": "content_cut_rounded",
+    "code_snippet": "icon: Icons.content_cut,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/WorkspaceFileTree.dart",
+    "line": 299,
+    "original": "content_paste",
+    "replacement": "content_paste_outlined",
+    "code_snippet": "icon: Icons.content_paste,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/WorkspaceFileTree.dart",
+    "line": 306,
+    "original": "delete_outline",
+    "replacement": "delete_outline_rounded",
+    "code_snippet": "icon: Icons.delete_outline,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/WorkspaceFileTree.dart",
+    "line": 514,
+    "original": "expand_more",
+    "replacement": "expand_more_rounded",
+    "code_snippet": "_rootExpanded ? Icons.expand_more : Icons.chevron_right,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/WorkspaceFileTree.dart",
+    "line": 514,
+    "original": "chevron_right",
+    "replacement": "chevron_right_rounded",
+    "code_snippet": "_rootExpanded ? Icons.expand_more : Icons.chevron_right,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/WorkspaceFileTree.dart",
+    "line": 679,
+    "original": "expand_more",
+    "replacement": "expand_more_rounded",
+    "code_snippet": "? Icons.expand_more"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/WorkspaceFileTree.dart",
+    "line": 680,
+    "original": "chevron_right",
+    "replacement": "chevron_right_rounded",
+    "code_snippet": ": Icons.chevron_right,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/WorkspaceFileTree.dart",
+    "line": 691,
+    "original": "folder_open",
+    "replacement": "folder_open_outlined",
+    "code_snippet": "? Icons.folder_open"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/WorkspaceFileTree.dart",
+    "line": 692,
+    "original": "folder",
+    "replacement": "folder_outlined",
+    "code_snippet": ": Icons.folder,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/WorkspaceFileTree.dart",
+    "line": 710,
+    "original": "error_outline",
+    "replacement": "error_outline_rounded",
+    "code_snippet": "? Icons.error_outline"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/WorkspaceHomeContent.dart",
+    "line": 1084,
+    "original": "sync",
+    "replacement": "sync_rounded",
+    "code_snippet": "icon: Icons.sync,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/WorkspaceHomeContent.dart",
+    "line": 1091,
+    "original": "error_outline",
+    "replacement": "error_outline_rounded",
+    "code_snippet": "icon: Icons.error_outline,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/WorkspaceInlineDiff.dart",
+    "line": 887,
+    "original": "unfold_more",
+    "replacement": "unfold_more_rounded",
+    "code_snippet": "_tappable ? Icons.unfold_more : Icons.unfold_less,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/WorkspaceInlineDiff.dart",
+    "line": 887,
+    "original": "unfold_less",
+    "replacement": "unfold_less_rounded",
+    "code_snippet": "_tappable ? Icons.unfold_more : Icons.unfold_less,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/WorkspaceInlineDiff.dart",
+    "line": 1503,
+    "original": "add",
+    "replacement": "add_rounded",
+    "code_snippet": "Icons.add,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/WorkspacePanel.dart",
+    "line": 1046,
+    "original": "public",
+    "replacement": "public_rounded",
+    "code_snippet": "icon: Icons.public,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/WorkspacePanel.dart",
+    "line": 1159,
+    "original": "travel_explore",
+    "replacement": "travel_explore_outlined",
+    "code_snippet": "icon: Icons.travel_explore,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/WorkspacePanel.dart",
+    "line": 1560,
+    "original": "close",
+    "replacement": "close_rounded",
+    "code_snippet": "icon: const Icon(Icons.close),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/WorkspacePanel.dart",
+    "line": 1769,
+    "original": "terminal",
+    "replacement": "terminal_rounded",
+    "code_snippet": "icon: Icons.terminal,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/WorkspacePanel.dart",
+    "line": 2216,
+    "original": "radio_button_checked",
+    "replacement": "radio_button_checked_rounded",
+    "code_snippet": "? Icons.radio_button_checked"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/WorkspacePanel.dart",
+    "line": 2217,
+    "original": "radio_button_unchecked",
+    "replacement": "radio_button_unchecked_rounded",
+    "code_snippet": ": Icons.radio_button_unchecked,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/WorkspacePathBar.dart",
+    "line": 76,
+    "original": "check",
+    "replacement": "check_rounded",
+    "code_snippet": "icon: editing ? Icons.check : Icons.edit_outlined,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/WorkspacePathBar.dart",
+    "line": 157,
+    "original": "refresh",
+    "replacement": "refresh_rounded",
+    "code_snippet": "icon: Icons.refresh,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/WorkspaceTabContent.dart",
+    "line": 197,
+    "original": "terminal",
+    "replacement": "terminal_rounded",
+    "code_snippet": "icon: Icons.terminal,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/WorkspaceTabContent.dart",
+    "line": 227,
+    "original": "travel_explore",
+    "replacement": "travel_explore_outlined",
+    "code_snippet": "icon: Icons.travel_explore,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/WorkspaceTabStrip.dart",
+    "line": 436,
+    "original": "close",
+    "replacement": "close_rounded",
+    "code_snippet": "icon: Icon(Icons.close, color: textColor),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/WorkspaceTabStrip.dart",
+    "line": 535,
+    "original": "close",
+    "replacement": "close_rounded",
+    "code_snippet": "icon: Icon(Icons.close, color: contentColor),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/WorkspaceTabStrip.dart",
+    "line": 574,
+    "original": "more_vert",
+    "replacement": "more_horiz_rounded",
+    "code_snippet": "icon: Icon(Icons.more_vert, color: color),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/WorkspaceBrowserContent.dart",
+    "line": 265,
+    "original": "chevron_right",
+    "replacement": "chevron_right_rounded",
+    "code_snippet": "const Icon(Icons.chevron_right, size: 20),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/bookmarks/WorkspaceBrowserBookmarkSheet.dart",
+    "line": 30,
+    "original": "bookmark",
+    "replacement": "bookmark_outline_rounded",
+    "code_snippet": "icon: Icons.bookmark,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/bookmarks/WorkspaceBrowserBookmarkSheet.dart",
+    "line": 36,
+    "original": "bookmark",
+    "replacement": "bookmark_outline_rounded",
+    "code_snippet": "icon: Icons.bookmark,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/bookmarks/WorkspaceBrowserBookmarkSheet.dart",
+    "line": 46,
+    "original": "close",
+    "replacement": "close_rounded",
+    "code_snippet": "icon: const Icon(Icons.close, size: 17),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/chrome/WorkspaceBrowserMenuSheet.dart",
+    "line": 74,
+    "original": "open_in_new",
+    "replacement": "open_in_new_rounded",
+    "code_snippet": "icon: Icons.open_in_new,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/chrome/WorkspaceBrowserMenuSheet.dart",
+    "line": 79,
+    "original": "history",
+    "replacement": "history_rounded",
+    "code_snippet": "icon: Icons.history,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/chrome/WorkspaceBrowserMenuSheet.dart",
+    "line": 84,
+    "original": "star_border",
+    "replacement": "star_outline_rounded",
+    "code_snippet": "icon: Icons.star_border,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/chrome/WorkspaceBrowserMenuSheet.dart",
+    "line": 109,
+    "original": "error_outline",
+    "replacement": "error_outline_rounded",
+    "code_snippet": "leading: const Icon(Icons.error_outline),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/chrome/WorkspaceBrowserMenuSheet.dart",
+    "line": 125,
+    "original": "extension",
+    "replacement": "extension_outlined",
+    "code_snippet": "icon: Icons.extension,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/chrome/WorkspaceBrowserMenuSheet.dart",
+    "line": 135,
+    "original": "lock_outline",
+    "replacement": "lock_outline_rounded",
+    "code_snippet": "icon: Icons.lock_outline,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/chrome/WorkspaceBrowserMenuSheet.dart",
+    "line": 210,
+    "original": "remove",
+    "replacement": "remove_rounded",
+    "code_snippet": "icon: const Icon(Icons.remove, size: 18),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/chrome/WorkspaceBrowserMenuSheet.dart",
+    "line": 238,
+    "original": "add",
+    "replacement": "add_rounded",
+    "code_snippet": "icon: const Icon(Icons.add, size: 18),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/chrome/WorkspaceBrowserSiteDataSheet.dart",
+    "line": 89,
+    "original": "delete_outline",
+    "replacement": "delete_outline_rounded",
+    "code_snippet": "icon: const Icon(Icons.delete_outline, size: 18),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/chrome/WorkspaceBrowserSiteDataSheet.dart",
+    "line": 111,
+    "original": "refresh",
+    "replacement": "refresh_rounded",
+    "code_snippet": "icon: const Icon(Icons.refresh, size: 18),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/chrome/WorkspaceBrowserSiteDataSheet.dart",
+    "line": 199,
+    "original": "delete_outline",
+    "replacement": "delete_outline_rounded",
+    "code_snippet": "icon: const Icon(Icons.delete_outline, size: 18),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/chrome/WorkspaceBrowserUrlBar.dart",
+    "line": 100,
+    "original": "arrow_back",
+    "replacement": "arrow_back_rounded",
+    "code_snippet": "icon: Icons.arrow_back,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/chrome/WorkspaceBrowserUrlBar.dart",
+    "line": 105,
+    "original": "arrow_forward",
+    "replacement": "arrow_forward_rounded",
+    "code_snippet": "icon: Icons.arrow_forward,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/chrome/WorkspaceBrowserUrlBar.dart",
+    "line": 110,
+    "original": "close",
+    "replacement": "close_rounded",
+    "code_snippet": "icon: tab.isLoading ? Icons.close : Icons.refresh,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/chrome/WorkspaceBrowserUrlBar.dart",
+    "line": 110,
+    "original": "refresh",
+    "replacement": "refresh_rounded",
+    "code_snippet": "icon: tab.isLoading ? Icons.close : Icons.refresh,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/chrome/WorkspaceBrowserUrlBar.dart",
+    "line": 124,
+    "original": "lock",
+    "replacement": "lock_outline_rounded",
+    "code_snippet": "? Icons.lock"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/chrome/WorkspaceBrowserUrlBar.dart",
+    "line": 125,
+    "original": "language",
+    "replacement": "language_rounded",
+    "code_snippet": ": Icons.language,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/chrome/WorkspaceBrowserUrlBar.dart",
+    "line": 154,
+    "original": "check",
+    "replacement": "check_rounded",
+    "code_snippet": "icon: const Icon(Icons.check, size: 20),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/chrome/WorkspaceBrowserUrlBar.dart",
+    "line": 180,
+    "original": "lock",
+    "replacement": "lock_outline_rounded",
+    "code_snippet": "? Icons.lock"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/chrome/WorkspaceBrowserUrlBar.dart",
+    "line": 181,
+    "original": "language",
+    "replacement": "language_rounded",
+    "code_snippet": ": Icons.language,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/chrome/WorkspaceBrowserUrlBar.dart",
+    "line": 204,
+    "original": "star",
+    "replacement": "star_outline_rounded",
+    "code_snippet": "? Icons.star"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/chrome/WorkspaceBrowserUrlBar.dart",
+    "line": 205,
+    "original": "star_border",
+    "replacement": "star_outline_rounded",
+    "code_snippet": ": Icons.star_border,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/chrome/WorkspaceBrowserUrlBar.dart",
+    "line": 239,
+    "original": "more_horiz",
+    "replacement": "more_horiz_rounded",
+    "code_snippet": "icon: Icons.more_horiz,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/downloads/WorkspaceBrowserDownloadSheet.dart",
+    "line": 86,
+    "original": "download",
+    "replacement": "download_rounded",
+    "code_snippet": "icon: Icons.download,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/downloads/WorkspaceBrowserDownloadSheet.dart",
+    "line": 245,
+    "original": "more_vert",
+    "replacement": "more_horiz_rounded",
+    "code_snippet": "icon: const Icon(Icons.more_vert),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/downloads/WorkspaceBrowserDownloadSheet.dart",
+    "line": 351,
+    "original": "open_in_new",
+    "replacement": "open_in_new_rounded",
+    "code_snippet": "icon: const Icon(Icons.open_in_new, size: 18),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/history/WorkspaceBrowserHistorySheet.dart",
+    "line": 64,
+    "original": "search",
+    "replacement": "search_rounded",
+    "code_snippet": "prefixIcon: const Icon(Icons.search, size: 17),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/history/WorkspaceBrowserHistorySheet.dart",
+    "line": 83,
+    "original": "history",
+    "replacement": "history_rounded",
+    "code_snippet": "WorkspaceBrowserPopupEmpty(icon: Icons.history, text: l10n.history)"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/history/WorkspaceBrowserHistorySheet.dart",
+    "line": 87,
+    "original": "history",
+    "replacement": "history_rounded",
+    "code_snippet": "icon: Icons.history,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/permissions/WorkspaceBrowserPermissionSheet.dart",
+    "line": 41,
+    "original": "lock_outline",
+    "replacement": "lock_outline_rounded",
+    "code_snippet": "icon: Icons.lock_outline,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/permissions/WorkspaceBrowserPermissionSheet.dart",
+    "line": 48,
+    "original": "check_circle_outline",
+    "replacement": "check_circle_outline_rounded",
+    "code_snippet": "? Icons.check_circle_outline"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/permissions/WorkspaceBrowserPermissionSheet.dart",
+    "line": 49,
+    "original": "block",
+    "replacement": "block_rounded",
+    "code_snippet": ": Icons.block,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/userscripts/WorkspaceUserscriptSheet.dart",
+    "line": 75,
+    "original": "add",
+    "replacement": "add_rounded",
+    "code_snippet": "icon: const Icon(Icons.add),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/userscripts/WorkspaceUserscriptSheet.dart",
+    "line": 206,
+    "original": "notes",
+    "replacement": "notes_outlined",
+    "code_snippet": "leading: const Icon(Icons.notes, size: 18),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/userscripts/WorkspaceUserscriptSheet.dart",
+    "line": 343,
+    "original": "system_update_alt",
+    "replacement": "system_update_alt_rounded",
+    "code_snippet": ": const Icon(Icons.system_update_alt, size: 18),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/userscripts/WorkspaceUserscriptSheet.dart",
+    "line": 351,
+    "original": "delete_outline",
+    "replacement": "delete_outline_rounded",
+    "code_snippet": "icon: const Icon(Icons.delete_outline, size: 18),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/userscripts/WorkspaceUserscriptSheet.dart",
+    "line": 398,
+    "original": "error_outline",
+    "replacement": "error_outline_rounded",
+    "code_snippet": "? Icons.error_outline"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/userscripts/WorkspaceUserscriptSheet.dart",
+    "line": 399,
+    "original": "check_circle_outline",
+    "replacement": "check_circle_outline_rounded",
+    "code_snippet": ": Icons.check_circle_outline,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/browser/userscripts/WorkspaceUserscriptSheet.dart",
+    "line": 451,
+    "original": "refresh",
+    "replacement": "refresh_rounded",
+    "code_snippet": "icon: const Icon(Icons.refresh, size: 18),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/file_preview/WorkspaceFilePreviewActionBar.dart",
+    "line": 60,
+    "original": "open_in_new",
+    "replacement": "open_in_new_rounded",
+    "code_snippet": ": const Icon(Icons.open_in_new, size: 18),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/file_preview/WorkspaceFilePreviewActionBar.dart",
+    "line": 75,
+    "original": "open_in_browser",
+    "replacement": "open_in_browser_rounded",
+    "code_snippet": "icon: const Icon(Icons.open_in_browser, size: 18),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/file_preview/WorkspaceMediaPreviewWidgets.dart",
+    "line": 113,
+    "original": "pause",
+    "replacement": "pause_rounded",
+    "code_snippet": "icon: Icon(playing ? Icons.pause : Icons.play_arrow),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/file_preview/WorkspaceMediaPreviewWidgets.dart",
+    "line": 113,
+    "original": "play_arrow",
+    "replacement": "play_arrow_rounded",
+    "code_snippet": "icon: Icon(playing ? Icons.pause : Icons.play_arrow),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/file_preview/WorkspaceMediaPreviewWidgets.dart",
+    "line": 195,
+    "original": "pause",
+    "replacement": "pause_rounded",
+    "code_snippet": "? Icons.pause"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/file_preview/WorkspaceMediaPreviewWidgets.dart",
+    "line": 196,
+    "original": "play_arrow",
+    "replacement": "play_arrow_rounded",
+    "code_snippet": ": Icons.play_arrow,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/file_preview/WorkspaceOpenOnlyPreview.dart",
+    "line": 94,
+    "original": "open_in_new",
+    "replacement": "open_in_new_rounded",
+    "code_snippet": ": const Icon(Icons.open_in_new),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/file_preview/WorkspaceTextPreview.dart",
+    "line": 244,
+    "original": "undo",
+    "replacement": "undo_rounded",
+    "code_snippet": "icon: Icons.undo,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/file_preview/WorkspaceTextPreview.dart",
+    "line": 249,
+    "original": "redo",
+    "replacement": "redo_rounded",
+    "code_snippet": "icon: Icons.redo,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/file_preview/WorkspaceTextPreview.dart",
+    "line": 274,
+    "original": "save",
+    "replacement": "save_outlined",
+    "code_snippet": "icon: _document.isDirty ? Icons.save : Icons.save_outlined,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/html_preview/WorkspaceHtmlPreviewWidget.dart",
+    "line": 227,
+    "original": "arrow_back",
+    "replacement": "arrow_back_rounded",
+    "code_snippet": "icon: Icons.arrow_back,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/html_preview/WorkspaceHtmlPreviewWidget.dart",
+    "line": 232,
+    "original": "arrow_forward",
+    "replacement": "arrow_forward_rounded",
+    "code_snippet": "icon: Icons.arrow_forward,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/html_preview/WorkspaceHtmlPreviewWidget.dart",
+    "line": 237,
+    "original": "refresh",
+    "replacement": "refresh_rounded",
+    "code_snippet": "icon: Icons.refresh,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/components/workspace/terminal/WorkspaceTerminalContent.dart",
+    "line": 143,
+    "original": "refresh",
+    "replacement": "refresh_rounded",
+    "code_snippet": "icon: const Icon(Icons.refresh),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/tts/TtsFloatingPanel.dart",
+    "line": 111,
+    "original": "graphic_eq",
+    "replacement": "graphic_eq_rounded",
+    "code_snippet": "Icons.graphic_eq,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/tts/TtsFloatingPanel.dart",
+    "line": 127,
+    "original": "close",
+    "replacement": "close_rounded",
+    "code_snippet": "icon: const Icon(Icons.close, size: 18),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/tts/TtsFloatingPanel.dart",
+    "line": 177,
+    "original": "play_arrow",
+    "replacement": "play_arrow_rounded",
+    "code_snippet": "? Icons.play_arrow"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/tts/TtsFloatingPanel.dart",
+    "line": 178,
+    "original": "pause",
+    "replacement": "pause_rounded",
+    "code_snippet": ": Icons.pause,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/chat/tts/TtsFloatingPanel.dart",
+    "line": 190,
+    "original": "stop",
+    "replacement": "stop_rounded",
+    "code_snippet": "icon: const Icon(Icons.stop, size: 18),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/onboarding/OnboardingStartupRoute.dart",
+    "line": 2580,
+    "original": "workspaces_outline",
+    "replacement": "workspaces_outlined",
+    "code_snippet": "icon: Icons.workspaces_outline,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/onboarding/OnboardingStartupRoute.dart",
+    "line": 3513,
+    "original": "radio_button_unchecked",
+    "replacement": "radio_button_unchecked_rounded",
+    "code_snippet": "granted ? Icons.check_circle_rounded : Icons.radio_button_unchecked,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/components/ExtensionActions.dart",
+    "line": 41,
+    "original": "copy_rounded",
+    "replacement": "content_copy_outlined",
+    "code_snippet": "(_QuickAction.copyId, Icons.copy_rounded, '复制 ID'),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/components/ExtensionScopeControls.dart",
+    "line": 14,
+    "original": "devices",
+    "replacement": "devices_outlined",
+    "code_snippet": "leading: Icon(Icons.devices),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/components/ToolPkgDependencyTree.dart",
+    "line": 243,
+    "original": "link_outlined",
+    "replacement": "link_rounded",
+    "code_snippet": "? Icons.link_outlined"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/dialogs/MCPImportDialog.dart",
+    "line": 83,
+    "original": "code",
+    "replacement": "code_rounded",
+    "code_snippet": "icon: Icon(Icons.code),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/dialogs/MCPImportDialog.dart",
+    "line": 88,
+    "original": "data_object",
+    "replacement": "data_object_outlined",
+    "code_snippet": "icon: Icon(Icons.data_object),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/dialogs/MCPImportDialog.dart",
+    "line": 147,
+    "original": "link",
+    "replacement": "link_rounded",
+    "code_snippet": "prefixIcon: Icon(Icons.link),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/dialogs/MCPImportDialog.dart",
+    "line": 157,
+    "original": "tag",
+    "replacement": "tag_rounded",
+    "code_snippet": "prefixIcon: Icon(Icons.tag),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/dialogs/MCPImportDialog.dart",
+    "line": 167,
+    "original": "title",
+    "replacement": "title_rounded",
+    "code_snippet": "prefixIcon: Icon(Icons.title),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/dialogs/MCPImportDialog.dart",
+    "line": 709,
+    "original": "tag",
+    "replacement": "tag_rounded",
+    "code_snippet": "prefixIcon: Icon(Icons.tag),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/dialogs/MCPImportDialog.dart",
+    "line": 720,
+    "original": "link",
+    "replacement": "link_rounded",
+    "code_snippet": "prefixIcon: Icon(Icons.link),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/dialogs/MCPToolRunDialog.dart",
+    "line": 57,
+    "original": "play_circle_outline",
+    "replacement": "play_circle_outline_rounded",
+    "code_snippet": "icon: const Icon(Icons.play_circle_outline),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/dialogs/MCPToolRunDialog.dart",
+    "line": 127,
+    "original": "play_arrow",
+    "replacement": "play_arrow_rounded",
+    "code_snippet": ": const Icon(Icons.play_arrow),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/dialogs/MCPToolRunDialog.dart",
+    "line": 244,
+    "original": "check_circle_outline",
+    "replacement": "check_circle_outline_rounded",
+    "code_snippet": "result.success ? Icons.check_circle_outline : Icons.error_outline,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/dialogs/MCPToolRunDialog.dart",
+    "line": 244,
+    "original": "error_outline",
+    "replacement": "error_outline_rounded",
+    "code_snippet": "result.success ? Icons.check_circle_outline : Icons.error_outline,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/dialogs/PackageToolRunDialog.dart",
+    "line": 55,
+    "original": "play_circle_outline",
+    "replacement": "play_circle_outline_rounded",
+    "code_snippet": "icon: const Icon(Icons.play_circle_outline),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/dialogs/PackageToolRunDialog.dart",
+    "line": 120,
+    "original": "play_arrow",
+    "replacement": "play_arrow_rounded",
+    "code_snippet": ": const Icon(Icons.play_arrow),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/dialogs/PackageToolRunDialog.dart",
+    "line": 225,
+    "original": "check_circle_outline",
+    "replacement": "check_circle_outline_rounded",
+    "code_snippet": "result.success ? Icons.check_circle_outline : Icons.error_outline,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/dialogs/PackageToolRunDialog.dart",
+    "line": 225,
+    "original": "error_outline",
+    "replacement": "error_outline_rounded",
+    "code_snippet": "result.success ? Icons.check_circle_outline : Icons.error_outline,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/dialogs/SkillImportDialog.dart",
+    "line": 66,
+    "original": "code",
+    "replacement": "code_rounded",
+    "code_snippet": "icon: Icon(Icons.code),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/dialogs/SkillImportDialog.dart",
+    "line": 76,
+    "original": "edit_note",
+    "replacement": "edit_note_rounded",
+    "code_snippet": "icon: Icon(Icons.edit_note),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/dialogs/SkillImportDialog.dart",
+    "line": 102,
+    "original": "link",
+    "replacement": "link_rounded",
+    "code_snippet": "prefixIcon: Icon(Icons.link),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/dialogs/SkillImportDialog.dart",
+    "line": 126,
+    "original": "tag",
+    "replacement": "tag_rounded",
+    "code_snippet": "prefixIcon: Icon(Icons.tag),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/dialogs/SkillImportDialog.dart",
+    "line": 136,
+    "original": "notes",
+    "replacement": "notes_outlined",
+    "code_snippet": "prefixIcon: Icon(Icons.notes),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/dialogs/SkillImportDialog.dart",
+    "line": 166,
+    "original": "attach_file",
+    "replacement": "attach_file_rounded",
+    "code_snippet": "icon: const Icon(Icons.attach_file, size: 18),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/dialogs/SkillImportDialog.dart",
+    "line": 198,
+    "original": "close",
+    "replacement": "close_rounded",
+    "code_snippet": "icon: const Icon(Icons.close, size: 18),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/market/MarketInstallStateStore.dart",
+    "line": 124,
+    "original": "check",
+    "replacement": "check_rounded",
+    "code_snippet": "MarketLocalInstallState.installed => Icons.check,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/market/MarketInstallStateStore.dart",
+    "line": 125,
+    "original": "system_update_alt",
+    "replacement": "system_update_alt_rounded",
+    "code_snippet": "MarketLocalInstallState.updateAvailable => Icons.system_update_alt,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/screens/ArtifactProjectNodeTreeDialog.dart",
+    "line": 49,
+    "original": "close",
+    "replacement": "close_rounded",
+    "code_snippet": "icon: const Icon(Icons.close),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/screens/ArtifactProjectNodeTreeDialog.dart",
+    "line": 78,
+    "original": "check_circle",
+    "replacement": "check_circle_outline_rounded",
+    "code_snippet": "isLatest ? Icons.check_circle : Icons.circle_outlined,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/screens/ArtifactPublishScreen.dart",
+    "line": 288,
+    "original": "check_circle_outline",
+    "replacement": "check_circle_outline_rounded",
+    "code_snippet": "icon: const Icon(Icons.check_circle_outline),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/screens/ArtifactPublishScreen.dart",
+    "line": 394,
+    "original": "check_circle_outline",
+    "replacement": "check_circle_outline_rounded",
+    "code_snippet": "icon: const Icon(Icons.check_circle_outline),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/screens/ArtifactPublishScreen.dart",
+    "line": 447,
+    "original": "refresh",
+    "replacement": "refresh_rounded",
+    "code_snippet": "icon: const Icon(Icons.refresh),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/screens/ArtifactPublishScreen.dart",
+    "line": 459,
+    "original": "error_outline",
+    "replacement": "error_outline_rounded",
+    "code_snippet": "icon: Icons.error_outline,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/screens/ArtifactPublishScreen.dart",
+    "line": 464,
+    "original": "refresh",
+    "replacement": "refresh_rounded",
+    "code_snippet": "icon: const Icon(Icons.refresh),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/screens/ArtifactPublishScreen.dart",
+    "line": 539,
+    "original": "link_outlined",
+    "replacement": "link_rounded",
+    "code_snippet": "icon: Icon(Icons.link_outlined),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/screens/ArtifactPublishScreen.dart",
+    "line": 584,
+    "original": "refresh",
+    "replacement": "refresh_rounded",
+    "code_snippet": ": const Icon(Icons.refresh),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/screens/ArtifactPublishScreen.dart",
+    "line": 795,
+    "original": "refresh",
+    "replacement": "refresh_rounded",
+    "code_snippet": ": const Icon(Icons.refresh),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/screens/ExtensionDetailScreen.dart",
+    "line": 1486,
+    "original": "more_vert_rounded",
+    "replacement": "more_horiz_rounded",
+    "code_snippet": "icon: const Icon(Icons.more_vert_rounded),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/screens/ExtensionDetailScreen.dart",
+    "line": 1505,
+    "original": "copy_rounded",
+    "replacement": "content_copy_outlined",
+    "code_snippet": "leading: Icon(Icons.copy_rounded),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/screens/GitHubOAuthLoginDialog.dart",
+    "line": 368,
+    "original": "close",
+    "replacement": "close_rounded",
+    "code_snippet": "icon: const Icon(Icons.close),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/screens/GitHubOAuthLoginDialog.dart",
+    "line": 397,
+    "original": "open_in_browser",
+    "replacement": "open_in_browser_rounded",
+    "code_snippet": "const Icon(Icons.open_in_browser, size: 64),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/screens/GitHubOAuthLoginDialog.dart",
+    "line": 472,
+    "original": "open_in_browser",
+    "replacement": "open_in_browser_rounded",
+    "code_snippet": "icon: Icons.open_in_browser,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/screens/GitHubOAuthLoginDialog.dart",
+    "line": 479,
+    "original": "web",
+    "replacement": "web_outlined",
+    "code_snippet": "icon: Icons.web,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/screens/MarketCreatorScreen.dart",
+    "line": 1024,
+    "original": "rate_review_outlined",
+    "replacement": "edit_note_rounded",
+    "code_snippet": "icon: Icons.rate_review_outlined,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/screens/MarketEntryDetailScreen.dart",
+    "line": 697,
+    "original": "rate_review_outlined",
+    "replacement": "edit_note_rounded",
+    "code_snippet": "icon: const Icon(Icons.rate_review_outlined, size: 18),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/screens/PackageManagerScreen.dart",
+    "line": 256,
+    "original": "more_vert_rounded",
+    "replacement": "more_horiz_rounded",
+    "code_snippet": "icon: const Icon(Icons.more_vert_rounded),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/screens/RepoMarketPublishScreen.dart",
+    "line": 307,
+    "original": "error_outline",
+    "replacement": "error_outline_rounded",
+    "code_snippet": "icon: Icons.error_outline,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/screens/RepoMarketPublishScreen.dart",
+    "line": 312,
+    "original": "refresh",
+    "replacement": "refresh_rounded",
+    "code_snippet": "icon: const Icon(Icons.refresh),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/screens/ToolPkgDesktopWidgetsScreen.dart",
+    "line": 135,
+    "original": "add_to_home_screen",
+    "replacement": "add_to_home_screen_outlined",
+    "code_snippet": "icon: const Icon(Icons.add_to_home_screen),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/screens/compose_dsl/desktop_widget.dart",
+    "line": 210,
+    "original": "refresh",
+    "replacement": "refresh_rounded",
+    "code_snippet": "IconButton(onPressed: _refresh, icon: const Icon(Icons.refresh)),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/screens/compose_dsl/interactive_nodes.dart",
+    "line": 142,
+    "original": "arrow_drop_down",
+    "replacement": "keyboard_arrow_down_rounded",
+    "code_snippet": "const Icon(Icons.arrow_drop_down),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/screens/compose_dsl/material_controls.dart",
+    "line": 322,
+    "original": "close",
+    "replacement": "close_rounded",
+    "code_snippet": ": const Icon(Icons.close, size: 18),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/screens/compose_dsl/navigation_nodes.dart",
+    "line": 26,
+    "original": "widgets",
+    "replacement": "widgets_outlined",
+    "code_snippet": "NavigationDestination(icon: Icon(Icons.widgets), label: ''),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/packages/screens/compose_dsl/navigation_nodes.dart",
+    "line": 74,
+    "original": "widgets",
+    "replacement": "widgets_outlined",
+    "code_snippet": "icon: Icon(Icons.widgets),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/about/AboutOperitScreen.dart",
+    "line": 189,
+    "original": "system_update_alt",
+    "replacement": "system_update_alt_rounded",
+    "code_snippet": "leading: Icon(Icons.system_update_alt, color: colors.primary),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/about/AboutOperitScreen.dart",
+    "line": 197,
+    "original": "chevron_right",
+    "replacement": "chevron_right_rounded",
+    "code_snippet": ": Icon(Icons.chevron_right, color: colors.onSurfaceVariant),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/appearance/AppearanceSettingsPanel.dart",
+    "line": 243,
+    "original": "text_fields",
+    "replacement": "text_fields_outlined",
+    "code_snippet": "icon: const Icon(Icons.text_fields, size: 16),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/appearance/AppearanceSettingsPanel.dart",
+    "line": 273,
+    "original": "close",
+    "replacement": "close_rounded",
+    "code_snippet": "icon: Icons.close,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/appearance/AppearanceSettingsPanel.dart",
+    "line": 338,
+    "original": "restart_alt",
+    "replacement": "restart_alt_rounded",
+    "code_snippet": "icon: const Icon(Icons.restart_alt, size: 16),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/appearance/AppearanceSettingsPanel.dart",
+    "line": 552,
+    "original": "chat_bubble_outline",
+    "replacement": "chat_bubble_outline_rounded",
+    "code_snippet": "icon: Icons.chat_bubble_outline,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/appearance/AppearanceSettingsPanel.dart",
+    "line": 692,
+    "original": "person_outline",
+    "replacement": "person_outline_rounded",
+    "code_snippet": "icon: Icons.person_outline,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/appearance/AppearanceSettingsPanel.dart",
+    "line": 743,
+    "original": "person_outline",
+    "replacement": "person_outline_rounded",
+    "code_snippet": "icon: Icons.person_outline,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/appearance/AppearanceSettingsPanel.dart",
+    "line": 978,
+    "original": "person_outline",
+    "replacement": "person_outline_rounded",
+    "code_snippet": "icon: Icons.person_outline,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/appearance/AppearanceSettingsPanel.dart",
+    "line": 1272,
+    "original": "keyboard_arrow_down",
+    "replacement": "keyboard_arrow_down_rounded",
+    "code_snippet": "Icons.keyboard_arrow_down,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/appearance/AppearanceSettingsPanel.dart",
+    "line": 1332,
+    "original": "keyboard_arrow_up",
+    "replacement": "keyboard_arrow_up_rounded",
+    "code_snippet": "icon: const Icon(Icons.keyboard_arrow_up, size: 20),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/appearance/AppearanceSettingsPanel.dart",
+    "line": 2010,
+    "original": "text_fields",
+    "replacement": "text_fields_outlined",
+    "code_snippet": "icon: Icons.text_fields,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/appearance/AppearanceSettingsPanel.dart",
+    "line": 2018,
+    "original": "text_fields",
+    "replacement": "text_fields_outlined",
+    "code_snippet": "icon: const Icon(Icons.text_fields, size: 16),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/appearance/AppearanceSettingsPanel.dart",
+    "line": 2070,
+    "original": "close",
+    "replacement": "close_rounded",
+    "code_snippet": "icon: Icons.close,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/appearance/AppearanceSettingsPanel.dart",
+    "line": 2494,
+    "original": "close",
+    "replacement": "close_rounded",
+    "code_snippet": "icon: const Icon(Icons.close),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/appearance/AppearanceSettingsPanel.dart",
+    "line": 2903,
+    "original": "check",
+    "replacement": "check_rounded",
+    "code_snippet": "Icons.check,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/appearance/AppearanceSettingsPanel.dart",
+    "line": 2999,
+    "original": "chat_bubble_outline",
+    "replacement": "chat_bubble_outline_rounded",
+    "code_snippet": "icon: const Icon(Icons.chat_bubble_outline, size: 16),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/appearance/AppearanceSettingsPanel.dart",
+    "line": 3023,
+    "original": "chat_outlined",
+    "replacement": "chat_bubble_outline_rounded",
+    "code_snippet": "icon: const Icon(Icons.chat_outlined, size: 16),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/appearance/AppearanceSettingsPanel.dart",
+    "line": 3693,
+    "original": "check",
+    "replacement": "check_rounded",
+    "code_snippet": "? Icon(Icons.check, size: 16, color: colorScheme.onPrimary)"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/appearance/BubbleImageAdjustEditor.dart",
+    "line": 138,
+    "original": "fit_screen",
+    "replacement": "fit_screen_rounded",
+    "code_snippet": "icon: const Icon(Icons.fit_screen),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/appearance/DeviceFontPicker.dart",
+    "line": 124,
+    "original": "search",
+    "replacement": "search_rounded",
+    "code_snippet": "prefixIcon: const Icon(Icons.search),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/appearance/DeviceFontPicker.dart",
+    "line": 183,
+    "original": "check",
+    "replacement": "check_rounded",
+    "code_snippet": "? const Icon(Icons.check)"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/appearance/ThemeConfigurationControl.dart",
+    "line": 113,
+    "original": "add",
+    "replacement": "add_rounded",
+    "code_snippet": "icon: const Icon(Icons.add, size: 18),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/appearance/ThemeConfigurationControl.dart",
+    "line": 536,
+    "original": "check_circle",
+    "replacement": "check_circle_outline_rounded",
+    "code_snippet": "Icons.check_circle,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/appearance/ThemeConfigurationControl.dart",
+    "line": 582,
+    "original": "open_in_full",
+    "replacement": "open_in_full_rounded",
+    "code_snippet": "icon: const Icon(Icons.open_in_full, size: 18),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/appearance/ThemeConfigurationControl.dart",
+    "line": 597,
+    "original": "more_vert",
+    "replacement": "more_horiz_rounded",
+    "code_snippet": "icon: const Icon(Icons.more_vert, size: 20),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/appearance/ThemeCreationDialog.dart",
+    "line": 313,
+    "original": "check_circle",
+    "replacement": "check_circle_outline_rounded",
+    "code_snippet": "? Icons.check_circle"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/appearance/ThemeCreationDialog.dart",
+    "line": 314,
+    "original": "radio_button_unchecked",
+    "replacement": "radio_button_unchecked_rounded",
+    "code_snippet": ": Icons.radio_button_unchecked,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/components/SettingsControlStyles.dart",
+    "line": 230,
+    "original": "add",
+    "replacement": "add_rounded",
+    "code_snippet": "this.icon = Icons.add,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/components/SettingsControlStyles.dart",
+    "line": 523,
+    "original": "check",
+    "replacement": "check_rounded",
+    "code_snippet": "Icons.check,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/data/DataSettingsPanel.dart",
+    "line": 746,
+    "original": "chevron_right",
+    "replacement": "chevron_right_rounded",
+    "code_snippet": ": const Icon(Icons.chevron_right),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/data/DataSettingsPanel.dart",
+    "line": 815,
+    "original": "chat_bubble_outline",
+    "replacement": "chat_bubble_outline_rounded",
+    "code_snippet": "icon: Icons.chat_bubble_outline,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/data/DataSettingsPanel.dart",
+    "line": 849,
+    "original": "chat_bubble_outline",
+    "replacement": "chat_bubble_outline_rounded",
+    "code_snippet": "icon: Icons.chat_bubble_outline,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/data/UsageStatisticsDetailScreen.dart",
+    "line": 202,
+    "original": "refresh",
+    "replacement": "refresh_rounded",
+    "code_snippet": "icon: const Icon(Icons.refresh),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/data/UsageStatisticsDetailScreen.dart",
+    "line": 207,
+    "original": "restart_alt",
+    "replacement": "restart_alt_rounded",
+    "code_snippet": "icon: const Icon(Icons.restart_alt),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/data/UsageStatisticsDetailScreen.dart",
+    "line": 764,
+    "original": "check_circle",
+    "replacement": "check_circle_outline_rounded",
+    "code_snippet": "? Icon(Icons.check_circle, color: colorScheme.primary)"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/data/UsageTimeline.dart",
+    "line": 897,
+    "original": "chevron_left",
+    "replacement": "chevron_left_rounded",
+    "code_snippet": "icon: const Icon(Icons.chevron_left),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/data/UsageTimeline.dart",
+    "line": 904,
+    "original": "zoom_in",
+    "replacement": "zoom_in_rounded",
+    "code_snippet": "icon: const Icon(Icons.zoom_in),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/data/UsageTimeline.dart",
+    "line": 911,
+    "original": "zoom_out",
+    "replacement": "zoom_out_rounded",
+    "code_snippet": "icon: const Icon(Icons.zoom_out),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/data/UsageTimeline.dart",
+    "line": 916,
+    "original": "chevron_right",
+    "replacement": "chevron_right_rounded",
+    "code_snippet": "icon: const Icon(Icons.chevron_right),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/data/UsageTimeline.dart",
+    "line": 923,
+    "original": "update",
+    "replacement": "update_rounded",
+    "code_snippet": "icon: const Icon(Icons.update, size: 18),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/local_models/LocalModelFileImportDialog.dart",
+    "line": 257,
+    "original": "info_outline",
+    "replacement": "info_outline_rounded",
+    "code_snippet": "Icons.info_outline,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/local_models/LocalModelFileImportDialog.dart",
+    "line": 362,
+    "original": "chevron_right",
+    "replacement": "chevron_right_rounded",
+    "code_snippet": ": Icons.chevron_right,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/local_models/LocalModelSettingsPanel.dart",
+    "line": 382,
+    "original": "delete_outline",
+    "replacement": "delete_outline_rounded",
+    "code_snippet": "icon: const Icon(Icons.delete_outline),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/local_models/LocalModelSettingsPanel.dart",
+    "line": 420,
+    "original": "refresh",
+    "replacement": "refresh_rounded",
+    "code_snippet": "icon: const Icon(Icons.refresh),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/local_models/LocalModelSettingsPanel.dart",
+    "line": 495,
+    "original": "search",
+    "replacement": "search_rounded",
+    "code_snippet": "prefixIcon: const Icon(Icons.search, size: 20),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/local_models/LocalModelSettingsPanel.dart",
+    "line": 501,
+    "original": "close",
+    "replacement": "close_rounded",
+    "code_snippet": "icon: const Icon(Icons.close, size: 18),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/local_models/LocalModelSettingsPanel.dart",
+    "line": 627,
+    "original": "search_off_outlined",
+    "replacement": "search_off_rounded",
+    "code_snippet": "Icons.search_off_outlined,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/local_models/LocalModelSettingsPanel.dart",
+    "line": 696,
+    "original": "travel_explore",
+    "replacement": "travel_explore_outlined",
+    "code_snippet": "icon: const Icon(Icons.travel_explore, size: 18),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/local_models/LocalModelSettingsPanel.dart",
+    "line": 740,
+    "original": "refresh",
+    "replacement": "refresh_rounded",
+    "code_snippet": "icon: const Icon(Icons.refresh, size: 20),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/local_models/LocalModelSettingsPanel.dart",
+    "line": 872,
+    "original": "play_arrow",
+    "replacement": "play_arrow_rounded",
+    "code_snippet": "icon: const Icon(Icons.play_arrow, size: 18),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/local_models/LocalModelSettingsPanel.dart",
+    "line": 884,
+    "original": "play_arrow",
+    "replacement": "play_arrow_rounded",
+    "code_snippet": "isPaused ? Icons.play_arrow : Icons.download_outlined,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/local_models/LocalModelSettingsPanel.dart",
+    "line": 965,
+    "original": "pause",
+    "replacement": "pause_rounded",
+    "code_snippet": "icon: const Icon(Icons.pause),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/local_models/LocalModelSettingsPanel.dart",
+    "line": 1208,
+    "original": "delete_outline",
+    "replacement": "delete_outline_rounded",
+    "code_snippet": "icon: Icon(Icons.delete_outline, color: colors.error),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/local_models/LocalModelSettingsPanel.dart",
+    "line": 1379,
+    "original": "mic_outlined",
+    "replacement": "mic_none_rounded",
+    "code_snippet": "core_proxy.LocalModelKind.speechToText => Icons.mic_outlined,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/local_models/LocalModelSettingsPanel.dart",
+    "line": 1381,
+    "original": "chat_bubble_outline",
+    "replacement": "chat_bubble_outline_rounded",
+    "code_snippet": "core_proxy.LocalModelKind.chat => Icons.chat_bubble_outline,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/local_models/LocalModelSettingsPanel.dart",
+    "line": 1562,
+    "original": "search",
+    "replacement": "search_rounded",
+    "code_snippet": "icon: const Icon(Icons.search, size: 16),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/local_models/LocalModelSettingsPanel.dart",
+    "line": 1567,
+    "original": "link",
+    "replacement": "link_rounded",
+    "code_snippet": "icon: const Icon(Icons.link, size: 16),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/local_models/LocalModelSettingsPanel.dart",
+    "line": 1624,
+    "original": "search",
+    "replacement": "search_rounded",
+    "code_snippet": "prefixIcon: const Icon(Icons.search, size: 20),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/local_models/LocalModelSettingsPanel.dart",
+    "line": 1635,
+    "original": "search",
+    "replacement": "search_rounded",
+    "code_snippet": "icon: const Icon(Icons.search, size: 18),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/local_models/LocalModelSettingsPanel.dart",
+    "line": 1827,
+    "original": "favorite_border",
+    "replacement": "favorite_border_rounded",
+    "code_snippet": "icon: Icons.favorite_border,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/local_models/LocalModelSettingsPanel.dart",
+    "line": 2147,
+    "original": "play_arrow",
+    "replacement": "play_arrow_rounded",
+    "code_snippet": "icon: const Icon(Icons.play_arrow),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/model/ApiKeyPoolEditor.dart",
+    "line": 370,
+    "original": "delete_outline",
+    "replacement": "delete_outline_rounded",
+    "code_snippet": "icon: const Icon(Icons.delete_outline),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/model/ApiKeyPoolEditor.dart",
+    "line": 390,
+    "original": "add",
+    "replacement": "add_rounded",
+    "code_snippet": "icon: const Icon(Icons.add),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/model/CodexLoginDialog.dart",
+    "line": 222,
+    "original": "open_in_browser",
+    "replacement": "open_in_browser_rounded",
+    "code_snippet": "icon: const Icon(Icons.open_in_browser),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/model/ModelSettingsPanel.dart",
+    "line": 1036,
+    "original": "lock_outline",
+    "replacement": "lock_outline_rounded",
+    "code_snippet": "? const Icon(Icons.lock_outline, size: 20)"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/model/ModelSettingsPanel.dart",
+    "line": 1140,
+    "original": "delete_outline",
+    "replacement": "delete_outline_rounded",
+    "code_snippet": "icon: const Icon(Icons.delete_outline),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/model/ModelSettingsPanel.dart",
+    "line": 2174,
+    "original": "error_outline",
+    "replacement": "error_outline_rounded",
+    "code_snippet": "failed ? Icons.error_outline : Icons.info_outline,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/model/ModelSettingsPanel.dart",
+    "line": 2174,
+    "original": "info_outline",
+    "replacement": "info_outline_rounded",
+    "code_snippet": "failed ? Icons.error_outline : Icons.info_outline,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/model/ModelSettingsPanel.dart",
+    "line": 2506,
+    "original": "chevron_right",
+    "replacement": "chevron_right_rounded",
+    "code_snippet": "Icons.chevron_right,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/model/ModelSettingsPanel.dart",
+    "line": 3389,
+    "original": "playlist_add",
+    "replacement": "playlist_add_rounded",
+    "code_snippet": "icon: const Icon(Icons.playlist_add, size: 18),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/model/ModelSettingsPanel.dart",
+    "line": 4661,
+    "original": "copy_rounded",
+    "replacement": "content_copy_outlined",
+    "code_snippet": "_copied ? Icons.check_rounded : Icons.copy_rounded,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/model/ModelSettingsPanel.dart",
+    "line": 5506,
+    "original": "graphic_eq",
+    "replacement": "graphic_eq_rounded",
+    "code_snippet": "icon: Icons.graphic_eq,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/model/ModelSettingsPanel.dart",
+    "line": 6337,
+    "original": "radio_button_checked",
+    "replacement": "radio_button_checked_rounded",
+    "code_snippet": "? Icons.radio_button_checked"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/model/ModelSettingsPanel.dart",
+    "line": 6338,
+    "original": "radio_button_unchecked",
+    "replacement": "radio_button_unchecked_rounded",
+    "code_snippet": ": Icons.radio_button_unchecked,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/model/ModelSettingsPanel.dart",
+    "line": 6854,
+    "original": "link",
+    "replacement": "link_rounded",
+    "code_snippet": "icon: const Icon(Icons.link, size: 16),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/model/ModelSettingsPanel.dart",
+    "line": 6886,
+    "original": "keyboard_arrow_up",
+    "replacement": "keyboard_arrow_up_rounded",
+    "code_snippet": "? Icons.keyboard_arrow_up"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/model/ModelSettingsPanel.dart",
+    "line": 6887,
+    "original": "keyboard_arrow_down",
+    "replacement": "keyboard_arrow_down_rounded",
+    "code_snippet": ": Icons.keyboard_arrow_down,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/model/ModelSettingsPanel.dart",
+    "line": 7067,
+    "original": "chevron_right",
+    "replacement": "chevron_right_rounded",
+    "code_snippet": "Icons.chevron_right,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/model/ModelSettingsPanel.dart",
+    "line": 7096,
+    "original": "link",
+    "replacement": "link_rounded",
+    "code_snippet": "Icon(Icons.link, size: 10, color: colorScheme.primary),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/model/ModelSettingsPanel.dart",
+    "line": 7272,
+    "original": "search",
+    "replacement": "search_rounded",
+    "code_snippet": "prefixIcon: const Icon(Icons.search),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/model/ModelSettingsPanel.dart",
+    "line": 7354,
+    "original": "link",
+    "replacement": "link_rounded",
+    "code_snippet": "Icon(Icons.link, size: 20, color: colorScheme.primary),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/model/ModelSettingsPanel.dart",
+    "line": 7377,
+    "original": "check_circle",
+    "replacement": "check_circle_outline_rounded",
+    "code_snippet": "Icon(Icons.check_circle, size: 20, color: colorScheme.primary),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/model/ModelSettingsPanel.dart",
+    "line": 7465,
+    "original": "check_circle",
+    "replacement": "check_circle_outline_rounded",
+    "code_snippet": "selected ? Icons.check_circle : Icons.circle_outlined,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/models/SettingsModels.dart",
+    "line": 112,
+    "original": "info_outline",
+    "replacement": "info_outline_rounded",
+    "code_snippet": "icon: Icons.info_outline,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/profile/UserProfileSettingsPanel.dart",
+    "line": 156,
+    "original": "radio_button_checked",
+    "replacement": "radio_button_checked_rounded",
+    "code_snippet": "? Icons.radio_button_checked"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/profile/UserProfileSettingsPanel.dart",
+    "line": 157,
+    "original": "radio_button_unchecked",
+    "replacement": "radio_button_unchecked_rounded",
+    "code_snippet": ": Icons.radio_button_unchecked,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/profile/UserProfileSettingsPanel.dart",
+    "line": 219,
+    "original": "logout",
+    "replacement": "logout_rounded",
+    "code_snippet": "icon: const Icon(Icons.logout, size: 18),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/profile/UserProfileSettingsPanel.dart",
+    "line": 245,
+    "original": "logout",
+    "replacement": "logout_rounded",
+    "code_snippet": "icon: const Icon(Icons.logout, size: 18),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/profile/UserProfileSettingsPanel.dart",
+    "line": 251,
+    "original": "login",
+    "replacement": "login_rounded",
+    "code_snippet": "icon: const Icon(Icons.login, size: 18),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/profile/UserProfileSummaryTile.dart",
+    "line": 130,
+    "original": "chevron_right",
+    "replacement": "chevron_right_rounded",
+    "code_snippet": "Icon(Icons.chevron_right, color: foreground, size: 20),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/profile/UserProfileSummaryTile.dart",
+    "line": 227,
+    "original": "person_outline",
+    "replacement": "person_outline_rounded",
+    "code_snippet": "Icons.person_outline,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/runtime/NetworkControlPanel.dart",
+    "line": 265,
+    "original": "delete_outline",
+    "replacement": "delete_outline_rounded",
+    "code_snippet": "icon: const Icon(Icons.delete_outline, size: 20),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/runtime/NetworkControlPanel.dart",
+    "line": 486,
+    "original": "check_circle_outline",
+    "replacement": "check_circle_outline_rounded",
+    "code_snippet": "? Icons.check_circle_outline"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/runtime/NetworkControlPanel.dart",
+    "line": 538,
+    "original": "chevron_right",
+    "replacement": "chevron_right_rounded",
+    "code_snippet": "Icons.chevron_right,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/runtime/PeerListenerSettings.dart",
+    "line": 381,
+    "original": "refresh",
+    "replacement": "refresh_rounded",
+    "code_snippet": "icon: const Icon(Icons.refresh),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/runtime/PeerListenerSettings.dart",
+    "line": 396,
+    "original": "copy",
+    "replacement": "content_copy_outlined",
+    "code_snippet": "icon: const Icon(Icons.copy, size: 16),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/runtime/RuntimeSettingsPanel.dart",
+    "line": 1804,
+    "original": "person_outline",
+    "replacement": "person_outline_rounded",
+    "code_snippet": "? Icon(Icons.person_outline, size: 24, color: colorScheme.primary)"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/runtime/RuntimeSettingsPanel.dart",
+    "line": 1809,
+    "original": "person_outline",
+    "replacement": "person_outline_rounded",
+    "code_snippet": "Icons.person_outline,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/runtime/RuntimeSettingsPanel.dart",
+    "line": 2063,
+    "original": "more_vert_outlined",
+    "replacement": "more_horiz_rounded",
+    "code_snippet": "icon: const Icon(Icons.more_vert_outlined),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/runtime/RuntimeSettingsPanel.dart",
+    "line": 2130,
+    "original": "error_outline",
+    "replacement": "error_outline_rounded",
+    "code_snippet": "_PairedRemoteProbeState.error => Icons.error_outline,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/tts/SttProviderDialogs.dart",
+    "line": 283,
+    "original": "refresh",
+    "replacement": "refresh_rounded",
+    "code_snippet": "icon: const Icon(Icons.refresh),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/tts/SttProviderDialogs.dart",
+    "line": 300,
+    "original": "arrow_drop_down",
+    "replacement": "keyboard_arrow_down_rounded",
+    "code_snippet": "icon: const Icon(Icons.arrow_drop_down),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/tts/SttProviderWidgets.dart",
+    "line": 101,
+    "original": "mic_outlined",
+    "replacement": "mic_none_rounded",
+    "code_snippet": "Icons.mic_outlined,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/tts/SttProviderWidgets.dart",
+    "line": 149,
+    "original": "delete_outline",
+    "replacement": "delete_outline_rounded",
+    "code_snippet": "icon: Icons.delete_outline,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/tts/TtsProviderDialogs.dart",
+    "line": 213,
+    "original": "delete_outline",
+    "replacement": "delete_outline_rounded",
+    "code_snippet": "icon: const Icon(Icons.delete_outline),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/tts/TtsProviderDialogs.dart",
+    "line": 367,
+    "original": "search",
+    "replacement": "search_rounded",
+    "code_snippet": "prefixIcon: Icon(Icons.search),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/tts/TtsProviderDialogs.dart",
+    "line": 396,
+    "original": "add",
+    "replacement": "add_rounded",
+    "code_snippet": "leading: const Icon(Icons.add),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/tts/TtsProviderDialogs.dart",
+    "line": 709,
+    "original": "delete_outline",
+    "replacement": "delete_outline_rounded",
+    "code_snippet": "icon: const Icon(Icons.delete_outline),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/tts/TtsProviderWidgets.dart",
+    "line": 178,
+    "original": "keyboard_arrow_down",
+    "replacement": "keyboard_arrow_down_rounded",
+    "code_snippet": "? Icons.keyboard_arrow_down"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/tts/TtsProviderWidgets.dart",
+    "line": 179,
+    "original": "chevron_right",
+    "replacement": "chevron_right_rounded",
+    "code_snippet": ": Icons.chevron_right,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/tts/TtsProviderWidgets.dart",
+    "line": 221,
+    "original": "playlist_add",
+    "replacement": "playlist_add_rounded",
+    "code_snippet": "icon: const Icon(Icons.playlist_add, size: 18),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/tts/TtsSettingsPanel.dart",
+    "line": 361,
+    "original": "delete_outline",
+    "replacement": "delete_outline_rounded",
+    "code_snippet": "icon: const Icon(Icons.delete_outline),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/tts/TtsSettingsPanel.dart",
+    "line": 615,
+    "original": "delete_outline",
+    "replacement": "delete_outline_rounded",
+    "code_snippet": "icon: const Icon(Icons.delete_outline),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/tts/TtsSettingsPanel.dart",
+    "line": 660,
+    "original": "mic_outlined",
+    "replacement": "mic_none_rounded",
+    "code_snippet": "icon: Icons.mic_outlined,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/workspace/TerminalProfilesSettings.dart",
+    "line": 350,
+    "original": "delete_outline",
+    "replacement": "delete_outline_rounded",
+    "code_snippet": "icon: const Icon(Icons.delete_outline),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/workspace/TerminalProfilesSettings.dart",
+    "line": 372,
+    "original": "add",
+    "replacement": "add_rounded",
+    "code_snippet": "icon: const Icon(Icons.add),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/workspace/TerminalProfilesSettings.dart",
+    "line": 429,
+    "original": "close",
+    "replacement": "close_rounded",
+    "code_snippet": "icon: const Icon(Icons.close),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/settings/workspace/WorkspaceSettingsPanel.dart",
+    "line": 326,
+    "original": "delete_outline",
+    "replacement": "delete_outline_rounded",
+    "code_snippet": ": const Icon(Icons.delete_outline),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/startup/RuntimeActivityOverlay.dart",
+    "line": 750,
+    "original": "check_circle",
+    "replacement": "check_circle_outline_rounded",
+    "code_snippet": "Icons.check_circle,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/startup/RuntimeActivityOverlay.dart",
+    "line": 754,
+    "original": "error",
+    "replacement": "error_outline_rounded",
+    "code_snippet": "'failed' => Icon(Icons.error, size: 22, color: colorScheme.error),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/update/AppUpdateDialog.dart",
+    "line": 83,
+    "original": "info_outline",
+    "replacement": "info_outline_rounded",
+    "code_snippet": "icon: const Icon(Icons.info_outline),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/update/AppUpdateDialog.dart",
+    "line": 208,
+    "original": "restart_alt",
+    "replacement": "restart_alt_rounded",
+    "code_snippet": "? Icons.restart_alt"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/update/AppUpdateDialog.dart",
+    "line": 209,
+    "original": "open_in_new",
+    "replacement": "open_in_new_rounded",
+    "code_snippet": ": Icons.open_in_new,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/update/AppUpdateDialog.dart",
+    "line": 216,
+    "original": "system_update_alt",
+    "replacement": "system_update_alt_rounded",
+    "code_snippet": "icon: const Icon(Icons.system_update_alt),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/update/AppUpdateDialog.dart",
+    "line": 259,
+    "original": "error_outline",
+    "replacement": "error_outline_rounded",
+    "code_snippet": "? Icons.error_outline"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/update/AppUpdateDialog.dart",
+    "line": 261,
+    "original": "check_circle_outline",
+    "replacement": "check_circle_outline_rounded",
+    "code_snippet": "? Icons.check_circle_outline"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/features/update/AppUpdateDialog.dart",
+    "line": 449,
+    "original": "restart_alt",
+    "replacement": "restart_alt_rounded",
+    "code_snippet": "ready ? Icons.restart_alt : Icons.system_update_alt_rounded,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/main/components/AppContent.dart",
+    "line": 290,
+    "original": "arrow_back",
+    "replacement": "arrow_back_rounded",
+    "code_snippet": "? Icons.arrow_back"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/main/components/AppContent.dart",
+    "line": 293,
+    "original": "segment",
+    "replacement": "view_sidebar_outlined",
+    "code_snippet": ": Icons.segment;"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/main/components/CollapsedDrawerContent.dart",
+    "line": 142,
+    "original": "chat_bubble_outline",
+    "replacement": "chat_bubble_outline_rounded",
+    "code_snippet": "icon: Icons.chat_bubble_outline,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/main/components/CollapsedDrawerContent.dart",
+    "line": 154,
+    "original": "add_comment_outlined",
+    "replacement": "edit_note_rounded",
+    "code_snippet": "icon: Icons.add_comment_outlined,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/main/components/CollapsedDrawerContent.dart",
+    "line": 339,
+    "original": "search",
+    "replacement": "search_rounded",
+    "code_snippet": "Icons.search,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/main/components/CollapsedDrawerContent.dart",
+    "line": 546,
+    "original": "edit",
+    "replacement": "edit_outlined",
+    "code_snippet": "icon: Icons.edit,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/main/components/CollapsedDrawerContent.dart",
+    "line": 552,
+    "original": "delete",
+    "replacement": "delete_outline_rounded",
+    "code_snippet": "icon: Icons.delete,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/main/components/CollapsedDrawerContent.dart",
+    "line": 949,
+    "original": "lock_rounded",
+    "replacement": "lock_outline_rounded",
+    "code_snippet": "icon: history.locked ? Icons.lock_open_rounded : Icons.lock_rounded,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/main/components/CollapsedDrawerContent.dart",
+    "line": 1081,
+    "original": "push_pin",
+    "replacement": "push_pin_outlined",
+    "code_snippet": "Icons.push_pin,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/main/components/CollapsedDrawerContent.dart",
+    "line": 1089,
+    "original": "lock",
+    "replacement": "lock_outline_rounded",
+    "code_snippet": "Icons.lock,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/main/components/DrawerContent.dart",
+    "line": 924,
+    "original": "keyboard_arrow_up",
+    "replacement": "keyboard_arrow_up_rounded",
+    "code_snippet": "? Icons.keyboard_arrow_up"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/main/components/DrawerContent.dart",
+    "line": 925,
+    "original": "keyboard_arrow_down",
+    "replacement": "keyboard_arrow_down_rounded",
+    "code_snippet": ": Icons.keyboard_arrow_down,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/main/components/DrawerContent.dart",
+    "line": 985,
+    "original": "chevron_left",
+    "replacement": "chevron_left_rounded",
+    "code_snippet": "Icons.chevron_left,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/main/components/DrawerContent.dart",
+    "line": 1405,
+    "original": "expand_less",
+    "replacement": "expand_less_rounded",
+    "code_snippet": "expanded ? Icons.expand_less : Icons.expand_more,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/main/components/DrawerContent.dart",
+    "line": 1405,
+    "original": "expand_more",
+    "replacement": "expand_more_rounded",
+    "code_snippet": "expanded ? Icons.expand_less : Icons.expand_more,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/main/components/DrawerContent.dart",
+    "line": 1569,
+    "original": "add_comment_outlined",
+    "replacement": "edit_note_rounded",
+    "code_snippet": "icon: Icons.add_comment_outlined,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/main/components/DrawerContentDesktop.dart",
+    "line": 62,
+    "original": "expand_less",
+    "replacement": "expand_less_rounded",
+    "code_snippet": "open ? Icons.expand_less : Icons.expand_more,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/main/components/DrawerContentDesktop.dart",
+    "line": 62,
+    "original": "expand_more",
+    "replacement": "expand_more_rounded",
+    "code_snippet": "open ? Icons.expand_less : Icons.expand_more,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/main/components/DrawerContentDialogs.dart",
+    "line": 203,
+    "original": "open_in_new",
+    "replacement": "open_in_new_rounded",
+    "code_snippet": "icon: Icons.open_in_new,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/main/components/DrawerContentDialogs.dart",
+    "line": 209,
+    "original": "edit",
+    "replacement": "edit_outlined",
+    "code_snippet": "icon: Icons.edit,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/main/components/DrawerContentDialogs.dart",
+    "line": 214,
+    "original": "keyboard_arrow_up",
+    "replacement": "keyboard_arrow_up_rounded",
+    "code_snippet": "icon: Icons.keyboard_arrow_up,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/main/components/DrawerContentDialogs.dart",
+    "line": 221,
+    "original": "keyboard_arrow_down",
+    "replacement": "keyboard_arrow_down_rounded",
+    "code_snippet": "icon: Icons.keyboard_arrow_down,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/main/components/DrawerContentDialogs.dart",
+    "line": 242,
+    "original": "push_pin",
+    "replacement": "push_pin_outlined",
+    "code_snippet": "icon: Icons.push_pin,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/main/components/DrawerContentDialogs.dart",
+    "line": 248,
+    "original": "lock_open",
+    "replacement": "lock_open_rounded",
+    "code_snippet": "icon: history.locked ? Icons.lock_open : Icons.lock,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/main/components/DrawerContentDialogs.dart",
+    "line": 248,
+    "original": "lock",
+    "replacement": "lock_outline_rounded",
+    "code_snippet": "icon: history.locked ? Icons.lock_open : Icons.lock,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/main/components/DrawerContentDialogs.dart",
+    "line": 255,
+    "original": "link_off",
+    "replacement": "link_off_rounded",
+    "code_snippet": "icon: Icons.link_off,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/main/components/DrawerContentDialogs.dart",
+    "line": 263,
+    "original": "vertical_align_top",
+    "replacement": "vertical_align_top_rounded",
+    "code_snippet": "icon: Icons.vertical_align_top,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/main/components/DrawerContentDialogs.dart",
+    "line": 270,
+    "original": "delete_outline",
+    "replacement": "delete_outline_rounded",
+    "code_snippet": "icon: Icons.delete_outline,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/main/components/DrawerContentGroups.dart",
+    "line": 398,
+    "original": "add_comment_outlined",
+    "replacement": "edit_note_rounded",
+    "code_snippet": "icon: Icons.add_comment_outlined,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/main/components/DrawerContentGroups.dart",
+    "line": 435,
+    "original": "expand_less",
+    "replacement": "expand_less_rounded",
+    "code_snippet": "? Icons.expand_less"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/main/components/DrawerContentGroups.dart",
+    "line": 436,
+    "original": "expand_more",
+    "replacement": "expand_more_rounded",
+    "code_snippet": ": Icons.expand_more,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/main/components/DrawerContentList.dart",
+    "line": 202,
+    "original": "expand_less",
+    "replacement": "expand_less_rounded",
+    "code_snippet": "icon: expanded ? Icons.expand_less : Icons.expand_more,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/main/components/DrawerContentList.dart",
+    "line": 202,
+    "original": "expand_more",
+    "replacement": "expand_more_rounded",
+    "code_snippet": "icon: expanded ? Icons.expand_less : Icons.expand_more,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/main/components/DrawerContentList.dart",
+    "line": 254,
+    "original": "expand_less",
+    "replacement": "expand_less_rounded",
+    "code_snippet": "icon: expanded ? Icons.expand_less : Icons.expand_more,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/main/components/DrawerContentList.dart",
+    "line": 254,
+    "original": "expand_more",
+    "replacement": "expand_more_rounded",
+    "code_snippet": "icon: expanded ? Icons.expand_less : Icons.expand_more,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/main/screens/ScreenRouteRegistry.dart",
+    "line": 85,
+    "original": "chat_bubble_outline",
+    "replacement": "chat_bubble_outline_rounded",
+    "code_snippet": "icon: Icons.chat_bubble_outline,"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/rescue/DataRescueApp.dart",
+    "line": 507,
+    "original": "save_alt",
+    "replacement": "download_rounded",
+    "code_snippet": "icon: const Icon(Icons.save_alt),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/rescue/DataRescueApp.dart",
+    "line": 518,
+    "original": "folder_open",
+    "replacement": "folder_open_outlined",
+    "code_snippet": "icon: const Icon(Icons.folder_open),"
+  },
+  {
+    "file": "apps/flutter/app/lib/ui/rescue/DataRescueApp.dart",
+    "line": 524,
+    "original": "restore",
+    "replacement": "restore_rounded",
+    "code_snippet": "icon: const Icon(Icons.restore),"
+  },
+  {
+    "file": "apps/flutter/packages/operit_ui/lib/src/fixtures/theme_client_scene.dart",
+    "line": 415,
+    "original": "segment",
+    "replacement": "view_sidebar_outlined",
+    "code_snippet": "navigationIcon: compact ? Icons.segment : Icons.chevron_left,"
+  },
+  {
+    "file": "apps/flutter/packages/operit_ui/lib/src/fixtures/theme_client_scene.dart",
+    "line": 415,
+    "original": "chevron_left",
+    "replacement": "chevron_left_rounded",
+    "code_snippet": "navigationIcon: compact ? Icons.segment : Icons.chevron_left,"
+  },
+  {
+    "file": "apps/flutter/packages/operit_ui/lib/src/fixtures/theme_client_scene.dart",
+    "line": 664,
+    "original": "person",
+    "replacement": "person_outline_rounded",
+    "code_snippet": "user ? Icons.person : Icons.assistant,"
+  },
+  {
+    "file": "apps/flutter/packages/operit_ui/lib/src/fixtures/theme_client_scene.dart",
+    "line": 664,
+    "original": "assistant",
+    "replacement": "auto_awesome_rounded",
+    "code_snippet": "user ? Icons.person : Icons.assistant,"
+  },
+  {
+    "file": "apps/flutter/packages/operit_ui/lib/src/fixtures/theme_client_scene.dart",
+    "line": 774,
+    "original": "add",
+    "replacement": "add_rounded",
+    "code_snippet": "icon: Icons.add,"
+  },
+  {
+    "file": "apps/flutter/packages/operit_ui/lib/src/fixtures/theme_client_scene.dart",
+    "line": 790,
+    "original": "close",
+    "replacement": "close_rounded",
+    "code_snippet": "? Icons.close"
+  },
+  {
+    "file": "apps/flutter/packages/operit_ui/lib/src/fixtures/theme_client_scene.dart",
+    "line": 792,
+    "original": "arrow_upward",
+    "replacement": "arrow_upward_rounded",
+    "code_snippet": "? Icons.arrow_upward"
+  },
+  {
+    "file": "apps/flutter/packages/operit_ui/lib/src/fixtures/theme_client_scene.dart",
+    "line": 793,
+    "original": "mic",
+    "replacement": "mic_none_rounded",
+    "code_snippet": ": Icons.mic,"
+  },
+  {
+    "file": "apps/flutter/packages/operit_ui/lib/src/fixtures/theme_client_scene.dart",
+    "line": 848,
+    "original": "add",
+    "replacement": "add_rounded",
+    "code_snippet": "icon: Icons.add,"
+  },
+  {
+    "file": "apps/flutter/packages/operit_ui/lib/src/fixtures/theme_client_scene.dart",
+    "line": 865,
+    "original": "close",
+    "replacement": "close_rounded",
+    "code_snippet": "? Icons.close"
+  },
+  {
+    "file": "apps/flutter/packages/operit_ui/lib/src/fixtures/theme_client_scene.dart",
+    "line": 867,
+    "original": "arrow_upward",
+    "replacement": "arrow_upward_rounded",
+    "code_snippet": "? Icons.arrow_upward"
+  },
+  {
+    "file": "apps/flutter/packages/operit_ui/lib/src/fixtures/theme_client_scene.dart",
+    "line": 868,
+    "original": "mic",
+    "replacement": "mic_none_rounded",
+    "code_snippet": ": Icons.mic,"
+  },
+  {
+    "file": "apps/flutter/packages/operit_ui/lib/src/fixtures/theme_surface_probe.dart",
+    "line": 43,
+    "original": "arrow_upward",
+    "replacement": "arrow_upward_rounded",
+    "code_snippet": "Icon(Icons.arrow_upward, color: scheme.primary),"
+  },
+  {
+    "file": "apps/flutter/packages/operit_ui/lib/src/render/composer_chrome.dart",
+    "line": 130,
+    "original": "fullscreen_exit",
+    "replacement": "fullscreen_exit_rounded",
+    "code_snippet": "icon: inputExpanded ? Icons.fullscreen_exit : Icons.fullscreen,"
+  },
+  {
+    "file": "apps/flutter/packages/operit_ui/lib/src/render/composer_chrome.dart",
+    "line": 130,
+    "original": "fullscreen",
+    "replacement": "fullscreen_rounded",
+    "code_snippet": "icon: inputExpanded ? Icons.fullscreen_exit : Icons.fullscreen,"
+  },
+  {
+    "file": "apps/flutter/packages/operit_ui/lib/src/render/composer_chrome.dart",
+    "line": 337,
+    "original": "keyboard_arrow_down",
+    "replacement": "keyboard_arrow_down_rounded",
+    "code_snippet": "Icons.keyboard_arrow_down,"
+  },
+  {
+    "file": "apps/flutter/packages/operit_ui/lib/src/render/composer_chrome.dart",
+    "line": 529,
+    "original": "fullscreen_exit",
+    "replacement": "fullscreen_exit_rounded",
+    "code_snippet": "icon: inputExpanded ? Icons.fullscreen_exit : Icons.fullscreen,"
+  },
+  {
+    "file": "apps/flutter/packages/operit_ui/lib/src/render/composer_chrome.dart",
+    "line": 529,
+    "original": "fullscreen",
+    "replacement": "fullscreen_rounded",
+    "code_snippet": "icon: inputExpanded ? Icons.fullscreen_exit : Icons.fullscreen,"
+  },
+  {
+    "file": "apps/flutter/packages/operit_ui/lib/src/render/history_chrome.dart",
+    "line": 121,
+    "original": "person_outline",
+    "replacement": "person_outline_rounded",
+    "code_snippet": "this.fallbackIcon = Icons.person_outline,"
+  },
+  {
+    "file": "apps/flutter/packages/operit_ui/lib/src/render/history_chrome.dart",
+    "line": 162,
+    "original": "work_outline",
+    "replacement": "work_outline_rounded",
+    "code_snippet": "Icons.work_outline,"
+  },
+  {
+    "file": "apps/flutter/packages/operit_ui/lib/src/render/history_chrome.dart",
+    "line": 182,
+    "original": "expand_less",
+    "replacement": "expand_less_rounded",
+    "code_snippet": "expanded ? Icons.expand_less : Icons.expand_more,"
+  },
+  {
+    "file": "apps/flutter/packages/operit_ui/lib/src/render/history_chrome.dart",
+    "line": 182,
+    "original": "expand_more",
+    "replacement": "expand_more_rounded",
+    "code_snippet": "expanded ? Icons.expand_less : Icons.expand_more,"
+  },
+  {
+    "file": "apps/flutter/packages/operit_ui/lib/src/render/history_chrome.dart",
+    "line": 253,
+    "original": "keyboard_arrow_up",
+    "replacement": "keyboard_arrow_up_rounded",
+    "code_snippet": "expanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,"
+  },
+  {
+    "file": "apps/flutter/packages/operit_ui/lib/src/render/history_chrome.dart",
+    "line": 253,
+    "original": "keyboard_arrow_down",
+    "replacement": "keyboard_arrow_down_rounded",
+    "code_snippet": "expanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,"
+  },
+  {
+    "file": "apps/flutter/packages/operit_ui/lib/src/render/history_chrome.dart",
+    "line": 345,
+    "original": "expand_less",
+    "replacement": "expand_less_rounded",
+    "code_snippet": "? (workspaceStyle ? Icons.expand_less : Icons.keyboard_arrow_up)"
+  },
+  {
+    "file": "apps/flutter/packages/operit_ui/lib/src/render/history_chrome.dart",
+    "line": 345,
+    "original": "keyboard_arrow_up",
+    "replacement": "keyboard_arrow_up_rounded",
+    "code_snippet": "? (workspaceStyle ? Icons.expand_less : Icons.keyboard_arrow_up)"
+  },
+  {
+    "file": "apps/flutter/packages/operit_ui/lib/src/render/history_chrome.dart",
+    "line": 347,
+    "original": "expand_more",
+    "replacement": "expand_more_rounded",
+    "code_snippet": "? Icons.expand_more"
+  },
+  {
+    "file": "apps/flutter/packages/operit_ui/lib/src/render/history_chrome.dart",
+    "line": 348,
+    "original": "keyboard_arrow_down",
+    "replacement": "keyboard_arrow_down_rounded",
+    "code_snippet": ": Icons.keyboard_arrow_down),"
+  },
+  {
+    "file": "apps/flutter/packages/operit_ui/lib/src/render/history_chrome.dart",
+    "line": 495,
+    "original": "lock_rounded",
+    "replacement": "lock_outline_rounded",
+    "code_snippet": "Icons.lock_rounded,"
+  }
+]

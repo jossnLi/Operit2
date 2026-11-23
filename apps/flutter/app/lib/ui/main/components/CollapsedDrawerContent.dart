@@ -139,7 +139,7 @@ class CollapsedDrawerContent extends StatelessWidget {
                           ScreenRouteRegistry.aiChat,
                         ),
                     appearance: appearance,
-                    icon: Icons.chat_bubble_outline,
+                    icon: Icons.chat_bubble_outline_rounded,
                     tooltip: l10n.aiChat,
                     onClick: onConversationNavigationPressed,
                   ),
@@ -151,7 +151,7 @@ class CollapsedDrawerContent extends StatelessWidget {
                   child: _RoundDrawerButton(
                     selected: false,
                     appearance: appearance,
-                    icon: Icons.add_comment_outlined,
+                    icon: Icons.edit_note_rounded,
                     tooltip: '新建对话',
                     onClick: () => unawaited(_createConversation(context)),
                   ),
@@ -336,7 +336,7 @@ class ConversationSearchField extends StatelessWidget {
           color: appearance.itemColor.withValues(alpha: 0.62),
         ),
         prefixIcon: Icon(
-          Icons.search,
+          Icons.search_rounded,
           size: 20,
           color: appearance.itemColor.withValues(alpha: 0.72),
         ),
@@ -543,13 +543,13 @@ class _ConversationDrawerItemState extends State<ConversationDrawerItem>
               background: _SwipeActionBackground(
                 alignment: AlignmentDirectional.centerStart,
                 color: Theme.of(context).colorScheme.primary,
-                icon: Icons.edit,
+                icon: Icons.edit_outlined,
                 label: '重命名',
               ),
               secondaryBackground: _SwipeActionBackground(
                 alignment: AlignmentDirectional.centerEnd,
                 color: Theme.of(context).colorScheme.error,
-                icon: Icons.delete,
+                icon: Icons.delete_outline_rounded,
                 label: '删除',
               ),
               child: surface,
@@ -946,7 +946,7 @@ class _ConversationMoreMenuButton extends StatelessWidget {
         ),
         SidebarMenuAction(
           value: _ConversationQuickAction.toggleLocked,
-          icon: history.locked ? Icons.lock_open_rounded : Icons.lock_rounded,
+          icon: history.locked ? Icons.lock_open_rounded : Icons.lock_outline_rounded,
           label: history.locked ? '解锁' : '锁定',
         ),
         const SidebarMenuAction(
@@ -1078,7 +1078,7 @@ class _DraggingConversationItem extends StatelessWidget {
             if (history.pinned) ...<Widget>[
               const SizedBox(width: 6),
               Icon(
-                Icons.push_pin,
+                Icons.push_pin_outlined,
                 size: 13,
                 color: appearance.selectedContentColor.withValues(alpha: 0.65),
               ),
@@ -1086,7 +1086,7 @@ class _DraggingConversationItem extends StatelessWidget {
             if (history.locked) ...<Widget>[
               const SizedBox(width: 6),
               Icon(
-                Icons.lock,
+                Icons.lock_outline_rounded,
                 size: 13,
                 color: appearance.selectedContentColor.withValues(alpha: 0.65),
               ),

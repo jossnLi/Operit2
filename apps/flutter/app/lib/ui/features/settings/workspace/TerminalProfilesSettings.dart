@@ -347,7 +347,7 @@ class _TerminalProfilesSettingsState extends State<TerminalProfilesSettings> {
                                       settings.defaultProfileId == profile.id
                                   ? null
                                   : () => _delete(profile),
-                              icon: const Icon(Icons.delete_outline),
+                              icon: const Icon(Icons.delete_outline_rounded),
                             ),
                           ],
                         ),
@@ -369,7 +369,7 @@ class _TerminalProfilesSettingsState extends State<TerminalProfilesSettings> {
               const SizedBox(height: 8),
               OutlinedButton.icon(
                 onPressed: _saving || _support.isEmpty ? null : _edit,
-                icon: const Icon(Icons.add),
+                icon: const Icon(Icons.add_rounded),
                 label: Text(l10n.terminalProfileAdd),
               ),
               if (_distributions.isNotEmpty) ...[
@@ -426,7 +426,7 @@ class _TerminalProfilesSettingsState extends State<TerminalProfilesSettings> {
                       : IconButton(
                           tooltip: l10n.cancel,
                           onPressed: () => _cancelInstall(job),
-                          icon: const Icon(Icons.close),
+                          icon: const Icon(Icons.close_rounded),
                         ),
                 ),
             ],

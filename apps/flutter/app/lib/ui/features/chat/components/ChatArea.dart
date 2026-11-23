@@ -1534,7 +1534,7 @@ class _MessageVariantSwitcher extends StatelessWidget {
                     );
                   }
                 : null,
-            icon: const Icon(Icons.arrow_back, size: 18),
+            icon: const Icon(Icons.arrow_back_rounded, size: 18),
           ),
           Text(
             '${message.selectedVariantIndex + 1} / ${message.variantCount}',
@@ -1553,7 +1553,7 @@ class _MessageVariantSwitcher extends StatelessWidget {
                     );
                   }
                 : null,
-            icon: const Icon(Icons.arrow_forward, size: 18),
+            icon: const Icon(Icons.arrow_forward_rounded, size: 18),
           ),
         ],
       ),
@@ -1648,7 +1648,7 @@ class _SelectableMessageFrame extends StatelessWidget {
           left: 6,
           top: 6,
           child: Icon(
-            selected ? Icons.check_circle : Icons.radio_button_unchecked,
+            selected ? Icons.check_circle_outline_rounded : Icons.radio_button_unchecked_rounded,
             size: 18,
             color: selected
                 ? colorScheme.primary

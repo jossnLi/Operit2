@@ -743,7 +743,7 @@ class _DataSettingsPanelState extends State<DataSettingsPanel> {
           subtitle: description == null ? null : Text(description),
           trailing: working
               ? const M3LoadingIndicator(size: 20)
-              : const Icon(Icons.chevron_right),
+              : const Icon(Icons.chevron_right_rounded),
           onTap: _busy ? null : onTap,
         ),
         if (working && progress != null)
@@ -812,7 +812,7 @@ class _DataSettingsPanelState extends State<DataSettingsPanel> {
                 ),
                 const Divider(height: 1),
                 _action(
-                  icon: Icons.chat_bubble_outline,
+                  icon: Icons.chat_bubble_outline_rounded,
                   title: l10n.settingsDataImportChatJson,
                   description: l10n.settingsDataImportChatJsonDescription,
                   onTap: () => _importJson(chat: true),
@@ -846,7 +846,7 @@ class _DataSettingsPanelState extends State<DataSettingsPanel> {
                       onTap: _exportRawSnapshot,
                     ),
                     _action(
-                      icon: Icons.chat_bubble_outline,
+                      icon: Icons.chat_bubble_outline_rounded,
                       title: l10n.settingsDataExportChatJson,
                       onTap: () => _exportJson(chat: true),
                     ),

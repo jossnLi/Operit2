@@ -884,7 +884,7 @@ class _UnchangedGapBar extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Icon(
-                  _tappable ? Icons.unfold_more : Icons.unfold_less,
+                  _tappable ? Icons.unfold_more_rounded : Icons.unfold_less_rounded,
                   size: 12,
                   color: _tappable ? scheme.primary : scheme.outline,
                 ),
@@ -1500,7 +1500,7 @@ class WorkspaceDiffEmptyState extends StatelessWidget {
               ),
             ),
             child: Icon(
-              Icons.add,
+              Icons.add_rounded,
               size: 16,
               color: theme.colorScheme.outline.withValues(
                 alpha: isDark ? 0.65 : 0.80,

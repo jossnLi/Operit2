@@ -358,7 +358,7 @@ class _TtsProviderSectionState extends State<TtsProviderSection> {
           ),
           FilledButton.tonalIcon(
             onPressed: () => Navigator.of(context).pop(true),
-            icon: const Icon(Icons.delete_outline),
+            icon: const Icon(Icons.delete_outline_rounded),
             label: Text(l10n.delete),
           ),
         ],
@@ -612,7 +612,7 @@ class _SttProviderSectionState extends State<SttProviderSection> {
           ),
           FilledButton.tonalIcon(
             onPressed: () => Navigator.of(context).pop(true),
-            icon: const Icon(Icons.delete_outline),
+            icon: const Icon(Icons.delete_outline_rounded),
             label: const Text('删除'),
           ),
         ],
@@ -657,7 +657,7 @@ class _SttProviderSectionState extends State<SttProviderSection> {
         final data = snapshot.data!;
         return _SectionCard(
           title: 'STT 供应商',
-          icon: Icons.mic_outlined,
+          icon: Icons.mic_none_rounded,
           initiallyExpanded: widget.initiallyExpanded,
           action: SettingsSectionAddButton(
             tooltip: '添加 STT 供应商',

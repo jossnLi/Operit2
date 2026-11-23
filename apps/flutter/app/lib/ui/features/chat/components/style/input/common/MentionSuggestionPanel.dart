@@ -358,7 +358,7 @@ class _MentionSuggestionPackageRow extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Icon(
-                Icons.auto_awesome,
+                Icons.auto_awesome_rounded,
                 size: 14,
                 color: _mentionPackageColor(option.kind, colors),
               ),
@@ -429,7 +429,7 @@ class _MentionSuggestionFileRow extends StatelessWidget {
           child: Row(
             children: <Widget>[
               Icon(
-                entry.isDirectory ? Icons.folder : Icons.description,
+                entry.isDirectory ? Icons.folder_outlined : Icons.description_outlined,
                 size: 14,
                 color: entry.isDirectory ? colors.secondary : colors.primary,
               ),

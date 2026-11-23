@@ -121,8 +121,8 @@ extension MarketLocalInstallStatePresentation on MarketLocalInstallState {
   };
 
   IconData get actionIcon => switch (this) {
-    MarketLocalInstallState.installed => Icons.check,
-    MarketLocalInstallState.updateAvailable => Icons.system_update_alt,
+    MarketLocalInstallState.installed => Icons.check_rounded,
+    MarketLocalInstallState.updateAvailable => Icons.system_update_alt_rounded,
     MarketLocalInstallState.notInstalled => Icons.download_outlined,
   };
 }

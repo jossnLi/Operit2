@@ -153,8 +153,8 @@ class _UserProfileSettingsPanelState extends State<UserProfileSettingsPanel> {
                 selected: identity.id == activeIdentity.id,
                 leading: Icon(
                   identity.id == activeIdentity.id
-                      ? Icons.radio_button_checked
-                      : Icons.radio_button_unchecked,
+                      ? Icons.radio_button_checked_rounded
+                      : Icons.radio_button_unchecked_rounded,
                   size: 22,
                 ),
                 title: Text(
@@ -216,7 +216,7 @@ class _UserProfileSettingsPanelState extends State<UserProfileSettingsPanel> {
                     OutlinedButton.icon(
                       onPressed: _logoutGitHub,
                       style: _profileActionButtonStyle(),
-                      icon: const Icon(Icons.logout, size: 18),
+                      icon: const Icon(Icons.logout_rounded, size: 18),
                       label: Text(l10n.settingsUserProfileLogout),
                     ),
                   ],
@@ -242,13 +242,13 @@ class _UserProfileSettingsPanelState extends State<UserProfileSettingsPanel> {
                     ? OutlinedButton.icon(
                         onPressed: _logoutGitHub,
                         style: _profileActionButtonStyle(),
-                        icon: const Icon(Icons.logout, size: 18),
+                        icon: const Icon(Icons.logout_rounded, size: 18),
                         label: Text(l10n.settingsUserProfileLogout),
                       )
                     : FilledButton.tonalIcon(
                         onPressed: _loginGitHub,
                         style: _profileActionButtonStyle(),
-                        icon: const Icon(Icons.login, size: 18),
+                        icon: const Icon(Icons.login_rounded, size: 18),
                         label: Text(l10n.settingsUserProfileLogin),
                       ),
               ),

@@ -46,7 +46,7 @@ class ArtifactVersionListDialog extends StatelessWidget {
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.close),
+            icon: const Icon(Icons.close_rounded),
             onPressed: () => Navigator.of(context).pop(),
           ),
         ],
@@ -75,7 +75,7 @@ class ArtifactVersionListDialog extends StatelessWidget {
                       vertical: 4,
                     ),
                     leading: Icon(
-                      isLatest ? Icons.check_circle : Icons.circle_outlined,
+                      isLatest ? Icons.check_circle_outline_rounded : Icons.circle_outlined,
                       color: isLatest
                           ? colorScheme.primary
                           : colorScheme.outline,

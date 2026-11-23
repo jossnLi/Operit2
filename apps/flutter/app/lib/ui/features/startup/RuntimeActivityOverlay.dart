@@ -747,11 +747,11 @@ class _PluginLoadingRow extends StatelessWidget {
         ),
       ),
       'success' => Icon(
-        Icons.check_circle,
+        Icons.check_circle_outline_rounded,
         size: 22,
         color: colorScheme.primary,
       ),
-      'failed' => Icon(Icons.error, size: 22, color: colorScheme.error),
+      'failed' => Icon(Icons.error_outline_rounded, size: 22, color: colorScheme.error),
       _ => Container(
         width: 10,
         height: 10,

@@ -86,7 +86,7 @@ class _WorkspaceBrowserSiteDataSheetState
               trailing: IconButton(
                 tooltip: l10n.clearCookies,
                 onPressed: _clearCookies,
-                icon: const Icon(Icons.delete_outline, size: 18),
+                icon: const Icon(Icons.delete_outline_rounded, size: 18),
                 visualDensity: VisualDensity.compact,
                 style: const ButtonStyle(
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -108,7 +108,7 @@ class _WorkspaceBrowserSiteDataSheetState
     return IconButton(
       tooltip: l10n.refresh,
       onPressed: _refresh,
-      icon: const Icon(Icons.refresh, size: 18),
+      icon: const Icon(Icons.refresh_rounded, size: 18),
       visualDensity: VisualDensity.compact,
       style: const ButtonStyle(tapTargetSize: MaterialTapTargetSize.shrinkWrap),
       constraints: const BoxConstraints.tightFor(width: 32, height: 32),
@@ -196,7 +196,7 @@ class _StorageSection extends StatelessWidget {
           trailing: IconButton(
             tooltip: l10n.clear,
             onPressed: onClear,
-            icon: const Icon(Icons.delete_outline, size: 18),
+            icon: const Icon(Icons.delete_outline_rounded, size: 18),
             visualDensity: VisualDensity.compact,
             constraints: const BoxConstraints.tightFor(width: 32, height: 32),
             padding: EdgeInsets.zero,

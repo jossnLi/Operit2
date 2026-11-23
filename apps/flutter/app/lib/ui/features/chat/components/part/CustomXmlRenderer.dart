@@ -1296,7 +1296,7 @@ class _SearchSourceRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final icon = source.url.isEmpty ? Icons.search : Icons.language;
+    final icon = source.url.isEmpty ? Icons.search_rounded : Icons.language_rounded;
     return MessagePressShieldRegion(
       child: Material(
         color: Colors.transparent,
@@ -1367,14 +1367,14 @@ class _SearchFavicon extends StatelessWidget {
             return child;
           }
           return Icon(
-            Icons.language,
+            Icons.language_rounded,
             size: size * 0.78,
             color: color.withValues(alpha: 0.45),
           );
         },
         errorBuilder: (context, error, stackTrace) {
           return Icon(
-            Icons.language,
+            Icons.language_rounded,
             size: size * 0.78,
             color: color.withValues(alpha: 0.55),
           );
@@ -1398,7 +1398,7 @@ class _SearchSourceDetailDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
-    final icon = source.url.isEmpty ? Icons.search : Icons.language;
+    final icon = source.url.isEmpty ? Icons.search_rounded : Icons.language_rounded;
     return AlertDialog(
       icon: source.faviconUrl.isNotEmpty
           ? SizedBox.square(
@@ -1887,7 +1887,7 @@ class _WarningStatusRow extends StatelessWidget {
                 return ContentDetailDialog(
                   title: detailTitle,
                   content: detailText,
-                  icon: Icons.error,
+                  icon: Icons.error_outline_rounded,
                   onDismiss: () => Navigator.of(dialogContext).pop(),
                 );
               },

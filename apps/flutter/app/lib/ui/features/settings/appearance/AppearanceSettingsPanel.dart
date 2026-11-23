@@ -240,7 +240,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
                 actions: [
                   FilledButton.tonalIcon(
                     style: SettingsControlStyles.sectionTextButton(),
-                    icon: const Icon(Icons.text_fields, size: 16),
+                    icon: const Icon(Icons.text_fields_outlined, size: 16),
                     label: Text(l10n.settingsAppearanceChooseDeviceFont),
                     onPressed: () => _pickDeviceFont(
                       context,
@@ -270,7 +270,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
                   if (hasCustomFont)
                     SettingsEntityIconButton(
                       tooltip: l10n.settingsAppearanceClearCustomFont,
-                      icon: Icons.close,
+                      icon: Icons.close_rounded,
                       onPressed: () {
                         unawaited(
                           themeController.saveThemeSettings(
@@ -335,7 +335,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
                 onPressed: () {
                   unawaited(themeController.resetThemeSettings());
                 },
-                icon: const Icon(Icons.restart_alt, size: 16),
+                icon: const Icon(Icons.restart_alt_rounded, size: 16),
                 label: Text(l10n.settingsAppearanceResetTheme),
               ),
             ),
@@ -549,7 +549,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
       children: <Widget>[
         _SectionCard(
           title: l10n.settingsAppearanceBubbleStyleSection,
-          icon: Icons.chat_bubble_outline,
+          icon: Icons.chat_bubble_outline_rounded,
           children: <Widget>[
             _AppearanceFieldBlock(
               label: l10n.settingsAppearanceUserMessageStyle,
@@ -689,7 +689,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
           icon: Icons.font_download_outlined,
           children: <Widget>[
             SettingsAssetTile(
-              icon: Icons.person_outline,
+              icon: Icons.person_outline_rounded,
               title: l10n.settingsAppearanceUserBubbleFont,
               subtitle: _bubbleFontLabel(l10n, snapshot, isUser: true),
               actions: <Widget>[
@@ -740,7 +740,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
           icon: Icons.layers_outlined,
           children: <Widget>[
             SettingsAssetTile(
-              icon: Icons.person_outline,
+              icon: Icons.person_outline_rounded,
               title: l10n.settingsAppearanceUserBubbleImage,
               subtitle: _fileNameOrNoneLabel(
                 l10n,
@@ -975,7 +975,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
                   },
                 ),
                 SettingsToggleChip(
-                  icon: Icons.person_outline,
+                  icon: Icons.person_outline_rounded,
                   label: l10n.settingsAppearanceShowUserName,
                   selected: snapshot.showUserName,
                   onSelected: (value) {
@@ -1269,7 +1269,7 @@ class _ResponsivePreviewSplitTabViewState
                     ),
                     const SizedBox(width: 4),
                     Icon(
-                      Icons.keyboard_arrow_down,
+                      Icons.keyboard_arrow_down_rounded,
                       size: 18,
                       color: colorScheme.onSurfaceVariant,
                     ),
@@ -1329,7 +1329,7 @@ class _ChatAppearanceLivePreviewCard extends StatelessWidget {
               tooltip: l10n.settingsAppearancePreviewCollapse,
               onPressed: onCollapse,
               visualDensity: VisualDensity.compact,
-              icon: const Icon(Icons.keyboard_arrow_up, size: 20),
+              icon: const Icon(Icons.keyboard_arrow_up_rounded, size: 20),
             ),
       children: <Widget>[
         ChatAppearancePreview(showInputPreview: showInputPreview),
@@ -2007,7 +2007,7 @@ Future<void> _showBubbleFontDialog(
                 ),
                 const SizedBox(height: 10),
                 SettingsAssetTile(
-                  icon: Icons.text_fields,
+                  icon: Icons.text_fields_outlined,
                   title: l10n.settingsAppearanceDeviceFonts,
                   subtitle: fontType == UserPreferencesManager.FONT_TYPE_DEVICE
                       ? systemFontName!
@@ -2015,7 +2015,7 @@ Future<void> _showBubbleFontDialog(
                   actions: [
                     FilledButton.tonalIcon(
                       style: SettingsControlStyles.sectionTextButton(),
-                      icon: const Icon(Icons.text_fields, size: 16),
+                      icon: const Icon(Icons.text_fields_outlined, size: 16),
                       label: Text(l10n.settingsAppearanceChooseDeviceFont),
                       onPressed: () async {
                         try {
@@ -2067,7 +2067,7 @@ Future<void> _showBubbleFontDialog(
                         customFontPath!.isNotEmpty)
                       SettingsEntityIconButton(
                         tooltip: l10n.settingsAppearanceClearCustomFont,
-                        icon: Icons.close,
+                        icon: Icons.close_rounded,
                         onPressed: () {
                           setDialogState(() {
                             customFontPath = '';
@@ -2491,7 +2491,7 @@ Future<void> _showBubbleImageAdjustDialog(
           leading: IconButton(
             tooltip: l10n.cancel,
             onPressed: () => Navigator.of(dialogContext).pop(),
-            icon: const Icon(Icons.close),
+            icon: const Icon(Icons.close_rounded),
           ),
           title: Text(
             isUser
@@ -2900,7 +2900,7 @@ class _SplitColorCircle extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(3),
                   child: Icon(
-                    Icons.check,
+                    Icons.check_rounded,
                     size: 16,
                     color: colorScheme.primary,
                   ),
@@ -2996,7 +2996,7 @@ class _MessageStyleSelector extends StatelessWidget {
         ),
         ButtonSegment<String>(
           value: UserPreferencesManager.CHAT_STYLE_BUBBLE,
-          icon: const Icon(Icons.chat_bubble_outline, size: 16),
+          icon: const Icon(Icons.chat_bubble_outline_rounded, size: 16),
           label: Text(l10n.settingsAppearanceMessageStyleCard),
         ),
       ],
@@ -3020,7 +3020,7 @@ class _InputStyleSelector extends StatelessWidget {
       segments: <ButtonSegment<String>>[
         ButtonSegment<String>(
           value: UserPreferencesManager.INPUT_STYLE_CLASSIC,
-          icon: const Icon(Icons.chat_outlined, size: 16),
+          icon: const Icon(Icons.chat_bubble_outline_rounded, size: 16),
           label: Text(l10n.settingsAppearanceInputStyleClassic),
         ),
         ButtonSegment<String>(
@@ -3690,7 +3690,7 @@ class _ColorSwatchButton extends StatelessWidget {
         child: DecoratedBox(
           decoration: BoxDecoration(color: color, shape: BoxShape.circle),
           child: selected
-              ? Icon(Icons.check, size: 16, color: colorScheme.onPrimary)
+              ? Icon(Icons.check_rounded, size: 16, color: colorScheme.onPrimary)
               : null,
         ),
       ),

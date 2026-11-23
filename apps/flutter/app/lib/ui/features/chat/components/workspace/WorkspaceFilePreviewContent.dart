@@ -161,7 +161,7 @@ class _WorkspaceBytesPreviewState extends State<_WorkspaceBytesPreview> {
         if (snapshot.hasError) {
           return WorkspaceOpenOnlyPreviewBody(
             tab: tab,
-            icon: Icons.error_outline,
+            icon: Icons.error_outline_rounded,
             title: l10n.cannotPreview,
             detail: snapshot.error.toString(),
             onOpenWorkspaceFile: widget.onOpenWorkspaceFile,
@@ -195,7 +195,7 @@ class _WorkspaceBytesPreviewState extends State<_WorkspaceBytesPreview> {
         } on Object catch (error) {
           return WorkspaceOpenOnlyPreviewBody(
             tab: tab,
-            icon: Icons.error_outline,
+            icon: Icons.error_outline_rounded,
             title: l10n.cannotPreview,
             detail: error.toString(),
             onOpenWorkspaceFile: widget.onOpenWorkspaceFile,

@@ -113,10 +113,10 @@ class WorkspaceChangeConfirmDialog extends StatelessWidget {
 IconData _iconForChange(Object? changeType) {
   final type = changeType.toString().toLowerCase();
   if (type.contains('delete')) {
-    return Icons.delete_outline;
+    return Icons.delete_outline_rounded;
   }
   if (type.contains('create') || type.contains('add')) {
-    return Icons.add_circle_outline;
+    return Icons.add_circle_outline_rounded;
   }
   return Icons.edit_outlined;
 }

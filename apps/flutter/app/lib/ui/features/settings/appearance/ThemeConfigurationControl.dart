@@ -110,7 +110,7 @@ class _ThemeConfigurationControlState extends State<ThemeConfigurationControl> {
                         final createButton = FilledButton.icon(
                           key: const ValueKey('theme-config-create'),
                           onPressed: _busy ? null : _create,
-                          icon: const Icon(Icons.add, size: 18),
+                          icon: const Icon(Icons.add_rounded, size: 18),
                           label: Text(l10n.settingsAppearanceThemeNew),
                         );
                         if (activeSnapshot == null) {
@@ -533,7 +533,7 @@ class _ThemeCard extends StatelessWidget {
                             children: [
                               if (active) ...[
                                 Icon(
-                                  Icons.check_circle,
+                                  Icons.check_circle_outline_rounded,
                                   size: 14,
                                   color: scheme.primary,
                                 ),
@@ -579,7 +579,7 @@ class _ThemeCard extends StatelessWidget {
                         key: ValueKey('theme-preview:${config.id}'),
                         tooltip: l10n.settingsAppearanceLivePreviewTitle,
                         onPressed: busy ? null : onPreview,
-                        icon: const Icon(Icons.open_in_full, size: 18),
+                        icon: const Icon(Icons.open_in_full_rounded, size: 18),
                       ),
                       const SizedBox(width: 8),
                       OutlinedButton.icon(
@@ -594,7 +594,7 @@ class _ThemeCard extends StatelessWidget {
                       key: ValueKey('theme-menu:${config.id}'),
                       enabled: !busy,
                       tooltip: l10n.settingsAppearanceThemeMore,
-                      icon: const Icon(Icons.more_vert, size: 20),
+                      icon: const Icon(Icons.more_horiz_rounded, size: 20),
                       itemBuilder: (_) => [
                         PopupMenuItem(
                           value: 'preview',

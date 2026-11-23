@@ -108,7 +108,7 @@ class _TtsFloatingPanelState extends State<TtsFloatingPanel> {
                 Row(
                   children: <Widget>[
                     Icon(
-                      Icons.graphic_eq,
+                      Icons.graphic_eq_rounded,
                       size: 18,
                       color: Theme.of(context).colorScheme.primary,
                     ),
@@ -124,7 +124,7 @@ class _TtsFloatingPanelState extends State<TtsFloatingPanel> {
                     IconButton(
                       tooltip: '关闭',
                       visualDensity: VisualDensity.compact,
-                      icon: const Icon(Icons.close, size: 18),
+                      icon: const Icon(Icons.close_rounded, size: 18),
                       onPressed: () {
                         if (state.phase == TtsPlaybackPhase.playing ||
                             state.phase == TtsPlaybackPhase.paused ||
@@ -174,8 +174,8 @@ class _TtsFloatingPanelState extends State<TtsFloatingPanel> {
                           : '暂停',
                       icon: Icon(
                         state.phase == TtsPlaybackPhase.paused
-                            ? Icons.play_arrow
-                            : Icons.pause,
+                            ? Icons.play_arrow_rounded
+                            : Icons.pause_rounded,
                         size: 18,
                       ),
                       onPressed: state.phase == TtsPlaybackPhase.playing
@@ -187,7 +187,7 @@ class _TtsFloatingPanelState extends State<TtsFloatingPanel> {
                     const SizedBox(width: 8),
                     IconButton.filledTonal(
                       tooltip: '停止',
-                      icon: const Icon(Icons.stop, size: 18),
+                      icon: const Icon(Icons.stop_rounded, size: 18),
                       onPressed:
                           state.phase == TtsPlaybackPhase.playing ||
                               state.phase == TtsPlaybackPhase.paused ||

@@ -446,7 +446,7 @@ class _ThinkToolsXmlGroupState extends State<_ThinkToolsXmlGroup> {
                               ? _instantDuration
                               : _arrowRotationDuration,
                           child: Icon(
-                            Icons.keyboard_arrow_right,
+                            Icons.chevron_right_rounded,
                             size: 20,
                             color: widget.textColor.withValues(alpha: 0.7),
                           ),

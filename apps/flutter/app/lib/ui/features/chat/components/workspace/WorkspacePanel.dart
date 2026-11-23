@@ -1043,7 +1043,7 @@ class _WorkspacePanelState extends State<WorkspacePanel> {
     final tab = WorkspaceTab(
       kind: WorkspaceTabKind.browser,
       title: title,
-      icon: Icons.public,
+      icon: Icons.public_rounded,
       browserSessionId: tabState.id,
       url: tabState.url,
       absolutePath: absolutePath,
@@ -1156,7 +1156,7 @@ class _WorkspacePanelState extends State<WorkspacePanel> {
     final tab = WorkspaceTab(
       kind: WorkspaceTabKind.webVisit,
       title: _webVisitTabTitle(request),
-      icon: Icons.travel_explore,
+      icon: Icons.travel_explore_outlined,
       webVisitRequest: request,
     );
     setState(() {
@@ -1557,7 +1557,7 @@ class _WorkspacePanelState extends State<WorkspacePanel> {
                                 onPressed: () {
                                   unawaited(closeSession(session.sessionId));
                                 },
-                                icon: const Icon(Icons.close),
+                                icon: const Icon(Icons.close_rounded),
                               ),
                               onTap: () async {
                                 Navigator.of(context).pop();
@@ -1766,7 +1766,7 @@ class _WorkspacePanelState extends State<WorkspacePanel> {
     final tab = WorkspaceTab(
       kind: WorkspaceTabKind.terminal,
       title: session.title,
-      icon: Icons.terminal,
+      icon: Icons.terminal_rounded,
       terminalSessionId: session.sessionId,
       terminalType: session.terminalType,
       terminalWorkingDir: session.workingDir,
@@ -2213,8 +2213,8 @@ class _WorkspacePanelState extends State<WorkspacePanel> {
                   children: [
                     Icon(
                       current == opener?.identity
-                          ? Icons.radio_button_checked
-                          : Icons.radio_button_unchecked,
+                          ? Icons.radio_button_checked_rounded
+                          : Icons.radio_button_unchecked_rounded,
                     ),
                     const SizedBox(width: 12),
                     Expanded(

@@ -648,7 +648,7 @@ class ChatMessageContextMetadata extends StatelessWidget {
         actions: <Widget>[
           TextButton.icon(
             onPressed: () => Clipboard.setData(ClipboardData(text: content)),
-            icon: const Icon(Icons.copy_outlined, size: 16),
+            icon: const Icon(Icons.content_copy_outlined, size: 16),
             label: Text(
               MaterialLocalizations.of(dialogContext).copyButtonLabel,
             ),

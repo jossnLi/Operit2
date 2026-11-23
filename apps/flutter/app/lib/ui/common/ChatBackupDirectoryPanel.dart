@@ -97,7 +97,7 @@ class _ChatBackupDirectoryPanelState extends State<ChatBackupDirectoryPanel> {
                         dimension: 18,
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
-                    : const Icon(Icons.folder_open),
+                    : const Icon(Icons.folder_open_outlined),
                 label: Text(
                   selected == null
                       ? l10n.chatBackupChoose

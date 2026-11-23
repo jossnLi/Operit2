@@ -323,7 +323,7 @@ class _UnboundWorkspaceCard extends StatelessWidget {
                       color: colorScheme.onError,
                     ),
                   )
-                : const Icon(Icons.delete_outline),
+                : const Icon(Icons.delete_outline_rounded),
             label: Text(
               l10n.settingsWorkspaceDeleteSelected(
                 selectedWorkspaceNames.length,

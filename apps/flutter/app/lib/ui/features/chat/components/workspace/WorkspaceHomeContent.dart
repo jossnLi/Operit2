@@ -1081,14 +1081,14 @@ class _WorkspaceContributionStateNotice extends StatelessWidget {
         return const SizedBox.shrink();
       case WorkspaceContributionsLoading():
         status = _WorkspaceInlineState(
-          icon: Icons.sync,
+          icon: Icons.sync_rounded,
           text: '正在读取工作区贡献项',
           progress: true,
           color: colors.onSurfaceVariant,
         );
       case WorkspaceContributionsFailed(:final error):
         status = _WorkspaceInlineState(
-          icon: Icons.error_outline,
+          icon: Icons.error_outline_rounded,
           text: '工作区贡献项加载失败：$error',
           color: colors.error,
         );

@@ -38,7 +38,7 @@ Future<void> showExtensionQuickActions(
     ),
     if (controller.hasUpdate(entry))
       (_QuickAction.update, Icons.arrow_circle_up_rounded, '更新'),
-    (_QuickAction.copyId, Icons.copy_rounded, '复制 ID'),
+    (_QuickAction.copyId, Icons.content_copy_outlined, '复制 ID'),
   ];
   final _QuickAction? action;
   if (pointer != null) {
