@@ -59,19 +59,6 @@ bool _isLocalModelProviderType(String providerType) {
   return providerType.trim().toUpperCase() == _TtsProviderTypes.localModel;
 }
 
-List<DropdownMenuItem<String>> _providerCatalogItems(
-  List<core_proxy.TtsProviderCatalogEntry> entries,
-) {
-  return entries
-      .map(
-        (entry) => DropdownMenuItem<String>(
-          value: entry.providerTypeId,
-          child: Text(entry.displayName),
-        ),
-      )
-      .toList(growable: false);
-}
-
 core_proxy.TtsProviderCatalogEntry _requiredTtsProviderCatalog(
   List<core_proxy.TtsProviderCatalogEntry> entries,
   String providerType,

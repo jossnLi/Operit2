@@ -58,12 +58,14 @@ class _TtsProviderDialog extends StatefulWidget {
     required List<core_proxy.TtsProviderCatalogEntry> providerCatalogEntries,
     required String? deleteBlockedReason,
   }) {
-    return showDialog<_TtsProviderEditResult>(
-      context: context,
-      builder: (context) => _TtsProviderDialog(
-        config: config,
-        providerCatalogEntries: providerCatalogEntries,
-        deleteBlockedReason: deleteBlockedReason,
+    return Navigator.of(context).push<_TtsProviderEditResult>(
+      MaterialPageRoute<_TtsProviderEditResult>(
+        fullscreenDialog: true,
+        builder: (context) => _TtsProviderDialog(
+          config: config,
+          providerCatalogEntries: providerCatalogEntries,
+          deleteBlockedReason: deleteBlockedReason,
+        ),
       ),
     );
   }
@@ -116,110 +118,214 @@ class _TtsProviderDialogState extends State<_TtsProviderDialog> {
     super.dispose();
   }
 
+  List<ProviderCatalogChoice> get _providerChoices {
+    return widget.providerCatalogEntries
+        .map(
+          (entry) => ProviderCatalogChoice(
+            id: entry.providerTypeId,
+            label: entry.displayName,
+            subtitle: entry.providerTypeId,
+            logoProviderTypeId: entry.providerTypeId,
+          ),
+        )
+        .toList(growable: false);
+  }
+
+  ProviderCatalogChoice? get _selectedProviderChoice {
+    for (final choice in _providerChoices) {
+      if (choice.id == _providerType) {
+        return choice;
+      }
+    }
+    return null;
+  }
+
+  /// Applies the provider catalog defaults while preserving the edit page.
+  void _applyProviderType(String providerType) {
+    final catalog = _requiredTtsProviderCatalog(
+      widget.providerCatalogEntries,
+      providerType,
+    );
+    setState(() {
+      _providerType = catalog.providerTypeId;
+      _nameController.text = catalog.displayName;
+      _endpointController.text = catalog.defaultEndpoint;
+      _httpMethodController.text = catalog.defaultHttpMethod;
+      _contentTypeController.text = catalog.defaultContentType;
+      _requestBodyController.text = catalog.defaultRequestBody;
+      _headersController.text = _encodeJsonList(catalog.defaultHeaders);
+      _responsePipelineController.text = _encodeJsonList(
+        catalog.defaultResponsePipeline,
+      );
+    });
+  }
+
+  Future<void> _pickProviderType() async {
+    final providerType = await showProviderCatalogChoicePicker(
+      context: context,
+      choices: _providerChoices,
+      selectedId: _providerType,
+      title: '选择 TTS 供应商',
+    );
+    if (providerType == null || !mounted) {
+      return;
+    }
+    _applyProviderType(providerType);
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     final isHttpTts = _isHttpProviderType(_providerType);
     final isSystemTts = _isSystemProviderType(_providerType);
     final isLocalModelTts = _isLocalModelProviderType(_providerType);
-    return AlertDialog(
-      title: const Text('编辑 TTS 供应商'),
-      content: SizedBox(
-        width: 560,
-        child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                OperitFormStyles.dropdownButtonFormField<String>(
-                  context,
-                  initialValue: _providerType,
-                  decoration: const InputDecoration(labelText: '供应商类型'),
-                  items: _providerCatalogItems(widget.providerCatalogEntries),
-                  onChanged: (value) {
-                    if (value == null) {
-                      return;
-                    }
-                    final catalog = _requiredTtsProviderCatalog(
-                      widget.providerCatalogEntries,
-                      value,
-                    );
-                    setState(() {
-                      _providerType = catalog.providerTypeId;
-                      _nameController.text = catalog.displayName;
-                      _endpointController.text = catalog.defaultEndpoint;
-                      _httpMethodController.text = catalog.defaultHttpMethod;
-                      _contentTypeController.text = catalog.defaultContentType;
-                      _requestBodyController.text = catalog.defaultRequestBody;
-                      _headersController.text = _encodeJsonList(
-                        catalog.defaultHeaders,
-                      );
-                      _responsePipelineController.text = _encodeJsonList(
-                        catalog.defaultResponsePipeline,
-                      );
-                    });
-                  },
-                ),
-                const SizedBox(height: 10),
-                _field(_nameController, '供应商名称', requiredField: true),
-                if (!isSystemTts && !isLocalModelTts) ...[
-                  _field(_endpointController, 'Endpoint', requiredField: true),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: ApiKeyTextField(
-                      controller: _apiKeyController,
-                      labelText: 'API Key',
+    return Scaffold(
+      backgroundColor: colorScheme.surface,
+      appBar: AppBar(
+        backgroundColor: colorScheme.surface,
+        surfaceTintColor: Colors.transparent,
+        scrolledUnderElevation: 0,
+        leading: IconButton(
+          tooltip: '返回',
+          onPressed: () => Navigator.of(context).pop(),
+          icon: const Icon(OperitIcons.chevron_left_rounded),
+        ),
+        title: const Text('编辑 TTS 供应商'),
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: TextButton(
+              onPressed: _submit,
+              child: const Text(
+                '保存',
+                style: TextStyle(fontWeight: FontWeight.w700),
+              ),
+            ),
+          ),
+        ],
+      ),
+      body: SafeArea(
+        top: false,
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 720),
+            child: Form(
+              key: _formKey,
+              child: ListView(
+                padding: const EdgeInsets.fromLTRB(18, 8, 18, 32),
+                children: <Widget>[
+                  Text(
+                    '调整 TTS 连接',
+                    style: theme.textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: -0.4,
                     ),
                   ),
-                ],
-                if (isHttpTts) ...[
-                  _field(_httpMethodController, 'HTTP 方法', requiredField: true),
-                  _field(_contentTypeController, 'Content-Type'),
-                  _field(
-                    _requestBodyController,
-                    '请求体模板',
-                    requiredField:
-                        isHttpTts &&
-                        _httpMethodController.text.trim().toUpperCase() ==
-                            'POST',
-                    minLines: 4,
+                  const SizedBox(height: 6),
+                  Text(
+                    '修改供应商地址、凭据和 HTTP 请求配置。',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                      height: 1.45,
+                    ),
                   ),
-                  _field(_headersController, 'Headers JSON', minLines: 3),
-                  _field(_responsePipelineController, '响应管道 JSON', minLines: 4),
-                ],
-                if (widget.deleteBlockedReason case final reason?) ...<Widget>[
-                  const SizedBox(height: 2),
+                  const SizedBox(height: 20),
+                  ProviderCatalogChoiceField(
+                    label: '供应商类型',
+                    choice: _selectedProviderChoice,
+                    onTap: _pickProviderType,
+                  ),
+                  const SizedBox(height: 16),
+                  _SpeechProviderSection(
+                    title: '基础信息',
+                    description: '用于区分不同的语音服务与凭据。',
+                    children: <Widget>[
+                      _field(_nameController, '供应商名称', requiredField: true),
+                      if (!isSystemTts && !isLocalModelTts) ...<Widget>[
+                        _field(
+                          _endpointController,
+                          'Endpoint',
+                          requiredField: true,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: ApiKeyTextField(
+                            controller: _apiKeyController,
+                            labelText: 'API Key',
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                  if (isHttpTts) ...<Widget>[
+                    const SizedBox(height: 14),
+                    _SpeechProviderSection(
+                      title: 'HTTP 请求',
+                      description: '按供应商接口定义请求体、Headers 和响应解析。',
+                      children: <Widget>[
+                        _field(
+                          _httpMethodController,
+                          'HTTP 方法',
+                          requiredField: true,
+                        ),
+                        _field(_contentTypeController, 'Content-Type'),
+                        _field(
+                          _requestBodyController,
+                          '请求体模板',
+                          requiredField:
+                              _httpMethodController.text.trim().toUpperCase() ==
+                              'POST',
+                          minLines: 4,
+                        ),
+                        _field(
+                          _headersController,
+                          'Headers JSON',
+                          minLines: 3,
+                        ),
+                        _field(
+                          _responsePipelineController,
+                          '响应管道 JSON',
+                          minLines: 4,
+                        ),
+                      ],
+                    ),
+                  ],
+                  if (widget.deleteBlockedReason case final reason?) ...<Widget>[
+                    const SizedBox(height: 16),
+                    Text(
+                      reason,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                  const SizedBox(height: 8),
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: Text(
-                      reason,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    child: Tooltip(
+                      message:
+                          widget.deleteBlockedReason ??
+                          l10n.settingsTtsDeleteProvider,
+                      child: TextButton.icon(
+                        onPressed: widget.deleteBlockedReason == null
+                            ? _delete
+                            : null,
+                        icon: const Icon(
+                          OperitIcons.delete_outline_rounded,
+                        ),
+                        label: Text(l10n.delete),
                       ),
                     ),
                   ),
                 ],
-              ],
+              ),
             ),
           ),
         ),
       ),
-      actions: <Widget>[
-        Tooltip(
-          message: widget.deleteBlockedReason ?? l10n.settingsTtsDeleteProvider,
-          child: TextButton.icon(
-            onPressed: widget.deleteBlockedReason == null ? _delete : null,
-            icon: const Icon(OperitIcons.delete_outline_rounded),
-            label: Text(l10n.delete),
-          ),
-        ),
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: const Text('取消'),
-        ),
-        FilledButton(onPressed: _submit, child: const Text('保存')),
-      ],
     );
   }
 

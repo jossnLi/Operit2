@@ -198,6 +198,49 @@ jobs:
           toolchain: ${{ env.RUST_TOOLCHAIN_VERSION }}
           targets: aarch64-linux-android
 
+      - name: Generate Dart proxy artifacts
+        shell: pwsh
+        run: |
+          cargo check --manifest-path core/crates/proxy/local/Cargo.toml --quiet
+          $artifacts = @(
+            "apps/flutter/app/lib/core/proxy/generated/CoreProxyClients.g.dart",
+            "apps/flutter/app/lib/core/proxy/generated/CoreProxyModels.g.dart"
+          )
+          foreach ($artifact in $artifacts) {
+            if (-not (Test-Path -LiteralPath $artifact -PathType Leaf)) {
+              throw "Expected generated Dart proxy artifact is missing: $artifact"
+            }
+            if ((Get-Item -LiteralPath $artifact).Length -eq 0) {
+              throw "Expected generated Dart proxy artifact is empty: $artifact"
+            }
+          }
+
+      - name: Install Flutter dependencies
+        working-directory: apps/flutter/app
+        shell: pwsh
+        run: fvm flutter pub get --enforce-lockfile
+
+      - name: Analyze Flutter app
+        working-directory: apps/flutter/app
+        shell: pwsh
+        run: fvm flutter analyze
+
+      - name: Test changed settings flows
+        working-directory: apps/flutter/app
+        shell: pwsh
+        run: |
+          fvm flutter test `
+            test/settings_screen_layout_test.dart `
+            test/settings_detail_transition_test.dart `
+            test/model_provider_display_test.dart `
+            test/model_settings_capability_refresh_test.dart `
+            test/local_model_llm_settings_test.dart `
+            test/tts_provider_section_test.dart `
+            test/stt_provider_preset_test.dart `
+            test/onboarding_snapshot_import_progress_test.dart `
+            test/storage_directory_selection_test.dart `
+            test/widget_test.dart
+
       - name: Prepare Android bindgen libclang
         shell: pwsh
         run: |

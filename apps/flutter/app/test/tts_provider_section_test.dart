@@ -122,6 +122,28 @@ void main() {
   );
 
   testWidgets(
+    'editing a TTS provider opens a full page with the shared picker field',
+    (tester) async {
+      final bridge = _TtsSettingsBridge();
+      await _pumpSection(tester, bridge);
+      await tester.tap(find.text('TTS 供应商'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('SiliconFlow'));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byTooltip('编辑供应商'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('编辑 TTS 供应商'), findsOneWidget);
+      expect(find.text('调整 TTS 连接'), findsOneWidget);
+      expect(find.text('SILICONFLOW_TTS'), findsOneWidget);
+      expect(find.byType(AlertDialog), findsNothing);
+      expect(find.byType(DropdownButtonFormField<String>), findsNothing);
+      expect(tester.takeException(), isNull);
+    },
+  );
+
+  testWidgets(
     'the independent current TTS configuration still cannot be deleted',
     (tester) async {
       final bridge = _TtsSettingsBridge();
@@ -265,6 +287,19 @@ class _TtsSettingsBridge extends OperitRuntimeBridge {
             defaultEndpoint: '',
             defaultModel: '',
             defaultResponseFormat: 'wav',
+            defaultHttpMethod: 'POST',
+            defaultContentType: 'application/json',
+            defaultRequestBody: '',
+            defaultHeaders: [],
+            defaultResponsePipeline: [],
+            operations: [],
+          ).toJson(),
+          const core.TtsProviderCatalogEntry(
+            providerTypeId: 'SILICONFLOW_TTS',
+            displayName: 'SiliconFlow',
+            defaultEndpoint: 'https://api.siliconflow.cn/v1/audio/speech',
+            defaultModel: 'FunAudioLLM/CosyVoice2-0.5B',
+            defaultResponseFormat: 'mp3',
             defaultHttpMethod: 'POST',
             defaultContentType: 'application/json',
             defaultRequestBody: '',
