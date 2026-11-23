@@ -198,6 +198,10 @@ jobs:
           toolchain: ${{ env.RUST_TOOLCHAIN_VERSION }}
           targets: aarch64-linux-android
 
+      - name: Prepare bundled models.dev catalog
+        shell: pwsh
+        run: python tools/build_scripts/models_dev_bundle.py
+
       - name: Generate Dart proxy artifacts
         shell: pwsh
         run: |
