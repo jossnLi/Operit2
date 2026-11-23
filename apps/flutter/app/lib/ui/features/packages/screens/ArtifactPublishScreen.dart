@@ -15,6 +15,7 @@ import '../../../theme/OperitGlassSurface.dart';
 import '../components/EmptyState.dart';
 import '../market/ArtifactMarketSupport.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 const String _forgeRepoName = 'OperitForge';
 const List<String> _artifactMarketTypes = <String>['script', 'package'];
 
@@ -285,7 +286,7 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
       await showDialog<void>(
         context: context,
         builder: (context) => AlertDialog(
-          icon: const Icon(Icons.check_circle_outline_rounded),
+          icon: const Icon(OperitIcons.check_circle_outline_rounded),
           title: const Text('发布完成'),
           content: SelectableText(
             '已发布「${result.displayName}」\n'
@@ -314,7 +315,7 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
       final confirmed = await showDialog<bool>(
         context: context,
         builder: (context) => AlertDialog(
-          icon: const Icon(Icons.store_outlined),
+          icon: const Icon(OperitIcons.store_outlined),
           title: const Text('初始化 OperitForge'),
           content: Text(
             '需要在 @${request.publisherLogin} 下创建公开仓库 $_forgeRepoName，用于保存发布资产。',
@@ -391,7 +392,7 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
       await showDialog<void>(
         context: context,
         builder: (context) => AlertDialog(
-          icon: const Icon(Icons.check_circle_outline_rounded),
+          icon: const Icon(OperitIcons.check_circle_outline_rounded),
           title: const Text('发布完成'),
           content: SelectableText(
             '已登记「${pending.result.displayName}」\n'
@@ -444,7 +445,7 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
         actions: <Widget>[
           IconButton(
             onPressed: _loading || _publishing ? null : _loadSources,
-            icon: const Icon(Icons.refresh_rounded),
+            icon: const Icon(OperitIcons.refresh_rounded),
             tooltip: '刷新',
           ),
         ],
@@ -456,19 +457,19 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
           }
           if (error != null && _sources.isEmpty) {
             return EmptyState(
-              icon: Icons.error_outline_rounded,
+              icon: OperitIcons.error_outline_rounded,
               title: '加载失败',
               message: error,
               action: TextButton.icon(
                 onPressed: _loadSources,
-                icon: const Icon(Icons.refresh_rounded),
+                icon: const Icon(OperitIcons.refresh_rounded),
                 label: const Text('刷新'),
               ),
             );
           }
           if (_sources.isEmpty) {
             return EmptyState(
-              icon: Icons.inventory_2_outlined,
+              icon: OperitIcons.inventory_2_outlined,
               title: isContinuationMode
                   ? '没有对应的本地 Artifact'
                   : '没有可发布的本地 Artifact',
@@ -531,12 +532,12 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
                 segments: const <ButtonSegment<_ArtifactPublishAssetSource>>[
                   ButtonSegment<_ArtifactPublishAssetSource>(
                     value: _ArtifactPublishAssetSource.directUpload,
-                    icon: Icon(Icons.cloud_upload_outlined),
+                    icon: Icon(OperitIcons.cloud_upload_outlined),
                     label: Text('直接发布本地插件'),
                   ),
                   ButtonSegment<_ArtifactPublishAssetSource>(
                     value: _ArtifactPublishAssetSource.githubReleaseAsset,
-                    icon: Icon(Icons.link_rounded),
+                    icon: Icon(OperitIcons.link_rounded),
                     label: Text('引用 GitHub Release 资产'),
                   ),
                 ],
@@ -581,7 +582,7 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
                           dimension: 18,
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
-                      : const Icon(Icons.refresh_rounded),
+                      : const Icon(OperitIcons.refresh_rounded),
                   label: Text(
                     _loadingGitHubReleaseCatalog
                         ? '正在读取 Release'
@@ -792,7 +793,7 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
                             dimension: 18,
                             child: CircularProgressIndicator(strokeWidth: 2),
                           )
-                        : const Icon(Icons.refresh_rounded),
+                        : const Icon(OperitIcons.refresh_rounded),
                     label: Text(_retryingMarketRegistration ? '重试中' : '重试市场登记'),
                   ),
                 ],
@@ -813,7 +814,7 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
                         dimension: 18,
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
-                    : const Icon(Icons.cloud_upload_outlined),
+                    : const Icon(OperitIcons.cloud_upload_outlined),
                 label: Text(
                   _publishing
                       ? '发布中'

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../../core/backup/ChatBackupService.dart';
 import '../../l10n/generated/app_localizations.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// Shares directory selection and status across onboarding and repair.
 class ChatBackupDirectoryPanel extends StatefulWidget {
   /// Reports setup or deferral of the scheduled backup directory.
@@ -97,7 +98,7 @@ class _ChatBackupDirectoryPanelState extends State<ChatBackupDirectoryPanel> {
                         dimension: 18,
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
-                    : const Icon(Icons.folder_open_outlined),
+                    : const Icon(OperitIcons.folder_open_outlined),
                 label: Text(
                   selected == null
                       ? l10n.chatBackupChoose

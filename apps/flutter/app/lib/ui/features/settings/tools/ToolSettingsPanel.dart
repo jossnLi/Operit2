@@ -11,6 +11,7 @@ import '../../../common/components/M3LoadingIndicator.dart';
 import '../../../theme/OperitGlassSurface.dart';
 import '../components/SettingsControlStyles.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class ToolSettingsPanel extends StatefulWidget {
   const ToolSettingsPanel({super.key, GeneratedCoreProxyClients? clients})
     : clients =
@@ -178,7 +179,7 @@ class _ToolSettingsPanelState extends State<ToolSettingsPanel>
                   contentPadding: EdgeInsets.zero,
                   dense: true,
                   visualDensity: VisualDensity.compact,
-                  leading: const Icon(Icons.timer_outlined),
+                  leading: const Icon(OperitIcons.timer_outlined),
                   title: Text(l10n.settingsToolsMcpStartupTimeout),
                   subtitle: Text(
                     l10n.settingsToolsMcpDescription(
@@ -194,7 +195,7 @@ class _ToolSettingsPanelState extends State<ToolSettingsPanel>
                   contentPadding: EdgeInsets.zero,
                   dense: true,
                   visualDensity: VisualDensity.compact,
-                  leading: const Icon(Icons.timer_outlined),
+                  leading: const Icon(OperitIcons.timer_outlined),
                   title: Text(l10n.settingsToolsToolPkgPreHookTimeout),
                   subtitle: Text(
                     l10n.settingsToolsToolPkgPreHookDescription(
@@ -660,10 +661,10 @@ String _statusLabel(String status) {
 
 IconData _statusIcon(String status) {
   return switch (status) {
-    'Satisfied' => Icons.check_circle_rounded,
-    'Missing' => Icons.error_outline_rounded,
-    'Unavailable' => Icons.info_outline_rounded,
-    _ => Icons.help_outline_rounded,
+    'Satisfied' => OperitIcons.check_circle_rounded,
+    'Missing' => OperitIcons.error_outline_rounded,
+    'Unavailable' => OperitIcons.info_outline_rounded,
+    _ => OperitIcons.help_outline_rounded,
   };
 }
 

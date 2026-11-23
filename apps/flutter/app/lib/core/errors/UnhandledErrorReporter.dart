@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// Describes an unhandled error without ending the application session.
 class UnhandledErrorReport {
   /// Creates a diagnostic report for an unhandled application error.
@@ -158,7 +159,7 @@ class UnhandledErrorDialog extends StatelessWidget {
       constraints: const BoxConstraints(maxWidth: 840),
       scrollable: true,
       icon: Icon(
-        Icons.error_outline_rounded,
+        OperitIcons.error_outline_rounded,
         color: Theme.of(context).colorScheme.error,
       ),
       title: const Text('Operit2 encountered an error'),
@@ -183,7 +184,7 @@ class UnhandledErrorDialog extends StatelessWidget {
       actions: <Widget>[
         TextButton.icon(
           onPressed: _copyDetails,
-          icon: const Icon(Icons.content_copy_outlined),
+          icon: const Icon(OperitIcons.content_copy_outlined),
           label: const Text('Copy details'),
         ),
         FilledButton(
@@ -234,7 +235,7 @@ class StartupErrorApplication extends StatelessWidget {
                       onPressed: () => Clipboard.setData(
                         ClipboardData(text: report.details),
                       ),
-                      icon: const Icon(Icons.content_copy_outlined),
+                      icon: const Icon(OperitIcons.content_copy_outlined),
                       label: const Text('Copy details'),
                     ),
                   ],

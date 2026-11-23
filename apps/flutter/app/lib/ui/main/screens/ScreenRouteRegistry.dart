@@ -9,6 +9,7 @@ import '../../features/settings/models/SettingsModels.dart';
 import '../navigation/AppNavigationModels.dart';
 import 'OperitScreens.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 const String _internalNativeScreenKey = '__native_screen';
 
 typedef _ScreenFactory = OperitScreen Function(Map<String, Object?> args);
@@ -82,7 +83,7 @@ class ScreenRouteRegistry {
         routeId: routeIdOf(aiChat),
         surface: NavigationSurface.mainSidebarAi,
         title: l10n.aiChat,
-        icon: Icons.chat_bubble_outline_rounded,
+        icon: OperitIcons.chat_bubble_outline_rounded,
         order: 10,
       ),
       NavigationEntrySpec(
@@ -90,7 +91,7 @@ class ScreenRouteRegistry {
         routeId: routeIdOf(packageManager),
         surface: NavigationSurface.mainSidebarAi,
         title: l10n.packageManager,
-        icon: Icons.extension_outlined,
+        icon: OperitIcons.extension_outlined,
         order: 20,
       ),
       NavigationEntrySpec(
@@ -98,7 +99,7 @@ class ScreenRouteRegistry {
         routeId: routeIdOf(market),
         surface: NavigationSurface.mainSidebarAi,
         title: l10n.market,
-        icon: Icons.store_outlined,
+        icon: OperitIcons.store_outlined,
         order: 30,
       ),
       NavigationEntrySpec(
@@ -106,7 +107,7 @@ class ScreenRouteRegistry {
         routeId: routeIdOf(settings),
         surface: NavigationSurface.mainSidebarAi,
         title: l10n.settings,
-        icon: Icons.settings_outlined,
+        icon: OperitIcons.settings_outlined,
         order: 40,
       ),
     ];

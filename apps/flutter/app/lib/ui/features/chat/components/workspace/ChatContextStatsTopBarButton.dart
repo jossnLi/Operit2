@@ -15,6 +15,7 @@ import '../../../../main/screens/ScreenRouteRegistry.dart';
 import '../../../settings/models/SettingsModels.dart';
 import '../../viewmodel/ChatViewModel.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// Shows context usage with one compact statistics and device menu.
 class ChatContextStatsTopBarButton extends StatefulWidget {
   /// Creates the context menu for the current conversation.
@@ -283,7 +284,7 @@ class _ChatContextStatsTopBarButtonState
                 controller.open();
               }
             },
-            icon: const Icon(Icons.data_usage_rounded, size: 14),
+            icon: const Icon(OperitIcons.data_usage_rounded, size: 14),
             label: Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
@@ -291,8 +292,8 @@ class _ChatContextStatsTopBarButtonState
                 const SizedBox(width: 3),
                 Icon(
                   _isOpen
-                      ? Icons.expand_less_rounded
-                      : Icons.expand_more_rounded,
+                      ? OperitIcons.expand_less_rounded
+                      : OperitIcons.expand_more_rounded,
                   size: 16,
                 ),
               ],
@@ -331,7 +332,7 @@ class _ChatContextStatsTopBarButtonState
                           IconButton(
                             tooltip: AppLocalizations.of(context)!.refresh,
                             onPressed: _pollingSummary ? null : _loadAllData,
-                            icon: const Icon(Icons.refresh_rounded, size: 16),
+                            icon: const Icon(OperitIcons.refresh_rounded, size: 16),
                             visualDensity: VisualDensity.compact,
                           ),
                         ],
@@ -376,7 +377,7 @@ class _ChatContextStatsTopBarButtonState
                           IconButton(
                             tooltip: '添加设备',
                             onPressed: _openDeviceSpaceSettings,
-                            icon: const Icon(Icons.add_rounded, size: 18),
+                            icon: const Icon(OperitIcons.add_rounded, size: 18),
                             color: colorScheme.onSurfaceVariant,
                             visualDensity: VisualDensity.compact,
                           ),
@@ -547,8 +548,8 @@ class _DeviceRow extends StatelessWidget {
                 message: isLocal ? '本机' : '远程设备',
                 child: Icon(
                   isLocal
-                      ? Icons.computer_rounded
-                      : Icons.devices_other_rounded,
+                      ? OperitIcons.computer_rounded
+                      : OperitIcons.devices_other_rounded,
                   size: 16,
                   color: colors.onSurfaceVariant,
                 ),
@@ -573,7 +574,7 @@ class _DeviceRow extends StatelessWidget {
                 Tooltip(
                   message: '当前执行设备',
                   child: Icon(
-                    Icons.check_rounded,
+                    OperitIcons.check_rounded,
                     size: 16,
                     color: colors.primary,
                   ),

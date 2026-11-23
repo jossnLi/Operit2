@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'drawer_chrome.dart';
 
+import '../icons/operit_icons.dart';
 /// The vertical guide used by nested conversation rows in the desktop drawer.
 ///
 /// This is intentionally a presentational primitive. Runtime code supplies the
@@ -118,7 +119,7 @@ class ThemeHistorySectionHeader extends StatelessWidget {
     required this.onToggleExpanded,
     this.workspaceStyle = false,
     this.avatar,
-    this.fallbackIcon = Icons.person_outline_rounded,
+    this.fallbackIcon = OperitIcons.person_outline_rounded,
   });
 
   final String label;
@@ -159,7 +160,7 @@ class ThemeHistorySectionHeader extends StatelessWidget {
                 ),
                 const SizedBox(width: 9),
                 Icon(
-                  Icons.work_outline_rounded,
+                  OperitIcons.work_outline_rounded,
                   size: 15,
                   color: appearance.itemColor.withValues(alpha: 0.82),
                 ),
@@ -179,7 +180,7 @@ class ThemeHistorySectionHeader extends StatelessWidget {
                 _ThemeHistoryCountBadge(count: count, appearance: appearance),
                 const SizedBox(width: 6),
                 Icon(
-                  expanded ? Icons.expand_less_rounded : Icons.expand_more_rounded,
+                  expanded ? OperitIcons.expand_less_rounded : OperitIcons.expand_more_rounded,
                   size: 18,
                   color: appearance.itemColor.withValues(alpha: 0.70),
                 ),
@@ -250,7 +251,7 @@ class ThemeHistorySectionHeader extends StatelessWidget {
               ),
             ),
             Icon(
-              expanded ? Icons.keyboard_arrow_up_rounded : Icons.keyboard_arrow_down_rounded,
+              expanded ? OperitIcons.keyboard_arrow_up_rounded : OperitIcons.keyboard_arrow_down_rounded,
               size: 23,
               color: appearance.itemColor.withValues(alpha: 0.78),
             ),
@@ -297,7 +298,7 @@ class ThemeHistoryGroupHeader extends StatelessWidget {
       child: Row(
         children: <Widget>[
           Icon(
-            Icons.folder_outlined,
+            OperitIcons.folder_outlined,
             size: workspaceStyle ? 14 : 16,
             color: workspaceStyle
                 ? appearance.itemColor.withValues(alpha: 0.76)
@@ -326,7 +327,7 @@ class ThemeHistoryGroupHeader extends StatelessWidget {
           if (pinned) ...<Widget>[
             const SizedBox(width: 4),
             Icon(
-              Icons.push_pin_rounded,
+              OperitIcons.push_pin_rounded,
               size: 12,
               color: appearance.itemColor.withValues(
                 alpha: workspaceStyle ? 0.65 : 0.68,
@@ -342,10 +343,10 @@ class ThemeHistoryGroupHeader extends StatelessWidget {
           const SizedBox(width: 2),
           Icon(
             expanded
-                ? (workspaceStyle ? Icons.expand_less_rounded : Icons.keyboard_arrow_up_rounded)
+                ? (workspaceStyle ? OperitIcons.expand_less_rounded : OperitIcons.keyboard_arrow_up_rounded)
                 : (workspaceStyle
-                      ? Icons.expand_more_rounded
-                      : Icons.keyboard_arrow_down_rounded),
+                      ? OperitIcons.expand_more_rounded
+                      : OperitIcons.keyboard_arrow_down_rounded),
             size: workspaceStyle ? 17 : 20,
             color: appearance.itemColor.withValues(
               alpha: workspaceStyle ? 0.62 : 0.68,
@@ -484,7 +485,7 @@ class ThemeConversationRow extends StatelessWidget {
                 if (pinned) ...<Widget>[
                   const SizedBox(width: 5),
                   Icon(
-                    Icons.push_pin_rounded,
+                    OperitIcons.push_pin_rounded,
                     size: 12,
                     color: titleColor.withValues(alpha: 0.60),
                   ),
@@ -492,7 +493,7 @@ class ThemeConversationRow extends StatelessWidget {
                 if (locked) ...<Widget>[
                   const SizedBox(width: 5),
                   Icon(
-                    Icons.lock_outline_rounded,
+                    OperitIcons.lock_outline_rounded,
                     size: 12,
                     color: titleColor.withValues(alpha: 0.60),
                   ),
@@ -582,7 +583,7 @@ class ThemeHistoryMoreGlyph extends StatelessWidget {
     height: side,
     child: Center(
       child: Icon(
-        Icons.more_horiz_rounded,
+        OperitIcons.more_horiz_rounded,
         size: compact ? 14 : 16,
         color: color,
       ),

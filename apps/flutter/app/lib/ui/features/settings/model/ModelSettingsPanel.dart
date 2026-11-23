@@ -25,6 +25,7 @@ import 'ModelConnectionTestCapabilities.dart';
 import 'ProviderLogo.dart';
 import '../tts/TtsSettingsPanel.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class ModelSettingsPanel extends StatefulWidget {
   const ModelSettingsPanel({super.key, GeneratedCoreProxyClients? clients})
     : clients =
@@ -559,7 +560,7 @@ class ModelSettingsPanelState extends State<ModelSettingsPanel> {
             ],
             _SectionCard(
               title: l10n.settingsModelProvidersSection,
-              icon: Icons.dns_outlined,
+              icon: OperitIcons.dns_outlined,
               initiallyExpanded: true,
               action: SettingsSectionAddButton(
                 tooltip: '添加模型供应商',
@@ -584,7 +585,7 @@ class ModelSettingsPanelState extends State<ModelSettingsPanel> {
             ),
             _SectionCard(
               title: l10n.settingsModelFunctionMappingsSection,
-              icon: Icons.tune_outlined,
+              icon: OperitIcons.tune_outlined,
               initiallyExpanded: false,
               children: <Widget>[
                 _FunctionMappingGroups(
@@ -875,7 +876,7 @@ class _ProviderEditorDialogState extends State<_ProviderEditorDialog> {
                   return ListTile(
                     selected: selected,
                     leading: selected
-                        ? const Icon(Icons.check_rounded)
+                        ? const Icon(OperitIcons.check_rounded)
                         : const SizedBox(width: 24),
                     title: Text(option.endpoint),
                     subtitle: option.label == option.endpoint
@@ -1033,12 +1034,12 @@ class _ProviderEditorDialogState extends State<_ProviderEditorDialog> {
                     FilteringTextInputFormatter.deny(RegExp(r'\s')),
                   ],
                   suffixIcon: _isCodexProvider
-                      ? const Icon(Icons.lock_outline_rounded, size: 20)
+                      ? const Icon(OperitIcons.lock_outline_rounded, size: 20)
                       : (endpointOptions.isEmpty
                             ? null
                             : IconButton(
                                 tooltip: l10n.settingsModelApiEndpoint,
-                                icon: const Icon(Icons.arrow_drop_down_rounded),
+                                icon: const Icon(OperitIcons.arrow_drop_down_rounded),
                                 onPressed: _showEndpointOptionsDialog,
                               )),
                 ),
@@ -1137,7 +1138,7 @@ class _ProviderEditorDialogState extends State<_ProviderEditorDialog> {
           TextButton.icon(
             onPressed: () =>
                 Navigator.of(context).pop(const _ProviderEditDeleteResult()),
-            icon: const Icon(Icons.delete_outline_rounded),
+            icon: const Icon(OperitIcons.delete_outline_rounded),
             label: Text(l10n.delete),
           ),
         TextButton(
@@ -1300,7 +1301,7 @@ class _ModernCheckbox extends StatelessWidget {
             : (partial
                   ? Center(
                       child: Icon(
-                        Icons.remove_rounded,
+                        OperitIcons.remove_rounded,
                         size: 14,
                         color: colorScheme.onPrimary,
                       ),
@@ -2171,7 +2172,7 @@ class _CatalogStatusLine extends StatelessWidget {
     return Row(
       children: <Widget>[
         Icon(
-          failed ? Icons.error_outline_rounded : Icons.info_outline_rounded,
+          failed ? OperitIcons.error_outline_rounded : OperitIcons.info_outline_rounded,
           size: 14,
           color: color,
         ),
@@ -2503,7 +2504,7 @@ class _ProviderCard extends StatelessWidget {
                 const SettingsActivePill(label: '当前主模型')
               else
                 Icon(
-                  Icons.chevron_right_rounded,
+                  OperitIcons.chevron_right_rounded,
                   size: 20,
                   color: colorScheme.onSurfaceVariant,
                 ),
@@ -3386,7 +3387,7 @@ class _ProviderDetailScreenState extends State<_ProviderDetailScreen> {
                                     _run(() => widget.onAddModel(provider)),
                                 style:
                                     SettingsControlStyles.sectionFilledButton(),
-                                icon: const Icon(Icons.playlist_add_rounded, size: 18),
+                                icon: const Icon(OperitIcons.playlist_add_rounded, size: 18),
                                 label: Text(l10n.settingsModelAddModel),
                               ),
                             ],
@@ -3531,13 +3532,13 @@ class _ModelListToolbar extends StatelessWidget {
           ),
           _CapsuleActionButton(
             label: l10n.settingsModelTestModel,
-            icon: Icons.speed_rounded,
+            icon: OperitIcons.speed_rounded,
             onTap: anyChecked && !batchRunning ? onTestChecked : null,
           ),
           const SizedBox(width: 6),
           _CapsuleActionButton(
             label: l10n.delete,
-            icon: Icons.delete_outline_rounded,
+            icon: OperitIcons.delete_outline_rounded,
             destructive: true,
             onTap: anyChecked ? onDeleteChecked : null,
           ),
@@ -3568,19 +3569,19 @@ class _ModelListToolbar extends StatelessWidget {
           if (batchRunning)
             _CapsuleActionButton(
               label: l10n.stop,
-              icon: Icons.stop_rounded,
+              icon: OperitIcons.stop_rounded,
               onTap: batchStopping ? null : onStopTests,
             )
           else
             _CapsuleActionButton(
               label: l10n.settingsModelTestAll,
-              icon: Icons.speed_rounded,
+              icon: OperitIcons.speed_rounded,
               onTap: onTestAll,
             ),
           const SizedBox(width: 6),
           _CapsuleActionButton(
             label: l10n.settingsModelSelect,
-            icon: Icons.checklist_rounded,
+            icon: OperitIcons.checklist_rounded,
             onTap: onStartSelecting,
           ),
         ],
@@ -3699,8 +3700,8 @@ class _DialogToastState extends State<_DialogToast> {
                       children: <Widget>[
                         Icon(
                           _error
-                              ? Icons.error_outline_rounded
-                              : Icons.check_circle_outline_rounded,
+                              ? OperitIcons.error_outline_rounded
+                              : OperitIcons.check_circle_outline_rounded,
                           size: 16,
                           color: accent,
                         ),
@@ -4633,10 +4634,10 @@ class _TestResultBubbleState extends State<_TestResultBubble> {
                   children: <Widget>[
                     Icon(
                       passed
-                          ? Icons.check_circle_rounded
+                          ? OperitIcons.check_circle_rounded
                           : restricted
-                          ? Icons.pause_circle_outline_rounded
-                          : Icons.error_rounded,
+                          ? OperitIcons.pause_circle_outline_rounded
+                          : OperitIcons.error_rounded,
                       size: 15,
                       color: statusColor,
                     ),
@@ -4658,7 +4659,7 @@ class _TestResultBubbleState extends State<_TestResultBubble> {
                         icon: AnimatedSwitcher(
                           duration: const Duration(milliseconds: 160),
                           child: Icon(
-                            _copied ? Icons.check_rounded : Icons.content_copy_outlined,
+                            _copied ? OperitIcons.check_rounded : OperitIcons.content_copy_outlined,
                             key: ValueKey<bool>(_copied),
                             size: 14,
                             color: _copied
@@ -4688,10 +4689,10 @@ class _TestResultBubbleState extends State<_TestResultBubble> {
                             padding: const EdgeInsets.only(top: 1),
                             child: Icon(
                               item.success
-                                  ? Icons.check_rounded
+                                  ? OperitIcons.check_rounded
                                   : connectionTestRestriction(item.error) != null
-                                  ? Icons.pause_rounded
-                                  : Icons.close_rounded,
+                                  ? OperitIcons.pause_rounded
+                                  : OperitIcons.close_rounded,
                               size: 13,
                               color: item.success
                                   ? _testPassedColor(isDark)
@@ -5485,7 +5486,7 @@ class _ModelInlineSettingsFormState extends State<_ModelInlineSettingsForm> {
         _CapabilityToggleChip(
           title: l10n.settingsModelCapabilityToolCall,
           tooltip: l10n.settingsModelToolCallDescription,
-          icon: Icons.build_outlined,
+          icon: OperitIcons.build_outlined,
           checked: _toolCall,
           onChanged: (value) => _changeCapabilities(() {
             _toolCall = value;
@@ -5494,7 +5495,7 @@ class _ModelInlineSettingsFormState extends State<_ModelInlineSettingsForm> {
         _CapabilityToggleChip(
           title: l10n.settingsModelCapabilityImage,
           tooltip: l10n.settingsModelDirectImageDescription,
-          icon: Icons.image_outlined,
+          icon: OperitIcons.image_outlined,
           checked: _directImage,
           onChanged: (value) => _changeCapabilities(() {
             _directImage = value;
@@ -5503,7 +5504,7 @@ class _ModelInlineSettingsFormState extends State<_ModelInlineSettingsForm> {
         _CapabilityToggleChip(
           title: l10n.settingsModelCapabilityAudio,
           tooltip: l10n.settingsModelDirectAudioDescription,
-          icon: Icons.graphic_eq_rounded,
+          icon: OperitIcons.graphic_eq_rounded,
           checked: _directAudio,
           onChanged: (value) => _changeCapabilities(() {
             _directAudio = value;
@@ -5512,7 +5513,7 @@ class _ModelInlineSettingsFormState extends State<_ModelInlineSettingsForm> {
         _CapabilityToggleChip(
           title: l10n.settingsModelCapabilityVideo,
           tooltip: l10n.settingsModelDirectVideoDescription,
-          icon: Icons.videocam_outlined,
+          icon: OperitIcons.videocam_outlined,
           checked: _directVideo,
           onChanged: (value) => _changeCapabilities(() {
             _directVideo = value;
@@ -5522,7 +5523,7 @@ class _ModelInlineSettingsFormState extends State<_ModelInlineSettingsForm> {
           _CapabilityToggleChip(
             title: l10n.settingsModelClaudeCache,
             tooltip: l10n.settingsModelClaudeCacheDescription,
-            icon: Icons.cached_outlined,
+            icon: OperitIcons.cached_outlined,
             checked: _claude1hPromptCache,
             onChanged: _setClaudeCache,
           ),
@@ -5539,7 +5540,7 @@ class _ModelInlineSettingsFormState extends State<_ModelInlineSettingsForm> {
           _CapabilityToggleChip(
             title: _builtinTools[index].displayName,
             tooltip: _builtinToolSubtitle(l10n, _builtinTools[index]),
-            icon: Icons.extension_outlined,
+            icon: OperitIcons.extension_outlined,
             checked: _builtinTools[index].enabled,
             onChanged: (value) => _setBuiltinToolEnabled(index, value),
           ),
@@ -5657,7 +5658,7 @@ class _ModelCardMenu extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
       icon: Icon(
-        Icons.more_horiz_rounded,
+        OperitIcons.more_horiz_rounded,
         size: 18,
         color: colorScheme.onSurfaceVariant,
       ),
@@ -5665,25 +5666,25 @@ class _ModelCardMenu extends StatelessWidget {
       itemBuilder: (context) => <PopupMenuEntry<_ModelCardAction>>[
         item(
           _ModelCardAction.describeThinking,
-          Icons.psychology_outlined,
+          OperitIcons.psychology_outlined,
           l10n.settingsModelDescribeThinking,
         ),
         if (canUseCatalogThinking)
           item(
             _ModelCardAction.useCatalogThinking,
-            Icons.undo_rounded,
+            OperitIcons.undo_rounded,
             l10n.settingsModelThinkingUseCatalog,
           ),
         if (canRestoreDefaults)
           item(
             _ModelCardAction.restoreDefaults,
-            Icons.restart_alt_rounded,
+            OperitIcons.restart_alt_rounded,
             l10n.settingsModelRestoreDefaults,
           ),
         const PopupMenuDivider(),
         item(
           _ModelCardAction.delete,
-          Icons.delete_outline_rounded,
+          OperitIcons.delete_outline_rounded,
           l10n.settingsModelDeleteModel,
           destructive: true,
         ),
@@ -6334,8 +6335,8 @@ class _ThinkingKindOption extends StatelessWidget {
               duration: const Duration(milliseconds: 160),
               child: Icon(
                 selected
-                    ? Icons.radio_button_checked_rounded
-                    : Icons.radio_button_unchecked_rounded,
+                    ? OperitIcons.radio_button_checked_rounded
+                    : OperitIcons.radio_button_unchecked_rounded,
                 key: ValueKey<bool>(selected),
                 size: 20,
                 color: selected
@@ -6613,7 +6614,7 @@ class _TestModelPillButton extends StatelessWidget {
                 )
               else
                 Icon(
-                  Icons.speed_rounded,
+                  OperitIcons.speed_rounded,
                   size: 13.5,
                   color: colorScheme.primary,
                 ),
@@ -6851,7 +6852,7 @@ class _FunctionMappingGroupsState extends State<_FunctionMappingGroups> {
               TextButton.icon(
                 onPressed: widget.onFollowAll,
                 style: SettingsControlStyles.sectionTextButton(),
-                icon: const Icon(Icons.link_rounded, size: 16),
+                icon: const Icon(OperitIcons.link_rounded, size: 16),
                 label: Text(l10n.settingsModelFunctionFollowChatAll),
               ),
             ],
@@ -6883,8 +6884,8 @@ class _FunctionMappingGroupsState extends State<_FunctionMappingGroups> {
                 children: <Widget>[
                   Icon(
                     _showAdvanced
-                        ? Icons.keyboard_arrow_up_rounded
-                        : Icons.keyboard_arrow_down_rounded,
+                        ? OperitIcons.keyboard_arrow_up_rounded
+                        : OperitIcons.keyboard_arrow_down_rounded,
                     size: 18,
                     color: colorScheme.onSurfaceVariant,
                   ),
@@ -7042,7 +7043,7 @@ class _FunctionMappingRow extends StatelessWidget {
                           if (warning != null) ...<Widget>[
                             const SizedBox(width: 6),
                             Icon(
-                              Icons.warning_amber_outlined,
+                              OperitIcons.warning_amber_outlined,
                               size: 13,
                               color: colorScheme.error,
                             ),
@@ -7064,7 +7065,7 @@ class _FunctionMappingRow extends StatelessWidget {
                 ),
                 const SizedBox(width: 6),
                 Icon(
-                  Icons.chevron_right_rounded,
+                  OperitIcons.chevron_right_rounded,
                   size: 18,
                   color: colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
                 ),
@@ -7093,7 +7094,7 @@ class _FollowChatBadge extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Icon(Icons.link_rounded, size: 10, color: colorScheme.primary),
+          Icon(OperitIcons.link_rounded, size: 10, color: colorScheme.primary),
           const SizedBox(width: 3),
           Text(
             l10n.settingsModelFunctionFollowChat,
@@ -7269,7 +7270,7 @@ class _FunctionModelSelectorDialogState
             TextField(
               controller: _searchController,
               decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.search_rounded),
+                prefixIcon: const Icon(OperitIcons.search_rounded),
                 labelText: l10n.search,
               ),
               onChanged: (_) => setState(() {}),
@@ -7351,7 +7352,7 @@ class _FollowChatQuickOption extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 9),
           child: Row(
             children: <Widget>[
-              Icon(Icons.link_rounded, size: 20, color: colorScheme.primary),
+              Icon(OperitIcons.link_rounded, size: 20, color: colorScheme.primary),
               const SizedBox(width: 10),
               Expanded(
                 child: Column(
@@ -7374,7 +7375,7 @@ class _FollowChatQuickOption extends StatelessWidget {
                 ),
               ),
               if (selected)
-                Icon(Icons.check_circle_outline_rounded, size: 20, color: colorScheme.primary),
+                Icon(OperitIcons.check_circle_outline_rounded, size: 20, color: colorScheme.primary),
             ],
           ),
         ),
@@ -7462,7 +7463,7 @@ class _FunctionModelOptionTile extends StatelessWidget {
                 SizedBox(
                   width: 24,
                   child: Icon(
-                    selected ? Icons.check_circle_outline_rounded : Icons.circle_outlined,
+                    selected ? OperitIcons.check_circle_outline_rounded : OperitIcons.circle_outlined,
                     size: 20,
                     color: selected
                         ? colorScheme.primary
@@ -7489,7 +7490,7 @@ class _FunctionModelOptionTile extends StatelessWidget {
                               unsupportedReason != null) ...<Widget>[
                             const SizedBox(width: 6),
                             Icon(
-                              Icons.warning_amber_outlined,
+                              OperitIcons.warning_amber_outlined,
                               size: 13,
                               color: colorScheme.error,
                             ),

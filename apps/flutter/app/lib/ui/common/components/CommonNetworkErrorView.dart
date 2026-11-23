@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../../../core/proxy/generated/CoreProxyModels.g.dart' as core_proxy;
 import '../ApiErrorText.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class CommonNetworkErrorView extends StatelessWidget {
   /// Creates a model configuration error with its original details.
   const CommonNetworkErrorView({
@@ -149,17 +150,17 @@ class NetworkErrorSummary {
       message: explanation.message,
       detail: explanation.category == ApiErrorCategory.info ? null : original,
       icon: switch (explanation.category) {
-        ApiErrorCategory.request => Icons.tune_rounded,
-        ApiErrorCategory.key => Icons.key_off_rounded,
-        ApiErrorCategory.billing => Icons.account_balance_wallet_outlined,
-        ApiErrorCategory.access => Icons.lock_outline_rounded,
-        ApiErrorCategory.address => Icons.link_off_rounded,
-        ApiErrorCategory.timeout => Icons.timer_outlined,
-        ApiErrorCategory.limit => Icons.hourglass_top_rounded,
-        ApiErrorCategory.server => Icons.cloud_off_rounded,
-        ApiErrorCategory.network => Icons.wifi_off_rounded,
-        ApiErrorCategory.info => Icons.info_outline_rounded,
-        ApiErrorCategory.unknown => Icons.error_outline_rounded,
+        ApiErrorCategory.request => OperitIcons.tune_rounded,
+        ApiErrorCategory.key => OperitIcons.key_off_rounded,
+        ApiErrorCategory.billing => OperitIcons.account_balance_wallet_outlined,
+        ApiErrorCategory.access => OperitIcons.lock_outline_rounded,
+        ApiErrorCategory.address => OperitIcons.link_off_rounded,
+        ApiErrorCategory.timeout => OperitIcons.timer_outlined,
+        ApiErrorCategory.limit => OperitIcons.hourglass_top_rounded,
+        ApiErrorCategory.server => OperitIcons.cloud_off_rounded,
+        ApiErrorCategory.network => OperitIcons.wifi_off_rounded,
+        ApiErrorCategory.info => OperitIcons.info_outline_rounded,
+        ApiErrorCategory.unknown => OperitIcons.error_outline_rounded,
       },
     );
   }

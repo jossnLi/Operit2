@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../../common/components/OperitDialog.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 enum _MessagePartType { text, xml }
 
 class _ParsedMessagePart {
@@ -140,7 +141,7 @@ class _MessageEditorDialogState extends State<MessageEditorDialog> {
           ),
           FilledButton.icon(
             onPressed: _submitting ? null : () => _submit(widget.onResend),
-            icon: const Icon(Icons.arrow_upward_rounded, size: 14),
+            icon: const Icon(OperitIcons.arrow_upward_rounded, size: 14),
             label: const Text('保存并重发'),
           ),
         ] else
@@ -292,7 +293,7 @@ class _VisualEditor extends StatelessWidget {
                       ),
                     ])
                   : null,
-              icon: const Icon(Icons.add_rounded, size: 16),
+              icon: const Icon(OperitIcons.add_rounded, size: 16),
               label: const Text('添加文本'),
             ),
             const SizedBox(width: 8),
@@ -309,7 +310,7 @@ class _VisualEditor extends StatelessWidget {
                       ),
                     )
                   : null,
-              icon: const Icon(Icons.tag_outlined, size: 16),
+              icon: const Icon(OperitIcons.tag_outlined, size: 16),
               label: const Text('添加标签'),
             ),
           ],
@@ -408,7 +409,7 @@ class _TextPartEditorState extends State<_TextPartEditor> {
         ),
         suffixIcon: IconButton(
           onPressed: widget.enabled ? widget.onDelete : null,
-          icon: const Icon(Icons.delete_outline_rounded, size: 16),
+          icon: const Icon(OperitIcons.delete_outline_rounded, size: 16),
           tooltip: '删除',
           visualDensity: VisualDensity.compact,
           padding: EdgeInsets.zero,
@@ -457,7 +458,7 @@ class _XmlTagItemState extends State<_XmlTagItem> {
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               child: Row(
                 children: <Widget>[
-                  Icon(Icons.code_rounded, size: 18, color: colorScheme.primary),
+                  Icon(OperitIcons.code_rounded, size: 18, color: colorScheme.primary),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Column(
@@ -486,18 +487,18 @@ class _XmlTagItemState extends State<_XmlTagItem> {
                   ),
                   IconButton(
                     onPressed: widget.enabled ? widget.onEdit : null,
-                    icon: const Icon(Icons.edit_outlined, size: 16),
+                    icon: const Icon(OperitIcons.edit_outlined, size: 16),
                     tooltip: '编辑',
                   ),
                   IconButton(
                     onPressed: widget.enabled ? widget.onDelete : null,
-                    icon: const Icon(Icons.delete_outline_rounded, size: 16),
+                    icon: const Icon(OperitIcons.delete_outline_rounded, size: 16),
                     tooltip: '删除',
                   ),
                   Icon(
                     _expanded
-                        ? Icons.keyboard_arrow_up_rounded
-                        : Icons.keyboard_arrow_down_rounded,
+                        ? OperitIcons.keyboard_arrow_up_rounded
+                        : OperitIcons.keyboard_arrow_down_rounded,
                     color: colorScheme.onSurfaceVariant,
                   ),
                 ],
@@ -558,7 +559,7 @@ class _TagEditorDialogState extends State<_TagEditorDialog> {
   Widget build(BuildContext context) {
     return OperitDialogScaffold(
       title: '编辑标签',
-      icon: const Icon(Icons.tag_outlined, size: 20),
+      icon: const Icon(OperitIcons.tag_outlined, size: 20),
       maxWidth: 520,
       actions: <Widget>[
         OutlinedButton(

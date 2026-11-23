@@ -10,6 +10,7 @@ import 'ExtensionMotion.dart';
 import 'StoreDetailKit.dart';
 import 'StoreVisuals.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// Where a submission stands in the market's review.
 enum CreatorReviewState { pending, approved, changesRequested, rejected, withdrawn }
 
@@ -332,8 +333,8 @@ class _CreatorEntryCardState extends State<CreatorEntryCard> {
               style: SettingsControlStyles.sectionTextButton(),
               icon: Icon(
                 _expanded
-                    ? Icons.expand_less_rounded
-                    : Icons.expand_more_rounded,
+                    ? OperitIcons.expand_less_rounded
+                    : OperitIcons.expand_more_rounded,
                 size: 18,
               ),
               label: Text(_expanded ? '收起' : '审核详情'),
@@ -355,7 +356,7 @@ class _CreatorEntryCardState extends State<CreatorEntryCard> {
                           colorScheme.error,
                         ),
                       ),
-                      icon: const Icon(Icons.delete_outline_rounded, size: 18),
+                      icon: const Icon(OperitIcons.delete_outline_rounded, size: 18),
                       label: const Text('移除'),
                     ),
                   if (access.canPublishVersion)
@@ -367,14 +368,14 @@ class _CreatorEntryCardState extends State<CreatorEntryCard> {
                         minimumSize: const Size(0, 36),
                         padding: const EdgeInsets.symmetric(horizontal: 14),
                       ),
-                      icon: const Icon(Icons.new_releases_outlined, size: 18),
+                      icon: const Icon(OperitIcons.new_releases_outlined, size: 18),
                       label: const Text('发布新版本'),
                     ),
                   if (access.canSubmitRevision)
                     FilledButton.icon(
                       onPressed: busy ? null : widget.onSubmitRevision,
                       style: SettingsControlStyles.sectionFilledButton(),
-                      icon: const Icon(Icons.edit_note_rounded, size: 18),
+                      icon: const Icon(OperitIcons.edit_note_rounded, size: 18),
                       label: const Text('修改后提交新版本'),
                     ),
                 ],
@@ -465,7 +466,7 @@ class _CreatorEntryCardState extends State<CreatorEntryCard> {
                         for (final reason in shownReasons)
                           StoreBadge(
                             label: reason,
-                            icon: Icons.error_outline_rounded,
+                            icon: OperitIcons.error_outline_rounded,
                             color: colorScheme.errorContainer.withValues(
                               alpha: 0.5,
                             ),
@@ -493,7 +494,7 @@ class _CreatorEntryCardState extends State<CreatorEntryCard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Icon(
-                          Icons.schedule_rounded,
+                          OperitIcons.schedule_rounded,
                           size: 16,
                           color: colorScheme.tertiary,
                         ),
@@ -573,17 +574,17 @@ class _StatusBadge extends StatelessWidget {
       ),
     };
     final (label, icon) = switch (state) {
-      CreatorReviewState.pending => ('待审核', Icons.schedule_rounded),
+      CreatorReviewState.pending => ('待审核', OperitIcons.schedule_rounded),
       CreatorReviewState.approved when access.pendingListing => (
         '待上架',
-        Icons.hourglass_top_rounded,
+        OperitIcons.hourglass_top_rounded,
       ),
-      CreatorReviewState.approved => ('已发布', Icons.check_circle_outline_rounded),
-      CreatorReviewState.changesRequested => ('已打回', Icons.edit_note_rounded),
-      CreatorReviewState.rejected => ('已拒绝', Icons.block_rounded),
+      CreatorReviewState.approved => ('已发布', OperitIcons.check_circle_outline_rounded),
+      CreatorReviewState.changesRequested => ('已打回', OperitIcons.edit_note_rounded),
+      CreatorReviewState.rejected => ('已拒绝', OperitIcons.block_rounded),
       CreatorReviewState.withdrawn => (
         '已移除',
-        Icons.remove_circle_outline_rounded,
+        OperitIcons.remove_circle_outline_rounded,
       ),
     };
     return StoreBadge(

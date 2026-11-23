@@ -210,7 +210,7 @@ class _TtsProviderDialogState extends State<_TtsProviderDialog> {
           message: widget.deleteBlockedReason ?? l10n.settingsTtsDeleteProvider,
           child: TextButton.icon(
             onPressed: widget.deleteBlockedReason == null ? _delete : null,
-            icon: const Icon(Icons.delete_outline_rounded),
+            icon: const Icon(OperitIcons.delete_outline_rounded),
             label: Text(l10n.delete),
           ),
         ),
@@ -364,7 +364,7 @@ class _AvailableTtsVoiceDialogState extends State<_AvailableTtsVoiceDialog> {
             TextField(
               controller: _searchController,
               decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.search_rounded),
+                prefixIcon: Icon(OperitIcons.search_rounded),
                 labelText: '搜索',
               ),
               onChanged: (_) => setState(() {}),
@@ -393,7 +393,7 @@ class _AvailableTtsVoiceDialogState extends State<_AvailableTtsVoiceDialog> {
                       dense: true,
                       visualDensity: VisualDensity.compact,
                       contentPadding: EdgeInsets.zero,
-                      leading: const Icon(Icons.add_rounded),
+                      leading: const Icon(OperitIcons.add_rounded),
                       title: const Text('自定义音色'),
                       subtitle: const Text('手动填写模型和音色'),
                       onTap: () => Navigator.of(
@@ -663,7 +663,7 @@ class _TtsVoiceConfigDialogState extends State<_TtsVoiceConfigDialog> {
                           dimension: 18,
                           child: Center(child: M3LoadingIndicator(size: 18)),
                         )
-                      : const Icon(Icons.volume_up_outlined, size: 18),
+                      : const Icon(OperitIcons.volume_up_outlined, size: 18),
                   label: const Text('测试音色'),
                 ),
               ),
@@ -706,7 +706,7 @@ class _TtsVoiceConfigDialogState extends State<_TtsVoiceConfigDialog> {
           TextButton.icon(
             onPressed: () =>
                 Navigator.of(context).pop(const _TtsVoiceEditDeleted()),
-            icon: const Icon(Icons.delete_outline_rounded),
+            icon: const Icon(OperitIcons.delete_outline_rounded),
             label: const Text('删除'),
           ),
         TextButton(

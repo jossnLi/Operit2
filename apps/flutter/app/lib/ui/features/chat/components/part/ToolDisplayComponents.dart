@@ -14,6 +14,7 @@ import 'ChatActivityDisclosure.dart';
 import 'ChatActivityRowStyle.dart';
 import 'FileDiffDisplay.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class CompactToolDisplay extends StatelessWidget {
   const CompactToolDisplay({
     super.key,
@@ -283,27 +284,27 @@ class ToolPresentation {
 
 /// Selects a visual for a declared semantic icon, independently of tool names.
 IconData toolDisplayIcon(String? icon) => switch (icon) {
-  'file' => Icons.description_outlined,
-  'folder' => Icons.folder_outlined,
-  'edit' => Icons.edit_outlined,
-  'delete' => Icons.delete_outline_rounded,
-  'search' => Icons.search_rounded,
-  'terminal' => Icons.terminal_rounded,
-  'web' => Icons.language_rounded,
-  'download' => Icons.download_outlined,
-  'package' => Icons.extension_outlined,
-  'time' => Icons.schedule_rounded,
-  'notification' => Icons.notifications_outlined,
-  'clipboard' => Icons.content_paste_outlined,
-  'audio' => Icons.volume_up_outlined,
-  'info' => Icons.info_outline_rounded,
-  'screen' => Icons.screenshot_outlined,
-  'tap' => Icons.touch_app_outlined,
-  'double_tap' => Icons.ads_click_outlined,
-  'long_press' => Icons.pan_tool_outlined,
-  'swipe' => Icons.swipe_outlined,
-  'keyboard' => Icons.keyboard_outlined,
-  _ => Icons.build_outlined,
+  'file' => OperitIcons.description_outlined,
+  'folder' => OperitIcons.folder_outlined,
+  'edit' => OperitIcons.edit_outlined,
+  'delete' => OperitIcons.delete_outline_rounded,
+  'search' => OperitIcons.search_rounded,
+  'terminal' => OperitIcons.terminal_rounded,
+  'web' => OperitIcons.language_rounded,
+  'download' => OperitIcons.download_outlined,
+  'package' => OperitIcons.extension_outlined,
+  'time' => OperitIcons.schedule_rounded,
+  'notification' => OperitIcons.notifications_outlined,
+  'clipboard' => OperitIcons.content_paste_outlined,
+  'audio' => OperitIcons.volume_up_outlined,
+  'info' => OperitIcons.info_outline_rounded,
+  'screen' => OperitIcons.screenshot_outlined,
+  'tap' => OperitIcons.touch_app_outlined,
+  'double_tap' => OperitIcons.ads_click_outlined,
+  'long_press' => OperitIcons.pan_tool_outlined,
+  'swipe' => OperitIcons.swipe_outlined,
+  'keyboard' => OperitIcons.keyboard_outlined,
+  _ => OperitIcons.build_outlined,
 };
 
 String formatToolParameters(String rawParams) {
@@ -463,8 +464,8 @@ class _ToolCallRowState extends State<ToolCallRow> {
                     message: status,
                     child: Icon(
                       presentation.isSuccess == false
-                          ? Icons.error_outline_rounded
-                          : Icons.check_rounded,
+                          ? OperitIcons.error_outline_rounded
+                          : OperitIcons.check_rounded,
                       size: 14,
                       color: color,
                     ),
@@ -474,7 +475,7 @@ class _ToolCallRowState extends State<ToolCallRow> {
                     turns: _expanded ? 0.25 : 0,
                     duration: ChatActivityDisclosure.duration,
                     curve: ChatActivityDisclosure.curve,
-                    child: const Icon(Icons.chevron_right_rounded, size: 16),
+                    child: const Icon(OperitIcons.chevron_right_rounded, size: 16),
                   ),
               ],
             ),
@@ -603,8 +604,8 @@ class DirectoryListingDisplay extends StatelessWidget {
                     children: [
                       Icon(
                         entry['isDirectory'] as bool
-                            ? Icons.folder_outlined
-                            : Icons.description_outlined,
+                            ? OperitIcons.folder_outlined
+                            : OperitIcons.description_outlined,
                         size: ChatActivityRowStyle.iconSize,
                         color: theme.colorScheme.onSurfaceVariant,
                       ),
@@ -707,7 +708,7 @@ class _ToolInlineDetailSurfaceState extends State<ToolInlineDetailSurface> {
                         duration: ChatActivityDisclosure.duration,
                         curve: ChatActivityDisclosure.curve,
                         child: Icon(
-                          Icons.chevron_right_rounded,
+                          OperitIcons.chevron_right_rounded,
                           size: 14,
                           color: color,
                         ),
@@ -734,7 +735,7 @@ class _ToolInlineDetailSurfaceState extends State<ToolInlineDetailSurface> {
               style: IconButton.styleFrom(
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
-              icon: Icon(Icons.content_copy_outlined, size: 14, color: color),
+              icon: Icon(OperitIcons.content_copy_outlined, size: 14, color: color),
               onPressed: () => Clipboard.setData(ClipboardData(text: _text)),
             ),
           ],

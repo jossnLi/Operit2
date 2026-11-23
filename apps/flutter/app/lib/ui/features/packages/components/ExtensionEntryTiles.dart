@@ -13,6 +13,7 @@ import 'ExtensionMotion.dart';
 import 'ExtensionNavigation.dart';
 import 'StoreVisuals.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// Runtime wording shared by rows and cards. [restatesSwitch] marks wording
 /// that only repeats the enabled state, which tiles beside a switch leave out.
 ({String label, bool restatesSwitch}) extensionRuntimeStatus(
@@ -457,12 +458,12 @@ class _CapabilityTags extends StatelessWidget {
     final tags = <(IconData, String)>[
       if (entry.kind == 'toolpkg') ...<(IconData, String)>[
         if (entry.subpackageCount > 0)
-          (Icons.inventory_2_outlined, '子包 ${entry.subpackageCount}'),
-        if (entry.hasUi) (Icons.dashboard_customize_outlined, '界面'),
+          (OperitIcons.inventory_2_outlined, '子包 ${entry.subpackageCount}'),
+        if (entry.hasUi) (OperitIcons.dashboard_customize_outlined, '界面'),
         if (entry.chatSidebarEntryIds.isNotEmpty)
-          (Icons.view_sidebar_outlined, '侧边栏'),
+          (OperitIcons.view_sidebar_outlined, '侧边栏'),
       ] else if (entry.kind != 'skill' && entry.toolCount > 0)
-        (Icons.build_outlined, '工具 ${entry.toolCount}'),
+        (OperitIcons.build_outlined, '工具 ${entry.toolCount}'),
     ];
     if (tags.isEmpty) {
       return const SizedBox(height: 22);

@@ -21,6 +21,7 @@ import 'ArtifactPublishScreen.dart';
 import 'GitHubOAuthLoginDialog.dart';
 import 'RepoMarketPublishScreen.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 const String _logTag = 'MarketManage';
 
 /// Notifications listed before the rest fold behind "show all".
@@ -386,7 +387,7 @@ class _MarketCreatorScreenState extends State<MarketCreatorScreen> {
         IconButton(
           tooltip: '刷新',
           onPressed: busy ? null : _reload,
-          icon: const Icon(Icons.refresh_rounded),
+          icon: const Icon(OperitIcons.refresh_rounded),
         ),
       ],
       child: Material(
@@ -430,7 +431,7 @@ class _MarketCreatorScreenState extends State<MarketCreatorScreen> {
       if (unauthorized) ...<Widget>[
         const SizedBox(height: 12),
         StoreNoticeCard(
-          icon: Icons.lock_outline_rounded,
+          icon: OperitIcons.lock_outline_rounded,
           title: 'GitHub 登录已失效',
           message: '市场没有接受保存的登录凭据，可能已过期或被撤销。重新登录后即可继续。',
           action: FilledButton.tonal(
@@ -490,7 +491,7 @@ class _MarketCreatorScreenState extends State<MarketCreatorScreen> {
     final error = _account.error;
     if (error != null) {
       return StoreNoticeCard(
-        icon: Icons.error_outline_rounded,
+        icon: OperitIcons.error_outline_rounded,
         tone: StoreNoticeTone.error,
         title: '读取 GitHub 登录状态失败',
         message: '$error',
@@ -556,7 +557,7 @@ class _MarketCreatorScreenState extends State<MarketCreatorScreen> {
         ),
         if (error != null) ...<Widget>[
           StoreNoticeCard(
-            icon: Icons.cloud_off_rounded,
+            icon: OperitIcons.cloud_off_rounded,
             tone: StoreNoticeTone.error,
             title: '发布记录加载失败',
             message: '$error',
@@ -579,7 +580,7 @@ class _MarketCreatorScreenState extends State<MarketCreatorScreen> {
           )
         else if (_entriesLoaded && _entries.isEmpty)
           const _EmptyCard(
-            icon: Icons.inventory_2_outlined,
+            icon: OperitIcons.inventory_2_outlined,
             title: '还没有发布过扩展',
             message: '从上面的入口发布第一个扩展，审核进度会显示在这里。',
           )
@@ -593,7 +594,7 @@ class _MarketCreatorScreenState extends State<MarketCreatorScreen> {
                   children: <Widget>[
                     StoreFilterChip(
                       label: '全部',
-                      icon: Icons.apps_rounded,
+                      icon: OperitIcons.apps_rounded,
                       count: _entries.length,
                       selected: filter == null,
                       onSelected: () => setState(() => _kindFilter = null),
@@ -644,7 +645,7 @@ class _MarketCreatorScreenState extends State<MarketCreatorScreen> {
         ),
         if (error != null) ...<Widget>[
           StoreNoticeCard(
-            icon: Icons.cloud_off_rounded,
+            icon: OperitIcons.cloud_off_rounded,
             tone: StoreNoticeTone.error,
             title: '通知加载失败',
             message: '$error',
@@ -659,7 +660,7 @@ class _MarketCreatorScreenState extends State<MarketCreatorScreen> {
           const StoreShimmer(child: StoreSkeletonBox(height: 72, radius: 12))
         else if (_noticesLoaded && _notifications.isEmpty)
           const _EmptyCard(
-            icon: Icons.notifications_none_rounded,
+            icon: OperitIcons.notifications_none_rounded,
             title: '暂无通知',
             message: '评论、回复和审核结果会显示在这里。',
           )
@@ -684,8 +685,8 @@ class _MarketCreatorScreenState extends State<MarketCreatorScreen> {
                   iconAlignment: IconAlignment.end,
                   icon: Icon(
                     _showAllNotices
-                        ? Icons.expand_less_rounded
-                        : Icons.expand_more_rounded,
+                        ? OperitIcons.expand_less_rounded
+                        : OperitIcons.expand_more_rounded,
                     size: 18,
                   ),
                   label: Text(
@@ -775,8 +776,8 @@ class _PublishOptions extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 7),
                   child: Icon(
                     locked
-                        ? Icons.lock_outline_rounded
-                        : Icons.arrow_forward_rounded,
+                        ? OperitIcons.lock_outline_rounded
+                        : OperitIcons.arrow_forward_rounded,
                     size: 18,
                     color: colorScheme.onSurfaceVariant,
                   ),
@@ -983,7 +984,7 @@ class _NoticeRow extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 2),
                 child: Icon(
-                  Icons.chevron_right_rounded,
+                  OperitIcons.chevron_right_rounded,
                   size: 18,
                   color: colorScheme.onSurfaceVariant,
                 ),
@@ -1001,37 +1002,37 @@ class _NoticeRow extends StatelessWidget {
   ColorScheme colorScheme,
 ) => switch (kind) {
   'comment_new' => (
-    icon: Icons.comment_outlined,
+    icon: OperitIcons.comment_outlined,
     label: '新评论',
     color: colorScheme.primary,
   ),
   'comment_reply' => (
-    icon: Icons.reply_rounded,
+    icon: OperitIcons.reply_rounded,
     label: '回复了你的评论',
     color: colorScheme.primary,
   ),
   'review_approved' => (
-    icon: Icons.check_circle_outline_rounded,
+    icon: OperitIcons.check_circle_outline_rounded,
     label: '已通过审核',
     color: colorScheme.primary,
   ),
   'review_rejected' => (
-    icon: Icons.cancel_outlined,
+    icon: OperitIcons.cancel_outlined,
     label: '未通过审核',
     color: colorScheme.error,
   ),
   'review_changes' => (
-    icon: Icons.edit_note_rounded,
+    icon: OperitIcons.edit_note_rounded,
     label: '需要修改',
     color: colorScheme.tertiary,
   ),
   'entry_curated' => (
-    icon: Icons.star_outline_rounded,
+    icon: OperitIcons.star_outline_rounded,
     label: '入选精选',
     color: colorScheme.tertiary,
   ),
   _ => (
-    icon: Icons.notifications_outlined,
+    icon: OperitIcons.notifications_outlined,
     label: kind,
     color: colorScheme.onSurfaceVariant,
   ),

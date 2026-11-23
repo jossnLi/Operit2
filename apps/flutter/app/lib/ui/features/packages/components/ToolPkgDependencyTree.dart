@@ -10,6 +10,7 @@ import 'ExtensionAvatar.dart';
 import 'ExtensionNavigation.dart';
 import 'StoreDetailKit.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// A compact, bounded-width tree. Shared prerequisites become links after their
 /// first appearance; totals count unique plugins, rather than tree rows.
 class ToolPkgDependencyTree extends StatelessWidget {
@@ -140,8 +141,8 @@ class ToolPkgDependencyTree extends StatelessWidget {
         children: [
           Icon(
             satisfied == nodes.length
-                ? Icons.check_circle_outline_rounded
-                : Icons.pending_outlined,
+                ? OperitIcons.check_circle_outline_rounded
+                : OperitIcons.pending_outlined,
             size: 16,
             color: satisfied == nodes.length
                 ? colorScheme.primary
@@ -240,8 +241,8 @@ class _DependencyTreeRow extends StatelessWidget {
                   contentPadding: EdgeInsets.zero,
                   leading: Icon(
                     source.optional
-                        ? Icons.link_rounded
-                        : Icons.account_tree_outlined,
+                        ? OperitIcons.link_rounded
+                        : OperitIcons.account_tree_outlined,
                   ),
                   title: Text(
                     '${sourceNames[source.parentId]}${source.optional ? '（可选）' : '需要'}',
@@ -266,11 +267,11 @@ class _DependencyTreeRow extends StatelessWidget {
     final theme = Theme.of(context);
     final satisfied = node.state == ToolPkgDependencyState.satisfied;
     final statusIcon = switch (node.state) {
-      ToolPkgDependencyState.satisfied => Icons.check_circle_rounded,
-      ToolPkgDependencyState.disabled => Icons.pause_circle_outline_rounded,
-      ToolPkgDependencyState.missing => Icons.download_for_offline_outlined,
-      ToolPkgDependencyState.cycle => Icons.loop_rounded,
-      _ => Icons.error_outline_rounded,
+      ToolPkgDependencyState.satisfied => OperitIcons.check_circle_rounded,
+      ToolPkgDependencyState.disabled => OperitIcons.pause_circle_outline_rounded,
+      ToolPkgDependencyState.missing => OperitIcons.download_for_offline_outlined,
+      ToolPkgDependencyState.cycle => OperitIcons.loop_rounded,
+      _ => OperitIcons.error_outline_rounded,
     };
     final title = entry?.displayName ?? node.id;
     final depth = math.min(ancestors.length, maxDepth);
@@ -306,7 +307,7 @@ class _DependencyTreeRow extends StatelessWidget {
                   ),
                 ),
                 if (entry == null)
-                  const StoreRowGlyph(icon: Icons.link_rounded)
+                  const StoreRowGlyph(icon: OperitIcons.link_rounded)
                 else
                   CatalogEntryAvatar(clients: clients, entry: entry, size: 28),
                 const SizedBox(width: 8),
@@ -350,7 +351,7 @@ class _DependencyTreeRow extends StatelessWidget {
                   Tooltip(
                     message: '共享依赖，已在树中展开',
                     child: Icon(
-                      Icons.link_rounded,
+                      OperitIcons.link_rounded,
                       size: 15,
                       color: theme.colorScheme.onSurfaceVariant,
                     ),
@@ -374,7 +375,7 @@ class _DependencyTreeRow extends StatelessWidget {
                 ),
                 if (entry != null)
                   Icon(
-                    Icons.chevron_right_rounded,
+                    OperitIcons.chevron_right_rounded,
                     size: 16,
                     color: theme.colorScheme.onSurfaceVariant,
                   ),

@@ -15,6 +15,7 @@ import '../../../../../../main/navigation/ToolPkgCatalogChangeBus.dart';
 import '../../../../viewmodel/ChatSelectionTransition.dart';
 import '../../../../viewmodel/ChatViewModel.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class AgentInputMenuPopup extends StatefulWidget {
   /// Creates the shared menu with a lifecycle guard owned by its real composer.
   const AgentInputMenuPopup({
@@ -250,7 +251,7 @@ class _AgentInputMenuPopupState extends State<AgentInputMenuPopup> {
                       onPresent: _presentSectionAction,
                     ),
                     _MenuSection(
-                      icon: Icons.security_outlined,
+                      icon: OperitIcons.security_outlined,
                       title: '工具',
                       value: data.toolPermissionMode.label,
                       expanded: _toolsExpanded,
@@ -273,7 +274,7 @@ class _AgentInputMenuPopupState extends State<AgentInputMenuPopup> {
                       ],
                     ),
                     _MenuSection(
-                      icon: Icons.bolt_outlined,
+                      icon: OperitIcons.bolt_outlined,
                       title: '行为',
                       value: data.disableStreamOutput ? '非流式' : '流式',
                       expanded: _behaviorExpanded,
@@ -284,7 +285,7 @@ class _AgentInputMenuPopupState extends State<AgentInputMenuPopup> {
                       },
                       children: <Widget>[
                         _SwitchRow(
-                          icon: Icons.speed_outlined,
+                          icon: OperitIcons.speed_outlined,
                           title: '流式输出',
                           value: data.disableStreamOutput ? '关' : '开',
                           checked: !data.disableStreamOutput,
@@ -293,7 +294,7 @@ class _AgentInputMenuPopupState extends State<AgentInputMenuPopup> {
                       ],
                     ),
                     _MenuSection(
-                      icon: Icons.extension_outlined,
+                      icon: OperitIcons.extension_outlined,
                       title: '插件',
                       value: data.pluginSummary,
                       expanded: _pluginsExpanded,
@@ -305,7 +306,7 @@ class _AgentInputMenuPopupState extends State<AgentInputMenuPopup> {
                       children: <Widget>[
                         for (final toggle in data.pluginToggles)
                           _SwitchRow(
-                            icon: Icons.hub_outlined,
+                            icon: OperitIcons.hub_outlined,
                             materialIconName: toggle.icon,
                             title: toggle.title ?? toggle.id,
                             value: toggle.isChecked ? '开' : '关',
@@ -607,7 +608,7 @@ class _ChatSessionSummarySectionState
                     child: Row(
                       children: <Widget>[
                         Icon(
-                          Icons.data_usage_outlined,
+                          OperitIcons.data_usage_outlined,
                           size: 17,
                           color: colorScheme.onSurfaceVariant,
                         ),
@@ -626,8 +627,8 @@ class _ChatSessionSummarySectionState
                         const SizedBox(width: 6),
                         Icon(
                           _statsExpanded
-                              ? Icons.keyboard_arrow_up_rounded
-                              : Icons.keyboard_arrow_down_rounded,
+                              ? OperitIcons.keyboard_arrow_up_rounded
+                              : OperitIcons.keyboard_arrow_down_rounded,
                           size: 20,
                           color: colorScheme.onSurfaceVariant,
                         ),
@@ -843,8 +844,8 @@ class _MenuSection extends StatelessWidget {
                   const SizedBox(width: 6),
                   Icon(
                     expanded
-                        ? Icons.keyboard_arrow_up_rounded
-                        : Icons.keyboard_arrow_down_rounded,
+                        ? OperitIcons.keyboard_arrow_up_rounded
+                        : OperitIcons.keyboard_arrow_down_rounded,
                     size: 20,
                     color: colorScheme.onSurfaceVariant,
                   ),

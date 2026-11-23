@@ -9,6 +9,7 @@ import '../components/StoreDetailKit.dart';
 import '../components/StoreVisuals.dart';
 import '../model/ExtensionCatalogController.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 enum ExtensionGrouping { kind, location, status }
 
 /// "我的扩展": what needs attention first, then every installed extension
@@ -134,13 +135,13 @@ class _ExtensionsPaneState extends State<ExtensionsPane> {
         _Group(
           id: 'problem',
           title: '需要处理',
-          icon: Icons.error_outline_rounded,
+          icon: OperitIcons.error_outline_rounded,
           entries: where(ExtensionCatalogController.hasProblem),
         ),
         _Group(
           id: 'enabled',
           title: '已启用',
-          icon: Icons.toggle_on_outlined,
+          icon: OperitIcons.toggle_on_outlined,
           entries: where(
             (entry) =>
                 !ExtensionCatalogController.hasProblem(entry) &&
@@ -150,7 +151,7 @@ class _ExtensionsPaneState extends State<ExtensionsPane> {
         _Group(
           id: 'disabled',
           title: '已停用',
-          icon: Icons.toggle_off_outlined,
+          icon: OperitIcons.toggle_off_outlined,
           entries: where(
             (entry) =>
                 !ExtensionCatalogController.hasProblem(entry) &&
@@ -190,7 +191,7 @@ class _ExtensionsPaneState extends State<ExtensionsPane> {
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 560),
               child: StoreNoticeCard(
-                icon: Icons.error_outline_rounded,
+                icon: OperitIcons.error_outline_rounded,
                 tone: StoreNoticeTone.error,
                 title: '扩展目录加载失败',
                 message: error,
@@ -287,17 +288,17 @@ class _ExtensionsPaneState extends State<ExtensionsPane> {
                       segments: const <ButtonSegment<ExtensionGrouping>>[
                         ButtonSegment<ExtensionGrouping>(
                           value: ExtensionGrouping.kind,
-                          icon: Icon(Icons.category_outlined, size: 16),
+                          icon: Icon(OperitIcons.category_outlined, size: 16),
                           label: Text('按类型'),
                         ),
                         ButtonSegment<ExtensionGrouping>(
                           value: ExtensionGrouping.location,
-                          icon: Icon(Icons.hub_outlined, size: 16),
+                          icon: Icon(OperitIcons.hub_outlined, size: 16),
                           label: Text('按位置'),
                         ),
                         ButtonSegment<ExtensionGrouping>(
                           value: ExtensionGrouping.status,
-                          icon: Icon(Icons.toggle_on_outlined, size: 16),
+                          icon: Icon(OperitIcons.toggle_on_outlined, size: 16),
                           label: Text('按状态'),
                         ),
                       ],
@@ -466,8 +467,8 @@ class _ExtensionsPaneState extends State<ExtensionsPane> {
                               StoreListRow(
                                 leading: StoreRowGlyph(
                                   icon: diagnostic.code == 'duplicate_scope'
-                                      ? Icons.warning_amber_rounded
-                                      : Icons.error_outline_rounded,
+                                      ? OperitIcons.warning_amber_rounded
+                                      : OperitIcons.error_outline_rounded,
                                   color: diagnostic.code == 'duplicate_scope'
                                       ? theme.colorScheme.tertiary
                                       : theme.colorScheme.error,
@@ -499,7 +500,7 @@ class _ExtensionsPaneState extends State<ExtensionsPane> {
             : diagnostic.packageKind == 'skill'
             ? '技能扫描错误会在目录刷新时重新计算'
             : '此加载错误没有可删除的安装来源',
-        child: const Icon(Icons.info_outline_rounded),
+        child: const Icon(OperitIcons.info_outline_rounded),
       );
     }
     if (_controller.isBusy('diagnostic:${diagnostic.sourcePath}')) {
@@ -511,7 +512,7 @@ class _ExtensionsPaneState extends State<ExtensionsPane> {
     return IconButton(
       tooltip: diagnostic.code == 'import_failed' ? '删除失败记录' : '删除失败来源',
       onPressed: () => _run(() => _controller.deleteDiagnostic(diagnostic)),
-      icon: const Icon(Icons.delete_outline_rounded),
+      icon: const Icon(OperitIcons.delete_outline_rounded),
     );
   }
 }
@@ -585,7 +586,7 @@ class _SummaryBar extends StatelessWidget {
               ),
             StoreGetButton(
               label: '检查更新',
-              icon: Icons.refresh_rounded,
+              icon: OperitIcons.refresh_rounded,
               busy: checking,
               onPressed: onCheck,
             ),
@@ -627,14 +628,14 @@ class _AttentionBlock extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         StoreSectionHeader(
-          icon: Icons.notifications_active_outlined,
+          icon: OperitIcons.notifications_active_outlined,
           title: '需要处理',
           count: count,
           trailing: updates.length > 1
               ? TextButton.icon(
                   onPressed: updating ? null : onUpdateAll,
                   style: SettingsControlStyles.sectionTextButton(),
-                  icon: const Icon(Icons.system_update_alt_rounded, size: 18),
+                  icon: const Icon(OperitIcons.system_update_alt_rounded, size: 18),
                   label: const Text('全部更新'),
                 )
               : null,
@@ -646,7 +647,7 @@ class _AttentionBlock extends StatelessWidget {
                 controller: controller,
                 entry: entry,
                 trailing: Icon(
-                  Icons.chevron_right_rounded,
+                  OperitIcons.chevron_right_rounded,
                   color: theme.colorScheme.onSurfaceVariant,
                 ),
               ),
@@ -666,12 +667,12 @@ class _AttentionBlock extends StatelessWidget {
             if (diagnostics.isNotEmpty)
               StoreListRow(
                 leading: StoreRowGlyph(
-                  icon: Icons.report_gmailerrorred_rounded,
+                  icon: OperitIcons.report_gmailerrorred_rounded,
                   color: theme.colorScheme.tertiary,
                 ),
                 title: '${diagnostics.length} 条加载诊断',
                 subtitle: '查看加载错误和重复安装警告',
-                trailing: const Icon(Icons.chevron_right_rounded),
+                trailing: const Icon(OperitIcons.chevron_right_rounded),
                 onTap: onShowDiagnostics,
               ),
           ],
@@ -695,7 +696,7 @@ class _EmptyLibrary extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Icon(
-            query.isEmpty ? Icons.extension_outlined : Icons.search_off_rounded,
+            query.isEmpty ? OperitIcons.extension_outlined : OperitIcons.search_off_rounded,
             size: 40,
             color: theme.colorScheme.onSurfaceVariant,
           ),
@@ -718,7 +719,7 @@ class _EmptyLibrary extends StatelessWidget {
             FilledButton.tonalIcon(
               onPressed: onAdd,
               style: SettingsControlStyles.sectionFilledButton(),
-              icon: const Icon(Icons.add_rounded, size: 18),
+              icon: const Icon(OperitIcons.add_rounded, size: 18),
               label: const Text('添加扩展'),
             ),
           ],

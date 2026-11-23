@@ -7,6 +7,7 @@ export 'src/fixtures/theme_surface_probe.dart';
 export 'src/fixtures/theme_client_scene.dart';
 export 'src/fonts/theme_font_registry.dart';
 export 'src/fonts/theme_font_glyphs.dart';
+export 'src/icons/operit_icons.dart';
 export 'src/fonts/builtin_theme_fonts.dart';
 export 'src/preview/theme_probe_preparation.dart';
 export 'src/model/theme_preference_defaults.dart';

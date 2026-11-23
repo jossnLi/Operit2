@@ -175,8 +175,8 @@ class _TtsProviderGroupTile extends StatelessWidget {
                   children: <Widget>[
                     Icon(
                       expanded
-                          ? Icons.keyboard_arrow_down_rounded
-                          : Icons.chevron_right_rounded,
+                          ? OperitIcons.keyboard_arrow_down_rounded
+                          : OperitIcons.chevron_right_rounded,
                       size: 18,
                       color: colorScheme.onSurfaceVariant,
                     ),
@@ -218,12 +218,12 @@ class _TtsProviderGroupTile extends StatelessWidget {
                       TextButton.icon(
                         onPressed: onAddVoice,
                         style: SettingsControlStyles.sectionTextButton(),
-                        icon: const Icon(Icons.playlist_add_rounded, size: 18),
+                        icon: const Icon(OperitIcons.playlist_add_rounded, size: 18),
                         label: const Text('添加'),
                       ),
                       SettingsEntityIconButton(
                         tooltip: '编辑供应商',
-                        icon: Icons.edit_outlined,
+                        icon: OperitIcons.edit_outlined,
                         onPressed: onEditProvider,
                       ),
                     ],
@@ -341,7 +341,7 @@ class _TtsVoiceTile extends StatelessWidget {
                 width: 16,
                 height: 16,
                 child: Icon(
-                  Icons.graphic_eq_outlined,
+                  OperitIcons.graphic_eq_outlined,
                   size: 16,
                   color: current
                       ? colorScheme.primary
@@ -375,7 +375,7 @@ class _TtsVoiceTile extends StatelessWidget {
               else
                 SettingsEntityIconButton(
                   tooltip: '试听',
-                  icon: Icons.volume_up_outlined,
+                  icon: OperitIcons.volume_up_outlined,
                   onPressed: () {
                     onTest();
                   },
@@ -406,17 +406,17 @@ class _TtsVoiceMeta extends StatelessWidget {
       runSpacing: 4,
       children: <Widget>[
         _TtsMetaIcon(
-          icon: Icons.audiotrack_outlined,
+          icon: OperitIcons.audiotrack_outlined,
           tooltip: config.responseFormat,
           color: color,
         ),
         _TtsMetaIcon(
-          icon: Icons.speed_outlined,
+          icon: OperitIcons.speed_outlined,
           tooltip: config.speed.toStringAsFixed(2),
           color: color,
         ),
         _TtsMetaIcon(
-          icon: Icons.http_outlined,
+          icon: OperitIcons.http_outlined,
           tooltip: config.httpMethod,
           color: color,
         ),

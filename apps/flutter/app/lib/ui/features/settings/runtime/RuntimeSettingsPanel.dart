@@ -23,6 +23,7 @@ import 'DeviceSpaceGraph.dart';
 import 'NetworkControlPanel.dart';
 import 'SpaceIdentityLabels.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 String _deviceInfoName(generated.LinkDeviceInfo info) {
   final parts = [
     info.platform.trim(),
@@ -416,7 +417,7 @@ class _RuntimeSettingsPanelState extends State<RuntimeSettingsPanel>
     return _DeviceSpaceRow(
       leading: incompatible
           ? Icon(
-              Icons.link_off_outlined,
+              OperitIcons.link_off_outlined,
               color: deviceCompatibilityColor(Theme.of(context).colorScheme),
             )
           : _pairedLeading(displayState),
@@ -536,7 +537,7 @@ class _RuntimeSettingsPanelState extends State<RuntimeSettingsPanel>
     generated.RuntimeDeviceSpaceDevice device,
   ) {
     final scheme = Theme.of(context).colorScheme;
-    final icon = device.online ? Icons.lan_outlined : Icons.link_off_outlined;
+    final icon = device.online ? OperitIcons.lan_outlined : OperitIcons.link_off_outlined;
     final incompatible = deviceSpaceVersionMismatch(_topology, device);
     final status = incompatible
         ? deviceCompatibilityLabel(context)
@@ -1528,7 +1529,7 @@ class _DeviceSpaceOverviewCard extends StatelessWidget {
             alignment: AlignmentDirectional.centerEnd,
             child: TextButton.icon(
               onPressed: busy ? null : onLeave,
-              icon: const Icon(Icons.logout_outlined),
+              icon: const Icon(OperitIcons.logout_outlined),
               label: Text(l10n.settingsRuntimeLeaveSpace),
             ),
           ),
@@ -1580,7 +1581,7 @@ class _DeviceSpaceOverviewCard extends StatelessWidget {
                                 enabled: !busy,
                                 child: ListTile(
                                   contentPadding: EdgeInsets.zero,
-                                  leading: const Icon(Icons.edit_outlined),
+                                  leading: const Icon(OperitIcons.edit_outlined),
                                   title: Text(l10n.settingsRuntimeRenameSpace),
                                 ),
                               ),
@@ -1589,7 +1590,7 @@ class _DeviceSpaceOverviewCard extends StatelessWidget {
                                 enabled: !busy,
                                 child: ListTile(
                                   contentPadding: EdgeInsets.zero,
-                                  leading: const Icon(Icons.restart_alt_rounded),
+                                  leading: const Icon(OperitIcons.restart_alt_rounded),
                                   title: Text(l10n.settingsRuntimeResetTransactions),
                                 ),
                               ),
@@ -1598,12 +1599,12 @@ class _DeviceSpaceOverviewCard extends StatelessWidget {
                                 enabled: !busy,
                                 child: ListTile(
                                   contentPadding: EdgeInsets.zero,
-                                  leading: const Icon(Icons.logout_outlined),
+                                  leading: const Icon(OperitIcons.logout_outlined),
                                   title: Text(l10n.settingsRuntimeLeaveSpace),
                                 ),
                               ),
                             ],
-                        child: const Icon(Icons.more_horiz_rounded),
+                        child: const Icon(OperitIcons.more_horiz_rounded),
                       ),
                     ],
                   ),
@@ -1801,12 +1802,12 @@ class _IdentityChipAvatar extends StatelessWidget {
         ),
       ),
       child: githubUrl == null || githubUrl.isEmpty
-          ? Icon(Icons.person_outline_rounded, size: 24, color: colorScheme.primary)
+          ? Icon(OperitIcons.person_outline_rounded, size: 24, color: colorScheme.primary)
           : Image.network(
               githubUrl,
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) => Icon(
-                Icons.person_outline_rounded,
+                OperitIcons.person_outline_rounded,
                 size: 24,
                 color: colorScheme.primary,
               ),
@@ -2060,7 +2061,7 @@ class _DeviceRowMenu extends StatelessWidget {
         tooltip: AppLocalizations.of(context)!.deviceSpaceManageDevice,
         onPressed: controller.open,
         visualDensity: VisualDensity.compact,
-        icon: const Icon(Icons.more_horiz_rounded),
+        icon: const Icon(OperitIcons.more_horiz_rounded),
       ),
       menuChildren: actions,
     );
@@ -2123,12 +2124,12 @@ class _InlineStatus extends StatelessWidget {
 /// Returns the status glyph of one paired-device probe state.
 IconData _remoteProbeIconData(_PairedRemoteProbeState state) {
   return switch (state) {
-    _PairedRemoteProbeState.checking => Icons.cloud_queue_outlined,
-    _PairedRemoteProbeState.online => Icons.cloud_done_outlined,
-    _PairedRemoteProbeState.offline => Icons.cloud_off_outlined,
-    _PairedRemoteProbeState.invalid => Icons.link_off_outlined,
-    _PairedRemoteProbeState.error => Icons.error_outline_rounded,
-    _PairedRemoteProbeState.removedFromSpace => Icons.person_remove_outlined,
+    _PairedRemoteProbeState.checking => OperitIcons.cloud_queue_outlined,
+    _PairedRemoteProbeState.online => OperitIcons.cloud_done_outlined,
+    _PairedRemoteProbeState.offline => OperitIcons.cloud_off_outlined,
+    _PairedRemoteProbeState.invalid => OperitIcons.link_off_outlined,
+    _PairedRemoteProbeState.error => OperitIcons.error_outline_rounded,
+    _PairedRemoteProbeState.removedFromSpace => OperitIcons.person_remove_outlined,
   };
 }
 

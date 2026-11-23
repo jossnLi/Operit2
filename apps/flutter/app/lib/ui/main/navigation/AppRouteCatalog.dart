@@ -9,6 +9,7 @@ import '../screens/OperitScreens.dart';
 import '../screens/ScreenRouteRegistry.dart';
 import 'AppNavigationModels.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class AppRouteCatalog {
   const AppRouteCatalog._();
 
@@ -33,7 +34,7 @@ class AppRouteCatalog {
             routeId: route.routeId,
             runtime: RouteRuntime.toolPkgComposeDsl,
             title: route.title,
-            icon: Icons.extension_outlined,
+            icon: OperitIcons.extension_outlined,
             ownerPackageName: route.containerPackageName,
             toolPkgUiModuleId: route.uiModuleId,
             keepAlive: route.keepAlive,
@@ -50,7 +51,7 @@ class AppRouteCatalog {
             description: entry.description,
             icon: MaterialIconNameResolver.resolveOrDefault(
               entry.icon,
-              Icons.extension_outlined,
+              OperitIcons.extension_outlined,
             ),
             order: entry.order,
             action: entry.action == null

@@ -8,6 +8,7 @@ import '../../../../../core/host/FileShareService.dart';
 import '../../../../common/components/OperitDialog.dart';
 import 'ChatShareImageGenerator.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class ChatShareImagePreviewDialog extends StatefulWidget {
   const ChatShareImagePreviewDialog({
     super.key,
@@ -41,13 +42,13 @@ class _ChatShareImagePreviewDialogState
       actions: <Widget>[
         OutlinedButton.icon(
           onPressed: _busy ? null : _saveImage,
-          icon: const Icon(Icons.download_rounded),
+          icon: const Icon(OperitIcons.download_rounded),
           label: const Text('保存到文件'),
         ),
         Builder(
           builder: (buttonContext) => FilledButton.icon(
             onPressed: _busy ? null : () => _shareImage(buttonContext),
-            icon: const Icon(Icons.share_outlined),
+            icon: const Icon(OperitIcons.share_outlined),
             label: const Text('分享图片'),
           ),
         ),

@@ -10,6 +10,7 @@ import '../../../../l10n/generated/app_localizations.dart';
 import '../../../common/components/M3LoadingIndicator.dart';
 import '../utils/PackageDisplayUtils.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class PackageEnvironmentVariablesDialog extends StatefulWidget {
   /// Creates an editor backed by the runtime environment preference store.
   const PackageEnvironmentVariablesDialog({super.key, required this.clients});
@@ -190,7 +191,7 @@ class _PackageEnvironmentVariablesDialogState
                               child: Row(
                                 children: <Widget>[
                                   const Icon(
-                                    Icons.extension_outlined,
+                                    OperitIcons.extension_outlined,
                                     size: 24,
                                   ),
                                   const SizedBox(width: 8),

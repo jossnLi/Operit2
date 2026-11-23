@@ -8,6 +8,7 @@ import '../../../../core/proxy/generated/CoreProxyClients.g.dart';
 import '../../../../core/proxy/generated/CoreProxyModels.g.dart' as core_proxy;
 import '../utils/PackageDisplayUtils.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class PackageToolRunDialog extends StatefulWidget {
   const PackageToolRunDialog({
     super.key,
@@ -52,7 +53,7 @@ class _PackageToolRunDialogState extends State<PackageToolRunDialog> {
     final colorScheme = theme.colorScheme;
     final toolId = '${widget.packageName}:${widget.tool.name}';
     return AlertDialog(
-      icon: const Icon(Icons.play_circle_outline_rounded),
+      icon: const Icon(OperitIcons.play_circle_outline_rounded),
       title: Text(widget.tool.name),
       content: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 560, maxHeight: 620),
@@ -117,7 +118,7 @@ class _PackageToolRunDialogState extends State<PackageToolRunDialog> {
                   height: 16,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
-              : const Icon(Icons.play_arrow_rounded),
+              : const Icon(OperitIcons.play_arrow_rounded),
           label: Text(_executing ? '运行中' : '运行'),
         ),
       ],
@@ -222,7 +223,7 @@ class _ExecutionResultCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Icon(
-              result.success ? Icons.check_circle_outline_rounded : Icons.error_outline_rounded,
+              result.success ? OperitIcons.check_circle_outline_rounded : OperitIcons.error_outline_rounded,
               color: result.success ? colorScheme.primary : colorScheme.error,
               size: 20,
             ),

@@ -6,6 +6,7 @@ import '../../../core/proxy/generated/CoreProxyModels.g.dart' as core_proxy;
 import '../../../l10n/generated/app_localizations.dart';
 import '../../common/components/OperitDialog.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 enum ConversationAction {
   searchMessages,
   viewFavorites,
@@ -186,13 +187,13 @@ class ConversationActionDialog extends StatelessWidget {
               ),
             ),
             _ConversationActionTile(
-              icon: Icons.search_rounded,
+              icon: OperitIcons.search_rounded,
               label: l10n.messageLocatorSearchMessages,
               onTap: () =>
                   Navigator.of(context).pop(ConversationAction.searchMessages),
             ),
             _ConversationActionTile(
-              icon: Icons.star_outline_rounded,
+              icon: OperitIcons.star_outline_rounded,
               label: l10n.messageLocatorViewFavorites,
               onTap: () =>
                   Navigator.of(context).pop(ConversationAction.viewFavorites),
@@ -200,59 +201,59 @@ class ConversationActionDialog extends StatelessWidget {
             const Divider(height: 16),
             if (canOpenInWindow)
               _ConversationActionTile(
-                icon: Icons.open_in_new_rounded,
+                icon: OperitIcons.open_in_new_rounded,
                 label: '在新窗口打开',
                 onTap: () =>
                     Navigator.of(context).pop(ConversationAction.openInWindow),
               ),
             _ConversationActionTile(
-              icon: Icons.edit_outlined,
+              icon: OperitIcons.edit_outlined,
               label: l10n.editTitle,
               onTap: () => Navigator.of(context).pop(ConversationAction.rename),
             ),
             _ConversationActionTile(
-              icon: Icons.keyboard_arrow_up_rounded,
+              icon: OperitIcons.keyboard_arrow_up_rounded,
               label: l10n.moveUp,
               onTap: canMoveUp
                   ? () => Navigator.of(context).pop(ConversationAction.moveUp)
                   : null,
             ),
             _ConversationActionTile(
-              icon: Icons.keyboard_arrow_down_rounded,
+              icon: OperitIcons.keyboard_arrow_down_rounded,
               label: l10n.moveDown,
               onTap: canMoveDown
                   ? () => Navigator.of(context).pop(ConversationAction.moveDown)
                   : null,
             ),
             _ConversationActionTile(
-              icon: Icons.folder_open_outlined,
+              icon: OperitIcons.folder_open_outlined,
               label: '项目绑定',
               onTap: () =>
                   Navigator.of(context).pop(ConversationAction.bindWorkspace),
             ),
             if (canMoveToWorkspace)
               _ConversationActionTile(
-                icon: Icons.drive_file_move_outlined,
+                icon: OperitIcons.drive_file_move_outlined,
                 label: '移动到项目',
                 onTap: () => Navigator.of(
                   context,
                 ).pop(ConversationAction.moveToWorkspace),
               ),
             _ConversationActionTile(
-              icon: Icons.push_pin_outlined,
+              icon: OperitIcons.push_pin_outlined,
               label: history.pinned ? l10n.unpin : l10n.pin,
               onTap: () =>
                   Navigator.of(context).pop(ConversationAction.togglePinned),
             ),
             _ConversationActionTile(
-              icon: history.locked ? Icons.lock_open_rounded : Icons.lock_outline_rounded,
+              icon: history.locked ? OperitIcons.lock_open_rounded : OperitIcons.lock_outline_rounded,
               label: history.locked ? l10n.unlock : l10n.lock,
               onTap: () =>
                   Navigator.of(context).pop(ConversationAction.toggleLocked),
             ),
             if (history.workspaceId?.trim().isNotEmpty == true)
               _ConversationActionTile(
-                icon: Icons.link_off_rounded,
+                icon: OperitIcons.link_off_rounded,
                 label: l10n.workspaceUnbindTitle,
                 onTap: () => Navigator.of(
                   context,
@@ -260,14 +261,14 @@ class ConversationActionDialog extends StatelessWidget {
               ),
             if (history.parentChatId != null)
               _ConversationActionTile(
-                icon: Icons.vertical_align_top_rounded,
+                icon: OperitIcons.vertical_align_top_rounded,
                 label: l10n.chatPromoteToRoot,
                 onTap: () => Navigator.of(
                   context,
                 ).pop(ConversationAction.promoteToRoot),
               ),
             _ConversationActionTile(
-              icon: Icons.delete_outline_rounded,
+              icon: OperitIcons.delete_outline_rounded,
               label: l10n.delete,
               danger: true,
               onTap: () => Navigator.of(context).pop(ConversationAction.delete),
@@ -353,7 +354,7 @@ class WorkspacePickerDialog extends StatelessWidget {
                   .map((folder) => folder.path)
                   .join('\n');
               return ListTile(
-                leading: const Icon(Icons.folder_special_outlined),
+                leading: const Icon(OperitIcons.folder_special_outlined),
                 title: Text(
                   workspace.name,
                   maxLines: 1,

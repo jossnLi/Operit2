@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../../../../../../../l10n/generated/app_localizations.dart';
 import '../userscripts/WorkspaceUserscriptModels.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class WorkspaceBrowserMenuSheet extends StatefulWidget {
   const WorkspaceBrowserMenuSheet({
     super.key,
@@ -71,22 +72,22 @@ class _WorkspaceBrowserMenuSheetState extends State<WorkspaceBrowserMenuSheet> {
         children: <Widget>[
           if (widget.onOpenExternal != null)
             _MenuTile(
-              icon: Icons.open_in_new_rounded,
+              icon: OperitIcons.open_in_new_rounded,
               title: l10n.openExternalApplication,
               onTap: widget.onOpenExternal!,
             ),
           _MenuTile(
-            icon: Icons.history_rounded,
+            icon: OperitIcons.history_rounded,
             title: l10n.history,
             onTap: widget.onHistory,
           ),
           _MenuTile(
-            icon: Icons.star_outline_rounded,
+            icon: OperitIcons.star_outline_rounded,
             title: l10n.bookmarks,
             onTap: widget.onBookmarks,
           ),
           _MenuTile(
-            icon: Icons.download_outlined,
+            icon: OperitIcons.download_outlined,
             title: l10n.downloads,
             value: widget.activeDownloadCount > 0
                 ? widget.activeDownloadCount.toString()
@@ -94,7 +95,7 @@ class _WorkspaceBrowserMenuSheetState extends State<WorkspaceBrowserMenuSheet> {
             onTap: widget.onDownloads,
           ),
           _MenuTile(
-            icon: Icons.javascript_outlined,
+            icon: OperitIcons.javascript_outlined,
             title: l10n.scripts,
             onTap: widget.onUserscripts,
           ),
@@ -106,7 +107,7 @@ class _WorkspaceBrowserMenuSheetState extends State<WorkspaceBrowserMenuSheet> {
               }
               if (snapshot.hasError) {
                 return ListTile(
-                  leading: const Icon(Icons.error_outline_rounded),
+                  leading: const Icon(OperitIcons.error_outline_rounded),
                   title: const Text('加载脚本菜单失败'),
                   subtitle: Text('${snapshot.error}'),
                   textColor: Theme.of(context).colorScheme.error,
@@ -122,7 +123,7 @@ class _WorkspaceBrowserMenuSheetState extends State<WorkspaceBrowserMenuSheet> {
                 children: <Widget>[
                   for (final command in commands)
                     _MenuTile(
-                      icon: Icons.extension_outlined,
+                      icon: OperitIcons.extension_outlined,
                       title: command.caption,
                       value: command.scriptName,
                       onTap: () => widget.onRunMenuCommand(command.index),
@@ -132,12 +133,12 @@ class _WorkspaceBrowserMenuSheetState extends State<WorkspaceBrowserMenuSheet> {
             },
           ),
           _MenuTile(
-            icon: Icons.lock_outline_rounded,
+            icon: OperitIcons.lock_outline_rounded,
             title: l10n.permissionsTitle,
             onTap: widget.onPermissions,
           ),
           _MenuActionRow(
-            icon: Icons.zoom_out_map_outlined,
+            icon: OperitIcons.zoom_out_map_outlined,
             title: l10n.zoom,
             value: widget.zoomLabel,
             onZoomOut: widget.onZoomOut,
@@ -146,14 +147,14 @@ class _WorkspaceBrowserMenuSheetState extends State<WorkspaceBrowserMenuSheet> {
             onZoomIn: widget.onZoomIn,
           ),
           _MenuTile(
-            icon: Icons.desktop_windows_outlined,
+            icon: OperitIcons.desktop_windows_outlined,
             title: l10n.desktopMode,
             value: widget.desktopMode ? l10n.enable : l10n.disable,
             selected: widget.desktopMode,
             onTap: () => widget.onDesktopModeChanged(!widget.desktopMode),
           ),
           _MenuTile(
-            icon: Icons.cleaning_services_outlined,
+            icon: OperitIcons.cleaning_services_outlined,
             title: l10n.clearLocalStorage,
             onTap: widget.onClearStorage,
           ),
@@ -207,7 +208,7 @@ class _MenuActionRow extends StatelessWidget {
             IconButton(
               tooltip: AppLocalizations.of(context)!.zoomOut,
               onPressed: onZoomOut,
-              icon: const Icon(Icons.remove_rounded, size: 18),
+              icon: const Icon(OperitIcons.remove_rounded, size: 18),
               visualDensity: VisualDensity.compact,
               style: const ButtonStyle(
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -235,7 +236,7 @@ class _MenuActionRow extends StatelessWidget {
             IconButton(
               tooltip: AppLocalizations.of(context)!.zoomIn,
               onPressed: onZoomIn,
-              icon: const Icon(Icons.add_rounded, size: 18),
+              icon: const Icon(OperitIcons.add_rounded, size: 18),
               visualDensity: VisualDensity.compact,
               style: const ButtonStyle(
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,

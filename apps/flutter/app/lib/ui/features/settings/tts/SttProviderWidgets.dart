@@ -98,7 +98,7 @@ class _SttProviderTile extends StatelessWidget {
           child: Row(
             children: <Widget>[
               Icon(
-                Icons.mic_none_rounded,
+                OperitIcons.mic_none_rounded,
                 size: 20,
                 color: current
                     ? colorScheme.primary
@@ -141,12 +141,12 @@ class _SttProviderTile extends StatelessWidget {
               const SizedBox(width: 4),
               SettingsEntityIconButton(
                 tooltip: '编辑',
-                icon: Icons.edit_outlined,
+                icon: OperitIcons.edit_outlined,
                 onPressed: onEdit,
               ),
               SettingsEntityIconButton(
                 tooltip: current ? '当前配置不能删除' : '删除',
-                icon: Icons.delete_outline_rounded,
+                icon: OperitIcons.delete_outline_rounded,
                 onPressed: current ? null : onDelete,
               ),
             ],

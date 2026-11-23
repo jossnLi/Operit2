@@ -14,6 +14,7 @@ import '../../l10n/generated/app_localizations.dart';
 import 'components/OperitDialog.dart';
 import 'PairingErrorText.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 enum PeerQrMode { scan, show }
 
 /// Returns a validated, explicitly confirmed code. Pairing remains owned by the caller.
@@ -236,7 +237,7 @@ class _PeerQrCodeDialogState extends State<PeerQrCodeDialog> {
             },
           )
         else
-          _status(Icons.wifi_off_rounded, l10n.peerQrListenerRequired),
+          _status(OperitIcons.wifi_off_rounded, l10n.peerQrListenerRequired),
         const SizedBox(height: 16),
         Text(
           l10n.peerQrTrustHint,
@@ -259,14 +260,14 @@ class _PeerQrCodeDialogState extends State<PeerQrCodeDialog> {
                       if (mounted) setState(() => _copied = true);
                     },
               icon: Icon(
-                _copied ? Icons.check_rounded : Icons.content_copy_outlined,
+                _copied ? OperitIcons.check_rounded : OperitIcons.content_copy_outlined,
                 size: 18,
               ),
               label: Text(_copied ? l10n.peerQrCopied : l10n.peerQrCopy),
             ),
             TextButton.icon(
               onPressed: _busy ? null : _loadCode,
-              icon: const Icon(Icons.refresh_rounded, size: 18),
+              icon: const Icon(OperitIcons.refresh_rounded, size: 18),
               label: Text(l10n.refresh),
             ),
           ],
@@ -289,7 +290,7 @@ class _PeerQrCodeDialogState extends State<PeerQrCodeDialog> {
               shape: BoxShape.circle,
             ),
             child: Icon(
-              Icons.devices_rounded,
+              OperitIcons.devices_rounded,
               size: 36,
               color: Theme.of(context).colorScheme.onPrimaryContainer,
             ),
@@ -348,7 +349,7 @@ class _PeerQrCodeDialogState extends State<PeerQrCodeDialog> {
               : ColoredBox(
                   color: Theme.of(context).colorScheme.surfaceContainerLow,
                   child: _status(
-                    Icons.qr_code_scanner_rounded,
+                    OperitIcons.qr_code_scanner_rounded,
                     l10n.peerQrCameraUnavailable,
                   ),
                 ),
@@ -356,7 +357,7 @@ class _PeerQrCodeDialogState extends State<PeerQrCodeDialog> {
         const SizedBox(height: 12),
         OutlinedButton.icon(
           onPressed: _busy ? null : _importImage,
-          icon: const Icon(Icons.image_outlined, size: 18),
+          icon: const Icon(OperitIcons.image_outlined, size: 18),
           label: Text(l10n.peerQrImport),
         ),
         const SizedBox(height: 12),
@@ -378,7 +379,7 @@ class _PeerQrCodeDialogState extends State<PeerQrCodeDialog> {
                       _lastScan = null;
                       unawaited(_inspect(_paste.text));
                     },
-              icon: const Icon(Icons.arrow_forward_rounded),
+              icon: const Icon(OperitIcons.arrow_forward_rounded),
             ),
           ),
           onSubmitted: _busy
@@ -416,7 +417,7 @@ class _PeerQrCodeDialogState extends State<PeerQrCodeDialog> {
             onPressed: _busy
                 ? null
                 : () => Navigator.pop(context, _candidateCode),
-            icon: const Icon(Icons.link_rounded, size: 18),
+            icon: const Icon(OperitIcons.link_rounded, size: 18),
             label: Text(l10n.peerQrConfirmJoin),
           ),
       ],
@@ -436,7 +437,7 @@ class _PeerQrCodeDialogState extends State<PeerQrCodeDialog> {
                       ChoiceChip(
                         label: Text(l10n.peerQrScan),
                         avatar: const Icon(
-                          Icons.qr_code_scanner_rounded,
+                          OperitIcons.qr_code_scanner_rounded,
                           size: 18,
                         ),
                         selected: _mode == PeerQrMode.scan,
@@ -444,7 +445,7 @@ class _PeerQrCodeDialogState extends State<PeerQrCodeDialog> {
                       ),
                       ChoiceChip(
                         label: Text(l10n.peerQrShow),
-                        avatar: const Icon(Icons.qr_code_rounded, size: 18),
+                        avatar: const Icon(OperitIcons.qr_code_rounded, size: 18),
                         selected: _mode == PeerQrMode.show,
                         onSelected: (_) => _switch(PeerQrMode.show),
                       ),
@@ -457,12 +458,12 @@ class _PeerQrCodeDialogState extends State<PeerQrCodeDialog> {
                     segments: [
                       ButtonSegment(
                         value: PeerQrMode.scan,
-                        icon: const Icon(Icons.qr_code_scanner_rounded),
+                        icon: const Icon(OperitIcons.qr_code_scanner_rounded),
                         label: Text(l10n.peerQrScan),
                       ),
                       ButtonSegment(
                         value: PeerQrMode.show,
-                        icon: const Icon(Icons.qr_code_rounded),
+                        icon: const Icon(OperitIcons.qr_code_rounded),
                         label: Text(l10n.peerQrShow),
                       ),
                     ],
@@ -570,7 +571,7 @@ class _PeerCameraState extends State<_PeerCamera> with WidgetsBindingObserver {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.no_photography_outlined, size: 32),
+                const Icon(OperitIcons.no_photography_outlined, size: 32),
                 const SizedBox(height: 12),
                 Text(
                   error.errorCode.name == 'permissionDenied'

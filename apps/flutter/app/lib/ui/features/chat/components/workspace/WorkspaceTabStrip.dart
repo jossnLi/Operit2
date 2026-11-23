@@ -9,6 +9,7 @@ import '../../../../main/layout/SidebarDockController.dart';
 import 'WorkspaceLayoutMetrics.dart';
 import 'WorkspaceTabModels.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class WorkspaceTabStrip extends StatelessWidget {
   const WorkspaceTabStrip({
     super.key,
@@ -433,7 +434,7 @@ class _TermuxWorkspaceTabButton extends StatelessWidget {
                           context,
                         ).closeButtonTooltip,
                         onPressed: onClose,
-                        icon: Icon(Icons.close_rounded, color: textColor),
+                        icon: Icon(OperitIcons.close_rounded, color: textColor),
                       ),
                     ),
                   ],
@@ -532,7 +533,7 @@ class _WorkspaceTabButton extends StatelessWidget {
                       context,
                     ).closeButtonTooltip,
                     onPressed: onClose,
-                    icon: Icon(Icons.close_rounded, color: contentColor),
+                    icon: Icon(OperitIcons.close_rounded, color: contentColor),
                   ),
                 ),
               ],
@@ -571,7 +572,7 @@ class _OpenWithButton extends StatelessWidget {
       padding: EdgeInsets.zero,
       tooltip: AppLocalizations.of(context)!.workspaceOpenWith,
       iconSize: iconSize,
-      icon: Icon(Icons.more_horiz_rounded, color: color),
+      icon: Icon(OperitIcons.more_horiz_rounded, color: color),
       onPressed: onPressed,
     ),
   );

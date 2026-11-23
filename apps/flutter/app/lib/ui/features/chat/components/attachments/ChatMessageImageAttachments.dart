@@ -10,6 +10,7 @@ import '../../../../common/components/OperitDialog.dart';
 import '../style/input/common/ChatAttachmentImagePreview.dart';
 import 'AttachmentViewerDialog.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// Models an attachment parsed from message markup.
 class AttachmentData {
   const AttachmentData({
@@ -294,7 +295,7 @@ class _ChatMessageAttachmentsState extends State<ChatMessageAttachments> {
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       const Icon(
-                        Icons.style_outlined,
+                        OperitIcons.style_outlined,
                         size: 11,
                         color: Colors.white,
                       ),
@@ -398,7 +399,7 @@ class _ChatMessageAttachmentsState extends State<ChatMessageAttachments> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Icon(
-                    Icons.unfold_less_rounded,
+                    OperitIcons.unfold_less_rounded,
                     size: 13,
                     color: theme.colorScheme.onSurfaceVariant,
                   ),
@@ -538,20 +539,20 @@ IconData _getAttachmentIcon(AttachmentData attachment) {
   final mime = attachment.type.toLowerCase();
   final ext = attachment.filename.toLowerCase();
   if (mime.startsWith('image/')) {
-    return Icons.image_outlined;
+    return OperitIcons.image_outlined;
   }
   if (mime.startsWith('audio/')) {
-    return Icons.audio_file_outlined;
+    return OperitIcons.audio_file_outlined;
   }
   if (mime.startsWith('video/')) {
-    return Icons.video_file_outlined;
+    return OperitIcons.video_file_outlined;
   }
   if (attachment.type == 'text/json' &&
       attachment.filename == 'screen_content.json') {
-    return Icons.screenshot_monitor_outlined;
+    return OperitIcons.screenshot_monitor_outlined;
   }
   if (ext.endsWith('.pdf')) {
-    return Icons.picture_as_pdf_outlined;
+    return OperitIcons.picture_as_pdf_outlined;
   }
   if (ext.endsWith('.dart') ||
       ext.endsWith('.rs') ||
@@ -566,19 +567,19 @@ IconData _getAttachmentIcon(AttachmentData attachment) {
       ext.endsWith('.h') ||
       ext.endsWith('.java') ||
       ext.endsWith('.kt')) {
-    return Icons.code_outlined;
+    return OperitIcons.code_outlined;
   }
   if (ext.endsWith('.zip') ||
       ext.endsWith('.tar') ||
       ext.endsWith('.gz') ||
       ext.endsWith('.7z') ||
       ext.endsWith('.rar')) {
-    return Icons.folder_zip_outlined;
+    return OperitIcons.folder_zip_outlined;
   }
   if (ext.endsWith('.txt') || ext.endsWith('.md')) {
-    return Icons.article_outlined;
+    return OperitIcons.article_outlined;
   }
-  return Icons.description_outlined;
+  return OperitIcons.description_outlined;
 }
 
 String _getAttachmentDisplayLabel(AttachmentData attachment) {
@@ -648,7 +649,7 @@ class ChatMessageContextMetadata extends StatelessWidget {
         actions: <Widget>[
           TextButton.icon(
             onPressed: () => Clipboard.setData(ClipboardData(text: content)),
-            icon: const Icon(Icons.content_copy_outlined, size: 16),
+            icon: const Icon(OperitIcons.content_copy_outlined, size: 16),
             label: Text(
               MaterialLocalizations.of(dialogContext).copyButtonLabel,
             ),

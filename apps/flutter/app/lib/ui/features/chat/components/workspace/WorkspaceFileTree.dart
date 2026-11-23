@@ -12,6 +12,7 @@ import 'WorkspaceFileIcon.dart';
 import 'WorkspaceFileRenameDialog.dart';
 import '../../../../main/components/SidebarMoreMenu.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// A lazily loaded explorer. Only visible rows are built and collapsed folders
 /// keep their cached children until the user refreshes the listing.
 class WorkspaceFileTree extends StatefulWidget {
@@ -278,32 +279,32 @@ class _WorkspaceFileTreeState extends State<WorkspaceFileTree> {
       if (entry != null) ...[
         SidebarMenuAction(
           value: _FileAction.rename,
-          icon: Icons.edit_outlined,
+          icon: OperitIcons.edit_outlined,
           label: l10n.workspaceFileRename,
           enabled: mutable,
         ),
         SidebarMenuAction(
           value: _FileAction.copy,
-          icon: Icons.content_copy_outlined,
+          icon: OperitIcons.content_copy_outlined,
           label: l10n.workspaceFileCopy,
         ),
         SidebarMenuAction(
           value: _FileAction.cut,
-          icon: Icons.content_cut_rounded,
+          icon: OperitIcons.content_cut_rounded,
           label: l10n.workspaceFileCut,
           enabled: mutable,
         ),
       ],
       SidebarMenuAction(
         value: _FileAction.paste,
-        icon: Icons.content_paste_outlined,
+        icon: OperitIcons.content_paste_outlined,
         label: l10n.workspaceFilePaste,
         enabled: _canPaste(directory),
       ),
       if (entry != null)
         SidebarMenuAction(
           value: _FileAction.delete,
-          icon: Icons.delete_outline_rounded,
+          icon: OperitIcons.delete_outline_rounded,
           label: l10n.delete,
           enabled: mutable,
           danger: true,
@@ -511,11 +512,11 @@ class _WorkspaceFileTreeState extends State<WorkspaceFileTree> {
                 children: [
                   const SizedBox(width: 6),
                   Icon(
-                    _rootExpanded ? Icons.expand_more_rounded : Icons.chevron_right_rounded,
+                    _rootExpanded ? OperitIcons.expand_more_rounded : OperitIcons.chevron_right_rounded,
                     size: 18,
                   ),
                   const SizedBox(width: 4),
-                  Icon(Icons.folder_outlined, size: 16, color: colors.primary),
+                  Icon(OperitIcons.folder_outlined, size: 16, color: colors.primary),
                   const SizedBox(width: 6),
                   Expanded(
                     child: Text(
@@ -676,8 +677,8 @@ class _WorkspaceFileTreeState extends State<WorkspaceFileTree> {
                                 child: entry?.isDirectory == true
                                     ? Icon(
                                         opened
-                                            ? Icons.expand_more_rounded
-                                            : Icons.chevron_right_rounded,
+                                            ? OperitIcons.expand_more_rounded
+                                            : OperitIcons.chevron_right_rounded,
                                         size: 16,
                                         color: colors.onSurfaceVariant,
                                       )
@@ -688,8 +689,8 @@ class _WorkspaceFileTreeState extends State<WorkspaceFileTree> {
                                 entry.isDirectory
                                     ? Icon(
                                         opened
-                                            ? Icons.folder_open_outlined
-                                            : Icons.folder_outlined,
+                                            ? OperitIcons.folder_open_outlined
+                                            : OperitIcons.folder_outlined,
                                         size: 16,
                                         color: const Color(0xFFD4AD6A),
                                       )
@@ -707,8 +708,8 @@ class _WorkspaceFileTreeState extends State<WorkspaceFileTree> {
                               else
                                 Icon(
                                   error != null
-                                      ? Icons.error_outline_rounded
-                                      : Icons.folder_off_outlined,
+                                      ? OperitIcons.error_outline_rounded
+                                      : OperitIcons.folder_off_outlined,
                                   size: 14,
                                   color: error != null
                                       ? colors.error

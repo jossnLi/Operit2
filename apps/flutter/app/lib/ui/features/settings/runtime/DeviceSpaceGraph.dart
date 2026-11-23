@@ -8,6 +8,7 @@ import '../../../../core/proxy/generated/CoreProxyModels.g.dart' as generated;
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../common/device/DeviceSphere.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 part 'DeviceSpaceGraphLayout.dart';
 part 'DeviceSpaceGraphPainter.dart';
 
@@ -196,7 +197,7 @@ class _DeviceSpaceGraphState extends State<DeviceSpaceGraph>
                             turns: _topologyMode ? 0.25 : 0,
                             duration: duration,
                             child: Icon(
-                              Icons.hub_outlined,
+                              OperitIcons.hub_outlined,
                               size: 19,
                               color: scheme.primary,
                             ),
@@ -675,7 +676,7 @@ class _GraphDeviceNodeState extends State<_GraphDeviceNode>
                               ),
                             ),
                             child: Icon(
-                              Icons.swap_horiz_rounded,
+                              OperitIcons.swap_horiz_rounded,
                               size: 14 * metrics.scale,
                               color: scheme.onPrimary,
                             ),
@@ -769,7 +770,7 @@ class _GraphFooter extends StatelessWidget {
           Row(
             children: <Widget>[
               Icon(
-                topologyMode ? Icons.route_outlined : Icons.touch_app_outlined,
+                topologyMode ? OperitIcons.route_outlined : OperitIcons.touch_app_outlined,
                 size: 15,
                 color: scheme.primary,
               ),
@@ -928,13 +929,13 @@ class _GraphDeviceDetails extends StatelessWidget {
                 IconButton(
                   tooltip: l10n.settingsRuntimeDisconnectConnection,
                   onPressed: busy ? null : onDisconnect,
-                  icon: const Icon(Icons.link_off_rounded, size: 19),
+                  icon: const Icon(OperitIcons.link_off_rounded, size: 19),
                   color: scheme.error,
                 ),
               IconButton(
                 tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
                 onPressed: onClose,
-                icon: const Icon(Icons.close_rounded, size: 18),
+                icon: const Icon(OperitIcons.close_rounded, size: 18),
               ),
             ],
           ),

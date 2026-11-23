@@ -8,6 +8,7 @@ import '../../../../core/proxy/generated/CoreProxyModels.g.dart' as core_proxy;
 import '../../../../l10n/generated/app_localizations.dart';
 import 'ToolPkgUiLauncherScreen.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// Shows a package's registered widget render routes through the shared Flutter host.
 class ToolPkgDesktopWidgetsScreen extends StatefulWidget {
   /// Creates the widget gallery for one enabled package.
@@ -132,7 +133,7 @@ class _ToolPkgDesktopWidgetsScreenState
                         alignment: Alignment.centerRight,
                         child: TextButton.icon(
                           onPressed: () => _addToDesktop(definition),
-                          icon: const Icon(Icons.add_to_home_screen_outlined),
+                          icon: const Icon(OperitIcons.add_to_home_screen_outlined),
                           label: Text(
                             _language == 'en' ? 'Add to desktop' : '添加到桌面',
                           ),

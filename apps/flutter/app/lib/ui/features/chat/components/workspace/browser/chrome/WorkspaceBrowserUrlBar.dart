@@ -6,6 +6,7 @@ import '../../../../../../../l10n/generated/app_localizations.dart';
 import '../../../../../../theme/OperitGlassSurface.dart';
 import '../tabs/WorkspaceBrowserTabModels.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class WorkspaceBrowserUrlBar extends StatefulWidget {
   const WorkspaceBrowserUrlBar({
     super.key,
@@ -97,17 +98,17 @@ class _WorkspaceBrowserUrlBarState extends State<WorkspaceBrowserUrlBar> {
                   if (!_isEditing) ...<Widget>[
                     _ToolbarIconButton(
                       tooltip: l10n.back,
-                      icon: Icons.arrow_back_rounded,
+                      icon: OperitIcons.arrow_back_rounded,
                       onPressed: tab.canGoBack ? widget.onBack : null,
                     ),
                     _ToolbarIconButton(
                       tooltip: l10n.forward,
-                      icon: Icons.arrow_forward_rounded,
+                      icon: OperitIcons.arrow_forward_rounded,
                       onPressed: tab.canGoForward ? widget.onForward : null,
                     ),
                     _ToolbarIconButton(
                       tooltip: tab.isLoading ? l10n.stop : l10n.refresh,
-                      icon: tab.isLoading ? Icons.close_rounded : Icons.refresh_rounded,
+                      icon: tab.isLoading ? OperitIcons.close_rounded : OperitIcons.refresh_rounded,
                       onPressed: widget.onRefreshOrStop,
                     ),
                     const SizedBox(width: 6),
@@ -121,8 +122,8 @@ class _WorkspaceBrowserUrlBarState extends State<WorkspaceBrowserUrlBar> {
                                 const SizedBox(width: 11),
                                 Icon(
                                   tab.url.startsWith('https://')
-                                      ? Icons.lock_outline_rounded
-                                      : Icons.language_rounded,
+                                      ? OperitIcons.lock_outline_rounded
+                                      : OperitIcons.language_rounded,
                                   size: 18,
                                   color: theme.colorScheme.onSurfaceVariant,
                                 ),
@@ -151,7 +152,7 @@ class _WorkspaceBrowserUrlBarState extends State<WorkspaceBrowserUrlBar> {
                                 IconButton(
                                   tooltip: l10n.open,
                                   onPressed: _submit,
-                                  icon: const Icon(Icons.check_rounded, size: 20),
+                                  icon: const Icon(OperitIcons.check_rounded, size: 20),
                                   style: const ButtonStyle(
                                     tapTargetSize:
                                         MaterialTapTargetSize.shrinkWrap,
@@ -177,8 +178,8 @@ class _WorkspaceBrowserUrlBarState extends State<WorkspaceBrowserUrlBar> {
                                   children: <Widget>[
                                     Icon(
                                       tab.url.startsWith('https://')
-                                          ? Icons.lock_outline_rounded
-                                          : Icons.language_rounded,
+                                          ? OperitIcons.lock_outline_rounded
+                                          : OperitIcons.language_rounded,
                                       size: 18,
                                       color: theme.colorScheme.onSurfaceVariant,
                                     ),
@@ -201,8 +202,8 @@ class _WorkspaceBrowserUrlBarState extends State<WorkspaceBrowserUrlBar> {
                                       onPressed: widget.onToggleBookmark,
                                       icon: Icon(
                                         widget.isBookmarked
-                                            ? Icons.star_outline_rounded
-                                            : Icons.star_outline_rounded,
+                                            ? OperitIcons.star_outline_rounded
+                                            : OperitIcons.star_outline_rounded,
                                         size: 20,
                                       ),
                                       color: widget.isBookmarked
@@ -230,13 +231,13 @@ class _WorkspaceBrowserUrlBarState extends State<WorkspaceBrowserUrlBar> {
                     if (widget.onNewTab != null)
                       _ToolbarIconButton(
                         tooltip: '新建标签页',
-                        icon: Icons.add_rounded,
+                        icon: OperitIcons.add_rounded,
                         onPressed: widget.onNewTab,
                       ),
                     _ToolbarIconButton(
                       key: widget.menuButtonKey,
                       tooltip: l10n.menu,
-                      icon: Icons.more_horiz_rounded,
+                      icon: OperitIcons.more_horiz_rounded,
                       onPressed: widget.onOpenMenu,
                     ),
                   ],

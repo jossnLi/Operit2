@@ -24,6 +24,7 @@ import '../model/ExtensionCatalogController.dart';
 import '../model/GitHubAccountState.dart';
 import 'StoreBrowseScreen.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// Market section: featured entries, official offline extensions, community
 /// shelves, categories, search and the way into the creator center.
 class MarketPane extends StatefulWidget {
@@ -285,8 +286,8 @@ class _MarketPaneState extends State<MarketPane> {
                       StoreFilterChip(
                         label: searching ? '全部' : '推荐',
                         icon: searching
-                            ? Icons.apps_rounded
-                            : Icons.local_fire_department_outlined,
+                            ? OperitIcons.apps_rounded
+                            : OperitIcons.local_fire_department_outlined,
                         selected: kind == null,
                         onSelected: () => setState(() => _kind = null),
                       ),
@@ -375,7 +376,7 @@ class _MarketPaneState extends State<MarketPane> {
                   padding: padding.copyWith(top: 24),
                   sliver: SliverToBoxAdapter(
                     child: StoreNoticeCard(
-                      icon: Icons.cloud_off_rounded,
+                      icon: OperitIcons.cloud_off_rounded,
                       tone: StoreNoticeTone.error,
                       title: '市场暂时无法连接',
                       message: _homeError,
@@ -598,7 +599,7 @@ class _MarketPaneState extends State<MarketPane> {
                 padding: EdgeInsets.fromLTRB(padding.left, 0, padding.right, 0),
                 sliver: SliverToBoxAdapter(
                   child: StoreNoticeCard(
-                    icon: Icons.cloud_off_rounded,
+                    icon: OperitIcons.cloud_off_rounded,
                     tone: StoreNoticeTone.error,
                     title: '市场暂时无法连接',
                     message: _searchError,
@@ -1009,7 +1010,7 @@ class _CreatorEntry extends StatelessWidget {
     final user = account.user;
     final icon = user != null
         ? StoreAvatar(name: user.login, url: user.avatarUrl, radius: 10)
-        : const Icon(Icons.badge_outlined, size: 18);
+        : const Icon(OperitIcons.badge_outlined, size: 18);
     if (compact) {
       return IconButton(
         tooltip: '创作者中心',

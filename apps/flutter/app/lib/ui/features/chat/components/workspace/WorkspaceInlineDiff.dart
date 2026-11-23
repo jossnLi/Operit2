@@ -9,6 +9,7 @@ import 'package:operit2/ui/common/code_editor/syntax/CodeSyntaxLexer.dart';
 import 'package:operit2/ui/common/code_editor/syntax/CodeSyntaxPalette.dart';
 import 'package:operit2/ui/common/code_editor/syntax/CodeSyntaxToken.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 enum InlineDiffKind { context, add, remove }
 
 /// A changed character range inside one diff line, used for word-level emphasis.
@@ -884,7 +885,7 @@ class _UnchangedGapBar extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Icon(
-                  _tappable ? Icons.unfold_more_rounded : Icons.unfold_less_rounded,
+                  _tappable ? OperitIcons.unfold_more_rounded : OperitIcons.unfold_less_rounded,
                   size: 12,
                   color: _tappable ? scheme.primary : scheme.outline,
                 ),
@@ -1500,7 +1501,7 @@ class WorkspaceDiffEmptyState extends StatelessWidget {
               ),
             ),
             child: Icon(
-              Icons.add_rounded,
+              OperitIcons.add_rounded,
               size: 16,
               color: theme.colorScheme.outline.withValues(
                 alpha: isDark ? 0.65 : 0.80,

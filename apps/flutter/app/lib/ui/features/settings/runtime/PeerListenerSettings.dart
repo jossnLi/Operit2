@@ -11,6 +11,7 @@ import '../../../../core/proxy/generated/CoreProxyModels.g.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../theme/OperitFormStyles.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// Keeps connection settings and their single save action in the same dialog.
 class PeerListenerSettingsDialog extends StatefulWidget {
   const PeerListenerSettingsDialog({
@@ -328,7 +329,7 @@ class _PeerListenerSettingsState extends State<PeerListenerSettings> {
           tilePadding: EdgeInsets.zero,
           shape: const Border(),
           collapsedShape: const Border(),
-          leading: const Icon(Icons.tune_outlined, size: 20),
+          leading: const Icon(OperitIcons.tune_outlined, size: 20),
           title: Text(l10n.settingsPeerAdvanced),
           children: [
             Padding(
@@ -378,7 +379,7 @@ class _PeerListenerSettingsState extends State<PeerListenerSettings> {
                                 );
                               }
                             : null,
-                        icon: const Icon(Icons.refresh_rounded),
+                        icon: const Icon(OperitIcons.refresh_rounded),
                       ),
                     ),
                   ),
@@ -393,7 +394,7 @@ class _PeerListenerSettingsState extends State<PeerListenerSettings> {
                               );
                             }
                           : null,
-                      icon: const Icon(Icons.content_copy_outlined, size: 16),
+                      icon: const Icon(OperitIcons.content_copy_outlined, size: 16),
                       label: Text(l10n.settingsPeerDiscoveryCopyKey),
                     ),
                   ),

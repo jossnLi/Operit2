@@ -5,6 +5,7 @@ import 'package:operit2/core/web_visit/WebVisitModels.dart';
 import '../../../../common/contributions/PluginWorkspacePresentation.dart';
 import 'file_preview/WorkspaceTextDocument.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 enum WorkspaceTabKind {
   home,
   workspacePicker,
@@ -208,24 +209,24 @@ WorkspaceFilePreviewKind workspacePreviewKindForPath(String path) {
 IconData workspacePreviewIconForKind(WorkspaceFilePreviewKind kind) {
   switch (kind) {
     case WorkspaceFilePreviewKind.image:
-      return Icons.image_outlined;
+      return OperitIcons.image_outlined;
     case WorkspaceFilePreviewKind.audio:
-      return Icons.audio_file_outlined;
+      return OperitIcons.audio_file_outlined;
     case WorkspaceFilePreviewKind.video:
-      return Icons.video_file_outlined;
+      return OperitIcons.video_file_outlined;
     case WorkspaceFilePreviewKind.pdf:
-      return Icons.picture_as_pdf_outlined;
+      return OperitIcons.picture_as_pdf_outlined;
     case WorkspaceFilePreviewKind.word:
-      return Icons.article_outlined;
+      return OperitIcons.article_outlined;
     case WorkspaceFilePreviewKind.spreadsheet:
-      return Icons.table_chart_outlined;
+      return OperitIcons.table_chart_outlined;
     case WorkspaceFilePreviewKind.presentation:
-      return Icons.slideshow_outlined;
+      return OperitIcons.slideshow_outlined;
     case WorkspaceFilePreviewKind.html:
     case WorkspaceFilePreviewKind.markdown:
     case WorkspaceFilePreviewKind.text:
-      return Icons.description_outlined;
+      return OperitIcons.description_outlined;
     case WorkspaceFilePreviewKind.binary:
-      return Icons.insert_drive_file_outlined;
+      return OperitIcons.insert_drive_file_outlined;
   }
 }

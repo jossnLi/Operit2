@@ -8,6 +8,7 @@ import 'ExtensionMotion.dart';
 import 'StoreDetailKit.dart';
 import 'StoreVisuals.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// One headline figure of the creator's account card.
 class CreatorStat {
   const CreatorStat({
@@ -153,7 +154,7 @@ class _Identity extends StatelessWidget {
                       ),
                       StoreBadge(
                         label: 'GitHub 已连接',
-                        icon: Icons.verified_user_outlined,
+                        icon: OperitIcons.verified_user_outlined,
                         color: colorScheme.primaryContainer.withValues(
                           alpha: 0.7,
                         ),
@@ -169,7 +170,7 @@ class _Identity extends StatelessWidget {
               IconButton(
                 tooltip: '退出登录',
                 onPressed: onLogout,
-                icon: const Icon(Icons.logout_rounded),
+                icon: const Icon(OperitIcons.logout_rounded),
               )
             else
               OutlinedButton.icon(
@@ -180,7 +181,7 @@ class _Identity extends StatelessWidget {
                   minimumSize: const Size(0, 36),
                   padding: const EdgeInsets.symmetric(horizontal: 14),
                 ),
-                icon: const Icon(Icons.logout_rounded, size: 18),
+                icon: const Icon(OperitIcons.logout_rounded, size: 18),
                 label: const Text('退出'),
               ),
           ],
@@ -249,7 +250,7 @@ class _AccountAvatar extends StatelessWidget {
               child: SizedBox.square(
                 dimension: 20,
                 child: Icon(
-                  Icons.check_rounded,
+                  OperitIcons.check_rounded,
                   size: 12,
                   color: colorScheme.onPrimary,
                 ),
@@ -352,7 +353,7 @@ class _SignedOut extends StatelessWidget {
       child: SizedBox.square(
         dimension: 56,
         child: Icon(
-          Icons.account_circle_outlined,
+          OperitIcons.account_circle_outlined,
           size: 30,
           color: colorScheme.onPrimaryContainer,
         ),
@@ -380,7 +381,7 @@ class _SignedOut extends StatelessWidget {
     final button = FilledButton.icon(
       onPressed: onLogin,
       style: SettingsControlStyles.sectionFilledButton(),
-      icon: const Icon(Icons.login_rounded, size: 18),
+      icon: const Icon(OperitIcons.login_rounded, size: 18),
       label: const Text('登录 GitHub'),
     );
     return DecoratedBox(

@@ -7,6 +7,7 @@ import '../../../core/update/AppUpdateController.dart';
 import '../../../core/update/AppUpdateModels.dart';
 import 'AppUpdateDialog.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// Allows one controller to follow all sidebar presentations, including previews.
 class AppUpdateScope extends InheritedWidget {
   const AppUpdateScope({
@@ -161,8 +162,8 @@ class _AppUpdateBadgeState extends State<AppUpdateBadge> {
                       )
                     : Icon(
                         failed
-                            ? Icons.error_outline_rounded
-                            : Icons.arrow_circle_up_outlined,
+                            ? OperitIcons.error_outline_rounded
+                            : OperitIcons.arrow_circle_up_outlined,
                         size: 16,
                       ),
               ),

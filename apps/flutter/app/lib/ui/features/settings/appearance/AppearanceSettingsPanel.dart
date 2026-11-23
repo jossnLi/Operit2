@@ -38,6 +38,7 @@ import 'ChatAppearancePreview.dart';
 import 'DeviceFontPicker.dart';
 import 'ThemeConfigurationControl.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 enum _AppearanceSettingsTab { theme, background, bubbles, interaction }
 
 const List<_AppearanceSettingsTab> _appearanceSettingsTabs =
@@ -153,7 +154,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
       children: <Widget>[
         _SectionCard(
           title: l10n.settingsAppearanceThemeSection,
-          icon: Icons.palette_outlined,
+          icon: OperitIcons.palette_outlined,
           children: <Widget>[
             _AppearanceFieldBlock(
               label: l10n.settingsAppearanceThemeMode,
@@ -180,7 +181,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
         ),
         _SectionCard(
           title: l10n.settingsAppearanceColorSection,
-          icon: Icons.color_lens_outlined,
+          icon: OperitIcons.color_lens_outlined,
           children: <Widget>[
             _BodyText(l10n.settingsAppearanceColorDescription),
             const SizedBox(height: 4),
@@ -206,7 +207,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
         ),
         _SectionCard(
           title: l10n.settingsAppearanceTextSection,
-          icon: Icons.text_fields_outlined,
+          icon: OperitIcons.text_fields_outlined,
           children: <Widget>[
             ...<Widget>[
               _AppearanceFieldBlock(
@@ -231,7 +232,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               SettingsAssetTile(
-                icon: Icons.font_download_outlined,
+                icon: OperitIcons.font_download_outlined,
                 title: l10n.settingsAppearanceDeviceFonts,
                 subtitle:
                     snapshot.fontType == UserPreferencesManager.FONT_TYPE_DEVICE
@@ -240,7 +241,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
                 actions: [
                   FilledButton.tonalIcon(
                     style: SettingsControlStyles.sectionTextButton(),
-                    icon: const Icon(Icons.text_fields_outlined, size: 16),
+                    icon: const Icon(OperitIcons.text_fields_outlined, size: 16),
                     label: Text(l10n.settingsAppearanceChooseDeviceFont),
                     onPressed: () => _pickDeviceFont(
                       context,
@@ -252,7 +253,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               SettingsAssetTile(
-                icon: Icons.font_download_outlined,
+                icon: OperitIcons.font_download_outlined,
                 title: l10n.settingsAppearanceCustomFont,
                 subtitle: _customFontLabel(
                   l10n,
@@ -264,13 +265,13 @@ class _AppearanceThemeEditor extends StatelessWidget {
                     onPressed: () {
                       unawaited(_pickCustomFont(context, themeController));
                     },
-                    icon: const Icon(Icons.folder_open_outlined, size: 16),
+                    icon: const Icon(OperitIcons.folder_open_outlined, size: 16),
                     label: Text(l10n.settingsAppearanceChooseCustomFont),
                   ),
                   if (hasCustomFont)
                     SettingsEntityIconButton(
                       tooltip: l10n.settingsAppearanceClearCustomFont,
-                      icon: Icons.close_rounded,
+                      icon: OperitIcons.close_rounded,
                       onPressed: () {
                         unawaited(
                           themeController.saveThemeSettings(
@@ -288,7 +289,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
               const SizedBox(height: 8),
             ],
             SettingsSliderRow(
-              icon: Icons.zoom_in_outlined,
+              icon: OperitIcons.zoom_in_outlined,
               label: l10n.settingsAppearanceInterfaceScale,
               value: ApplicationZoom.levels
                   .indexOf(applicationZoom.zoom)
@@ -305,7 +306,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             SettingsSliderRow(
-              icon: Icons.format_size_outlined,
+              icon: OperitIcons.format_size_outlined,
               label: l10n.settingsAppearanceFontScale,
               value: snapshot.fontScale.clamp(0.85, 1.3),
               min: 0.85,
@@ -323,7 +324,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
         ),
         _SectionCard(
           title: l10n.settingsAppearanceLanguageSection,
-          icon: Icons.language_outlined,
+          icon: OperitIcons.language_outlined,
           action: SettingsInfoBadge(label: l10n.localeName),
           children: <Widget>[
             _BodyText(l10n.settingsAppearanceLanguageDescription),
@@ -335,7 +336,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
                 onPressed: () {
                   unawaited(themeController.resetThemeSettings());
                 },
-                icon: const Icon(Icons.restart_alt_rounded, size: 16),
+                icon: const Icon(OperitIcons.restart_alt_rounded, size: 16),
                 label: Text(l10n.settingsAppearanceResetTheme),
               ),
             ),
@@ -365,12 +366,12 @@ class _AppearanceThemeEditor extends StatelessWidget {
       children: <Widget>[
         _SectionCard(
           title: l10n.settingsAppearanceBackgroundSection,
-          icon: Icons.wallpaper_outlined,
+          icon: OperitIcons.wallpaper_outlined,
           children: <Widget>[
             _BodyText(l10n.settingsAppearanceBackgroundDescription),
             const SizedBox(height: 4),
             SettingsSwitchRow(
-              icon: Icons.visibility_outlined,
+              icon: OperitIcons.visibility_outlined,
               title: l10n.settingsAppearanceBackgroundEnabled,
               value: snapshot.useBackgroundImage,
               onChanged: (value) {
@@ -382,8 +383,8 @@ class _AppearanceThemeEditor extends StatelessWidget {
             const SizedBox(height: 8),
             SettingsAssetTile(
               icon: isVideo
-                  ? Icons.movie_creation_outlined
-                  : Icons.image_outlined,
+                  ? OperitIcons.movie_creation_outlined
+                  : OperitIcons.image_outlined,
               title: l10n.settingsAppearanceBackgroundImage,
               subtitle: _backgroundImageLabel(
                 l10n,
@@ -395,7 +396,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
                   onPressed: () {
                     unawaited(_pickBackgroundImage(context, themeController));
                   },
-                  icon: const Icon(Icons.image_outlined, size: 16),
+                  icon: const Icon(OperitIcons.image_outlined, size: 16),
                   label: Text(l10n.settingsAppearanceBackgroundChooseImage),
                 ),
                 FilledButton.tonalIcon(
@@ -403,13 +404,13 @@ class _AppearanceThemeEditor extends StatelessWidget {
                   onPressed: () {
                     unawaited(_pickBackgroundVideo(context, themeController));
                   },
-                  icon: const Icon(Icons.movie_creation_outlined, size: 16),
+                  icon: const Icon(OperitIcons.movie_creation_outlined, size: 16),
                   label: Text(l10n.settingsAppearanceBackgroundChooseVideo),
                 ),
                 if (hasBackgroundMedia && snapshot.useBackgroundImage)
                   SettingsEntityIconButton(
                     tooltip: l10n.settingsAppearanceBackgroundDisable,
-                    icon: Icons.hide_image_outlined,
+                    icon: OperitIcons.hide_image_outlined,
                     onPressed: () {
                       unawaited(
                         themeController.saveThemeSettings(
@@ -425,14 +426,14 @@ class _AppearanceThemeEditor extends StatelessWidget {
         if (isVideo)
           _SectionCard(
             title: l10n.settingsAppearanceBackgroundVideoSection,
-            icon: Icons.smart_display_outlined,
+            icon: OperitIcons.smart_display_outlined,
             children: <Widget>[
               Wrap(
                 spacing: 8,
                 runSpacing: 8,
                 children: <Widget>[
                   SettingsToggleChip(
-                    icon: Icons.volume_off_outlined,
+                    icon: OperitIcons.volume_off_outlined,
                     label: l10n.settingsAppearanceBackgroundVideoMuted,
                     selected: snapshot.videoBackgroundMuted,
                     onSelected: (value) {
@@ -444,7 +445,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
                     },
                   ),
                   SettingsToggleChip(
-                    icon: Icons.repeat_outlined,
+                    icon: OperitIcons.repeat_outlined,
                     label: l10n.settingsAppearanceBackgroundVideoLoop,
                     selected: snapshot.videoBackgroundLoop,
                     onSelected: (value) {
@@ -461,10 +462,10 @@ class _AppearanceThemeEditor extends StatelessWidget {
           ),
         _SectionCard(
           title: l10n.settingsAppearanceBackgroundEffectsSection,
-          icon: Icons.auto_fix_high_outlined,
+          icon: OperitIcons.auto_fix_high_outlined,
           children: <Widget>[
             SettingsSliderRow(
-              icon: Icons.opacity_outlined,
+              icon: OperitIcons.opacity_outlined,
               label: l10n.settingsAppearanceBackgroundOpacity,
               value: snapshot.backgroundImageOpacity.clamp(0.1, 0.8),
               min: 0.1,
@@ -486,7 +487,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
             ),
             const Divider(height: 14),
             SettingsSwitchRow(
-              icon: Icons.blur_on_outlined,
+              icon: OperitIcons.blur_on_outlined,
               title: l10n.settingsAppearanceBackgroundBlur,
               value: snapshot.useBackgroundBlur,
               onChanged: (value) {
@@ -498,7 +499,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
             if (snapshot.useBackgroundBlur) ...<Widget>[
               const SizedBox(height: 4),
               SettingsSliderRow(
-                icon: Icons.tune_outlined,
+                icon: OperitIcons.tune_outlined,
                 label: l10n.settingsAppearanceBackgroundBlurRadius,
                 value: snapshot.backgroundBlurRadius.clamp(0, 40),
                 min: 0,
@@ -549,7 +550,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
       children: <Widget>[
         _SectionCard(
           title: l10n.settingsAppearanceBubbleStyleSection,
-          icon: Icons.chat_bubble_outline_rounded,
+          icon: OperitIcons.chat_bubble_outline_rounded,
           children: <Widget>[
             _AppearanceFieldBlock(
               label: l10n.settingsAppearanceUserMessageStyle,
@@ -601,7 +602,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
               runSpacing: 8,
               children: <Widget>[
                 SettingsToggleChip(
-                  icon: Icons.aspect_ratio_outlined,
+                  icon: OperitIcons.aspect_ratio_outlined,
                   label: l10n.settingsAppearanceWideLayout,
                   selected: snapshot.bubbleWideLayoutEnabled,
                   onSelected: (value) {
@@ -613,7 +614,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
                   },
                 ),
                 SettingsToggleChip(
-                  icon: Icons.rounded_corner_outlined,
+                  icon: OperitIcons.rounded_corner_outlined,
                   label: l10n.settingsAppearanceRoundedMessages,
                   selected:
                       snapshot.bubbleUserRoundedCornersEnabled &&
@@ -633,10 +634,10 @@ class _AppearanceThemeEditor extends StatelessWidget {
         ),
         _SectionCard(
           title: l10n.settingsAppearanceAvatarSection,
-          icon: Icons.account_circle_outlined,
+          icon: OperitIcons.account_circle_outlined,
           children: <Widget>[
             SettingsSwitchRow(
-              icon: Icons.visibility_outlined,
+              icon: OperitIcons.visibility_outlined,
               title: l10n.settingsAppearanceShowAvatars,
               value: snapshot.bubbleShowAvatar,
               onChanged: (value) {
@@ -666,7 +667,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
         ),
         _SectionCard(
           title: l10n.settingsAppearanceMessageColors,
-          icon: Icons.format_color_fill_outlined,
+          icon: OperitIcons.format_color_fill_outlined,
           action: SettingsInfoBadge(
             label: _messageColorPresetLabel(l10n, snapshot),
           ),
@@ -686,10 +687,10 @@ class _AppearanceThemeEditor extends StatelessWidget {
         ),
         _SectionCard(
           title: l10n.settingsAppearanceBubbleFontSection,
-          icon: Icons.font_download_outlined,
+          icon: OperitIcons.font_download_outlined,
           children: <Widget>[
             SettingsAssetTile(
-              icon: Icons.person_outline_rounded,
+              icon: OperitIcons.person_outline_rounded,
               title: l10n.settingsAppearanceUserBubbleFont,
               subtitle: _bubbleFontLabel(l10n, snapshot, isUser: true),
               actions: <Widget>[
@@ -705,14 +706,14 @@ class _AppearanceThemeEditor extends StatelessWidget {
                       ),
                     );
                   },
-                  icon: const Icon(Icons.tune_outlined, size: 16),
+                  icon: const Icon(OperitIcons.tune_outlined, size: 16),
                   label: Text(l10n.settingsAppearanceAdjustUserBubbleFont),
                 ),
               ],
             ),
             const SizedBox(height: 8),
             SettingsAssetTile(
-              icon: Icons.smart_toy_outlined,
+              icon: OperitIcons.smart_toy_outlined,
               title: l10n.settingsAppearanceAiBubbleFont,
               subtitle: _bubbleFontLabel(l10n, snapshot, isUser: false),
               actions: <Widget>[
@@ -728,7 +729,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
                       ),
                     );
                   },
-                  icon: const Icon(Icons.tune_outlined, size: 16),
+                  icon: const Icon(OperitIcons.tune_outlined, size: 16),
                   label: Text(l10n.settingsAppearanceAdjustAiBubbleFont),
                 ),
               ],
@@ -737,10 +738,10 @@ class _AppearanceThemeEditor extends StatelessWidget {
         ),
         _SectionCard(
           title: l10n.settingsAppearanceBubbleImageSection,
-          icon: Icons.layers_outlined,
+          icon: OperitIcons.layers_outlined,
           children: <Widget>[
             SettingsAssetTile(
-              icon: Icons.person_outline_rounded,
+              icon: OperitIcons.person_outline_rounded,
               title: l10n.settingsAppearanceUserBubbleImage,
               subtitle: _fileNameOrNoneLabel(
                 l10n,
@@ -755,7 +756,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
                       _pickBubbleImage(context, themeController, isUser: true),
                     );
                   },
-                  icon: const Icon(Icons.image_outlined, size: 16),
+                  icon: const Icon(OperitIcons.image_outlined, size: 16),
                   label: Text(l10n.settingsAppearanceChooseUserBubbleImage),
                 ),
                 if (userImageActive) ...<Widget>[
@@ -771,12 +772,12 @@ class _AppearanceThemeEditor extends StatelessWidget {
                         ),
                       );
                     },
-                    icon: const Icon(Icons.tune_outlined, size: 16),
+                    icon: const Icon(OperitIcons.tune_outlined, size: 16),
                     label: Text(l10n.settingsAppearanceBubbleImageAdjustUser),
                   ),
                   SettingsEntityIconButton(
                     tooltip: l10n.settingsAppearanceClearUserBubbleImage,
-                    icon: Icons.layers_clear_outlined,
+                    icon: OperitIcons.layers_clear_outlined,
                     onPressed: () {
                       unawaited(
                         themeController.saveThemeSettings(
@@ -803,7 +804,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             SettingsAssetTile(
-              icon: Icons.smart_toy_outlined,
+              icon: OperitIcons.smart_toy_outlined,
               title: l10n.settingsAppearanceAiBubbleImage,
               subtitle: _fileNameOrNoneLabel(
                 l10n,
@@ -818,7 +819,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
                       _pickBubbleImage(context, themeController, isUser: false),
                     );
                   },
-                  icon: const Icon(Icons.image_outlined, size: 16),
+                  icon: const Icon(OperitIcons.image_outlined, size: 16),
                   label: Text(l10n.settingsAppearanceChooseAiBubbleImage),
                 ),
                 if (aiImageActive) ...<Widget>[
@@ -834,12 +835,12 @@ class _AppearanceThemeEditor extends StatelessWidget {
                         ),
                       );
                     },
-                    icon: const Icon(Icons.tune_outlined, size: 16),
+                    icon: const Icon(OperitIcons.tune_outlined, size: 16),
                     label: Text(l10n.settingsAppearanceBubbleImageAdjustAi),
                   ),
                   SettingsEntityIconButton(
                     tooltip: l10n.settingsAppearanceClearAiBubbleImage,
-                    icon: Icons.layers_clear_outlined,
+                    icon: OperitIcons.layers_clear_outlined,
                     onPressed: () {
                       unawaited(
                         themeController.saveThemeSettings(
@@ -885,7 +886,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
       children: <Widget>[
         _SectionCard(
           title: l10n.settingsAppearanceInputSection,
-          icon: Icons.keyboard_outlined,
+          icon: OperitIcons.keyboard_outlined,
           children: <Widget>[
             _AppearanceFieldBlock(
               label: l10n.settingsAppearanceInputStyle,
@@ -905,7 +906,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
               runSpacing: 8,
               children: <Widget>[
                 SettingsToggleChip(
-                  icon: Icons.vertical_align_bottom_outlined,
+                  icon: OperitIcons.vertical_align_bottom_outlined,
                   label: l10n.settingsAppearanceInputFloating,
                   selected: snapshot.chatInputFloating,
                   onSelected: (value) {
@@ -922,14 +923,14 @@ class _AppearanceThemeEditor extends StatelessWidget {
         ),
         _SectionCard(
           title: l10n.settingsAppearanceInteractionStatusSection,
-          icon: Icons.psychology_outlined,
+          icon: OperitIcons.psychology_outlined,
           children: <Widget>[
             Wrap(
               spacing: 8,
               runSpacing: 8,
               children: <Widget>[
                 SettingsToggleChip(
-                  icon: Icons.psychology_outlined,
+                  icon: OperitIcons.psychology_outlined,
                   label: l10n.settingsAppearanceShowThinkingProcess,
                   selected: snapshot.showThinkingProcess,
                   onSelected: (value) {
@@ -941,7 +942,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
                   },
                 ),
                 SettingsToggleChip(
-                  icon: Icons.hourglass_top_outlined,
+                  icon: OperitIcons.hourglass_top_outlined,
                   label: l10n.settingsAppearanceShowInputProcessingStatus,
                   selected: snapshot.showInputProcessingStatus,
                   onSelected: (value) {
@@ -958,14 +959,14 @@ class _AppearanceThemeEditor extends StatelessWidget {
         ),
         _SectionCard(
           title: l10n.settingsAppearanceMessageDisplaySection,
-          icon: Icons.tune_outlined,
+          icon: OperitIcons.tune_outlined,
           children: <Widget>[
             Wrap(
               spacing: 8,
               runSpacing: 8,
               children: <Widget>[
                 SettingsToggleChip(
-                  icon: Icons.badge_outlined,
+                  icon: OperitIcons.badge_outlined,
                   label: l10n.settingsAppearanceShowRoleName,
                   selected: snapshot.showRoleName,
                   onSelected: (value) {
@@ -975,7 +976,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
                   },
                 ),
                 SettingsToggleChip(
-                  icon: Icons.person_outline_rounded,
+                  icon: OperitIcons.person_outline_rounded,
                   label: l10n.settingsAppearanceShowUserName,
                   selected: snapshot.showUserName,
                   onSelected: (value) {
@@ -985,7 +986,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
                   },
                 ),
                 SettingsToggleChip(
-                  icon: Icons.memory_outlined,
+                  icon: OperitIcons.memory_outlined,
                   label: l10n.settingsAppearanceShowModelName,
                   selected: snapshot.showModelName,
                   onSelected: (value) {
@@ -995,7 +996,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
                   },
                 ),
                 SettingsToggleChip(
-                  icon: Icons.cloud_outlined,
+                  icon: OperitIcons.cloud_outlined,
                   label: l10n.settingsAppearanceShowModelProvider,
                   selected: snapshot.showModelProvider,
                   onSelected: (value) {
@@ -1007,7 +1008,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
                   },
                 ),
                 SettingsToggleChip(
-                  icon: Icons.data_usage_outlined,
+                  icon: OperitIcons.data_usage_outlined,
                   label: l10n.settingsAppearanceShowMessageTokenStats,
                   selected: snapshot.showMessageTokenStats,
                   onSelected: (value) {
@@ -1019,7 +1020,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
                   },
                 ),
                 SettingsToggleChip(
-                  icon: Icons.timer_outlined,
+                  icon: OperitIcons.timer_outlined,
                   label: l10n.settingsAppearanceShowMessageTimingStats,
                   selected: snapshot.showMessageTimingStats,
                   onSelected: (value) {
@@ -1031,7 +1032,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
                   },
                 ),
                 SettingsToggleChip(
-                  icon: Icons.schedule_outlined,
+                  icon: OperitIcons.schedule_outlined,
                   label: l10n.settingsAppearanceShowMessageTimestamp,
                   selected: snapshot.showMessageTimestamp,
                   onSelected: (value) {
@@ -1252,7 +1253,7 @@ class _ResponsivePreviewSplitTabViewState
                 child: Row(
                   children: <Widget>[
                     Icon(
-                      Icons.visibility_outlined,
+                      OperitIcons.visibility_outlined,
                       size: 18,
                       color: colorScheme.primary,
                     ),
@@ -1269,7 +1270,7 @@ class _ResponsivePreviewSplitTabViewState
                     ),
                     const SizedBox(width: 4),
                     Icon(
-                      Icons.keyboard_arrow_down_rounded,
+                      OperitIcons.keyboard_arrow_down_rounded,
                       size: 18,
                       color: colorScheme.onSurfaceVariant,
                     ),
@@ -1318,7 +1319,7 @@ class _ChatAppearanceLivePreviewCard extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     return _SectionCard(
       title: l10n.settingsAppearanceLivePreviewTitle,
-      icon: Icons.preview_outlined,
+      icon: OperitIcons.preview_outlined,
       action: onCollapse == null
           ? SettingsInfoBadge(
               label:
@@ -1329,7 +1330,7 @@ class _ChatAppearanceLivePreviewCard extends StatelessWidget {
               tooltip: l10n.settingsAppearancePreviewCollapse,
               onPressed: onCollapse,
               visualDensity: VisualDensity.compact,
-              icon: const Icon(Icons.keyboard_arrow_up_rounded, size: 20),
+              icon: const Icon(OperitIcons.keyboard_arrow_up_rounded, size: 20),
             ),
       children: <Widget>[
         ChatAppearancePreview(showInputPreview: showInputPreview),
@@ -1671,7 +1672,7 @@ class _ThemeImageCropDialogState extends State<_ThemeImageCropDialog> {
             ),
             const SizedBox(height: 12),
             SettingsSliderRow(
-              icon: Icons.zoom_in_outlined,
+              icon: OperitIcons.zoom_in_outlined,
               label: l10n.zoom,
               value: _zoom,
               min: 1,
@@ -1681,7 +1682,7 @@ class _ThemeImageCropDialogState extends State<_ThemeImageCropDialog> {
               onChanged: (value) => setState(() => _zoom = value),
             ),
             SettingsSliderRow(
-              icon: Icons.swap_horiz_outlined,
+              icon: OperitIcons.swap_horiz_outlined,
               label: 'X',
               value: _offsetX,
               min: -1,
@@ -1691,7 +1692,7 @@ class _ThemeImageCropDialogState extends State<_ThemeImageCropDialog> {
               onChanged: (value) => setState(() => _offsetX = value),
             ),
             SettingsSliderRow(
-              icon: Icons.swap_vert_outlined,
+              icon: OperitIcons.swap_vert_outlined,
               label: 'Y',
               value: _offsetY,
               min: -1,
@@ -1972,7 +1973,7 @@ Future<void> _showBubbleFontDialog(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 SettingsSwitchRow(
-                  icon: Icons.font_download_outlined,
+                  icon: OperitIcons.font_download_outlined,
                   title: l10n.settingsAppearanceEnableBubbleFont,
                   value: useCustomFont,
                   onChanged: (value) {
@@ -2007,7 +2008,7 @@ Future<void> _showBubbleFontDialog(
                 ),
                 const SizedBox(height: 10),
                 SettingsAssetTile(
-                  icon: Icons.text_fields_outlined,
+                  icon: OperitIcons.text_fields_outlined,
                   title: l10n.settingsAppearanceDeviceFonts,
                   subtitle: fontType == UserPreferencesManager.FONT_TYPE_DEVICE
                       ? systemFontName!
@@ -2015,7 +2016,7 @@ Future<void> _showBubbleFontDialog(
                   actions: [
                     FilledButton.tonalIcon(
                       style: SettingsControlStyles.sectionTextButton(),
-                      icon: const Icon(Icons.text_fields_outlined, size: 16),
+                      icon: const Icon(OperitIcons.text_fields_outlined, size: 16),
                       label: Text(l10n.settingsAppearanceChooseDeviceFont),
                       onPressed: () async {
                         try {
@@ -2045,7 +2046,7 @@ Future<void> _showBubbleFontDialog(
                 ),
                 const SizedBox(height: 10),
                 SettingsAssetTile(
-                  icon: Icons.folder_open_outlined,
+                  icon: OperitIcons.folder_open_outlined,
                   title: l10n.settingsAppearanceCustomFont,
                   subtitle: _customFontLabel(
                     l10n,
@@ -2059,7 +2060,7 @@ Future<void> _showBubbleFontDialog(
                       onPressed: () {
                         unawaited(pickFontFile());
                       },
-                      icon: const Icon(Icons.file_upload_outlined, size: 16),
+                      icon: const Icon(OperitIcons.file_upload_outlined, size: 16),
                       label: Text(l10n.settingsAppearanceChooseCustomFont),
                     ),
                     if (fontType == UserPreferencesManager.FONT_TYPE_FILE &&
@@ -2067,7 +2068,7 @@ Future<void> _showBubbleFontDialog(
                         customFontPath!.isNotEmpty)
                       SettingsEntityIconButton(
                         tooltip: l10n.settingsAppearanceClearCustomFont,
-                        icon: Icons.close_rounded,
+                        icon: OperitIcons.close_rounded,
                         onPressed: () {
                           setDialogState(() {
                             customFontPath = '';
@@ -2491,7 +2492,7 @@ Future<void> _showBubbleImageAdjustDialog(
           leading: IconButton(
             tooltip: l10n.cancel,
             onPressed: () => Navigator.of(dialogContext).pop(),
-            icon: const Icon(Icons.close_rounded),
+            icon: const Icon(OperitIcons.close_rounded),
           ),
           title: Text(
             isUser
@@ -2900,7 +2901,7 @@ class _SplitColorCircle extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(3),
                   child: Icon(
-                    Icons.check_rounded,
+                    OperitIcons.check_rounded,
                     size: 16,
                     color: colorScheme.primary,
                   ),
@@ -2943,12 +2944,12 @@ class _AvatarShapeSelector extends StatelessWidget {
       segments: <ButtonSegment<_AvatarShapePreset>>[
         ButtonSegment<_AvatarShapePreset>(
           value: _AvatarShapePreset.circle,
-          icon: const Icon(Icons.circle_outlined, size: 16),
+          icon: const Icon(OperitIcons.circle_outlined, size: 16),
           label: Text(l10n.settingsAppearanceAvatarShapeCircle),
         ),
         ButtonSegment<_AvatarShapePreset>(
           value: _AvatarShapePreset.square,
-          icon: const Icon(Icons.crop_square_outlined, size: 16),
+          icon: const Icon(OperitIcons.crop_square_outlined, size: 16),
           label: Text(l10n.settingsAppearanceAvatarShapeSquare),
         ),
       ],
@@ -2991,12 +2992,12 @@ class _MessageStyleSelector extends StatelessWidget {
       segments: <ButtonSegment<String>>[
         ButtonSegment<String>(
           value: UserPreferencesManager.CHAT_STYLE_CURSOR,
-          icon: const Icon(Icons.terminal_outlined, size: 16),
+          icon: const Icon(OperitIcons.terminal_outlined, size: 16),
           label: Text(l10n.settingsAppearanceMessageStyleClean),
         ),
         ButtonSegment<String>(
           value: UserPreferencesManager.CHAT_STYLE_BUBBLE,
-          icon: const Icon(Icons.chat_bubble_outline_rounded, size: 16),
+          icon: const Icon(OperitIcons.chat_bubble_outline_rounded, size: 16),
           label: Text(l10n.settingsAppearanceMessageStyleCard),
         ),
       ],
@@ -3020,12 +3021,12 @@ class _InputStyleSelector extends StatelessWidget {
       segments: <ButtonSegment<String>>[
         ButtonSegment<String>(
           value: UserPreferencesManager.INPUT_STYLE_CLASSIC,
-          icon: const Icon(Icons.chat_bubble_outline_rounded, size: 16),
+          icon: const Icon(OperitIcons.chat_bubble_outline_rounded, size: 16),
           label: Text(l10n.settingsAppearanceInputStyleClassic),
         ),
         ButtonSegment<String>(
           value: UserPreferencesManager.INPUT_STYLE_AGENT,
-          icon: const Icon(Icons.hub_outlined, size: 16),
+          icon: const Icon(OperitIcons.hub_outlined, size: 16),
           label: Text(l10n.settingsAppearanceInputStyleAgent),
         ),
       ],
@@ -3690,7 +3691,7 @@ class _ColorSwatchButton extends StatelessWidget {
         child: DecoratedBox(
           decoration: BoxDecoration(color: color, shape: BoxShape.circle),
           child: selected
-              ? Icon(Icons.check_rounded, size: 16, color: colorScheme.onPrimary)
+              ? Icon(OperitIcons.check_rounded, size: 16, color: colorScheme.onPrimary)
               : null,
         ),
       ),
@@ -3747,7 +3748,7 @@ class _EditableColorRow extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 8),
-              const Icon(Icons.palette_outlined, size: 18),
+              const Icon(OperitIcons.palette_outlined, size: 18),
             ],
           ),
         ),
@@ -3824,12 +3825,12 @@ class _MessageSurfaceSelector extends StatelessWidget {
       segments: <ButtonSegment<_MessageSurface>>[
         ButtonSegment<_MessageSurface>(
           value: _MessageSurface.normal,
-          icon: const Icon(Icons.layers_outlined, size: 16),
+          icon: const Icon(OperitIcons.layers_outlined, size: 16),
           label: Text(l10n.settingsAppearanceMessageSurfaceNormal),
         ),
         ButtonSegment<_MessageSurface>(
           value: _MessageSurface.transparent,
-          icon: const Icon(Icons.blur_on_outlined, size: 16),
+          icon: const Icon(OperitIcons.blur_on_outlined, size: 16),
           label: Text(l10n.settingsAppearanceMessageSurfaceTransparent),
         ),
       ],
@@ -3880,12 +3881,12 @@ class _BubbleImageRenderModeSelector extends StatelessWidget {
         ButtonSegment<String>(
           value:
               UserPreferencesManager.BUBBLE_IMAGE_RENDER_MODE_TILED_NINE_SLICE,
-          icon: const Icon(Icons.grid_view_outlined, size: 16),
+          icon: const Icon(OperitIcons.grid_view_outlined, size: 16),
           label: Text(l10n.settingsAppearanceBubbleImageTiledNineSlice),
         ),
         ButtonSegment<String>(
           value: UserPreferencesManager.BUBBLE_IMAGE_RENDER_MODE_NINE_PATCH,
-          icon: const Icon(Icons.crop_free_outlined, size: 16),
+          icon: const Icon(OperitIcons.crop_free_outlined, size: 16),
           label: Text(l10n.settingsAppearanceBubbleImageNinePatch),
         ),
       ],
@@ -4002,12 +4003,12 @@ class _MessageDensitySelector extends StatelessWidget {
       segments: <ButtonSegment<_MessageDensity>>[
         ButtonSegment<_MessageDensity>(
           value: _MessageDensity.comfortable,
-          icon: const Icon(Icons.view_agenda_outlined, size: 16),
+          icon: const Icon(OperitIcons.view_agenda_outlined, size: 16),
           label: Text(l10n.settingsAppearanceMessageDensityComfortable),
         ),
         ButtonSegment<_MessageDensity>(
           value: _MessageDensity.compact,
-          icon: const Icon(Icons.density_small_outlined, size: 16),
+          icon: const Icon(OperitIcons.density_small_outlined, size: 16),
           label: Text(l10n.settingsAppearanceMessageDensityCompact),
         ),
       ],
@@ -4056,17 +4057,17 @@ class _ThemeModeSelector extends StatelessWidget {
       segments: <ButtonSegment<ThemeMode>>[
         ButtonSegment<ThemeMode>(
           value: ThemeMode.system,
-          icon: const Icon(Icons.brightness_auto_outlined, size: 16),
+          icon: const Icon(OperitIcons.brightness_auto_outlined, size: 16),
           label: Text(l10n.settingsAppearanceThemeSystem),
         ),
         ButtonSegment<ThemeMode>(
           value: ThemeMode.light,
-          icon: const Icon(Icons.light_mode_outlined, size: 16),
+          icon: const Icon(OperitIcons.light_mode_outlined, size: 16),
           label: Text(l10n.settingsAppearanceThemeLight),
         ),
         ButtonSegment<ThemeMode>(
           value: ThemeMode.dark,
-          icon: const Icon(Icons.dark_mode_outlined, size: 16),
+          icon: const Icon(OperitIcons.dark_mode_outlined, size: 16),
           label: Text(l10n.settingsAppearanceThemeDark),
         ),
       ],
@@ -4337,13 +4338,13 @@ class _AvatarActionRow extends StatelessWidget {
           FilledButton.tonalIcon(
             style: SettingsControlStyles.sectionTextButton(),
             onPressed: onChoose,
-            icon: const Icon(Icons.image_outlined, size: 16),
+            icon: const Icon(OperitIcons.image_outlined, size: 16),
             label: Text(chooseLabel),
           ),
           OutlinedButton.icon(
             style: SettingsControlStyles.sectionTextButton(),
             onPressed: clearEnabled ? onClear : null,
-            icon: const Icon(Icons.layers_clear_outlined, size: 16),
+            icon: const Icon(OperitIcons.layers_clear_outlined, size: 16),
             label: Text(clearLabel),
           ),
         ],

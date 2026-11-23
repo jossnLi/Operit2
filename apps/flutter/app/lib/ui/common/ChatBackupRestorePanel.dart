@@ -7,6 +7,7 @@ import '../../core/backup/ChatBackupService.dart';
 import '../../core/proxy/generated/CoreProxyModels.g.dart';
 import '../../l10n/generated/app_localizations.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// Browses database backups from a folder chosen for this restore session.
 class ChatBackupRestorePanel extends StatefulWidget {
   const ChatBackupRestorePanel({
@@ -148,7 +149,7 @@ class _ChatBackupRestorePanelState extends State<ChatBackupRestorePanel> {
     final source = _source;
     final restoreButton = FilledButton.icon(
       onPressed: _busy || _selected == null ? null : _restore,
-      icon: const Icon(Icons.restore_rounded),
+      icon: const Icon(OperitIcons.restore_rounded),
       label: Text(l10n.chatRestoreSelected),
     );
     final browser = Column(
@@ -169,13 +170,13 @@ class _ChatBackupRestorePanelState extends State<ChatBackupRestorePanel> {
               onPressed: _busy || _restored
                   ? null
                   : () => _load(_service.selectRestoreDirectory),
-              icon: const Icon(Icons.folder_open_outlined),
+              icon: const Icon(OperitIcons.folder_open_outlined),
               label: Text(l10n.chatRestoreChooseFolder),
             ),
             if (source != null && !_restored)
               TextButton.icon(
                 onPressed: _busy ? null : () => _load(() async => source),
-                icon: const Icon(Icons.refresh_rounded),
+                icon: const Icon(OperitIcons.refresh_rounded),
                 label: Text(l10n.chatRestoreRefresh),
               ),
           ],
@@ -207,8 +208,8 @@ class _ChatBackupRestorePanelState extends State<ChatBackupRestorePanel> {
               onTap: () => setState(() => _selected = snapshot),
               leading: Icon(
                 _selected == snapshot
-                    ? Icons.radio_button_checked_rounded
-                    : Icons.radio_button_unchecked_rounded,
+                    ? OperitIcons.radio_button_checked_rounded
+                    : OperitIcons.radio_button_unchecked_rounded,
               ),
               title: Text(
                 '${material.formatMediumDate(DateTime.fromMillisecondsSinceEpoch(snapshot.createdAt))} 路 '

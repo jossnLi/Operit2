@@ -8,6 +8,7 @@ import '../../../core/update/AppUpdateController.dart';
 import '../../../core/update/AppUpdateModels.dart';
 import '../../common/components/OperitDialog.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 bool _dialogOpen = false;
 
 /// One dialog per application, even if the sidebar switches layout mid-download.
@@ -80,7 +81,7 @@ class _AppUpdateDialogState extends State<AppUpdateDialog> {
           canPop: false,
           child: OperitDialogScaffold(
             title: '暂时无法完成更新',
-            icon: const Icon(Icons.info_outline_rounded),
+            icon: const Icon(OperitIcons.info_outline_rounded),
             maxWidth: 480,
             actions: [
               FilledButton(
@@ -146,8 +147,8 @@ class _AppUpdateDialogState extends State<AppUpdateDialog> {
           title: '更新 Operit',
           icon: Icon(
             failed
-                ? Icons.error_outline_rounded
-                : Icons.system_update_alt_rounded,
+                ? OperitIcons.error_outline_rounded
+                : OperitIcons.system_update_alt_rounded,
           ),
           maxWidth: 480,
           actions: [
@@ -205,15 +206,15 @@ class _AppUpdateDialogState extends State<AppUpdateDialog> {
                 ),
                 icon: Icon(
                   controller.restartRequired
-                      ? Icons.restart_alt_rounded
-                      : Icons.open_in_new_rounded,
+                      ? OperitIcons.restart_alt_rounded
+                      : OperitIcons.open_in_new_rounded,
                 ),
                 label: Text(controller.restartRequired ? '重启并安装' : '重新打开安装器'),
               ),
             if (ready)
               FilledButton.icon(
                 onPressed: () => unawaited(controller.confirmInstall()),
-                icon: const Icon(Icons.system_update_alt_rounded),
+                icon: const Icon(OperitIcons.system_update_alt_rounded),
                 label: const Text('重启并更新'),
               ),
           ],
@@ -256,10 +257,10 @@ class _AppUpdateDialogState extends State<AppUpdateDialog> {
                   children: [
                     Icon(
                       failed
-                          ? Icons.error_outline_rounded
+                          ? OperitIcons.error_outline_rounded
                           : awaiting || ready
-                          ? Icons.check_circle_outline_rounded
-                          : Icons.downloading_rounded,
+                          ? OperitIcons.check_circle_outline_rounded
+                          : OperitIcons.downloading_rounded,
                       size: 20,
                       color: failed ? colors.error : colors.primary,
                     ),
@@ -424,7 +425,7 @@ class _AppUpdateDialogState extends State<AppUpdateDialog> {
           borderRadius: BorderRadius.circular(14),
         ),
         child: Icon(
-          Icons.system_update_alt_rounded,
+          OperitIcons.system_update_alt_rounded,
           color: colors.onPrimaryContainer,
         ),
       ),
@@ -446,7 +447,7 @@ class _AppUpdateDialogState extends State<AppUpdateDialog> {
             }
           },
           icon: Icon(
-            ready ? Icons.restart_alt_rounded : Icons.system_update_alt_rounded,
+            ready ? OperitIcons.restart_alt_rounded : OperitIcons.system_update_alt_rounded,
           ),
           label: Text(ready ? '重启并更新' : '立即更新'),
         ),
@@ -483,7 +484,7 @@ class _AppUpdateDialogState extends State<AppUpdateDialog> {
               children: [
                 _versionLabel(context, '当前版本', release.currentVersion),
                 Icon(
-                  Icons.arrow_forward_rounded,
+                  OperitIcons.arrow_forward_rounded,
                   color: colors.onSurfaceVariant,
                   size: 20,
                 ),

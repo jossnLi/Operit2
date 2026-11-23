@@ -6,6 +6,7 @@ import '../../../../core/proxy/generated/CoreProxyClients.g.dart';
 import '../../../../core/proxy/generated/CoreProxyModels.g.dart';
 import '../../../main/navigation/ToolPkgCatalogChangeBus.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 enum MarketLocalInstallState { notInstalled, installed, updateAvailable }
 
 /// One shared state per Core connection, not one optimistic flag per screen.
@@ -121,8 +122,8 @@ extension MarketLocalInstallStatePresentation on MarketLocalInstallState {
   };
 
   IconData get actionIcon => switch (this) {
-    MarketLocalInstallState.installed => Icons.check_rounded,
-    MarketLocalInstallState.updateAvailable => Icons.system_update_alt_rounded,
-    MarketLocalInstallState.notInstalled => Icons.download_outlined,
+    MarketLocalInstallState.installed => OperitIcons.check_rounded,
+    MarketLocalInstallState.updateAvailable => OperitIcons.system_update_alt_rounded,
+    MarketLocalInstallState.notInstalled => OperitIcons.download_outlined,
   };
 }

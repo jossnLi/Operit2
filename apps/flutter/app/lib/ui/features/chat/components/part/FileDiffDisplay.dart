@@ -6,6 +6,7 @@ import '../workspace/WorkspaceFileIcon.dart';
 import '../workspace/WorkspaceInlineDiff.dart';
 import 'ToolDisplayComponents.dart' show cleanToolPath;
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class FileDiff {
   const FileDiff({
     required this.path,
@@ -155,8 +156,8 @@ class FileDiffDisplay extends StatelessWidget {
                         if (onToggleExpand != null)
                           Icon(
                             isExpanded
-                                ? Icons.unfold_less_rounded
-                                : Icons.unfold_more_rounded,
+                                ? OperitIcons.unfold_less_rounded
+                                : OperitIcons.unfold_more_rounded,
                             size: 14,
                             color: theme.colorScheme.onSurfaceVariant
                                 .withValues(alpha: 0.7),

@@ -6,6 +6,7 @@ import '../../core/logging/ClientLogger.dart';
 import '../../core/proxy/generated/CoreProxyModels.g.dart' as generated;
 import '../../l10n/generated/app_localizations.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 bool spaceJoinIsActive(generated.SpaceJoinStatus status) => switch (status) {
   generated.SpaceJoinStatus.pending ||
   generated.SpaceJoinStatus.approving ||
@@ -262,7 +263,7 @@ class _SpaceJoinProgressDialogState extends State<SpaceJoinProgressDialog> {
     final progressing = waiting || (request == null && _busy);
     return AlertDialog(
       icon: Icon(
-        progressing ? Icons.hourglass_top_rounded : Icons.fact_check_outlined,
+        progressing ? OperitIcons.hourglass_top_rounded : OperitIcons.fact_check_outlined,
       ),
       title: Text(l10n.spaceJoinProgressTitle),
       content: SizedBox(
@@ -290,7 +291,7 @@ class _SpaceJoinProgressDialogState extends State<SpaceJoinProgressDialog> {
                   if (request?.reviewerDeviceId != null) ...[
                     Row(
                       children: [
-                        const Icon(Icons.person_outline_rounded, size: 20),
+                        const Icon(OperitIcons.person_outline_rounded, size: 20),
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
@@ -307,7 +308,7 @@ class _SpaceJoinProgressDialogState extends State<SpaceJoinProgressDialog> {
                   Row(
                     children: [
                       Icon(
-                        progressing ? Icons.schedule_rounded : Icons.info_outline_rounded,
+                        progressing ? OperitIcons.schedule_rounded : OperitIcons.info_outline_rounded,
                         size: 20,
                         color: colors.primary,
                       ),
@@ -624,7 +625,7 @@ class _SpaceJoinRequestsPanelState extends State<SpaceJoinRequestsPanel> {
             vertical: 4,
           ),
           leading: Icon(
-            incoming ? Icons.fact_check_outlined : Icons.schedule_rounded,
+            incoming ? OperitIcons.fact_check_outlined : OperitIcons.schedule_rounded,
           ),
           title: Text(incoming ? request.applicantName : request.spaceName),
           subtitle: Text(
@@ -638,8 +639,8 @@ class _SpaceJoinRequestsPanelState extends State<SpaceJoinRequestsPanel> {
             ].join('\n'),
           ),
           trailing: request.status == generated.SpaceJoinStatus.joined
-              ? const Icon(Icons.check_circle_outline_rounded)
-              : const Icon(Icons.chevron_right_rounded),
+              ? const Icon(OperitIcons.check_circle_outline_rounded)
+              : const Icon(OperitIcons.chevron_right_rounded),
           onTap: request.status == generated.SpaceJoinStatus.joined
               ? null
               : () => _open(request, incoming),

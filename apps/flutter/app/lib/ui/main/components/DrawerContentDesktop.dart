@@ -59,7 +59,7 @@ extension _DesktopWorkspaceContent on _DrawerContentState {
                 ),
               ),
               Icon(
-                open ? Icons.expand_less_rounded : Icons.expand_more_rounded,
+                open ? OperitIcons.expand_less_rounded : OperitIcons.expand_more_rounded,
                 size: 18,
                 color: appearance.itemColor.withValues(alpha: 0.7),
               ),
@@ -96,8 +96,8 @@ extension _DesktopWorkspaceContent on _DrawerContentState {
                 const SizedBox(width: 8),
                 _ToolbarIconButton(
                   icon: _searchExpanded
-                      ? Icons.search_off_rounded
-                      : Icons.search_rounded,
+                      ? OperitIcons.search_off_rounded
+                      : OperitIcons.search_rounded,
                   tooltip: _searchExpanded ? '收起搜索' : '搜索对话',
                   appearance: appearance,
                   active: _searchExpanded,

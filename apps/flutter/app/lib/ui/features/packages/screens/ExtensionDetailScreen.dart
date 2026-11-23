@@ -32,6 +32,7 @@ import '../utils/PackageDisplayUtils.dart';
 import 'ToolPkgDesktopWidgetsScreen.dart';
 import 'ToolPkgUiLauncherScreen.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// Detail route shared by installed extensions and offline official ones.
 class ExtensionDetailScreen extends StatefulWidget {
   const ExtensionDetailScreen({
@@ -369,7 +370,7 @@ class _ExtensionDetailScreenState extends State<ExtensionDetailScreen>
           if (hasUpdate)
             StoreGetButton(
               label: '更新',
-              icon: Icons.arrow_circle_up_rounded,
+              icon: OperitIcons.arrow_circle_up_rounded,
               prominent: true,
               large: true,
               busy: busy,
@@ -378,7 +379,7 @@ class _ExtensionDetailScreenState extends State<ExtensionDetailScreen>
           else if (toolPkg != null && standaloneRouteId != null)
             StoreGetButton(
               label: '打开',
-              icon: Icons.open_in_new_rounded,
+              icon: OperitIcons.open_in_new_rounded,
               prominent: true,
               large: true,
               onPressed: enabled
@@ -399,7 +400,7 @@ class _ExtensionDetailScreenState extends State<ExtensionDetailScreen>
             ? const Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Icon(Icons.hub_outlined, size: 14),
+                  Icon(OperitIcons.hub_outlined, size: 14),
                   SizedBox(width: 6),
                   Flexible(child: Text('启用状态在设备空间的所有设备间同步')),
                 ],
@@ -412,7 +413,7 @@ class _ExtensionDetailScreenState extends State<ExtensionDetailScreen>
           Padding(
             padding: const EdgeInsets.only(top: 20),
             child: StoreNoticeCard(
-              icon: Icons.error_outline_rounded,
+              icon: OperitIcons.error_outline_rounded,
               tone: StoreNoticeTone.error,
               title: 'MCP 服务启动失败',
               message: mcpError,
@@ -461,11 +462,11 @@ class _ExtensionDetailScreenState extends State<ExtensionDetailScreen>
         icon: storeScopeIcon(entry.scope),
       ),
       if (entry.isCustomized)
-        const StoreBadge(label: '已自定义', icon: Icons.edit_outlined),
+        const StoreBadge(label: '已自定义', icon: OperitIcons.edit_outlined),
       if (hasUpdate)
         StoreBadge(
           label: '有新版本',
-          icon: Icons.arrow_upward_rounded,
+          icon: OperitIcons.arrow_upward_rounded,
           color: colorScheme.primaryContainer,
           foreground: colorScheme.onPrimaryContainer,
         ),
@@ -628,7 +629,7 @@ class _ExtensionDetailScreenState extends State<ExtensionDetailScreen>
           Padding(
             padding: const EdgeInsets.only(top: 24),
             child: StoreNoticeCard(
-              icon: Icons.error_outline_rounded,
+              icon: OperitIcons.error_outline_rounded,
               tone: StoreNoticeTone.error,
               title: '详情加载失败',
               message: '$error',
@@ -677,12 +678,12 @@ class _ExtensionDetailScreenState extends State<ExtensionDetailScreen>
               children: <Widget>[
                 OutlinedButton.icon(
                   onPressed: () => _editA2A(data),
-                  icon: const Icon(Icons.edit_outlined),
+                  icon: const Icon(OperitIcons.edit_outlined),
                   label: const Text('编辑配置'),
                 ),
                 OutlinedButton.icon(
                   onPressed: () => _refreshA2A(data),
-                  icon: const Icon(Icons.refresh_rounded),
+                  icon: const Icon(OperitIcons.refresh_rounded),
                   label: const Text('刷新 Agent Card'),
                 ),
                 FilledButton.icon(
@@ -693,7 +694,7 @@ class _ExtensionDetailScreenState extends State<ExtensionDetailScreen>
                               A2ATaskDialog(clients: _clients, id: widget.id),
                         )
                       : null,
-                  icon: const Icon(Icons.play_arrow_rounded),
+                  icon: const Icon(OperitIcons.play_arrow_rounded),
                   label: const Text('测试任务'),
                 ),
               ],
@@ -710,7 +711,7 @@ class _ExtensionDetailScreenState extends State<ExtensionDetailScreen>
                 children: <Widget>[
                   for (final skill in skills)
                     StoreListRow(
-                      leading: const StoreRowGlyph(icon: Icons.hub_outlined),
+                      leading: const StoreRowGlyph(icon: OperitIcons.hub_outlined),
                       title: '${skill['name'] ?? skill['id'] ?? ''}',
                       subtitle: '${skill['description'] ?? ''}',
                     ),
@@ -775,7 +776,7 @@ class _ExtensionDetailScreenState extends State<ExtensionDetailScreen>
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8),
                   child: StoreNoticeCard(
-                    icon: Icons.link_off_rounded,
+                    icon: OperitIcons.link_off_rounded,
                     tone: StoreNoticeTone.error,
                     title: '${issue.id} · ${_dependencyIssueStatus(issue)}',
                     message: _dependencyIssueDescription(issue),
@@ -793,7 +794,7 @@ class _ExtensionDetailScreenState extends State<ExtensionDetailScreen>
               for (final module in details.toolboxUiModules)
                 StoreListRow(
                   leading: const StoreRowGlyph(
-                    icon: Icons.dashboard_customize_outlined,
+                    icon: OperitIcons.dashboard_customize_outlined,
                   ),
                   title: module.title,
                   subtitle: module.description.trim().isNotEmpty
@@ -820,7 +821,7 @@ class _ExtensionDetailScreenState extends State<ExtensionDetailScreen>
                     for (final subpackage in details.subpackages)
                       StoreListRow(
                         leading: const StoreRowGlyph(
-                          icon: Icons.inventory_2_outlined,
+                          icon: OperitIcons.inventory_2_outlined,
                         ),
                         title: subpackage.displayName,
                         subtitle: subpackage.description.trim().isNotEmpty
@@ -846,7 +847,7 @@ class _ExtensionDetailScreenState extends State<ExtensionDetailScreen>
               for (final template in details.workspaceTemplates)
                 StoreListRow(
                   leading: const StoreRowGlyph(
-                    icon: Icons.folder_copy_outlined,
+                    icon: OperitIcons.folder_copy_outlined,
                   ),
                   title: template.displayName,
                   subtitle: template.description,
@@ -862,10 +863,10 @@ class _ExtensionDetailScreenState extends State<ExtensionDetailScreen>
           child: StoreGroupedList(
             children: <Widget>[
               StoreListRow(
-                leading: const StoreRowGlyph(icon: Icons.widgets_outlined),
+                leading: const StoreRowGlyph(icon: OperitIcons.widgets_outlined),
                 title: '管理桌面小组件',
                 subtitle: enabled ? '查看并添加这个插件提供的小组件' : '启用插件后可用',
-                trailing: const Icon(Icons.chevron_right_rounded),
+                trailing: const Icon(OperitIcons.chevron_right_rounded),
                 onTap: enabled ? () => _openDesktopWidgets(runtime) : null,
               ),
             ],
@@ -987,14 +988,14 @@ class _ExtensionDetailScreenState extends State<ExtensionDetailScreen>
                 children: <Widget>[
                   for (final tool in package.tools)
                     StoreListRow(
-                      leading: const StoreRowGlyph(icon: Icons.build_outlined),
+                      leading: const StoreRowGlyph(icon: OperitIcons.build_outlined),
                       title: _toolTitle(tool),
                       subtitle: localizedText(tool.description),
                       footer: Wrap(
                         spacing: 6,
                         runSpacing: 6,
                         children: <Widget>[
-                          StoreBadge(label: tool.name, icon: Icons.tag_rounded),
+                          StoreBadge(label: tool.name, icon: OperitIcons.tag_rounded),
                           for (final parameter in tool.parameters)
                             StoreBadge(
                               label:
@@ -1004,7 +1005,7 @@ class _ExtensionDetailScreenState extends State<ExtensionDetailScreen>
                       ),
                       trailing: StoreGetButton(
                         label: '运行',
-                        icon: Icons.play_arrow_rounded,
+                        icon: OperitIcons.play_arrow_rounded,
                         onPressed: () => _runPackageTool(package, tool),
                       ),
                     ),
@@ -1019,7 +1020,7 @@ class _ExtensionDetailScreenState extends State<ExtensionDetailScreen>
             children: <Widget>[
               for (final env in package.env)
                 StoreListRow(
-                  leading: const StoreRowGlyph(icon: Icons.key_outlined),
+                  leading: const StoreRowGlyph(icon: OperitIcons.key_outlined),
                   title: env.name,
                   monospaceTitle: true,
                   subtitle: localizedText(env.description),
@@ -1042,7 +1043,7 @@ class _ExtensionDetailScreenState extends State<ExtensionDetailScreen>
             children: <Widget>[
               for (final state in package.states)
                 StoreListRow(
-                  leading: const StoreRowGlyph(icon: Icons.rule_outlined),
+                  leading: const StoreRowGlyph(icon: OperitIcons.rule_outlined),
                   title: state.id,
                   subtitle: <String>[
                     '条件：${state.condition}',
@@ -1123,8 +1124,8 @@ class _ExtensionDetailScreenState extends State<ExtensionDetailScreen>
             StoreListRow(
               leading: StoreRowGlyph(
                 icon: running
-                    ? Icons.play_circle_outline_rounded
-                    : Icons.pause_circle_outline_rounded,
+                    ? OperitIcons.play_circle_outline_rounded
+                    : OperitIcons.pause_circle_outline_rounded,
                 color: running ? success : null,
               ),
               title: running ? '运行中' : (enabled ? '未运行' : '已停用'),
@@ -1156,8 +1157,8 @@ class _ExtensionDetailScreenState extends State<ExtensionDetailScreen>
                                 ),
                           icon: Icon(
                             running
-                                ? Icons.restart_alt_rounded
-                                : Icons.play_arrow_rounded,
+                                ? OperitIcons.restart_alt_rounded
+                                : OperitIcons.play_arrow_rounded,
                             size: 18,
                           ),
                           label: Text(running ? '重启' : '启动'),
@@ -1171,7 +1172,7 @@ class _ExtensionDetailScreenState extends State<ExtensionDetailScreen>
                                 serverId: entry.id,
                               ),
                             ),
-                            icon: const Icon(Icons.stop_rounded, size: 18),
+                            icon: const Icon(OperitIcons.stop_rounded, size: 18),
                             label: const Text('停止'),
                           ),
                       ],
@@ -1187,7 +1188,7 @@ class _ExtensionDetailScreenState extends State<ExtensionDetailScreen>
           onPressed: server == null || _mcpBusy
               ? null
               : () => _editMcpConfig(server),
-          icon: const Icon(Icons.edit_outlined, size: 18),
+          icon: const Icon(OperitIcons.edit_outlined, size: 18),
           label: const Text('编辑'),
         ),
         child: configItems.every((item) => item.value.trim().isEmpty)
@@ -1203,13 +1204,13 @@ class _ExtensionDetailScreenState extends State<ExtensionDetailScreen>
                 children: <Widget>[
                   for (final tool in tools)
                     StoreListRow(
-                      leading: const StoreRowGlyph(icon: Icons.build_outlined),
+                      leading: const StoreRowGlyph(icon: OperitIcons.build_outlined),
                       title: tool.name,
                       subtitle: tool.description,
                       footer: _mcpParameterBadges(tool),
                       trailing: StoreGetButton(
                         label: '运行',
-                        icon: Icons.play_arrow_rounded,
+                        icon: OperitIcons.play_arrow_rounded,
                         onPressed: () => _runMcpTool(entry.id, tool),
                       ),
                     ),
@@ -1257,7 +1258,7 @@ class _ExtensionDetailScreenState extends State<ExtensionDetailScreen>
         IconButton(
           tooltip: '编辑简介',
           onPressed: _mcpBusy ? null : () => _editMcpMetadata(entry, details),
-          icon: const Icon(Icons.edit_note_outlined),
+          icon: const Icon(OperitIcons.edit_note_outlined),
         ),
         IconButton(
           tooltip: '让 AI 重新生成简介',
@@ -1269,7 +1270,7 @@ class _ExtensionDetailScreenState extends State<ExtensionDetailScreen>
                   dimension: 18,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
-              : const Icon(Icons.auto_fix_high_outlined),
+              : const Icon(OperitIcons.auto_fix_high_outlined),
         ),
       ],
     );
@@ -1451,8 +1452,8 @@ class _ExtensionDetailScreenState extends State<ExtensionDetailScreen>
           trigger: (context, requestConfirm) => StoreListRow(
             leading: StoreRowGlyph(
               icon: customized
-                  ? Icons.restore_rounded
-                  : Icons.delete_outline_rounded,
+                  ? OperitIcons.restore_rounded
+                  : OperitIcons.delete_outline_rounded,
               color: colorScheme.error,
             ),
             title: customized ? '卸载自定义版本' : '移除扩展',
@@ -1483,7 +1484,7 @@ class _ExtensionDetailScreenState extends State<ExtensionDetailScreen>
   Widget _overflowMenu(core_proxy.ExtensionCatalogEntry entry) {
     return PopupMenuButton<String>(
       tooltip: '更多',
-      icon: const Icon(Icons.more_horiz_rounded),
+      icon: const Icon(OperitIcons.more_horiz_rounded),
       onSelected: (value) {
         switch (value) {
           case 'copy-id':
@@ -1502,14 +1503,14 @@ class _ExtensionDetailScreenState extends State<ExtensionDetailScreen>
         PopupMenuItem<String>(
           value: 'copy-id',
           child: ListTile(
-            leading: Icon(Icons.content_copy_outlined),
+            leading: Icon(OperitIcons.content_copy_outlined),
             title: Text('复制 ID'),
           ),
         ),
         PopupMenuItem<String>(
           value: 'reload',
           child: ListTile(
-            leading: Icon(Icons.refresh_rounded),
+            leading: Icon(OperitIcons.refresh_rounded),
             title: Text('重新加载详情'),
           ),
         ),
@@ -1547,12 +1548,12 @@ class _ExtensionDetailScreenState extends State<ExtensionDetailScreen>
           StoreBadge(label: kind.label, icon: kind.icon),
           if (candidate.version.trim().isNotEmpty)
             StoreBadge(label: 'v${candidate.version}'),
-          const StoreBadge(label: '无需联网', icon: Icons.offline_bolt_outlined),
+          const StoreBadge(label: '无需联网', icon: OperitIcons.offline_bolt_outlined),
         ],
         actions: <Widget>[
           StoreGetButton(
             label: '安装',
-            icon: Icons.download_rounded,
+            icon: OperitIcons.download_rounded,
             prominent: true,
             large: true,
             busy: busy,

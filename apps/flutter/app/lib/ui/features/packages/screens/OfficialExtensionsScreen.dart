@@ -13,6 +13,7 @@ import '../components/StoreVisuals.dart';
 import '../model/ExtensionCatalogController.dart';
 import 'StoreBrowseScreen.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// All bundled extensions, available without requesting the online market.
 class OfficialExtensionsScreen extends StatefulWidget {
   const OfficialExtensionsScreen({
@@ -109,7 +110,7 @@ class _OfficialExtensionsScreenState extends State<OfficialExtensionsScreen>
                     padding: padding,
                     sliver: SliverToBoxAdapter(
                       child: StoreNoticeCard(
-                        icon: Icons.error_outline_rounded,
+                        icon: OperitIcons.error_outline_rounded,
                         tone: StoreNoticeTone.error,
                         title: '官方扩展暂时无法加载',
                         message: _controller.error,

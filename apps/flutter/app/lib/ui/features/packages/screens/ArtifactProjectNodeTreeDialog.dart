@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/proxy/generated/CoreProxyModels.g.dart' as core_proxy;
 import '../market/ArtifactMarketSupport.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class ArtifactVersionAssetDetail {
   const ArtifactVersionAssetDetail({
     required this.versionId,
@@ -46,7 +47,7 @@ class ArtifactVersionListDialog extends StatelessWidget {
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.close_rounded),
+            icon: const Icon(OperitIcons.close_rounded),
             onPressed: () => Navigator.of(context).pop(),
           ),
         ],
@@ -75,7 +76,7 @@ class ArtifactVersionListDialog extends StatelessWidget {
                       vertical: 4,
                     ),
                     leading: Icon(
-                      isLatest ? Icons.check_circle_outline_rounded : Icons.circle_outlined,
+                      isLatest ? OperitIcons.check_circle_outline_rounded : OperitIcons.circle_outlined,
                       color: isLatest
                           ? colorScheme.primary
                           : colorScheme.outline,

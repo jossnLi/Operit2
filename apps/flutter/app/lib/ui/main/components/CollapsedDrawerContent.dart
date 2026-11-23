@@ -22,6 +22,7 @@ import 'NavigationDrawerAppearance.dart';
 import 'SidebarMoreMenu.dart';
 import 'SidebarChatCreation.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class CollapsedDrawerContent extends StatelessWidget {
   /// Receives the real nullable chat source without decoding plugin configuration.
   const CollapsedDrawerContent({
@@ -139,7 +140,7 @@ class CollapsedDrawerContent extends StatelessWidget {
                           ScreenRouteRegistry.aiChat,
                         ),
                     appearance: appearance,
-                    icon: Icons.chat_bubble_outline_rounded,
+                    icon: OperitIcons.chat_bubble_outline_rounded,
                     tooltip: l10n.aiChat,
                     onClick: onConversationNavigationPressed,
                   ),
@@ -151,7 +152,7 @@ class CollapsedDrawerContent extends StatelessWidget {
                   child: _RoundDrawerButton(
                     selected: false,
                     appearance: appearance,
-                    icon: Icons.edit_note_rounded,
+                    icon: OperitIcons.edit_note_rounded,
                     tooltip: '新建对话',
                     onClick: () => unawaited(_createConversation(context)),
                   ),
@@ -200,7 +201,7 @@ class CollapsedDrawerContent extends StatelessWidget {
                   child: _RoundDrawerButton(
                     selected: selectedRouteId == _packageManagerRouteId,
                     appearance: appearance,
-                    icon: Icons.inventory_2_outlined,
+                    icon: OperitIcons.inventory_2_outlined,
                     tooltip: l10n.packageManager,
                     onClick: _openPackageManager,
                   ),
@@ -215,8 +216,8 @@ class CollapsedDrawerContent extends StatelessWidget {
                       selected: false,
                       appearance: appearance,
                       icon: darkThemeActive
-                          ? Icons.light_mode_outlined
-                          : Icons.dark_mode_outlined,
+                          ? OperitIcons.light_mode_outlined
+                          : OperitIcons.dark_mode_outlined,
                       tooltip: darkThemeActive ? '切换白天模式' : '切换黑夜模式',
                       onClick: () => theme.toggle(buttonContext),
                     ),
@@ -229,7 +230,7 @@ class CollapsedDrawerContent extends StatelessWidget {
                   child: _RoundDrawerButton(
                     selected: selectedRouteId == _settingsRouteId,
                     appearance: appearance,
-                    icon: Icons.settings_outlined,
+                    icon: OperitIcons.settings_outlined,
                     tooltip: l10n.settings,
                     onClick: _openSettings,
                   ),
@@ -336,7 +337,7 @@ class ConversationSearchField extends StatelessWidget {
           color: appearance.itemColor.withValues(alpha: 0.62),
         ),
         prefixIcon: Icon(
-          Icons.search_rounded,
+          OperitIcons.search_rounded,
           size: 20,
           color: appearance.itemColor.withValues(alpha: 0.72),
         ),
@@ -543,13 +544,13 @@ class _ConversationDrawerItemState extends State<ConversationDrawerItem>
               background: _SwipeActionBackground(
                 alignment: AlignmentDirectional.centerStart,
                 color: Theme.of(context).colorScheme.primary,
-                icon: Icons.edit_outlined,
+                icon: OperitIcons.edit_outlined,
                 label: '重命名',
               ),
               secondaryBackground: _SwipeActionBackground(
                 alignment: AlignmentDirectional.centerEnd,
                 color: Theme.of(context).colorScheme.error,
-                icon: Icons.delete_outline_rounded,
+                icon: OperitIcons.delete_outline_rounded,
                 label: '删除',
               ),
               child: surface,
@@ -918,40 +919,40 @@ class _ConversationMoreMenuButton extends StatelessWidget {
         if (onSearchMessages != null)
           SidebarMenuAction(
             value: _ConversationQuickAction.searchMessages,
-            icon: Icons.search_rounded,
+            icon: OperitIcons.search_rounded,
             label: AppLocalizations.of(context)!.messageLocatorSearchMessages,
           ),
         if (onViewFavorites != null)
           SidebarMenuAction(
             value: _ConversationQuickAction.viewFavorites,
-            icon: Icons.star_outline_rounded,
+            icon: OperitIcons.star_outline_rounded,
             label: AppLocalizations.of(context)!.messageLocatorViewFavorites,
           ),
         const SidebarMenuAction(
           value: _ConversationQuickAction.rename,
-          icon: Icons.edit_outlined,
+          icon: OperitIcons.edit_outlined,
           label: '编辑标题',
         ),
         const SidebarMenuAction(
           value: _ConversationQuickAction.bindWorkspace,
-          icon: Icons.folder_open_outlined,
+          icon: OperitIcons.folder_open_outlined,
           label: '项目绑定',
         ),
         SidebarMenuAction(
           value: _ConversationQuickAction.togglePinned,
           icon: history.pinned
-              ? Icons.push_pin_outlined
-              : Icons.push_pin_rounded,
+              ? OperitIcons.push_pin_outlined
+              : OperitIcons.push_pin_rounded,
           label: history.pinned ? '取消置顶' : '置顶',
         ),
         SidebarMenuAction(
           value: _ConversationQuickAction.toggleLocked,
-          icon: history.locked ? Icons.lock_open_rounded : Icons.lock_outline_rounded,
+          icon: history.locked ? OperitIcons.lock_open_rounded : OperitIcons.lock_outline_rounded,
           label: history.locked ? '解锁' : '锁定',
         ),
         const SidebarMenuAction(
           value: _ConversationQuickAction.delete,
-          icon: Icons.delete_outline_rounded,
+          icon: OperitIcons.delete_outline_rounded,
           label: '删除',
           dividerBefore: true,
           danger: true,
@@ -1078,7 +1079,7 @@ class _DraggingConversationItem extends StatelessWidget {
             if (history.pinned) ...<Widget>[
               const SizedBox(width: 6),
               Icon(
-                Icons.push_pin_outlined,
+                OperitIcons.push_pin_outlined,
                 size: 13,
                 color: appearance.selectedContentColor.withValues(alpha: 0.65),
               ),
@@ -1086,7 +1087,7 @@ class _DraggingConversationItem extends StatelessWidget {
             if (history.locked) ...<Widget>[
               const SizedBox(width: 6),
               Icon(
-                Icons.lock_outline_rounded,
+                OperitIcons.lock_outline_rounded,
                 size: 13,
                 color: appearance.selectedContentColor.withValues(alpha: 0.65),
               ),

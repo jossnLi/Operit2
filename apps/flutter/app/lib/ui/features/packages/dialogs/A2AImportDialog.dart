@@ -7,6 +7,7 @@ import 'package:file_selector/file_selector.dart';
 
 import '../../../../core/proxy/generated/CoreProxyClients.g.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// Adds and edits the same portable a2aAgents manifest that the marketplace installs.
 class A2AImportDialog extends StatefulWidget {
   const A2AImportDialog({
@@ -193,7 +194,7 @@ class _A2AImportDialogState extends State<A2AImportDialog> {
                 const SizedBox(height: 12),
                 OutlinedButton.icon(
                   onPressed: _busy ? null : _discover,
-                  icon: const Icon(Icons.refresh_rounded),
+                  icon: const Icon(OperitIcons.refresh_rounded),
                   label: const Text('读取 Agent Card'),
                 ),
                 if (_card != null) ...[
@@ -216,7 +217,7 @@ class _A2AImportDialogState extends State<A2AImportDialog> {
               if (widget.id == null)
                 TextButton.icon(
                   onPressed: _busy ? null : _importFile,
-                  icon: const Icon(Icons.file_open_outlined),
+                  icon: const Icon(OperitIcons.file_open_outlined),
                   label: const Text('从配置文件导入'),
                 ),
               if (_error != null)

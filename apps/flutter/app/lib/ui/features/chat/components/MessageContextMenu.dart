@@ -18,6 +18,7 @@ import '../viewmodel/ChatViewModel.dart';
 import 'MessageCopyPreview.dart';
 import '../../packages/screens/ToolPkgUiLauncherScreen.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 typedef MessageTimestampAction = Future<void> Function(int timestamp);
 typedef MessageTimestampBoolAction = Future<bool> Function(int timestamp);
 typedef MessageTimestampSelectionAction = void Function(int timestamp);
@@ -228,7 +229,7 @@ class _MessageContextMenuState extends State<MessageContextMenu> {
       if (!isHidden)
         _menuItem(
           value: _MessageMenuAction.copy,
-          icon: Icons.content_copy_outlined,
+          icon: OperitIcons.content_copy_outlined,
           label: '复制消息',
         ),
     ];
@@ -237,8 +238,8 @@ class _MessageContextMenuState extends State<MessageContextMenu> {
       _menuItem(
         value: _MessageMenuAction.favorite,
         icon: message.isFavorite
-            ? Icons.star_rounded
-            : Icons.star_outline_rounded,
+            ? OperitIcons.star_rounded
+            : OperitIcons.star_outline_rounded,
         label: message.isFavorite
             ? (l10n?.messageLocatorRemoveFavorite ?? '取消收藏')
             : (l10n?.messageLocatorAddFavorite ?? '收藏消息'),
@@ -249,12 +250,12 @@ class _MessageContextMenuState extends State<MessageContextMenu> {
         if (!isHidden)
           _menuItem(
             value: _MessageMenuAction.editAndResend,
-            icon: Icons.edit_outlined,
+            icon: OperitIcons.edit_outlined,
             label: '编辑并重发',
           ),
         _menuItem(
           value: _MessageMenuAction.rollback,
-          icon: Icons.delete_sweep_outlined,
+          icon: OperitIcons.delete_sweep_outlined,
           label: '回滚到此处',
         ),
       ]);
@@ -263,18 +264,18 @@ class _MessageContextMenuState extends State<MessageContextMenu> {
       items.addAll(<PopupMenuEntry<_MessageMenuSelection>>[
         _menuItem(
           value: _MessageMenuAction.regenerate,
-          icon: Icons.refresh_rounded,
+          icon: OperitIcons.refresh_rounded,
           label: '重新生成',
           enabled: !widget.isChatBusy && widget.onRegenerateMessage != null,
         ),
         _menuItem(
           value: _MessageMenuAction.modifyMemory,
-          icon: Icons.auto_awesome_rounded,
+          icon: OperitIcons.auto_awesome_rounded,
           label: '修改记忆',
         ),
         _menuItem(
           value: _MessageMenuAction.playVoice,
-          icon: Icons.volume_up_outlined,
+          icon: OperitIcons.volume_up_outlined,
           label: '生成/播放语音',
         ),
       ]);
@@ -282,7 +283,7 @@ class _MessageContextMenuState extends State<MessageContextMenu> {
         items.add(
           _menuItem(
             value: _MessageMenuAction.deleteVariant,
-            icon: Icons.delete_outline_rounded,
+            icon: OperitIcons.delete_outline_rounded,
             label: '删除当前变体',
           ),
         );
@@ -291,7 +292,7 @@ class _MessageContextMenuState extends State<MessageContextMenu> {
     items.addAll(<PopupMenuEntry<_MessageMenuSelection>>[
       _menuItem(
         value: _MessageMenuAction.delete,
-        icon: Icons.delete_outline_rounded,
+        icon: OperitIcons.delete_outline_rounded,
         label: '删除',
       ),
     ]);
@@ -299,7 +300,7 @@ class _MessageContextMenuState extends State<MessageContextMenu> {
       items.add(
         _menuItem(
           value: _MessageMenuAction.reply,
-          icon: Icons.reply_rounded,
+          icon: OperitIcons.reply_rounded,
           label: '回复',
         ),
       );
@@ -307,18 +308,18 @@ class _MessageContextMenuState extends State<MessageContextMenu> {
     items.addAll(<PopupMenuEntry<_MessageMenuSelection>>[
       _menuItem(
         value: _MessageMenuAction.insertSummary,
-        icon: Icons.summarize_outlined,
+        icon: OperitIcons.summarize_outlined,
         label: '插入总结',
       ),
       _menuItem(
         value: _MessageMenuAction.createBranch,
-        icon: Icons.account_tree_outlined,
+        icon: OperitIcons.account_tree_outlined,
         label: '创建分支',
       ),
-      _menuItem(value: _MessageMenuAction.info, icon: Icons.info_outline_rounded, label: '信息'),
+      _menuItem(value: _MessageMenuAction.info, icon: OperitIcons.info_outline_rounded, label: '信息'),
       _menuItem(
         value: _MessageMenuAction.multiSelect,
-        icon: Icons.check_circle_outline_rounded,
+        icon: OperitIcons.check_circle_outline_rounded,
         label: '多选',
       ),
     ]);

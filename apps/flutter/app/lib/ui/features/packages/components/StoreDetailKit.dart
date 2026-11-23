@@ -9,6 +9,7 @@ import '../market/ArtifactMarketSupport.dart';
 import 'ExtensionMotion.dart';
 import 'StoreVisuals.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 const double storeDetailMaxWidth = 880;
 
 /// Scrolling body of a detail route; the shell top bar owns title and back.
@@ -1075,7 +1076,7 @@ class _StoreCommentTileState extends State<StoreCommentTile> {
                               padding: EdgeInsets.zero,
                               iconSize: 18,
                               icon: Icon(
-                                Icons.more_horiz_rounded,
+                                OperitIcons.more_horiz_rounded,
                                 color: colors.onSurfaceVariant,
                               ),
                               onSelected: (value) {

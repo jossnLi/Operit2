@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import '../../core/bridge/PlatformCoreProxy.dart';
 import '../../core/host/FileSaveService.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 typedef DataRescueRequest =
     Future<Object?> Function(Map<String, Object?> request);
 
@@ -504,24 +505,24 @@ class _DataRescueScreenState extends State<_DataRescueScreen> {
                   children: [
                     FilledButton.icon(
                       onPressed: ready && !pending ? _export : null,
-                      icon: const Icon(Icons.download_rounded),
+                      icon: const Icon(OperitIcons.download_rounded),
                       label: const Text('导出全部数据'),
                     ),
                     OutlinedButton.icon(
                       onPressed: ready && !pending ? _inspect : null,
-                      icon: const Icon(Icons.fact_check_outlined),
+                      icon: const Icon(OperitIcons.fact_check_outlined),
                       label: const Text('从备份恢复'),
                     ),
                     if (widget.canManageFiles)
                       OutlinedButton.icon(
                         onPressed: _busy ? null : _manageFiles,
-                        icon: const Icon(Icons.folder_open_outlined),
+                        icon: const Icon(OperitIcons.folder_open_outlined),
                         label: const Text('管理应用文件'),
                       ),
                     if (files != null)
                       FilledButton.icon(
                         onPressed: ready ? _restore : null,
-                        icon: const Icon(Icons.restore_rounded),
+                        icon: const Icon(OperitIcons.restore_rounded),
                         label: Text('导入已校验的 ${files.length} 个文件'),
                       ),
                     if (pending)

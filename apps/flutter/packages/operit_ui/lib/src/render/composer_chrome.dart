@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../assets/theme_asset_resolver.dart';
 
+import '../icons/operit_icons.dart';
 class ThemeComposerHorizontalVisibility extends StatelessWidget {
   const ThemeComposerHorizontalVisibility({
     super.key,
@@ -127,7 +128,7 @@ class ThemeClassicComposerTextEditor extends StatelessWidget {
           top: 0,
           end: 4,
           child: ThemeComposerIconTarget(
-            icon: inputExpanded ? Icons.fullscreen_exit_rounded : Icons.fullscreen_rounded,
+            icon: inputExpanded ? OperitIcons.fullscreen_exit_rounded : OperitIcons.fullscreen_rounded,
             color: scheme.onSurfaceVariant,
             onTap: onToggleExpansion,
             size: 18,
@@ -334,7 +335,7 @@ class ThemeComposerModelIdentity extends StatelessWidget {
                 duration: const Duration(milliseconds: 220),
                 curve: Curves.easeOutCubic,
                 child: Icon(
-                  Icons.keyboard_arrow_down_rounded,
+                  OperitIcons.keyboard_arrow_down_rounded,
                   size: markSize,
                   color: chevronColor,
                 ),
@@ -526,7 +527,7 @@ class ThemeComposerTextEditor extends StatelessWidget {
             top: 0,
             end: 4,
             child: ThemeComposerIconTarget(
-              icon: inputExpanded ? Icons.fullscreen_exit_rounded : Icons.fullscreen_rounded,
+              icon: inputExpanded ? OperitIcons.fullscreen_exit_rounded : OperitIcons.fullscreen_rounded,
               color: scheme.onSurfaceVariant,
               onTap: onToggleExpansion,
               tooltip: inputExpanded ? collapseTooltip : expandTooltip,

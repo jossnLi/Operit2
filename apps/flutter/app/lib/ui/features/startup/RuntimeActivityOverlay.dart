@@ -11,6 +11,7 @@ import '../../../core/proxy/generated/CoreProxyClients.g.dart';
 import '../../../core/proxy/generated/CoreProxyModels.g.dart' as core;
 import '../../../l10n/generated/app_localizations.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// One global surface for package loading and the worker's visible large syncs.
 class RuntimeActivityOverlay extends StatefulWidget {
   const RuntimeActivityOverlay({
@@ -204,10 +205,10 @@ class _RuntimeActivityOverlayState extends State<RuntimeActivityOverlay> {
     final file = item.stage == core.SpaceSyncStage.files && item.fileSize > 0;
     return _Activity(
       icon: completed
-          ? Icons.check_rounded
+          ? OperitIcons.check_rounded
           : waiting
-          ? Icons.pause_rounded
-          : Icons.sync_rounded,
+          ? OperitIcons.pause_rounded
+          : OperitIcons.sync_rounded,
       title: failed
           ? l10n.failed
           : completed
@@ -277,10 +278,10 @@ class _RuntimeActivityOverlayState extends State<RuntimeActivityOverlay> {
     final pending = items.fold(0, (sum, item) => sum + item.pendingRecords);
     return _Activity(
       icon: completed
-          ? Icons.check_rounded
+          ? OperitIcons.check_rounded
           : waiting
-          ? Icons.pause_rounded
-          : Icons.sync_rounded,
+          ? OperitIcons.pause_rounded
+          : OperitIcons.sync_rounded,
       title: completed
           ? l10n.runtimeActivitySyncCompleted
           : waiting
@@ -321,7 +322,7 @@ class _RuntimeActivityOverlayState extends State<RuntimeActivityOverlay> {
     final packageActivity = packages == null
         ? null
         : _Activity(
-            icon: Icons.inventory_2_outlined,
+            icon: OperitIcons.inventory_2_outlined,
             title: l10n.runtimeActivityLoadingPackages,
             compactDetail: '${packages.pluginsStarted}/${packages.pluginsTotal}',
             detail:
@@ -390,7 +391,7 @@ class _RuntimeActivityOverlayState extends State<RuntimeActivityOverlay> {
                                               () => _expanded = false,
                                             ),
                                             icon: const Icon(
-                                              Icons.keyboard_arrow_up_rounded,
+                                              OperitIcons.keyboard_arrow_up_rounded,
                                               size: 20,
                                             ),
                                           ),
@@ -541,7 +542,7 @@ class _RuntimeActivityOverlayState extends State<RuntimeActivityOverlay> {
                                                     ),
                                                   const SizedBox(width: 4),
                                                   Icon(
-                                                    Icons
+                                                    OperitIcons
                                                         .keyboard_arrow_down_rounded,
                                                     size: 14,
                                                     color: Theme.of(context)
@@ -747,11 +748,11 @@ class _PluginLoadingRow extends StatelessWidget {
         ),
       ),
       'success' => Icon(
-        Icons.check_circle_outline_rounded,
+        OperitIcons.check_circle_outline_rounded,
         size: 22,
         color: colorScheme.primary,
       ),
-      'failed' => Icon(Icons.error_outline_rounded, size: 22, color: colorScheme.error),
+      'failed' => Icon(OperitIcons.error_outline_rounded, size: 22, color: colorScheme.error),
       _ => Container(
         width: 10,
         height: 10,

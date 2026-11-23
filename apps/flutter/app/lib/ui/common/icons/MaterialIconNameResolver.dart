@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 
 import 'material_icons.g.dart';
+import 'operit_icons.dart';
 
 class MaterialIconNameResolver {
   /// Prevents instances of this stateless name resolver.
@@ -32,7 +33,7 @@ class MaterialIconNameResolver {
         )
         .toLowerCase()
         .replaceAll(RegExp(r'_(?=[0-9])|_+$'), '');
-    return materialIconsByName[key];
+    return materialIconNamesToLucide[key] ?? materialIconsByName[key];
   }
 
   /// Preserves the explicit default requested by existing navigation callers.

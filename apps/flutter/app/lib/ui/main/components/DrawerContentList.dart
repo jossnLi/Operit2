@@ -199,7 +199,7 @@ extension _LazyWorkspaceContent on _DrawerContentState {
             ),
             child: _HistoryLimitButton(
               key: ValueKey('history-limit:${group.key}'),
-              icon: expanded ? Icons.expand_less_rounded : Icons.expand_more_rounded,
+              icon: expanded ? OperitIcons.expand_less_rounded : OperitIcons.expand_more_rounded,
               label: expanded
                   ? '收起'
                   : '展开更多 ${tree.roots.length - preview.length}',
@@ -251,7 +251,7 @@ extension _LazyWorkspaceContent on _DrawerContentState {
         'recent:limit',
         () => _HistoryLimitButton(
           key: const ValueKey('recent-history-limit'),
-          icon: expanded ? Icons.expand_less_rounded : Icons.expand_more_rounded,
+          icon: expanded ? OperitIcons.expand_less_rounded : OperitIcons.expand_more_rounded,
           label: expanded
               ? '收起'
               : '展开更多 ${histories.length - _DrawerContentState._previewLimit}',

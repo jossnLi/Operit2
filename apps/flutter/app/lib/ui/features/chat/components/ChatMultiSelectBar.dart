@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class ChatMultiSelectBar extends StatelessWidget {
   const ChatMultiSelectBar({
     super.key,
@@ -44,7 +45,7 @@ class ChatMultiSelectBar extends StatelessWidget {
                 children: <Widget>[
                   IconButton(
                     onPressed: onClose,
-                    icon: const Icon(Icons.close_rounded),
+                    icon: const Icon(OperitIcons.close_rounded),
                     tooltip: '退出多选',
                     visualDensity: VisualDensity.compact,
                   ),
@@ -58,25 +59,25 @@ class ChatMultiSelectBar extends StatelessWidget {
                   ),
                   IconButton(
                     onPressed: onToggleSelectAll,
-                    icon: Icon(allSelected ? Icons.deselect_rounded : Icons.select_all_rounded),
+                    icon: Icon(allSelected ? OperitIcons.deselect_rounded : OperitIcons.select_all_rounded),
                     tooltip: allSelected ? '清空选择' : '全选',
                     visualDensity: VisualDensity.compact,
                   ),
                   IconButton(
                     onPressed: onCopy,
-                    icon: const Icon(Icons.content_copy_outlined),
+                    icon: const Icon(OperitIcons.content_copy_outlined),
                     tooltip: '复制所选',
                     visualDensity: VisualDensity.compact,
                   ),
                   IconButton.filledTonal(
                     onPressed: onShareImage,
-                    icon: const Icon(Icons.ios_share_rounded),
+                    icon: const Icon(OperitIcons.ios_share_rounded),
                     tooltip: '生成长图',
                     visualDensity: VisualDensity.compact,
                   ),
                   IconButton.filledTonal(
                     onPressed: onDelete,
-                    icon: const Icon(Icons.delete_outline_rounded),
+                    icon: const Icon(OperitIcons.delete_outline_rounded),
                     tooltip: '删除所选',
                     color: colorScheme.onErrorContainer,
                     style: IconButton.styleFrom(

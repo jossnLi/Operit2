@@ -10,6 +10,7 @@ import '../interactions/MessagePressShield.dart';
 import 'MarkdownImageRenderer.dart';
 import 'MarkdownLink.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 const Set<String> _markdownAudioExtensions = <String>{
   'mp3',
   'wav',
@@ -207,8 +208,8 @@ class _MarkdownAudioRendererState extends State<MarkdownAudioRenderer> {
                           : _togglePlayback,
                       icon: Icon(
                         _failed
-                            ? Icons.music_off_outlined
-                            : (_isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded),
+                            ? OperitIcons.music_off_outlined
+                            : (_isPlaying ? OperitIcons.pause_rounded : OperitIcons.play_arrow_rounded),
                       ),
                       tooltip: _failed
                           ? 'Open'

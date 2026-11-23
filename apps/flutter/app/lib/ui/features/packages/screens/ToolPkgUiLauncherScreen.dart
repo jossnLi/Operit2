@@ -41,6 +41,7 @@ import 'compose_dsl/action_scheduler.dart';
 import 'compose_dsl/execution_owner.dart';
 import '../../../common/components/SwipeActions.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 part 'compose_dsl/compose_host.dart';
 part 'compose_dsl/dialog_host.dart';
 part 'compose_dsl/dropdown_menu.dart';

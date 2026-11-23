@@ -10,6 +10,7 @@ import 'ExtensionAvatar.dart';
 import 'ExtensionNavigation.dart';
 import 'StoreVisuals.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// "获取" pill bound to the shared marketplace installation state.
 class StoreMarketGetButton extends StatelessWidget {
   const StoreMarketGetButton({
@@ -64,11 +65,11 @@ class _MarketStats extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Icon(Icons.download_rounded, size: 14, color: foreground),
+        Icon(OperitIcons.download_rounded, size: 14, color: foreground),
         const SizedBox(width: 3),
         Text(storeCompactCount(marketEntryDownloads(entry)), style: style),
         const SizedBox(width: 10),
-        Icon(Icons.favorite_rounded, size: 13, color: foreground),
+        Icon(OperitIcons.favorite_rounded, size: 13, color: foreground),
         const SizedBox(width: 3),
         Text(storeCompactCount(marketEntryLikes(entry)), style: style),
       ],

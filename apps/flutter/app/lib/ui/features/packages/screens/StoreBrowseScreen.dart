@@ -16,6 +16,7 @@ import '../market/ArtifactMarketSupport.dart';
 import '../market/MarketFilters.dart';
 import '../components/MarketSortMenu.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 export '../components/MarketSortMenu.dart' show MarketSortMenu;
 
 export '../market/MarketFilters.dart'
@@ -314,7 +315,7 @@ class _StoreMarketListingState extends State<StoreMarketListing> {
                   padding: padding,
                   sliver: SliverToBoxAdapter(
                     child: StoreNoticeCard(
-                      icon: Icons.cloud_off_rounded,
+                      icon: OperitIcons.cloud_off_rounded,
                       tone: StoreNoticeTone.error,
                       title: '市场暂时无法连接',
                       message: _error,

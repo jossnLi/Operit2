@@ -17,6 +17,7 @@ import '../features/settings/runtime/PeerListenerSettings.dart';
 import '../theme/OperitFormStyles.dart';
 import 'components/OperitDialog.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 enum _DeviceSpaceAction { requests, settings }
 
 /// One primary action; technical controls and history live in secondary dialogs.
@@ -132,7 +133,7 @@ class _DeviceSpaceDiscoveryPanelState extends State<DeviceSpaceDiscoveryPanel> {
       children: [
         FilledButton.icon(
           onPressed: widget.enabled ? _addDevice : null,
-          icon: const Icon(Icons.add_rounded, size: 20),
+          icon: const Icon(OperitIcons.add_rounded, size: 20),
           label: Text(l10n.deviceSpaceAddDevice),
         ),
         const SizedBox(width: 4),
@@ -143,14 +144,14 @@ class _DeviceSpaceDiscoveryPanelState extends State<DeviceSpaceDiscoveryPanel> {
           icon: Badge(
             isLabelVisible: _pending > 0,
             label: Text('$_pending'),
-            child: const Icon(Icons.more_horiz_rounded),
+            child: const Icon(OperitIcons.more_horiz_rounded),
           ),
           itemBuilder: (_) => [
             PopupMenuItem(
               value: _DeviceSpaceAction.requests,
               child: Row(
                 children: [
-                  const Icon(Icons.pending_actions_outlined, size: 20),
+                  const Icon(OperitIcons.pending_actions_outlined, size: 20),
                   const SizedBox(width: 12),
                   Expanded(child: Text(l10n.spaceJoinRequests)),
                   if (_pending > 0)
@@ -165,7 +166,7 @@ class _DeviceSpaceDiscoveryPanelState extends State<DeviceSpaceDiscoveryPanel> {
               value: _DeviceSpaceAction.settings,
               child: Row(
                 children: [
-                  const Icon(Icons.tune_rounded, size: 20),
+                  const Icon(OperitIcons.tune_rounded, size: 20),
                   const SizedBox(width: 12),
                   Text(l10n.deviceSpaceConnectionSettings),
                 ],
@@ -432,12 +433,12 @@ class _AddDeviceDialogState extends State<_AddDeviceDialog> {
                 children: [
                   action(
                     PeerQrMode.scan,
-                    Icons.qr_code_scanner_rounded,
+                    OperitIcons.qr_code_scanner_rounded,
                     l10n.peerQrScan,
                   ),
                   action(
                     PeerQrMode.show,
-                    Icons.qr_code_rounded,
+                    OperitIcons.qr_code_rounded,
                     l10n.peerQrShow,
                   ),
                 ],
@@ -497,7 +498,7 @@ class _AddDeviceDialogState extends State<_AddDeviceDialog> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(
-                  Icons.devices_rounded,
+                  OperitIcons.devices_rounded,
                   color: colors.onPrimaryContainer,
                   size: 24,
                 ),
@@ -529,7 +530,7 @@ class _AddDeviceDialogState extends State<_AddDeviceDialog> {
               ),
               const SizedBox(width: 8),
               Icon(
-                Icons.chevron_right_rounded,
+                OperitIcons.chevron_right_rounded,
                 size: 20,
                 color: colors.onSurfaceVariant,
               ),
@@ -559,7 +560,7 @@ class _AddDeviceDialogState extends State<_AddDeviceDialog> {
                 shape: BoxShape.circle,
               ),
               child: Icon(
-                Icons.devices_rounded,
+                OperitIcons.devices_rounded,
                 size: 30,
                 color: colors.onSurfaceVariant,
               ),
@@ -593,7 +594,7 @@ class _AddDeviceDialogState extends State<_AddDeviceDialog> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(Icons.error_outline_rounded, color: colors.onErrorContainer),
+              Icon(OperitIcons.error_outline_rounded, color: colors.onErrorContainer),
               const SizedBox(width: 10),
               Expanded(
                 child: PairingErrorText(
@@ -626,7 +627,7 @@ class _AddDeviceDialogState extends State<_AddDeviceDialog> {
         IconButton(
           tooltip: l10n.refresh,
           onPressed: _busy || _scanning ? null : _scan,
-          icon: const Icon(Icons.refresh_rounded),
+          icon: const Icon(OperitIcons.refresh_rounded),
         ),
       ],
       actions: [
@@ -636,7 +637,7 @@ class _AddDeviceDialogState extends State<_AddDeviceDialog> {
         ),
         OutlinedButton.icon(
           onPressed: _busy ? null : () => _pair(),
-          icon: const Icon(Icons.link_rounded, size: 18),
+          icon: const Icon(OperitIcons.link_rounded, size: 18),
           label: Text(l10n.devicePickerManual),
         ),
       ],

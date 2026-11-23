@@ -17,6 +17,7 @@ import '../../../../../../common/contributions/ToolPkgChatUiCatalog.dart';
 import '../../../../viewmodel/ChatViewModel.dart';
 import '../../../../../settings/model/ProviderLogo.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class AgentModelSelectorPopup extends StatefulWidget {
   const AgentModelSelectorPopup({
     super.key,
@@ -379,7 +380,7 @@ class _AgentModelMenuSectionState extends State<AgentModelMenuSection> {
         final data = snapshot.data;
         if (data == null) {
           return _SettingsHeaderRow(
-            icon: Icons.data_object_outlined,
+            icon: OperitIcons.data_object_outlined,
             title: '模型',
             value: '加载中...',
             expanded: _modelSectionExpanded,
@@ -413,7 +414,7 @@ class _AgentModelMenuSectionState extends State<AgentModelMenuSection> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             _SettingsHeaderRow(
-              icon: Icons.data_object_outlined,
+              icon: OperitIcons.data_object_outlined,
               title: '模型',
               value: data.currentBinding.modelId,
               expanded: _modelSectionExpanded,
@@ -441,7 +442,7 @@ class _AgentModelMenuSectionState extends State<AgentModelMenuSection> {
                       children: <Widget>[
                         _ModelSelectorItem(
                           popupContainerColor: embeddedPanelColor,
-                          headerIcon: Icons.tune_outlined,
+                          headerIcon: OperitIcons.tune_outlined,
                           headerTitle: '选择模型',
                           providers: data.providers,
                           summaries: data.summaries,
@@ -686,7 +687,7 @@ class _AgentThinkingSliderRowState extends State<AgentThinkingSliderRow>
         child: Row(
           children: <Widget>[
             Icon(
-              Icons.psychology_outlined,
+              OperitIcons.psychology_outlined,
               size: 16,
               color: on
                   ? colorScheme.primary
@@ -1031,7 +1032,7 @@ class _ThinkingNoteRow extends StatelessWidget {
         height: 40,
         child: Row(
           children: <Widget>[
-            Icon(Icons.psychology_outlined, size: 16, color: colorScheme.primary),
+            Icon(OperitIcons.psychology_outlined, size: 16, color: colorScheme.primary),
             const SizedBox(width: 4),
             Text('${l10n.thinkingLevelLabel}:', style: textTheme.bodySmall),
             const SizedBox(width: 6),
@@ -1084,7 +1085,7 @@ Future<core_proxy.ModelThinkingSettings?> _setChatThinkingLevel(
 class _ModelSelectorItem extends StatelessWidget {
   const _ModelSelectorItem({
     required this.popupContainerColor,
-    this.headerIcon = Icons.data_object_outlined,
+    this.headerIcon = OperitIcons.data_object_outlined,
     this.headerTitle = '模型:',
     required this.providers,
     required this.summaries,
@@ -1327,8 +1328,8 @@ class AgentModelProviderRow extends StatelessWidget {
                     const SizedBox(width: 2),
                     Icon(
                       expanded
-                          ? Icons.keyboard_arrow_up_rounded
-                          : Icons.keyboard_arrow_down_rounded,
+                          ? OperitIcons.keyboard_arrow_up_rounded
+                          : OperitIcons.keyboard_arrow_down_rounded,
                       size: 14,
                       color: colorScheme.onSurfaceVariant,
                     ),
@@ -1347,7 +1348,7 @@ class AgentModelProviderRow extends StatelessWidget {
                     ),
                     if (selected) ...<Widget>[
                       const SizedBox(width: 4),
-                      Icon(Icons.check_rounded, size: 12, color: colorScheme.primary),
+                      Icon(OperitIcons.check_rounded, size: 12, color: colorScheme.primary),
                     ],
                   ],
                 ],
@@ -1479,7 +1480,7 @@ class _ModelFamilyRow extends StatelessWidget {
               ),
               const SizedBox(width: 2),
               Icon(
-                open ? Icons.keyboard_arrow_up_rounded : Icons.keyboard_arrow_down_rounded,
+                open ? OperitIcons.keyboard_arrow_up_rounded : OperitIcons.keyboard_arrow_down_rounded,
                 size: 12,
                 color: colorScheme.onSurfaceVariant,
               ),
@@ -1675,7 +1676,7 @@ class _ModelNameRow extends StatelessWidget {
             ..._modelMetaChips(context, summary),
             if (selected) ...<Widget>[
               const SizedBox(width: 4),
-              Icon(Icons.check_rounded, size: 11, color: colorScheme.primary),
+              Icon(OperitIcons.check_rounded, size: 11, color: colorScheme.primary),
             ],
           ],
         ),
@@ -1819,8 +1820,8 @@ class _SettingsHeaderRow extends StatelessWidget {
               if (showChevron)
                 Icon(
                   expanded
-                      ? Icons.keyboard_arrow_up_rounded
-                      : Icons.keyboard_arrow_down_rounded,
+                      ? OperitIcons.keyboard_arrow_up_rounded
+                      : OperitIcons.keyboard_arrow_down_rounded,
                   size: 20,
                   color: colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
                 ),
@@ -1851,7 +1852,7 @@ class _ManageIconButton extends StatelessWidget {
         tooltip: '管理配置',
         visualDensity: VisualDensity.compact,
         icon: Icon(
-          Icons.settings_outlined,
+          OperitIcons.settings_outlined,
           color: Theme.of(context).colorScheme.onSurfaceVariant,
         ),
       ),
@@ -1875,7 +1876,7 @@ class _InfoIconButton extends StatelessWidget {
         padding: EdgeInsets.zero,
         iconSize: 16,
         icon: Icon(
-          Icons.info_outline_rounded,
+          OperitIcons.info_outline_rounded,
           color: Theme.of(
             context,
           ).colorScheme.onSurfaceVariant.withValues(alpha: 0.7),

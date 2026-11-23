@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import '../../../../../../../l10n/generated/app_localizations.dart';
 import 'WorkspaceBrowserPopupWidgets.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class WorkspaceBrowserSiteDataSheet extends StatefulWidget {
   const WorkspaceBrowserSiteDataSheet({
     super.key,
@@ -80,13 +81,13 @@ class _WorkspaceBrowserSiteDataSheetState
               onClear: _clearSessionStorage,
             ),
             WorkspaceBrowserPopupRow(
-              icon: Icons.cookie_outlined,
+              icon: OperitIcons.cookie_outlined,
               title: 'Cookie',
               subtitle: l10n.clearAllWebViewCookies,
               trailing: IconButton(
                 tooltip: l10n.clearCookies,
                 onPressed: _clearCookies,
-                icon: const Icon(Icons.delete_outline_rounded, size: 18),
+                icon: const Icon(OperitIcons.delete_outline_rounded, size: 18),
                 visualDensity: VisualDensity.compact,
                 style: const ButtonStyle(
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -108,7 +109,7 @@ class _WorkspaceBrowserSiteDataSheetState
     return IconButton(
       tooltip: l10n.refresh,
       onPressed: _refresh,
-      icon: const Icon(Icons.refresh_rounded, size: 18),
+      icon: const Icon(OperitIcons.refresh_rounded, size: 18),
       visualDensity: VisualDensity.compact,
       style: const ButtonStyle(tapTargetSize: MaterialTapTargetSize.shrinkWrap),
       constraints: const BoxConstraints.tightFor(width: 32, height: 32),
@@ -196,7 +197,7 @@ class _StorageSection extends StatelessWidget {
           trailing: IconButton(
             tooltip: l10n.clear,
             onPressed: onClear,
-            icon: const Icon(Icons.delete_outline_rounded, size: 18),
+            icon: const Icon(OperitIcons.delete_outline_rounded, size: 18),
             visualDensity: VisualDensity.compact,
             constraints: const BoxConstraints.tightFor(width: 32, height: 32),
             padding: EdgeInsets.zero,
@@ -204,14 +205,14 @@ class _StorageSection extends StatelessWidget {
         ),
         if (entries.isEmpty)
           WorkspaceBrowserPopupRow(
-            icon: Icons.storage_outlined,
+            icon: OperitIcons.storage_outlined,
             title: l10n.noData,
             iconColor: theme.colorScheme.onSurfaceVariant,
           )
         else
           for (final entry in entries.entries.take(30))
             WorkspaceBrowserPopupRow(
-              icon: Icons.data_object_outlined,
+              icon: OperitIcons.data_object_outlined,
               title: entry.key,
               subtitle: entry.value,
             ),

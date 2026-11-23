@@ -9,6 +9,7 @@ import '../../../../core/proxy/generated/CoreProxyModels.g.dart' as core_proxy;
 import '../../../theme/OperitFormStyles.dart';
 import '../utils/MCPCommandRunner.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// Edits the display metadata the MCP list shows for one server.
 class MCPMetadataEditDialog extends StatefulWidget {
   const MCPMetadataEditDialog({
@@ -60,7 +61,7 @@ class _MCPMetadataEditDialogState extends State<MCPMetadataEditDialog> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return AlertDialog(
-      icon: const Icon(Icons.edit_note_outlined),
+      icon: const Icon(OperitIcons.edit_note_outlined),
       title: Text('编辑 ${widget.serverId}'),
       content: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 520),
@@ -139,7 +140,7 @@ class _MCPMetadataEditDialogState extends State<MCPMetadataEditDialog> {
                   height: 16,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
-              : const Icon(Icons.save_outlined),
+              : const Icon(OperitIcons.save_outlined),
           label: Text(_saving ? '保存中' : '保存'),
         ),
       ],
@@ -254,7 +255,7 @@ class _MCPConfigEditDialogState extends State<MCPConfigEditDialog> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return AlertDialog(
-      icon: const Icon(Icons.tune_outlined),
+      icon: const Icon(OperitIcons.tune_outlined),
       title: Text('编辑 ${widget.serverId}'),
       content: SizedBox(
         width: 560,
@@ -272,12 +273,12 @@ class _MCPConfigEditDialogState extends State<MCPConfigEditDialog> {
                       ButtonSegment<bool>(
                         value: false,
                         label: Text('本地'),
-                        icon: Icon(Icons.terminal_outlined),
+                        icon: Icon(OperitIcons.terminal_outlined),
                       ),
                       ButtonSegment<bool>(
                         value: true,
                         label: Text('远程'),
-                        icon: Icon(Icons.public_outlined),
+                        icon: Icon(OperitIcons.public_outlined),
                       ),
                     ],
                     selected: <bool>{_remote},
@@ -414,7 +415,7 @@ class _MCPConfigEditDialogState extends State<MCPConfigEditDialog> {
                   height: 16,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
-              : const Icon(Icons.save_outlined),
+              : const Icon(OperitIcons.save_outlined),
           label: Text(_saving ? '保存中' : '保存'),
         ),
       ],

@@ -11,6 +11,7 @@ import '../../../../l10n/generated/app_localizations.dart';
 import '../../../common/TerminalLabels.dart';
 import '../../../common/components/M3LoadingIndicator.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// Edits device-owned profiles using fields registered by the active Core host.
 class TerminalProfilesSettings extends StatefulWidget {
   /// Creates a terminal settings section backed by the selected Core connection.
@@ -338,7 +339,7 @@ class _TerminalProfilesSettingsState extends State<TerminalProfilesSettings> {
                             IconButton(
                               tooltip: l10n.edit,
                               onPressed: _saving ? null : () => _edit(profile),
-                              icon: const Icon(Icons.edit_outlined),
+                              icon: const Icon(OperitIcons.edit_outlined),
                             ),
                             IconButton(
                               tooltip: l10n.delete,
@@ -347,7 +348,7 @@ class _TerminalProfilesSettingsState extends State<TerminalProfilesSettings> {
                                       settings.defaultProfileId == profile.id
                                   ? null
                                   : () => _delete(profile),
-                              icon: const Icon(Icons.delete_outline_rounded),
+                              icon: const Icon(OperitIcons.delete_outline_rounded),
                             ),
                           ],
                         ),
@@ -369,7 +370,7 @@ class _TerminalProfilesSettingsState extends State<TerminalProfilesSettings> {
               const SizedBox(height: 8),
               OutlinedButton.icon(
                 onPressed: _saving || _support.isEmpty ? null : _edit,
-                icon: const Icon(Icons.add_rounded),
+                icon: const Icon(OperitIcons.add_rounded),
                 label: Text(l10n.terminalProfileAdd),
               ),
               if (_distributions.isNotEmpty) ...[
@@ -394,7 +395,7 @@ class _TerminalProfilesSettingsState extends State<TerminalProfilesSettings> {
                     trailing: IconButton(
                       tooltip: l10n.terminalDistributionDownload,
                       onPressed: _saving ? null : () => _download(distribution),
-                      icon: const Icon(Icons.download_outlined),
+                      icon: const Icon(OperitIcons.download_outlined),
                     ),
                   ),
               ],
@@ -426,7 +427,7 @@ class _TerminalProfilesSettingsState extends State<TerminalProfilesSettings> {
                       : IconButton(
                           tooltip: l10n.cancel,
                           onPressed: () => _cancelInstall(job),
-                          icon: const Icon(Icons.close_rounded),
+                          icon: const Icon(OperitIcons.close_rounded),
                         ),
                 ),
             ],

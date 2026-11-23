@@ -11,6 +11,7 @@ import '../viewmodel/ChatViewModel.dart';
 import 'ChatScrollRailGeometry.dart';
 import 'ChatMessageLocatorContent.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 export 'ChatMessageLocatorContent.dart';
 
 typedef LoadMessageLocatorEntries =
@@ -189,7 +190,7 @@ class _ChatScrollNavigatorState extends State<ChatScrollNavigator> {
                     context,
                   )!.messageLocatorLoadFailed,
                   onPressed: _loadLocatorEntries,
-                  icon: const Icon(Icons.refresh_rounded),
+                  icon: const Icon(OperitIcons.refresh_rounded),
                 ),
               ),
             if (geometry != null)
@@ -850,7 +851,7 @@ class _CodexHoverTooltipCard extends StatelessWidget {
             Row(
               children: <Widget>[
                 Icon(
-                  isUser ? Icons.person_rounded : Icons.auto_awesome_rounded,
+                  isUser ? OperitIcons.person_rounded : OperitIcons.auto_awesome_rounded,
                   size: 11,
                   color: isUser
                       ? theme.colorScheme.primary
@@ -873,7 +874,7 @@ class _CodexHoverTooltipCard extends StatelessWidget {
                 ),
                 if (entry.isFavorite) ...[
                   const SizedBox(width: 4),
-                  const Icon(Icons.star_outline_rounded, size: 11, color: Colors.amber),
+                  const Icon(OperitIcons.star_outline_rounded, size: 11, color: Colors.amber),
                 ],
               ],
             ),
@@ -929,7 +930,7 @@ class _ScrollToBottomCircleButton extends StatelessWidget {
               ],
             ),
             child: Icon(
-              Icons.keyboard_arrow_down_rounded,
+              OperitIcons.keyboard_arrow_down_rounded,
               size: 16,
               color: theme.colorScheme.primary,
             ),

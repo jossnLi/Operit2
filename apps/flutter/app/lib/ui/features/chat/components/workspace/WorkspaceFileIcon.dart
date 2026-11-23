@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 const String _kSvgLangPython = '''
 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M11.91 2c-5.06 0-4.73 2.19-4.73 2.19l.01 2.27h4.81v.68H5.21S2 6.77 2 11.88s2.8 5 2.8 5h1.67v-2.33s-.09-2.8 2.76-2.8h4.74s2.66.04 2.66-2.6V4.6s.4-2.6-4.72-2.6zm-2.58 1.48a.86.86 0 1 1 0 1.72.86.86 0 0 1 0-1.72z" fill="#3776AB"/>
@@ -177,7 +178,7 @@ Widget buildWorkspaceFileIcon(String name, {double size = 14}) {
   // get recognizable colored symbols alongside the shared language SVGs.
   final (IconData, Color)? assetIcon;
   if (lowerName == '.env' || lowerName.startsWith('.env.')) {
-    assetIcon = (Icons.tune_rounded, const Color(0xFFE5C07B));
+    assetIcon = (OperitIcons.tune_rounded, const Color(0xFFE5C07B));
   } else {
     assetIcon = switch (ext) {
       'png' ||
@@ -190,49 +191,49 @@ Widget buildWorkspaceFileIcon(String name, {double size = 14}) {
       'bmp' ||
       'heic' ||
       'heif' ||
-      'avif' => (Icons.image_outlined, const Color(0xFFA78BCA)),
+      'avif' => (OperitIcons.image_outlined, const Color(0xFFA78BCA)),
       'mp3' ||
       'wav' ||
       'ogg' ||
       'flac' ||
       'aac' ||
-      'm4a' => (Icons.audio_file_outlined, const Color(0xFFE1A1C4)),
+      'm4a' => (OperitIcons.audio_file_outlined, const Color(0xFFE1A1C4)),
       'mp4' ||
       'webm' ||
       'mov' ||
       'mkv' ||
-      'avi' => (Icons.video_file_outlined, const Color(0xFFE1A1C4)),
-      'pdf' => (Icons.picture_as_pdf_outlined, const Color(0xFFE06C75)),
+      'avi' => (OperitIcons.video_file_outlined, const Color(0xFFE1A1C4)),
+      'pdf' => (OperitIcons.picture_as_pdf_outlined, const Color(0xFFE06C75)),
       'doc' ||
       'docx' ||
       'odt' ||
-      'rtf' => (Icons.description_outlined, const Color(0xFF619AE5)),
+      'rtf' => (OperitIcons.description_outlined, const Color(0xFF619AE5)),
       'xls' ||
       'xlsx' ||
       'csv' ||
       'tsv' ||
-      'ods' => (Icons.table_chart_outlined, const Color(0xFF73B991)),
+      'ods' => (OperitIcons.table_chart_outlined, const Color(0xFF73B991)),
       'ppt' ||
       'pptx' ||
-      'odp' => (Icons.slideshow_outlined, const Color(0xFFE79A65)),
+      'odp' => (OperitIcons.slideshow_outlined, const Color(0xFFE79A65)),
       'zip' ||
       'tar' ||
       'gz' ||
       'bz2' ||
       'xz' ||
       '7z' ||
-      'rar' => (Icons.folder_zip_outlined, const Color(0xFFE5C07B)),
+      'rar' => (OperitIcons.folder_zip_outlined, const Color(0xFFE5C07B)),
       'ttf' ||
       'otf' ||
       'woff' ||
-      'woff2' => (Icons.font_download_outlined, const Color(0xFFA78BCA)),
-      'vue' => (Icons.code_rounded, const Color(0xFF73B991)),
-      'xml' || 'xhtml' => (Icons.code_rounded, const Color(0xFFE79A65)),
+      'woff2' => (OperitIcons.font_download_outlined, const Color(0xFFA78BCA)),
+      'vue' => (OperitIcons.code_rounded, const Color(0xFF73B991)),
+      'xml' || 'xhtml' => (OperitIcons.code_rounded, const Color(0xFFE79A65)),
       'ini' ||
       'conf' ||
       'config' ||
-      'properties' => (Icons.settings_outlined, const Color(0xFF8B949E)),
-      'txt' || 'log' => (Icons.notes_outlined, const Color(0xFF8B949E)),
+      'properties' => (OperitIcons.settings_outlined, const Color(0xFF8B949E)),
+      'txt' || 'log' => (OperitIcons.notes_outlined, const Color(0xFF8B949E)),
       _ => null,
     };
   }

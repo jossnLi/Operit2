@@ -7,6 +7,7 @@ import '../../../../core/proxy/generated/CoreProxyModels.g.dart';
 import '../market/ArtifactMarketSupport.dart';
 import '../market/MarketFilters.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// One entry point for sorting, publication period and category selection.
 class MarketSortMenu extends StatelessWidget {
   const MarketSortMenu({
@@ -49,7 +50,7 @@ class MarketSortMenu extends StatelessWidget {
         ? IconButton(
             tooltip: label,
             onPressed: open,
-            icon: const Icon(Icons.sort_rounded, size: 20),
+            icon: const Icon(OperitIcons.sort_rounded, size: 20),
           )
         : Tooltip(
             message: label,
@@ -63,7 +64,7 @@ class MarketSortMenu extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(Icons.sort_rounded, size: 20),
+                    const Icon(OperitIcons.sort_rounded, size: 20),
                     const SizedBox(width: 6),
                     Text(marketSortLabel(filters.sort)),
                   ],
@@ -170,7 +171,7 @@ class _MarketFilterPanelState extends State<MarketFilterPanel> {
               padding: const EdgeInsets.fromLTRB(24, 0, 12, 16),
               child: Row(
                 children: [
-                  Icon(Icons.tune_rounded, color: colors.primary, size: 22),
+                  Icon(OperitIcons.tune_rounded, color: colors.primary, size: 22),
                   const SizedBox(width: 10),
                   Expanded(
                     child: Text(
@@ -183,7 +184,7 @@ class _MarketFilterPanelState extends State<MarketFilterPanel> {
                   IconButton(
                     tooltip: '关闭',
                     onPressed: () => Navigator.pop(context),
-                    icon: const Icon(Icons.close_rounded),
+                    icon: const Icon(OperitIcons.close_rounded),
                   ),
                 ],
               ),
@@ -224,7 +225,7 @@ class _MarketFilterPanelState extends State<MarketFilterPanel> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Icon(
-                              Icons.info_outline_rounded,
+                              OperitIcons.info_outline_rounded,
                               size: 16,
                               color: colors.onSurfaceVariant,
                             ),
@@ -271,7 +272,7 @@ class _MarketFilterPanelState extends State<MarketFilterPanel> {
                       if (_categoryError)
                         TextButton.icon(
                           onPressed: _loadCategories,
-                          icon: const Icon(Icons.refresh_rounded, size: 18),
+                          icon: const Icon(OperitIcons.refresh_rounded, size: 18),
                           label: const Text('分类加载失败，重试'),
                         )
                       else if (categories == null)

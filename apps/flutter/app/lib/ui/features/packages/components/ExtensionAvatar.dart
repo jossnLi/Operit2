@@ -12,6 +12,7 @@ import '../../../../core/proxy/generated/CoreProxyModels.g.dart' as core_proxy;
 import 'ExtensionMotion.dart';
 import 'StoreVisuals.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// Corner dot that flags an extension needing attention.
 enum ExtensionAvatarBadge { none, update, error }
 
@@ -524,7 +525,7 @@ class CatalogEntryAvatar extends StatelessWidget {
           }
           return _avatar(
             Icon(
-              Icons.broken_image_outlined,
+              OperitIcons.broken_image_outlined,
               color: Theme.of(context).colorScheme.onSurfaceVariant,
             ),
           );

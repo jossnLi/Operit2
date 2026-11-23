@@ -11,6 +11,7 @@ import '../../../../common/markdown/StreamMarkdownRenderer.dart';
 import '../../viewmodel/ChatViewModel.dart';
 import 'MessageHeaderMetadata.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// Renders a completed, saved summary with manual inline expansion.
 class SummaryMessageComposable extends StatefulWidget {
   const SummaryMessageComposable({
@@ -342,7 +343,7 @@ class _SummaryMessageComposableState extends State<SummaryMessageComposable>
                                           Transform.rotate(
                                             angle: math.pi * expandValue,
                                             child: Icon(
-                                              Icons.keyboard_arrow_down_rounded,
+                                              OperitIcons.keyboard_arrow_down_rounded,
                                               size: 14,
                                               color:
                                                   colorScheme.onSurfaceVariant,
@@ -444,8 +445,8 @@ class _SummaryMessageComposableState extends State<SummaryMessageComposable>
               MessagePressShieldRegion(
                 child: _SummaryActionButton(
                   icon: _copied
-                      ? Icons.check_rounded
-                      : Icons.content_copy_rounded,
+                      ? OperitIcons.check_rounded
+                      : OperitIcons.content_copy_rounded,
                   iconColor: _copied
                       ? colorScheme.primary
                       : colorScheme.onSurfaceVariant,
@@ -461,7 +462,7 @@ class _SummaryMessageComposableState extends State<SummaryMessageComposable>
                 const SizedBox(width: 4),
                 MessagePressShieldRegion(
                   child: _SummaryActionButton(
-                    icon: Icons.edit_outlined,
+                    icon: OperitIcons.edit_outlined,
                     tooltip: l10n.edit,
                     onPressed: () => widget.onEdit!(widget.message),
                   ),
@@ -471,7 +472,7 @@ class _SummaryMessageComposableState extends State<SummaryMessageComposable>
                 const SizedBox(width: 4),
                 MessagePressShieldRegion(
                   child: _SummaryActionButton(
-                    icon: Icons.delete_outline_rounded,
+                    icon: OperitIcons.delete_outline_rounded,
                     iconColor: colorScheme.error.withValues(alpha: 0.85),
                     tooltip: l10n.delete,
                     onPressed: () => _showDeleteConfirmation(context, l10n),
@@ -481,7 +482,7 @@ class _SummaryMessageComposableState extends State<SummaryMessageComposable>
               const SizedBox(width: 4),
               MessagePressShieldRegion(
                 child: _SummaryActionButton(
-                  icon: Icons.keyboard_arrow_up_rounded,
+                  icon: OperitIcons.keyboard_arrow_up_rounded,
                   tooltip: MaterialLocalizations.of(context).closeButtonLabel,
                   onPressed: _handleUserCollapse,
                 ),

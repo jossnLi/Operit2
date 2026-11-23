@@ -29,6 +29,7 @@ import '../../../common/contributions/EmbeddedPluginSurfaceCatalog.dart';
 import 'ChatMessageSlotHost.dart';
 import 'TransformedChatMessage.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 const Duration _navigatorHideDelay = Duration(milliseconds: 1200);
 const Duration _viewportResizeSettleDelay = Duration(milliseconds: 120);
 const Duration _bottomFollowDuration = Duration(milliseconds: 240);
@@ -1534,7 +1535,7 @@ class _MessageVariantSwitcher extends StatelessWidget {
                     );
                   }
                 : null,
-            icon: const Icon(Icons.arrow_back_rounded, size: 18),
+            icon: const Icon(OperitIcons.arrow_back_rounded, size: 18),
           ),
           Text(
             '${message.selectedVariantIndex + 1} / ${message.variantCount}',
@@ -1553,7 +1554,7 @@ class _MessageVariantSwitcher extends StatelessWidget {
                     );
                   }
                 : null,
-            icon: const Icon(Icons.arrow_forward_rounded, size: 18),
+            icon: const Icon(OperitIcons.arrow_forward_rounded, size: 18),
           ),
         ],
       ),
@@ -1648,7 +1649,7 @@ class _SelectableMessageFrame extends StatelessWidget {
           left: 6,
           top: 6,
           child: Icon(
-            selected ? Icons.check_circle_outline_rounded : Icons.radio_button_unchecked_rounded,
+            selected ? OperitIcons.check_circle_outline_rounded : OperitIcons.radio_button_unchecked_rounded,
             size: 18,
             color: selected
                 ? colorScheme.primary

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import '../../../../../l10n/generated/app_localizations.dart';
 import '../../../../theme/OperitGlassSurface.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class WorkspacePathBar extends StatelessWidget {
   const WorkspacePathBar.readOnly({
     super.key,
@@ -73,7 +74,7 @@ class WorkspacePathBar extends StatelessWidget {
             onPressed: editing
                 ? () => onSubmitted?.call(controller?.text ?? path)
                 : onEditToggle,
-            icon: editing ? Icons.check_rounded : Icons.edit_outlined,
+            icon: editing ? OperitIcons.check_rounded : OperitIcons.edit_outlined,
           ),
         ],
       ),
@@ -154,7 +155,7 @@ class _WorkspacePathStrip extends StatelessWidget {
                 tooltip: l10n.refresh,
                 compact: compactActions,
                 onPressed: onRefresh,
-                icon: Icons.refresh_rounded,
+                icon: OperitIcons.refresh_rounded,
               ),
             Expanded(
               child: scrollable

@@ -9,6 +9,7 @@ import '../../../../../../l10n/generated/app_localizations.dart';
 import '../../../../../theme/OperitGlassSurface.dart';
 import 'WorkspaceHtmlPreviewServer.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class WorkspaceHtmlPreviewWidget extends StatefulWidget {
   const WorkspaceHtmlPreviewWidget({
     super.key,
@@ -224,17 +225,17 @@ class _WorkspaceHtmlPreviewToolbar extends StatelessWidget {
             const SizedBox(width: 6),
             _WorkspaceHtmlPreviewToolbarButton(
               tooltip: l10n.back,
-              icon: Icons.arrow_back_rounded,
+              icon: OperitIcons.arrow_back_rounded,
               onPressed: canGoBack ? onBack : null,
             ),
             _WorkspaceHtmlPreviewToolbarButton(
               tooltip: l10n.forward,
-              icon: Icons.arrow_forward_rounded,
+              icon: OperitIcons.arrow_forward_rounded,
               onPressed: canGoForward ? onForward : null,
             ),
             _WorkspaceHtmlPreviewToolbarButton(
               tooltip: l10n.refresh,
-              icon: Icons.refresh_rounded,
+              icon: OperitIcons.refresh_rounded,
               onPressed: onRefresh,
             ),
             const Spacer(),

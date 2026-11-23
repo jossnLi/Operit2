@@ -15,6 +15,7 @@ import 'WorkspaceTextDocument.dart';
 import 'package:operit2/ui/common/code_editor/CodeEditorInput.dart';
 import 'package:operit2/ui/common/code_editor/CodeEditor.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// Edits workspace text through the shared file API without browser chrome.
 class WorkspaceTextPreview extends StatefulWidget {
   /// Creates an editor for a text or Markdown workspace tab.
@@ -241,12 +242,12 @@ class _WorkspaceTextPreviewState extends State<WorkspaceTextPreview> {
             _buildToolbarButton(
               tooltip: l10n.workspaceUndo,
               onPressed: !_showMarkdown && history.canUndo ? _undo : null,
-              icon: Icons.undo_rounded,
+              icon: OperitIcons.undo_rounded,
             ),
             _buildToolbarButton(
               tooltip: l10n.workspaceRedo,
               onPressed: !_showMarkdown && history.canRedo ? _redo : null,
-              icon: Icons.redo_rounded,
+              icon: OperitIcons.redo_rounded,
             ),
             const Spacer(),
             if (isMarkdown)
@@ -254,8 +255,8 @@ class _WorkspaceTextPreviewState extends State<WorkspaceTextPreview> {
                 tooltip: _showMarkdown ? l10n.edit : l10n.markdownPreview,
                 onPressed: _toggleMarkdown,
                 icon: _showMarkdown
-                    ? Icons.edit_outlined
-                    : Icons.visibility_outlined,
+                    ? OperitIcons.edit_outlined
+                    : OperitIcons.visibility_outlined,
               ),
             if (_document.isSaving)
               const SizedBox.square(
@@ -271,7 +272,7 @@ class _WorkspaceTextPreviewState extends State<WorkspaceTextPreview> {
               _buildToolbarButton(
                 tooltip: l10n.save,
                 onPressed: _document.isDirty ? _save : null,
-                icon: _document.isDirty ? Icons.save_outlined : Icons.save_outlined,
+                icon: _document.isDirty ? OperitIcons.save_outlined : OperitIcons.save_outlined,
               ),
           ],
         ),

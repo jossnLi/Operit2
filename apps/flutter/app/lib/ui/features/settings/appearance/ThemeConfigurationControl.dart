@@ -15,6 +15,7 @@ import '../../../../l10n/generated/app_localizations.dart';
 import '../../../common/components/OperitDialog.dart';
 import '../../../theme/ThemeTemplateService.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class ThemeConfigurationControl extends StatefulWidget {
   /// Creates the visual theme library using the synchronized appearance owner.
   const ThemeConfigurationControl({
@@ -110,7 +111,7 @@ class _ThemeConfigurationControlState extends State<ThemeConfigurationControl> {
                         final createButton = FilledButton.icon(
                           key: const ValueKey('theme-config-create'),
                           onPressed: _busy ? null : _create,
-                          icon: const Icon(Icons.add_rounded, size: 18),
+                          icon: const Icon(OperitIcons.add_rounded, size: 18),
                           label: Text(l10n.settingsAppearanceThemeNew),
                         );
                         if (activeSnapshot == null) {
@@ -533,7 +534,7 @@ class _ThemeCard extends StatelessWidget {
                             children: [
                               if (active) ...[
                                 Icon(
-                                  Icons.check_circle_outline_rounded,
+                                  OperitIcons.check_circle_outline_rounded,
                                   size: 14,
                                   color: scheme.primary,
                                 ),
@@ -579,13 +580,13 @@ class _ThemeCard extends StatelessWidget {
                         key: ValueKey('theme-preview:${config.id}'),
                         tooltip: l10n.settingsAppearanceLivePreviewTitle,
                         onPressed: busy ? null : onPreview,
-                        icon: const Icon(Icons.open_in_full_rounded, size: 18),
+                        icon: const Icon(OperitIcons.open_in_full_rounded, size: 18),
                       ),
                       const SizedBox(width: 8),
                       OutlinedButton.icon(
                         key: ValueKey('theme-edit:${config.id}'),
                         onPressed: busy ? null : onEdit,
-                        icon: const Icon(Icons.edit_outlined, size: 16),
+                        icon: const Icon(OperitIcons.edit_outlined, size: 16),
                         label: Text(l10n.edit),
                       ),
                       const SizedBox(width: 4),
@@ -594,7 +595,7 @@ class _ThemeCard extends StatelessWidget {
                       key: ValueKey('theme-menu:${config.id}'),
                       enabled: !busy,
                       tooltip: l10n.settingsAppearanceThemeMore,
-                      icon: const Icon(Icons.more_horiz_rounded, size: 20),
+                      icon: const Icon(OperitIcons.more_horiz_rounded, size: 20),
                       itemBuilder: (_) => [
                         PopupMenuItem(
                           value: 'preview',
@@ -657,17 +658,17 @@ class _ThemeModeQuickControls extends StatelessWidget {
     final segments = [
       ButtonSegment(
         value: ThemeMode.system,
-        icon: const Icon(Icons.brightness_auto_outlined, size: 18),
+        icon: const Icon(OperitIcons.brightness_auto_outlined, size: 18),
         label: Text(l10n.settingsAppearanceThemeSystem),
       ),
       ButtonSegment(
         value: ThemeMode.light,
-        icon: const Icon(Icons.light_mode_outlined, size: 18),
+        icon: const Icon(OperitIcons.light_mode_outlined, size: 18),
         label: Text(l10n.settingsAppearanceThemeLight),
       ),
       ButtonSegment(
         value: ThemeMode.dark,
-        icon: const Icon(Icons.dark_mode_outlined, size: 18),
+        icon: const Icon(OperitIcons.dark_mode_outlined, size: 18),
         label: Text(l10n.settingsAppearanceThemeDark),
       ),
     ];

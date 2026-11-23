@@ -23,7 +23,7 @@ extension _ComposeNavigationNodes on _ComposeProgramExecutorState {
       elevation: _number(props['tonalElevation']),
       destinations: destinations.isEmpty
           ? const <Widget>[
-              NavigationDestination(icon: Icon(Icons.widgets_outlined), label: ''),
+              NavigationDestination(icon: Icon(OperitIcons.widgets_outlined), label: ''),
             ]
           : destinations,
       onDestinationSelected: (index) {
@@ -71,7 +71,7 @@ extension _ComposeNavigationNodes on _ComposeProgramExecutorState {
         destinations: items.isEmpty
             ? const <NavigationRailDestination>[
                 NavigationRailDestination(
-                  icon: Icon(Icons.widgets_outlined),
+                  icon: Icon(OperitIcons.widgets_outlined),
                   label: Text(''),
                 ),
               ]
@@ -131,7 +131,7 @@ extension _ComposeNavigationNodes on _ComposeProgramExecutorState {
     final icon =
         (selected ? _slotFrom(item, 'selectedIcon') : null) ??
         _slotFrom(item, 'icon') ??
-        const Icon(Icons.circle_outlined);
+        const Icon(OperitIcons.circle_outlined);
     if (!includeBadge || !_hasSlotFrom(item, 'badge')) {
       return icon;
     }

@@ -13,6 +13,7 @@ import '../../../theme/OperitGlassSurface.dart';
 import 'UsageTimeline.dart';
 import 'UsagePricing.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 const double _dashboardMaxWidth = 1440;
 const double _dashboardCompactPadding = 16;
 const double _dashboardWidePadding = 24;
@@ -199,12 +200,12 @@ class _UsageStatisticsDetailScreenState
                 IconButton(
                   tooltip: l10n.refresh,
                   onPressed: _resetting ? null : _reload,
-                  icon: const Icon(Icons.refresh_rounded),
+                  icon: const Icon(OperitIcons.refresh_rounded),
                 ),
                 IconButton(
                   tooltip: l10n.settingsDataResetTokenStats,
                   onPressed: _resetting ? null : _resetStatistics,
-                  icon: const Icon(Icons.restart_alt_rounded),
+                  icon: const Icon(OperitIcons.restart_alt_rounded),
                 ),
               ],
             ),
@@ -285,7 +286,7 @@ class _UsageStatisticsDetailScreenState
                               SizedBox(
                                 width: metricWidth,
                                 child: _MetricCard(
-                                  icon: Icons.bolt_outlined,
+                                  icon: OperitIcons.bolt_outlined,
                                   label: l10n
                                       .settingsDataDetailedStatsTotalRequests,
                                   value: _formatFullInt(viewData.totalRequests),
@@ -295,7 +296,7 @@ class _UsageStatisticsDetailScreenState
                               SizedBox(
                                 width: metricWidth,
                                 child: _MetricCard(
-                                  icon: Icons.south_west_outlined,
+                                  icon: OperitIcons.south_west_outlined,
                                   label: l10n.settingsDataInputTokens,
                                   value: _formatFullInt(
                                     viewData.totalInputTokens,
@@ -308,7 +309,7 @@ class _UsageStatisticsDetailScreenState
                               SizedBox(
                                 width: metricWidth,
                                 child: _MetricCard(
-                                  icon: Icons.north_east_outlined,
+                                  icon: OperitIcons.north_east_outlined,
                                   label: l10n.settingsDataOutputTokens,
                                   value: _formatFullInt(
                                     viewData.totalOutputTokens,
@@ -321,7 +322,7 @@ class _UsageStatisticsDetailScreenState
                               SizedBox(
                                 width: metricWidth,
                                 child: _MetricCard(
-                                  icon: Icons.layers_outlined,
+                                  icon: OperitIcons.layers_outlined,
                                   label:
                                       l10n.settingsDataDetailedStatsCachedInput,
                                   value: _formatFullInt(
@@ -333,7 +334,7 @@ class _UsageStatisticsDetailScreenState
                               SizedBox(
                                 width: metricWidth,
                                 child: _MetricCard(
-                                  icon: Icons.track_changes_outlined,
+                                  icon: OperitIcons.track_changes_outlined,
                                   label: l10n.settingsDataTimelineCacheRate,
                                   value: viewData.totalInputTokens == 0
                                       ? '—'
@@ -346,7 +347,7 @@ class _UsageStatisticsDetailScreenState
                               SizedBox(
                                 width: metricWidth,
                                 child: _MetricCard(
-                                  icon: Icons.payments_outlined,
+                                  icon: OperitIcons.payments_outlined,
                                   label: viewData.hasUnpricedRecords
                                       ? l10n.settingsDataTimelineKnownSpend
                                       : l10n.settingsDataTimelineSpend,
@@ -570,7 +571,7 @@ class _UsageStatisticsEmptyState extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Icon(
-                    Icons.query_stats_outlined,
+                    OperitIcons.query_stats_outlined,
                     size: 42,
                     color: colorScheme.primary,
                   ),
@@ -642,12 +643,12 @@ class _UsageStatisticsHeaderBar extends StatelessWidget {
               runSpacing: 6,
               children: <Widget>[
                 _UsageStatisticsMetaPill(
-                  icon: Icons.date_range_outlined,
+                  icon: OperitIcons.date_range_outlined,
                   label: dateLabel,
                   onTap: onDateRangePressed,
                 ),
                 _UsageStatisticsMetaPill(
-                  icon: Icons.storage_outlined,
+                  icon: OperitIcons.storage_outlined,
                   label: sourceLabel,
                 ),
               ],
@@ -761,7 +762,7 @@ class _DateRangePickerDialogState extends State<_DateRangePickerDialog> {
                 ),
                 title: Text(_usageDateRangeLabel(l10n, range)),
                 trailing: _range == range
-                    ? Icon(Icons.check_circle_outline_rounded, color: colorScheme.primary)
+                    ? Icon(OperitIcons.check_circle_outline_rounded, color: colorScheme.primary)
                     : null,
                 onTap: () => _selectRange(range),
               ),
@@ -778,7 +779,7 @@ class _DateRangePickerDialogState extends State<_DateRangePickerDialog> {
                           SizedBox(
                             width: double.infinity,
                             child: OutlinedButton.icon(
-                              icon: const Icon(Icons.today_outlined),
+                              icon: const Icon(OperitIcons.today_outlined),
                               label: Text(
                                 '${materialL10n.dateRangeStartLabel}: ${_formatDate(_customRange.start)}',
                               ),
@@ -790,7 +791,7 @@ class _DateRangePickerDialogState extends State<_DateRangePickerDialog> {
                           SizedBox(
                             width: double.infinity,
                             child: OutlinedButton.icon(
-                              icon: const Icon(Icons.event_available_outlined),
+                              icon: const Icon(OperitIcons.event_available_outlined),
                               label: Text(
                                 '${materialL10n.dateRangeEndLabel}: ${_formatDate(_customRange.end)}',
                               ),

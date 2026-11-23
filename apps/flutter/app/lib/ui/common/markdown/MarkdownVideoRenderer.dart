@@ -13,6 +13,7 @@ import 'MarkdownAudioRenderer.dart';
 import 'MarkdownImageRenderer.dart';
 import 'MarkdownLink.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 const Set<String> _markdownVideoExtensions = <String>{
   'mp4',
   'webm',
@@ -281,8 +282,8 @@ class _MarkdownVideoRendererState extends State<MarkdownVideoRenderer> {
                                     onPressed: _togglePlayback,
                                     icon: Icon(
                                       controller.value.isPlaying
-                                          ? Icons.pause_rounded
-                                          : Icons.play_arrow_rounded,
+                                          ? OperitIcons.pause_rounded
+                                          : OperitIcons.play_arrow_rounded,
                                     ),
                                     tooltip: controller.value.isPlaying
                                         ? 'Pause'
@@ -334,7 +335,7 @@ class _MarkdownMediaFailure extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
           child: Row(
             children: <Widget>[
-              Icon(Icons.broken_image_outlined, size: 18, color: color),
+              Icon(OperitIcons.broken_image_outlined, size: 18, color: color),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(

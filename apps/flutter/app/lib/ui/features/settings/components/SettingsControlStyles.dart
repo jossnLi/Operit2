@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 abstract final class SettingsControlStyles {
   static const Size activePillSize = Size(78, 28);
   static const Size sectionIconButtonSize = Size(32, 32);
@@ -227,7 +228,7 @@ class SettingsSectionAddButton extends StatelessWidget {
     required this.tooltip,
     required this.onPressed,
     this.label = '添加',
-    this.icon = Icons.add_rounded,
+    this.icon = OperitIcons.add_rounded,
   });
 
   final String tooltip;
@@ -520,7 +521,7 @@ class SettingsToggleChip extends StatelessWidget {
             children: <Widget>[
               if (selected)
                 Icon(
-                  Icons.check_rounded,
+                  OperitIcons.check_rounded,
                   size: 14,
                   color: isDark ? colorScheme.primary : colorScheme.onPrimaryContainer,
                 )

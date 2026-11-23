@@ -6,6 +6,7 @@ import '../../../../../../l10n/generated/app_localizations.dart';
 import '../WorkspaceTabModels.dart';
 import 'WorkspaceExternalOpenAction.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class WorkspaceOpenOnlyPreview extends StatelessWidget {
   const WorkspaceOpenOnlyPreview({
     super.key,
@@ -91,7 +92,7 @@ class WorkspaceOpenOnlyPreviewBody extends StatelessWidget {
                           dimension: 18,
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
-                      : const Icon(Icons.open_in_new_rounded),
+                      : const Icon(OperitIcons.open_in_new_rounded),
                   label: Text(
                     opening ? l10n.workspaceFileOpening : l10n.openFile,
                   ),

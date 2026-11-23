@@ -8,6 +8,7 @@ import '../../../../viewmodel/ChatViewModel.dart';
 import '../../../../viewmodel/WorkspaceFileModels.dart';
 import 'MentionPackageOptions.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// Renders package and workspace suggestions for @ and / input mentions.
 class MentionSuggestionPanel extends StatefulWidget {
   /// Creates a mention suggestion panel for the active input token.
@@ -358,7 +359,7 @@ class _MentionSuggestionPackageRow extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Icon(
-                Icons.auto_awesome_rounded,
+                OperitIcons.auto_awesome_rounded,
                 size: 14,
                 color: _mentionPackageColor(option.kind, colors),
               ),
@@ -429,7 +430,7 @@ class _MentionSuggestionFileRow extends StatelessWidget {
           child: Row(
             children: <Widget>[
               Icon(
-                entry.isDirectory ? Icons.folder_outlined : Icons.description_outlined,
+                entry.isDirectory ? OperitIcons.folder_outlined : OperitIcons.description_outlined,
                 size: 14,
                 color: entry.isDirectory ? colors.secondary : colors.primary,
               ),

@@ -13,6 +13,7 @@ import 'browser/WorkspaceBrowserViewStore.dart';
 import 'terminal/WorkspaceTerminalSessions.dart';
 import 'WorkspaceOverviewModels.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class WorkspaceHomeContent extends StatefulWidget {
   /// Creates the workspace home content surface.
   const WorkspaceHomeContent({
@@ -202,7 +203,7 @@ class _WorkspaceUnboundContent extends StatelessWidget {
                     vertical: 8,
                   ),
                 ),
-                icon: const Icon(Icons.add_rounded, size: 18),
+                icon: const Icon(OperitIcons.add_rounded, size: 18),
                 label: const Text('创建工作区'),
               ),
               TextButton.icon(
@@ -215,7 +216,7 @@ class _WorkspaceUnboundContent extends StatelessWidget {
                     vertical: 8,
                   ),
                 ),
-                icon: const Icon(Icons.folder_open_outlined, size: 18),
+                icon: const Icon(OperitIcons.folder_open_outlined, size: 18),
                 label: const Text('选择工作区'),
               ),
             ],
@@ -343,7 +344,7 @@ class _TerminalWorkstationCard extends StatelessWidget {
             Row(
               children: <Widget>[
                 Icon(
-                  Icons.terminal_rounded,
+                  OperitIcons.terminal_rounded,
                   size: 16,
                   color: colorScheme.onSurfaceVariant,
                 ),
@@ -364,14 +365,14 @@ class _TerminalWorkstationCard extends StatelessWidget {
                   tooltip: '新建终端',
                   visualDensity: VisualDensity.compact,
                   color: colorScheme.onSurfaceVariant,
-                  icon: const Icon(Icons.add_rounded, size: 18),
+                  icon: const Icon(OperitIcons.add_rounded, size: 18),
                 ),
                 IconButton(
                   onPressed: onChooseTerminal,
                   tooltip: '选择终端配置',
                   visualDensity: VisualDensity.compact,
                   color: colorScheme.onSurfaceVariant,
-                  icon: const Icon(Icons.arrow_drop_down_rounded, size: 18),
+                  icon: const Icon(OperitIcons.arrow_drop_down_rounded, size: 18),
                 ),
               ],
             ),
@@ -477,7 +478,7 @@ class _TerminalWorkstationCard extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(4),
                                   child: const Padding(
                                     padding: EdgeInsets.all(2),
-                                    child: Icon(Icons.close_rounded, size: 13),
+                                    child: Icon(OperitIcons.close_rounded, size: 13),
                                   ),
                                 ),
                             ],
@@ -549,7 +550,7 @@ class _BrowserWorkstationCard extends StatelessWidget {
             Row(
               children: <Widget>[
                 Icon(
-                  Icons.public_rounded,
+                  OperitIcons.public_rounded,
                   size: 16,
                   color: colorScheme.onSurfaceVariant,
                 ),
@@ -570,7 +571,7 @@ class _BrowserWorkstationCard extends StatelessWidget {
                   tooltip: '新建浏览器页面',
                   visualDensity: VisualDensity.compact,
                   color: colorScheme.onSurfaceVariant,
-                  icon: const Icon(Icons.add_rounded, size: 18),
+                  icon: const Icon(OperitIcons.add_rounded, size: 18),
                 ),
               ],
             ),
@@ -675,7 +676,7 @@ class _BrowserWorkstationCard extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(4),
                                   child: const Padding(
                                     padding: EdgeInsets.all(2),
-                                    child: Icon(Icons.close_rounded, size: 13),
+                                    child: Icon(OperitIcons.close_rounded, size: 13),
                                   ),
                                 ),
                             ],
@@ -741,7 +742,7 @@ class _WorkspaceFoldersCard extends StatelessWidget {
             Row(
               children: <Widget>[
                 Icon(
-                  Icons.folder_outlined,
+                  OperitIcons.folder_outlined,
                   size: 16,
                   color: colorScheme.onSurfaceVariant,
                 ),
@@ -759,7 +760,7 @@ class _WorkspaceFoldersCard extends StatelessWidget {
                   tooltip: '挂载文件夹',
                   visualDensity: VisualDensity.compact,
                   color: colorScheme.onSurfaceVariant,
-                  icon: const Icon(Icons.add_rounded, size: 18),
+                  icon: const Icon(OperitIcons.add_rounded, size: 18),
                 ),
               ],
             ),
@@ -862,7 +863,7 @@ class _WorkspaceFolderTile extends StatelessWidget {
           child: Row(
             children: <Widget>[
               Icon(
-                Icons.folder_outlined,
+                OperitIcons.folder_outlined,
                 size: 14,
                 color: colorScheme.onSurfaceVariant,
               ),
@@ -903,7 +904,7 @@ class _WorkspaceFolderTile extends StatelessWidget {
               ),
               const SizedBox(width: 4),
               Icon(
-                Icons.arrow_forward_ios_rounded,
+                OperitIcons.arrow_forward_ios_rounded,
                 size: 11,
                 color: colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
               ),
@@ -951,7 +952,7 @@ class _WorkspaceMenuAnchorState extends State<_WorkspaceMenuAnchor> {
         ),
       ),
       builder: (context, controller, _) => _WorkspaceToolCapsule(
-        icon: Icons.work_outline_rounded,
+        icon: OperitIcons.work_outline_rounded,
         accentColor: colorScheme.onSurfaceVariant,
         label: widget.title,
         isExpanded: _isOpen,
@@ -966,7 +967,7 @@ class _WorkspaceMenuAnchorState extends State<_WorkspaceMenuAnchor> {
       menuChildren: <Widget>[
         MenuItemButton(
           onPressed: widget.onUnbindWorkspace,
-          leadingIcon: const Icon(Icons.link_off_rounded, size: 18),
+          leadingIcon: const Icon(OperitIcons.link_off_rounded, size: 18),
           style: MenuItemButton.styleFrom(
             foregroundColor: colorScheme.error,
             minimumSize: const Size(180, 44),
@@ -1027,8 +1028,8 @@ class _WorkspaceToolCapsule extends StatelessWidget {
           const SizedBox(width: 3),
           Icon(
             isExpanded
-                ? Icons.keyboard_arrow_up_rounded
-                : Icons.keyboard_arrow_down_rounded,
+                ? OperitIcons.keyboard_arrow_up_rounded
+                : OperitIcons.keyboard_arrow_down_rounded,
             size: 14,
             color: colorScheme.onSurfaceVariant,
           ),
@@ -1081,14 +1082,14 @@ class _WorkspaceContributionStateNotice extends StatelessWidget {
         return const SizedBox.shrink();
       case WorkspaceContributionsLoading():
         status = _WorkspaceInlineState(
-          icon: Icons.sync_rounded,
+          icon: OperitIcons.sync_rounded,
           text: '正在读取工作区贡献项',
           progress: true,
           color: colors.onSurfaceVariant,
         );
       case WorkspaceContributionsFailed(:final error):
         status = _WorkspaceInlineState(
-          icon: Icons.error_outline_rounded,
+          icon: OperitIcons.error_outline_rounded,
           text: '工作区贡献项加载失败：$error',
           color: colors.error,
         );

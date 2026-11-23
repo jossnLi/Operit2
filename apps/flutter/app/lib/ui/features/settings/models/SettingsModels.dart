@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../l10n/generated/app_localizations.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// Defines host-owned settings; plugin editors register their own navigation.
 enum SettingsCategory {
   profile,
@@ -43,73 +44,73 @@ class SettingsCategorySpec {
         title: l10n.settingsUserProfileTitle,
         subtitle: l10n.settingsUserProfileSubtitle,
         description: l10n.settingsUserProfileDescription,
-        icon: Icons.account_circle_outlined,
+        icon: OperitIcons.account_circle_outlined,
       ),
       SettingsCategory.model => SettingsCategorySpec(
         title: l10n.settingsCategoryModelTitle,
         subtitle: l10n.settingsCategoryModelSubtitle,
         description: l10n.settingsCategoryModelDescription,
-        icon: Icons.smart_toy_outlined,
+        icon: OperitIcons.smart_toy_outlined,
       ),
       SettingsCategory.localModels => SettingsCategorySpec(
         title: l10n.settingsCategoryLocalModelsTitle,
         subtitle: l10n.settingsCategoryLocalModelsSubtitle,
         description: l10n.settingsCategoryLocalModelsDescription,
-        icon: Icons.memory_outlined,
+        icon: OperitIcons.memory_outlined,
       ),
       SettingsCategory.usage => SettingsCategorySpec(
         title: l10n.settingsUsageReportTitle,
         subtitle: l10n.settingsUsageReportSubtitle,
         description: l10n.settingsDataDetailedStatsDescription,
-        icon: Icons.query_stats_outlined,
+        icon: OperitIcons.query_stats_outlined,
       ),
       SettingsCategory.tts => const SettingsCategorySpec(
         title: '语音与识别',
         subtitle: 'TTS 与 STT 供应商',
         description: '管理语音合成与语音识别供应商，并分别选择当前配置。',
-        icon: Icons.record_voice_over_outlined,
+        icon: OperitIcons.record_voice_over_outlined,
       ),
       SettingsCategory.tools => SettingsCategorySpec(
         title: l10n.settingsCategoryToolsTitle,
         subtitle: l10n.settingsCategoryToolsSubtitle,
         description: l10n.settingsCategoryToolsDescription,
-        icon: Icons.admin_panel_settings_outlined,
+        icon: OperitIcons.admin_panel_settings_outlined,
       ),
       SettingsCategory.workspace => SettingsCategorySpec(
         title: l10n.settingsCategoryWorkspaceTitle,
         subtitle: l10n.settingsCategoryWorkspaceSubtitle,
         description: l10n.settingsCategoryWorkspaceDescription,
-        icon: Icons.folder_outlined,
+        icon: OperitIcons.folder_outlined,
       ),
       SettingsCategory.globalBehavior => SettingsCategorySpec(
         title: l10n.settingsCategoryGlobalBehaviorTitle,
         subtitle: l10n.settingsCategoryGlobalBehaviorSubtitle,
         description: l10n.settingsCategoryGlobalBehaviorDescription,
-        icon: Icons.tune_outlined,
+        icon: OperitIcons.tune_outlined,
       ),
       SettingsCategory.appearance => SettingsCategorySpec(
         title: l10n.settingsCategoryAppearanceTitle,
         subtitle: l10n.settingsCategoryAppearanceSubtitle,
         description: l10n.settingsCategoryAppearanceDescription,
-        icon: Icons.palette_outlined,
+        icon: OperitIcons.palette_outlined,
       ),
       SettingsCategory.data => SettingsCategorySpec(
         title: l10n.settingsCategoryDataTitle,
         subtitle: l10n.settingsCategoryDataSubtitle,
         description: l10n.settingsCategoryDataDescription,
-        icon: Icons.backup_outlined,
+        icon: OperitIcons.backup_outlined,
       ),
       SettingsCategory.accessLinks => SettingsCategorySpec(
         title: l10n.settingsCategoryAccessLinksTitle,
         subtitle: l10n.settingsCategoryAccessLinksSubtitle,
         description: l10n.settingsCategoryAccessLinksDescription,
-        icon: Icons.devices_outlined,
+        icon: OperitIcons.devices_outlined,
       ),
       SettingsCategory.about => const SettingsCategorySpec(
         title: '关于 Operit2',
         subtitle: '版本、项目与许可',
         description: '查看 Operit2 的版本信息、项目链接和开源许可证。',
-        icon: Icons.info_outline_rounded,
+        icon: OperitIcons.info_outline_rounded,
       ),
     };
   }

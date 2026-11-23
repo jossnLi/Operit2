@@ -187,7 +187,7 @@ class _LocalModelFileImportDialogState
       canPop: !locked,
       child: OperitDialogScaffold(
         title: l10n.localModelsImportFromDevice,
-        icon: const Icon(Icons.file_upload_outlined),
+        icon: const Icon(OperitIcons.file_upload_outlined),
         expandContent: false,
         maxWidth: 460,
         actions: [
@@ -254,7 +254,7 @@ class _LocalModelFileImportDialogState
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Icon(
-                    Icons.info_outline_rounded,
+                    OperitIcons.info_outline_rounded,
                     size: 16,
                     color: colors.onSurfaceVariant,
                   ),
@@ -318,8 +318,8 @@ class _LocalModelFileImportDialogState
                 ),
                 child: Icon(
                   hasFiles
-                      ? Icons.description_outlined
-                      : Icons.folder_open_outlined,
+                      ? OperitIcons.description_outlined
+                      : OperitIcons.folder_open_outlined,
                   size: 19,
                   color: colors.onPrimaryContainer,
                 ),
@@ -358,8 +358,8 @@ class _LocalModelFileImportDialogState
                       : l10n.selectFile,
                   child: Icon(
                     hasFiles
-                        ? Icons.drive_folder_upload_outlined
-                        : Icons.chevron_right_rounded,
+                        ? OperitIcons.drive_folder_upload_outlined
+                        : OperitIcons.chevron_right_rounded,
                     size: 20,
                     color: colors.onSurfaceVariant,
                   ),

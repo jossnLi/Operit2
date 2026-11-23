@@ -12,6 +12,7 @@ import '../../../../common/interactions/ChainedScrollController.dart';
 import '../../../../common/interactions/MessagePressShield.dart';
 import '../../../../common/markdown/MarkdownNodeGrouper.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 const Duration _groupFadeDuration = Duration(milliseconds: 800);
 const Duration _contentFadeDuration = Duration(milliseconds: 200);
 const Duration _arrowRotationDuration = Duration(milliseconds: 300);
@@ -446,7 +447,7 @@ class _ThinkToolsXmlGroupState extends State<_ThinkToolsXmlGroup> {
                               ? _instantDuration
                               : _arrowRotationDuration,
                           child: Icon(
-                            Icons.chevron_right_rounded,
+                            OperitIcons.chevron_right_rounded,
                             size: 20,
                             color: widget.textColor.withValues(alpha: 0.7),
                           ),

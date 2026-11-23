@@ -14,6 +14,7 @@ import '../../../../../../common/contributions/ContributionPresentationResult.da
 import '../../../../../../common/icons/MaterialIconNameResolver.dart';
 import '../../../../../../main/navigation/ToolPkgCatalogChangeBus.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// Delivers a generic attachment completion to the chat that requested it.
 typedef ChatAttachmentCompletion =
     Future<void> Function(Object? value, String? expectedChatId);
@@ -236,37 +237,37 @@ class _ChatAttachmentMenuPopupState extends State<ChatAttachmentMenuPopup> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             _nativeItem(
-              Icons.image_outlined,
+              OperitIcons.image_outlined,
               l10n.attachmentPhoto,
               widget.onAttachImage,
             ),
             _nativeItem(
-              Icons.photo_camera_outlined,
+              OperitIcons.photo_camera_outlined,
               l10n.attachmentCamera,
               widget.onTakePhoto,
             ),
             _nativeItem(
-              Icons.description_outlined,
+              OperitIcons.description_outlined,
               l10n.attachmentFile,
               widget.onAttachFile,
             ),
             _nativeItem(
-              Icons.desktop_windows_outlined,
+              OperitIcons.desktop_windows_outlined,
               l10n.attachmentScreenContent,
               widget.onAttachScreenContent,
             ),
             _nativeItem(
-              Icons.notifications_none_rounded,
+              OperitIcons.notifications_none_rounded,
               l10n.attachmentNotifications,
               widget.onAttachNotifications,
             ),
             _nativeItem(
-              Icons.location_on_outlined,
+              OperitIcons.location_on_outlined,
               l10n.attachmentLocation,
               widget.onAttachLocation,
             ),
             _nativeItem(
-              Icons.auto_awesome_rounded,
+              OperitIcons.auto_awesome_rounded,
               l10n.attachmentPackage,
               widget.onAttachPackage,
             ),

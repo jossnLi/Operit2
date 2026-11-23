@@ -21,6 +21,7 @@ import 'ArtifactProjectNodeTreeDialog.dart';
 import 'ArtifactPublishScreen.dart';
 import 'RepoMarketPublishScreen.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class MarketEntryDetailScreen extends StatefulWidget {
   const MarketEntryDetailScreen({
     super.key,
@@ -444,7 +445,7 @@ class _MarketEntryDetailScreenState extends State<MarketEntryDetailScreen> {
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 520),
             child: StoreNoticeCard(
-              icon: Icons.cloud_off_rounded,
+              icon: OperitIcons.cloud_off_rounded,
               tone: StoreNoticeTone.error,
               title: '市场条目加载失败',
               message: error,
@@ -497,7 +498,7 @@ class _MarketEntryDetailScreenState extends State<MarketEntryDetailScreen> {
           if (entry.featured)
             StoreBadge(
               label: '精选',
-              icon: Icons.auto_awesome_rounded,
+              icon: OperitIcons.auto_awesome_rounded,
               color: colorScheme.tertiaryContainer,
               foreground: colorScheme.onTertiaryContainer,
             ),
@@ -522,7 +523,7 @@ class _MarketEntryDetailScreenState extends State<MarketEntryDetailScreen> {
           if (_hasVersionChoice(entry))
             OutlinedButton.icon(
               onPressed: _installing ? null : () => _installOtherVersion(entry),
-              icon: const Icon(Icons.history_rounded, size: 18),
+              icon: const Icon(OperitIcons.history_rounded, size: 18),
               label: const Text('其他版本'),
             ),
           if (_canPublishVersion(entry))
@@ -533,7 +534,7 @@ class _MarketEntryDetailScreenState extends State<MarketEntryDetailScreen> {
                       dimension: 16,
                       child: CircularProgressIndicator(strokeWidth: 2),
                     )
-                  : const Icon(Icons.publish_rounded, size: 18),
+                  : const Icon(OperitIcons.publish_rounded, size: 18),
               label: const Text('发布新版本'),
             ),
         ],
@@ -544,12 +545,12 @@ class _MarketEntryDetailScreenState extends State<MarketEntryDetailScreen> {
             StoreStat(
               label: '下载',
               value: storeCompactCount(marketEntryDownloads(entry)),
-              icon: Icons.download_rounded,
+              icon: OperitIcons.download_rounded,
             ),
             StoreStat(
               label: '喜欢',
               value: storeCompactCount(_reactionCount('+1')),
-              icon: Icons.favorite_rounded,
+              icon: OperitIcons.favorite_rounded,
             ),
             if (latestVersion.isNotEmpty)
               StoreStat(label: '版本', value: latestVersion),
@@ -623,7 +624,7 @@ class _MarketEntryDetailScreenState extends State<MarketEntryDetailScreen> {
       );
     } else if (_communityError != null) {
       body = StoreNoticeCard(
-        icon: Icons.cloud_off_rounded,
+        icon: OperitIcons.cloud_off_rounded,
         tone: StoreNoticeTone.error,
         title: '评论加载失败',
         message: _communityError,
@@ -640,7 +641,7 @@ class _MarketEntryDetailScreenState extends State<MarketEntryDetailScreen> {
             child: Row(
               children: <Widget>[
                 Icon(
-                  Icons.forum_outlined,
+                  OperitIcons.forum_outlined,
                   color: theme.colorScheme.onSurfaceVariant,
                 ),
                 const SizedBox(width: 12),
@@ -694,7 +695,7 @@ class _MarketEntryDetailScreenState extends State<MarketEntryDetailScreen> {
                     _replyTo = null;
                   }),
             style: SettingsControlStyles.sectionFilledButton(),
-            icon: const Icon(Icons.edit_note_rounded, size: 18),
+            icon: const Icon(OperitIcons.edit_note_rounded, size: 18),
             label: const Text('写评论'),
           ),
         ],
@@ -739,7 +740,7 @@ class _MarketEntryDetailScreenState extends State<MarketEntryDetailScreen> {
                                             _changeCommentPage(_commentPage - 1)
                                       : null,
                                   icon: const Icon(
-                                    Icons.chevron_left_rounded,
+                                    OperitIcons.chevron_left_rounded,
                                     size: 18,
                                   ),
                                   label: const Text('上一页'),
@@ -758,7 +759,7 @@ class _MarketEntryDetailScreenState extends State<MarketEntryDetailScreen> {
                                     children: [
                                       Text('下一页'),
                                       Icon(
-                                        Icons.chevron_right_rounded,
+                                        OperitIcons.chevron_right_rounded,
                                         size: 18,
                                       ),
                                     ],
@@ -769,7 +770,7 @@ class _MarketEntryDetailScreenState extends State<MarketEntryDetailScreen> {
                           TextButton.icon(
                             onPressed: _collapseComments,
                             icon: const Icon(
-                              Icons.keyboard_arrow_up_rounded,
+                              OperitIcons.keyboard_arrow_up_rounded,
                               size: 18,
                             ),
                             label: const Text('收起评论'),
@@ -779,7 +780,7 @@ class _MarketEntryDetailScreenState extends State<MarketEntryDetailScreen> {
                     : TextButton.icon(
                         onPressed: () =>
                             setState(() => _commentsExpanded = true),
-                        icon: const Icon(Icons.unfold_more_rounded, size: 18),
+                        icon: const Icon(OperitIcons.unfold_more_rounded, size: 18),
                         label: Text('查看全部 $_commentTotal 条评论'),
                       ),
               ),
@@ -967,7 +968,7 @@ class _CommentComposer extends StatelessWidget {
                     IconButton(
                       tooltip: '取消回复',
                       onPressed: posting ? null : onCancelReply,
-                      icon: const Icon(Icons.close_rounded, size: 18),
+                      icon: const Icon(OperitIcons.close_rounded, size: 18),
                     ),
                   ],
                 ),
@@ -1130,8 +1131,8 @@ class _LikeButton extends StatelessWidget {
                   duration: motion.fast,
                   child: Icon(
                     liked
-                        ? Icons.favorite_rounded
-                        : Icons.favorite_border_rounded,
+                        ? OperitIcons.favorite_rounded
+                        : OperitIcons.favorite_border_rounded,
                     size: 18,
                     color: heart,
                   ),

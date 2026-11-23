@@ -16,6 +16,7 @@ import 'file_preview/WorkspaceTextPreview.dart';
 import 'html_preview/WorkspaceHtmlPreviewWidget.dart';
 import 'WorkspaceTabModels.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class WorkspaceFilePreviewContent extends StatelessWidget {
   /// Creates a file view with shared workspace read and write capabilities.
   const WorkspaceFilePreviewContent({
@@ -76,7 +77,7 @@ class WorkspaceFilePreviewContent extends StatelessWidget {
       case WorkspaceFilePreviewKind.binary:
         return WorkspaceOpenOnlyPreview(
           tab: tab,
-          icon: Icons.insert_drive_file_outlined,
+          icon: OperitIcons.insert_drive_file_outlined,
           title: l10n.filePreview,
           detail: l10n.unsupportedReadOnlyPreview,
           onOpenWorkspaceFile: onOpenWorkspaceFile,
@@ -161,7 +162,7 @@ class _WorkspaceBytesPreviewState extends State<_WorkspaceBytesPreview> {
         if (snapshot.hasError) {
           return WorkspaceOpenOnlyPreviewBody(
             tab: tab,
-            icon: Icons.error_outline_rounded,
+            icon: OperitIcons.error_outline_rounded,
             title: l10n.cannotPreview,
             detail: snapshot.error.toString(),
             onOpenWorkspaceFile: widget.onOpenWorkspaceFile,
@@ -195,7 +196,7 @@ class _WorkspaceBytesPreviewState extends State<_WorkspaceBytesPreview> {
         } on Object catch (error) {
           return WorkspaceOpenOnlyPreviewBody(
             tab: tab,
-            icon: Icons.error_outline_rounded,
+            icon: OperitIcons.error_outline_rounded,
             title: l10n.cannotPreview,
             detail: error.toString(),
             onOpenWorkspaceFile: widget.onOpenWorkspaceFile,
@@ -242,7 +243,7 @@ class _WorkspaceBytesPreviewState extends State<_WorkspaceBytesPreview> {
       case null:
         return WorkspaceOpenOnlyPreview(
           tab: tab,
-          icon: Icons.insert_drive_file_outlined,
+          icon: OperitIcons.insert_drive_file_outlined,
           title: l10n.filePreview,
           detail: l10n.unsupportedReadOnlyPreview,
           onOpenWorkspaceFile: widget.onOpenWorkspaceFile,

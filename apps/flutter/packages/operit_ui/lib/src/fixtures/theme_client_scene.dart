@@ -12,6 +12,7 @@ import '../render/theme_layout_metrics.dart';
 import '../render/theme_inspection_target.dart';
 import '../render/bubble_surface.dart';
 
+import '../icons/operit_icons.dart';
 enum ThemeClientSceneMode {
   empty('empty'),
   conversation('conversation');
@@ -162,7 +163,7 @@ class _PreviewSidebar extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               ThemeDrawerToolbarIconButton(
-                icon: Icons.search_rounded,
+                icon: OperitIcons.search_rounded,
                 tooltip: '搜索对话',
                 appearance: appearance,
                 onClick: () {},
@@ -222,7 +223,7 @@ class _PreviewSidebar extends StatelessWidget {
             children: <Widget>[
               Expanded(
                 child: ThemeBottomSidebarAction(
-                  icon: Icons.inventory_2_outlined,
+                  icon: OperitIcons.inventory_2_outlined,
                   label: '包管理',
                   appearance: appearance,
                   onClick: () {},
@@ -231,7 +232,7 @@ class _PreviewSidebar extends StatelessWidget {
               const SizedBox(width: 8),
               Expanded(
                 child: ThemeBottomSidebarAction(
-                  icon: Icons.settings_outlined,
+                  icon: OperitIcons.settings_outlined,
                   label: '设置',
                   appearance: appearance,
                   onClick: () {},
@@ -412,7 +413,7 @@ class _PreviewChatSurface extends StatelessWidget {
                 secondaryText: 'New Chat',
                 contentColor: scheme.onSurface,
               ),
-              navigationIcon: compact ? Icons.view_sidebar_outlined : Icons.chevron_left_rounded,
+              navigationIcon: compact ? OperitIcons.view_sidebar_outlined : OperitIcons.chevron_left_rounded,
               navigationTooltip: compact ? 'Navigation' : 'Collapse sidebar',
               onNavigationPressed: () {},
               flipNavigationIcon: compact,
@@ -661,7 +662,7 @@ class _PreviewBubble extends StatelessWidget {
           dimension: themeBubbleAvatarSize,
           child: Center(
             child: Icon(
-              user ? Icons.person_outline_rounded : Icons.auto_awesome_rounded,
+              user ? OperitIcons.person_outline_rounded : OperitIcons.auto_awesome_rounded,
               size: 22,
               color: user ? scheme.onPrimary : scheme.onTertiaryContainer,
             ),
@@ -762,7 +763,7 @@ class _PreviewComposerState extends State<_PreviewComposer> {
           onTap: () {},
         ),
         settings: ThemeComposerIconTarget(
-          icon: Icons.tune_outlined,
+          icon: OperitIcons.tune_outlined,
           color: scheme.onSurfaceVariant,
           onTap: () {},
           tooltip: '设置',
@@ -771,7 +772,7 @@ class _PreviewComposerState extends State<_PreviewComposer> {
           targetSize: 34,
         ),
         attachment: ThemeComposerIconTarget(
-          icon: Icons.add_rounded,
+          icon: OperitIcons.add_rounded,
           color: scheme.onSurfaceVariant.withValues(alpha: 0.9),
           onTap: () {},
           tooltip: '添加附件',
@@ -787,10 +788,10 @@ class _PreviewComposerState extends State<_PreviewComposer> {
               ? scheme.onError
               : scheme.onPrimary,
           icon: _previewActionState == 2
-              ? Icons.close_rounded
+              ? OperitIcons.close_rounded
               : _previewActionState == 1
-              ? Icons.arrow_upward_rounded
-              : Icons.mic_none_rounded,
+              ? OperitIcons.arrow_upward_rounded
+              : OperitIcons.mic_none_rounded,
           tooltip: _previewActionState == 2
               ? '停止（点击切换状态预览）'
               : _previewActionState == 1
@@ -822,7 +823,7 @@ class _PreviewComposerState extends State<_PreviewComposer> {
           hasDraftText: false,
           transparentSurface: snapshot.transparentSurfaceEnabled,
           settings: ThemeComposerIconTarget(
-            icon: Icons.tune_outlined,
+            icon: OperitIcons.tune_outlined,
             color: scheme.onSurfaceVariant,
             onTap: () {},
             tooltip: '设置',
@@ -845,7 +846,7 @@ class _PreviewComposerState extends State<_PreviewComposer> {
               : const CircleBorder(),
           clipBehavior: Clip.antiAlias,
           child: ThemeComposerIconTarget(
-            icon: Icons.add_rounded,
+            icon: OperitIcons.add_rounded,
             color: scheme.onSurfaceVariant.withValues(alpha: 0.9),
             onTap: () {},
             tooltip: '添加附件',
@@ -862,10 +863,10 @@ class _PreviewComposerState extends State<_PreviewComposer> {
               ? scheme.onError
               : scheme.onPrimary,
           icon: _previewActionState == 2
-              ? Icons.close_rounded
+              ? OperitIcons.close_rounded
               : _previewActionState == 1
-              ? Icons.arrow_upward_rounded
-              : Icons.mic_none_rounded,
+              ? OperitIcons.arrow_upward_rounded
+              : OperitIcons.mic_none_rounded,
           tooltip: _previewActionState == 2
               ? '停止（点击切换状态预览）'
               : _previewActionState == 1

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:operit2/l10n/generated/app_localizations.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// Full-screen image inspection, independent of external link navigation.
 class MarkdownImagePreview extends StatefulWidget {
   const MarkdownImagePreview({super.key, required this.image, this.alt = ''});
@@ -84,7 +85,7 @@ class _MarkdownImagePreviewState extends State<MarkdownImagePreview> {
                         context,
                       ).closeButtonTooltip,
                       onPressed: () => Navigator.of(context).pop(),
-                      icon: const Icon(Icons.close_rounded),
+                      icon: const Icon(OperitIcons.close_rounded),
                     ),
                   ],
                 ),
@@ -107,20 +108,20 @@ class _MarkdownImagePreviewState extends State<MarkdownImagePreview> {
                         color: Colors.white,
                         tooltip: l10n?.zoomOut ?? 'Zoom out',
                         onPressed: () => _zoom(1 / 1.5),
-                        icon: const Icon(Icons.zoom_out_rounded),
+                        icon: const Icon(OperitIcons.zoom_out_rounded),
                       ),
                       IconButton(
                         color: Colors.white,
                         tooltip: '1×',
                         onPressed: () =>
                             _transformation.value = Matrix4.identity(),
-                        icon: const Icon(Icons.fit_screen_rounded),
+                        icon: const Icon(OperitIcons.fit_screen_rounded),
                       ),
                       IconButton(
                         color: Colors.white,
                         tooltip: l10n?.zoomIn ?? 'Zoom in',
                         onPressed: () => _zoom(1.5),
-                        icon: const Icon(Icons.zoom_in_rounded),
+                        icon: const Icon(OperitIcons.zoom_in_rounded),
                       ),
                     ],
                   ),

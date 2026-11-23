@@ -6,6 +6,7 @@ import '../../../../core/proxy/generated/CoreProxyModels.g.dart' as core_proxy;
 import '../../../../l10n/generated/app_localizations.dart';
 import '../viewmodel/ChatViewModel.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class ChatToolPermissionPanel extends StatefulWidget {
   /// Creates the inline permission state surface for one chat.
   const ChatToolPermissionPanel({
@@ -91,7 +92,7 @@ class _ChatToolPermissionPanelState extends State<ChatToolPermissionPanel> {
             constraints: const BoxConstraints.tightFor(width: 36, height: 36),
             iconSize: 18,
             color: colorScheme.onSurfaceVariant,
-            icon: const Icon(Icons.close_rounded),
+            icon: const Icon(OperitIcons.close_rounded),
           ),
         );
         final sessionAction = Tooltip(
@@ -104,7 +105,7 @@ class _ChatToolPermissionPanelState extends State<ChatToolPermissionPanel> {
             constraints: const BoxConstraints.tightFor(width: 36, height: 36),
             iconSize: 18,
             color: colorScheme.onSurfaceVariant,
-            icon: const Icon(Icons.done_all_rounded),
+            icon: const Icon(OperitIcons.done_all_rounded),
           ),
         );
         final allowAction = FilledButton.icon(
@@ -123,7 +124,7 @@ class _ChatToolPermissionPanelState extends State<ChatToolPermissionPanel> {
                   height: 16,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
-              : const Icon(Icons.check_rounded, size: 18),
+              : const Icon(OperitIcons.check_rounded, size: 18),
           label: Text(l10n.toolApprovalAllowOnce),
         );
 
@@ -148,7 +149,7 @@ class _ChatToolPermissionPanelState extends State<ChatToolPermissionPanel> {
                 visualDensity: VisualDensity.compact,
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
-              icon: const Icon(Icons.close_rounded, size: 18),
+              icon: const Icon(OperitIcons.close_rounded, size: 18),
               label: Text(l10n.toolApprovalDeny),
             ),
             const Spacer(),
@@ -162,7 +163,7 @@ class _ChatToolPermissionPanelState extends State<ChatToolPermissionPanel> {
                 visualDensity: VisualDensity.compact,
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
-              icon: const Icon(Icons.done_all_rounded, size: 18),
+              icon: const Icon(OperitIcons.done_all_rounded, size: 18),
               label: Text(l10n.toolApprovalAlwaysAllow),
             ),
             const SizedBox(width: 8),
@@ -204,7 +205,7 @@ class _ChatToolPermissionPanelState extends State<ChatToolPermissionPanel> {
             Row(
               children: [
                 Icon(
-                  Icons.admin_panel_settings_outlined,
+                  OperitIcons.admin_panel_settings_outlined,
                   size: 19,
                   color: colorScheme.primary,
                 ),
@@ -254,8 +255,8 @@ class _ChatToolPermissionPanelState extends State<ChatToolPermissionPanel> {
                 ),
                 icon: Icon(
                   _parametersExpanded
-                      ? Icons.expand_less_rounded
-                      : Icons.expand_more_rounded,
+                      ? OperitIcons.expand_less_rounded
+                      : OperitIcons.expand_more_rounded,
                   size: 18,
                 ),
                 label: Text(

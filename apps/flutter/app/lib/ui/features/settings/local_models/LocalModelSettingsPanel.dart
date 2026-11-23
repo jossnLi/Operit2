@@ -16,6 +16,7 @@ import '../../../common/components/PageActivityMixin.dart';
 import '../../../common/components/OperitDialog.dart';
 import '../../../theme/OperitGlassSurface.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 part 'LocalModelFileImportDialog.dart';
 
 class LocalModelSettingsPanel extends StatefulWidget {
@@ -379,7 +380,7 @@ class _LocalModelSettingsPanelState extends State<LocalModelSettingsPanel>
           ),
           FilledButton.tonalIcon(
             onPressed: () => Navigator.of(context).pop(true),
-            icon: const Icon(Icons.delete_outline_rounded),
+            icon: const Icon(OperitIcons.delete_outline_rounded),
             label: Text(l10n.delete),
           ),
         ],
@@ -417,7 +418,7 @@ class _LocalModelSettingsPanelState extends State<LocalModelSettingsPanel>
                     const SizedBox(height: 12),
                     OutlinedButton.icon(
                       onPressed: _reload,
-                      icon: const Icon(Icons.refresh_rounded),
+                      icon: const Icon(OperitIcons.refresh_rounded),
                       label: Text(l10n.retry),
                     ),
                   ],
@@ -492,13 +493,13 @@ class _LocalModelSettingsPanelState extends State<LocalModelSettingsPanel>
                           setState(() => _catalogQuery = value),
                       decoration: InputDecoration(
                         isDense: true,
-                        prefixIcon: const Icon(Icons.search_rounded, size: 20),
+                        prefixIcon: const Icon(OperitIcons.search_rounded, size: 20),
                         hintText: l10n.localModelsSearchCatalog,
                         suffixIcon: _catalogQuery.isEmpty
                             ? null
                             : IconButton(
                                 tooltip: l10n.clear,
-                                icon: const Icon(Icons.close_rounded, size: 18),
+                                icon: const Icon(OperitIcons.close_rounded, size: 18),
                                 onPressed: () {
                                   _searchController.clear();
                                   setState(() => _catalogQuery = '');
@@ -591,7 +592,7 @@ class _LocalModelSettingsPanelState extends State<LocalModelSettingsPanel>
                       child: ExpansionTile(
                         tilePadding: EdgeInsets.zero,
                         leading: const Icon(
-                          Icons.developer_board_outlined,
+                          OperitIcons.developer_board_outlined,
                           size: 20,
                         ),
                         title: Text(
@@ -624,7 +625,7 @@ class _LocalModelSettingsPanelState extends State<LocalModelSettingsPanel>
                       child: Column(
                         children: [
                           Icon(
-                            Icons.search_off_rounded,
+                            OperitIcons.search_off_rounded,
                             size: 36,
                             color: colors.onSurfaceVariant,
                           ),
@@ -685,7 +686,7 @@ class _LocalModelSettingsPanelState extends State<LocalModelSettingsPanel>
             style: FilledButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 14),
             ),
-            icon: const Icon(Icons.file_upload_outlined, size: 18),
+            icon: const Icon(OperitIcons.file_upload_outlined, size: 18),
             label: Text(l10n.localModelsImportFromDevice),
           ),
         OutlinedButton.icon(
@@ -693,7 +694,7 @@ class _LocalModelSettingsPanelState extends State<LocalModelSettingsPanel>
           style: OutlinedButton.styleFrom(
             padding: const EdgeInsets.symmetric(horizontal: 14),
           ),
-          icon: const Icon(Icons.travel_explore_outlined, size: 18),
+          icon: const Icon(OperitIcons.travel_explore_outlined, size: 18),
           label: Text(l10n.localModelsAddModel),
         ),
       ],
@@ -719,7 +720,7 @@ class _LocalModelSettingsPanelState extends State<LocalModelSettingsPanel>
                 PopupMenuButton<core_proxy.LocalModelSourceKind>(
                   tooltip:
                       '${l10n.localModelsDownloadSource}: ${_sourceKindTitle(l10n, source)}',
-                  icon: const Icon(Icons.cloud_download_outlined, size: 20),
+                  icon: const Icon(OperitIcons.cloud_download_outlined, size: 20),
                   initialValue: source,
                   onSelected: _setPreferredSource,
                   itemBuilder: (_) => [
@@ -737,7 +738,7 @@ class _LocalModelSettingsPanelState extends State<LocalModelSettingsPanel>
                 ),
                 IconButton(
                   onPressed: _reload,
-                  icon: const Icon(Icons.refresh_rounded, size: 20),
+                  icon: const Icon(OperitIcons.refresh_rounded, size: 20),
                   tooltip: l10n.refresh,
                 ),
               ],
@@ -778,26 +779,26 @@ class _LocalModelSettingsPanelState extends State<LocalModelSettingsPanel>
               children: [
                 _buildTagChip(
                   context,
-                  icon: Icons.storage_outlined,
+                  icon: OperitIcons.storage_outlined,
                   label: _formatBytes(_modelByteSize(m)),
                 ),
                 if (m.license.isNotEmpty)
                   _buildTagChip(
                     context,
-                    icon: Icons.gavel_outlined,
+                    icon: OperitIcons.gavel_outlined,
                     label: m.license,
                   ),
                 if (m.languages.isNotEmpty)
                   _buildTagChip(
                     context,
-                    icon: Icons.translate_outlined,
+                    icon: OperitIcons.translate_outlined,
                     label: m.languages.join(' / '),
                   ),
                 _buildTagChip(
                   context,
                   icon: m.sources.isEmpty
-                      ? Icons.description_outlined
-                      : Icons.cloud_outlined,
+                      ? OperitIcons.description_outlined
+                      : OperitIcons.cloud_outlined,
                   label: m.sources.isEmpty
                       ? l10n.localModelsImportedFile
                       : _modelSourcesLabel(l10n, m.sources),
@@ -805,7 +806,7 @@ class _LocalModelSettingsPanelState extends State<LocalModelSettingsPanel>
                 if (status.installedEngine != null)
                   _buildTagChip(
                     context,
-                    icon: Icons.developer_board_outlined,
+                    icon: OperitIcons.developer_board_outlined,
                     label: l10n.localModelsEngineInstalled,
                   ),
               ],
@@ -869,7 +870,7 @@ class _LocalModelSettingsPanelState extends State<LocalModelSettingsPanel>
                   onPressed: !isBusy && status.platformCompatible
                       ? () => _openChatInference(status)
                       : null,
-                  icon: const Icon(Icons.play_arrow_rounded, size: 18),
+                  icon: const Icon(OperitIcons.play_arrow_rounded, size: 18),
                   label: Text(l10n.localModelsRunChat),
                 )
               : null
@@ -881,7 +882,7 @@ class _LocalModelSettingsPanelState extends State<LocalModelSettingsPanel>
                 ? () => _install(manifest)
                 : null,
             icon: Icon(
-              isPaused ? Icons.play_arrow_rounded : Icons.download_outlined,
+              isPaused ? OperitIcons.play_arrow_rounded : OperitIcons.download_outlined,
               size: 18,
             ),
             label: Text(
@@ -962,7 +963,7 @@ class _LocalModelSettingsPanelState extends State<LocalModelSettingsPanel>
                         onPressed: isCancelling
                             ? null
                             : () => _pauseInstall(manifest),
-                        icon: const Icon(Icons.pause_rounded),
+                        icon: const Icon(OperitIcons.pause_rounded),
                         tooltip: l10n.localModelsPauseDownload,
                       ),
                     ?primaryAction,
@@ -1161,7 +1162,7 @@ class _LocalModelSettingsPanelState extends State<LocalModelSettingsPanel>
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Icon(
-                Icons.developer_board_outlined,
+                OperitIcons.developer_board_outlined,
                 color: colors.primary,
                 size: 20,
               ),
@@ -1183,17 +1184,17 @@ class _LocalModelSettingsPanelState extends State<LocalModelSettingsPanel>
                     children: <Widget>[
                       _buildTagChip(
                         context,
-                        icon: Icons.laptop_outlined,
+                        icon: OperitIcons.laptop_outlined,
                         label: engine.artifact.target.platform.value,
                       ),
                       _buildTagChip(
                         context,
-                        icon: Icons.settings_input_component_outlined,
+                        icon: OperitIcons.settings_input_component_outlined,
                         label: engine.artifact.target.architecture.value,
                       ),
                       _buildTagChip(
                         context,
-                        icon: Icons.storage_outlined,
+                        icon: OperitIcons.storage_outlined,
                         label: _formatBytes(engine.artifact.byteSize),
                       ),
                     ],
@@ -1205,7 +1206,7 @@ class _LocalModelSettingsPanelState extends State<LocalModelSettingsPanel>
               onPressed: _activeOperations.isEmpty
                   ? () => _deleteEngine(engine)
                   : null,
-              icon: Icon(Icons.delete_outline_rounded, color: colors.error),
+              icon: Icon(OperitIcons.delete_outline_rounded, color: colors.error),
               tooltip: l10n.localModelsDeleteEngine,
             ),
           ],
@@ -1376,10 +1377,10 @@ core_proxy.LocalModelInstallStatus? _findInstallStatus(
 /// Returns an icon for one local model capability.
 IconData _modelKindIcon(core_proxy.LocalModelKind kind) {
   return switch (kind) {
-    core_proxy.LocalModelKind.speechToText => Icons.mic_none_rounded,
-    core_proxy.LocalModelKind.textToSpeech => Icons.record_voice_over_outlined,
-    core_proxy.LocalModelKind.chat => Icons.chat_bubble_outline_rounded,
-    core_proxy.LocalModelKind.embedding => Icons.data_array_outlined,
+    core_proxy.LocalModelKind.speechToText => OperitIcons.mic_none_rounded,
+    core_proxy.LocalModelKind.textToSpeech => OperitIcons.record_voice_over_outlined,
+    core_proxy.LocalModelKind.chat => OperitIcons.chat_bubble_outline_rounded,
+    core_proxy.LocalModelKind.embedding => OperitIcons.data_array_outlined,
   };
 }
 
@@ -1537,7 +1538,7 @@ class _LocalModelHubDialogState extends State<_LocalModelHubDialog> {
       maxWidth: 680,
       maxHeight: 560,
       title: l10n.localModelsExploreHub,
-      icon: const Icon(Icons.travel_explore_outlined),
+      icon: const Icon(OperitIcons.travel_explore_outlined),
       showCloseButton: true,
       actions: <Widget>[
         TextButton(
@@ -1559,12 +1560,12 @@ class _LocalModelHubDialogState extends State<_LocalModelHubDialog> {
               segments: <ButtonSegment<int>>[
                 ButtonSegment<int>(
                   value: 0,
-                  icon: const Icon(Icons.search_rounded, size: 16),
+                  icon: const Icon(OperitIcons.search_rounded, size: 16),
                   label: Text(l10n.search),
                 ),
                 ButtonSegment<int>(
                   value: 1,
-                  icon: const Icon(Icons.link_rounded, size: 16),
+                  icon: const Icon(OperitIcons.link_rounded, size: 16),
                   label: Text(l10n.localModelsHubRepositoryTab),
                 ),
               ],
@@ -1621,7 +1622,7 @@ class _LocalModelHubDialogState extends State<_LocalModelHubDialog> {
                     decoration: InputDecoration(
                       hintText: l10n.localModelsHubSearchHint,
                       isDense: true,
-                      prefixIcon: const Icon(Icons.search_rounded, size: 20),
+                      prefixIcon: const Icon(OperitIcons.search_rounded, size: 20),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -1632,7 +1633,7 @@ class _LocalModelHubDialogState extends State<_LocalModelHubDialog> {
                 const SizedBox(width: 10),
                 FilledButton.icon(
                   onPressed: _isSearching ? null : _doSearch,
-                  icon: const Icon(Icons.search_rounded, size: 18),
+                  icon: const Icon(OperitIcons.search_rounded, size: 18),
                   label: Text(l10n.search),
                 ),
               ],
@@ -1667,7 +1668,7 @@ class _LocalModelHubDialogState extends State<_LocalModelHubDialog> {
                                 'owner/repo / https://modelscope.cn/models/...',
                             isDense: true,
                             prefixIcon: const Icon(
-                              Icons.folder_outlined,
+                              OperitIcons.folder_outlined,
                               size: 18,
                             ),
                             border: OutlineInputBorder(
@@ -1682,7 +1683,7 @@ class _LocalModelHubDialogState extends State<_LocalModelHubDialog> {
                             hintText: 'main / master',
                             isDense: true,
                             prefixIcon: const Icon(
-                              Icons.commit_outlined,
+                              OperitIcons.commit_outlined,
                               size: 18,
                             ),
                             border: OutlineInputBorder(
@@ -1709,7 +1710,7 @@ class _LocalModelHubDialogState extends State<_LocalModelHubDialog> {
                                     ),
                                   )
                                 : const Icon(
-                                    Icons.download_for_offline_outlined,
+                                    OperitIcons.download_for_offline_outlined,
                                     size: 18,
                                   ),
                             label: Text(
@@ -1819,12 +1820,12 @@ class _LocalModelHubDialogState extends State<_LocalModelHubDialog> {
                         children: <Widget>[
                           _buildTagChip(
                             context,
-                            icon: Icons.download_outlined,
+                            icon: OperitIcons.download_outlined,
                             label: '${item.downloads}',
                           ),
                           _buildTagChip(
                             context,
-                            icon: Icons.favorite_border_rounded,
+                            icon: OperitIcons.favorite_border_rounded,
                             label: '${item.likes}',
                           ),
                         ],
@@ -2144,7 +2145,7 @@ class _LocalChatInferenceDialogState extends State<_LocalChatInferenceDialog> {
         ),
         FilledButton.icon(
           onPressed: _busy || _loading ? null : _run,
-          icon: const Icon(Icons.play_arrow_rounded),
+          icon: const Icon(OperitIcons.play_arrow_rounded),
           label: Text(l10n.localModelsGenerate),
         ),
         TextButton(

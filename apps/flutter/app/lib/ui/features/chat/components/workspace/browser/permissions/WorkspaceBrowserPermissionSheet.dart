@@ -7,6 +7,7 @@ import '../../../../../../../l10n/generated/app_localizations.dart';
 import '../chrome/WorkspaceBrowserPopupWidgets.dart';
 import 'WorkspaceBrowserPermissionStore.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class WorkspaceBrowserPermissionSheet extends StatelessWidget {
   const WorkspaceBrowserPermissionSheet({super.key, required this.store});
 
@@ -27,7 +28,7 @@ class WorkspaceBrowserPermissionSheet extends StatelessWidget {
               trailing: IconButton(
                 tooltip: l10n.clear,
                 onPressed: records.isEmpty ? null : store.clear,
-                icon: const Icon(Icons.delete_sweep_outlined, size: 18),
+                icon: const Icon(OperitIcons.delete_sweep_outlined, size: 18),
                 visualDensity: VisualDensity.compact,
                 constraints: const BoxConstraints.tightFor(
                   width: 32,
@@ -38,15 +39,15 @@ class WorkspaceBrowserPermissionSheet extends StatelessWidget {
             ),
             if (records.isEmpty)
               WorkspaceBrowserPopupEmpty(
-                icon: Icons.lock_outline_rounded,
+                icon: OperitIcons.lock_outline_rounded,
                 text: l10n.noPermissionRecords,
               )
             else
               for (final record in records)
                 WorkspaceBrowserPopupRow(
                   icon: record.allowed
-                      ? Icons.check_circle_outline_rounded
-                      : Icons.block_rounded,
+                      ? OperitIcons.check_circle_outline_rounded
+                      : OperitIcons.block_rounded,
                   iconColor: record.allowed
                       ? theme.colorScheme.primary
                       : theme.colorScheme.error,

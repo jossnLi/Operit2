@@ -4,6 +4,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// Uses an amber accent for connections rejected by protocol negotiation.
 Color deviceCompatibilityColor(ColorScheme scheme) =>
     scheme.brightness == Brightness.dark
@@ -19,14 +20,14 @@ String deviceCompatibilityLabel(BuildContext context) =>
 /// Icon for a device platform reported by the device space.
 IconData devicePlatformIcon(String platform) {
   final name = platform.trim().toLowerCase();
-  if (name.contains('android')) return Icons.android_rounded;
-  if (name.contains('windows')) return Icons.laptop_windows_rounded;
+  if (name.contains('android')) return OperitIcons.android_rounded;
+  if (name.contains('windows')) return OperitIcons.laptop_windows_rounded;
   if (name.contains('mac') || name.contains('darwin')) {
-    return Icons.laptop_mac_rounded;
+    return OperitIcons.laptop_mac_rounded;
   }
-  if (name.contains('linux')) return Icons.dns_outlined;
-  if (name.contains('ios')) return Icons.phone_iphone_rounded;
-  return Icons.devices_other_rounded;
+  if (name.contains('linux')) return OperitIcons.dns_outlined;
+  if (name.contains('ios')) return OperitIcons.phone_iphone_rounded;
+  return OperitIcons.devices_other_rounded;
 }
 
 /// Where a sphere sits on its orbit; light and glyph tilt follow it.

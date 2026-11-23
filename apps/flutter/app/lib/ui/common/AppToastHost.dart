@@ -10,6 +10,7 @@ import '../../core/host/AppToastController.dart';
 import '../../l10n/generated/app_localizations.dart';
 import 'OperitLogoMark.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// Presents the process-wide notice stack at the top-right of the window.
 class AppToastHost extends StatefulWidget {
   /// Creates the corner-notice overlay around [child].
@@ -397,7 +398,7 @@ class _MacNoticeCard extends StatelessWidget {
                   ),
                   IconButton(
                     onPressed: onDismiss,
-                    icon: const Icon(Icons.close_rounded),
+                    icon: const Icon(OperitIcons.close_rounded),
                     iconSize: 14,
                     visualDensity: VisualDensity.compact,
                     constraints: const BoxConstraints.tightFor(
@@ -480,7 +481,7 @@ class _NoticeBody extends StatelessWidget {
               ),
             TextButton.icon(
               onPressed: () => onExpandedChanged(!expanded),
-              icon: Icon(expanded ? Icons.expand_less_rounded : Icons.expand_more_rounded),
+              icon: Icon(expanded ? OperitIcons.expand_less_rounded : OperitIcons.expand_more_rounded),
               label: Text(label),
               style: TextButton.styleFrom(
                 visualDensity: VisualDensity.compact,

@@ -68,7 +68,7 @@ class _ComposeStableImageState extends State<_ComposeStableImage> {
     child: FutureBuilder<ImageProvider>(
       future: _provider,
       builder: (context, snapshot) {
-        if (snapshot.hasError) return const Icon(Icons.broken_image_outlined);
+        if (snapshot.hasError) return const Icon(OperitIcons.broken_image_outlined);
         if (!snapshot.hasData) return const SizedBox.shrink();
         return Image(
           key: ValueKey(widget.animationKey),
@@ -76,7 +76,7 @@ class _ComposeStableImageState extends State<_ComposeStableImage> {
           fit: widget.fit,
           gaplessPlayback: true,
           errorBuilder: (_, error, stack) =>
-              const Icon(Icons.broken_image_outlined),
+              const Icon(OperitIcons.broken_image_outlined),
         );
       },
     ),

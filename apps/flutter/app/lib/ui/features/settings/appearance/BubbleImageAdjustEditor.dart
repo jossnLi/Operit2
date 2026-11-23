@@ -6,6 +6,7 @@ import '../../../../l10n/generated/app_localizations.dart';
 import '../../chat/components/style/bubble/BubbleSurface.dart';
 import '../components/SettingsControlStyles.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// Shows the zoomable original and live bubble preview while editing.
 class BubbleImageAdjustEditor extends StatefulWidget {
   /// Creates an editor with a pinned side-by-side comparison.
@@ -135,7 +136,7 @@ class _BubbleImageAdjustEditorState extends State<BubbleImageAdjustEditor> {
                     IconButton(
                       tooltip: l10n.settingsAppearanceBubbleImageFitSource,
                       onPressed: () => _transform.value = Matrix4.identity(),
-                      icon: const Icon(Icons.fit_screen_rounded),
+                      icon: const Icon(OperitIcons.fit_screen_rounded),
                     ),
                   ],
                 ),

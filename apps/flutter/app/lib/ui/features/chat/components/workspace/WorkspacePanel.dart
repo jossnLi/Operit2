@@ -43,6 +43,7 @@ import 'file_preview/WorkspaceTextCloseDialog.dart';
 import 'terminal/WorkspaceTerminalSessions.dart';
 import 'terminal/WorkspaceTerminalLaunch.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class WorkspacePanel extends StatefulWidget {
   const WorkspacePanel({
     super.key,
@@ -1043,7 +1044,7 @@ class _WorkspacePanelState extends State<WorkspacePanel> {
     final tab = WorkspaceTab(
       kind: WorkspaceTabKind.browser,
       title: title,
-      icon: Icons.public_rounded,
+      icon: OperitIcons.public_rounded,
       browserSessionId: tabState.id,
       url: tabState.url,
       absolutePath: absolutePath,
@@ -1156,7 +1157,7 @@ class _WorkspacePanelState extends State<WorkspacePanel> {
     final tab = WorkspaceTab(
       kind: WorkspaceTabKind.webVisit,
       title: _webVisitTabTitle(request),
-      icon: Icons.travel_explore_outlined,
+      icon: OperitIcons.travel_explore_outlined,
       webVisitRequest: request,
     );
     setState(() {
@@ -1472,7 +1473,7 @@ class _WorkspacePanelState extends State<WorkspacePanel> {
                                           strokeWidth: 2,
                                         ),
                                       )
-                                    : const Icon(Icons.stop_circle_outlined),
+                                    : const Icon(OperitIcons.stop_circle_outlined),
                               ),
                               onTap: () {
                                 Navigator.of(context).pop();
@@ -1557,7 +1558,7 @@ class _WorkspacePanelState extends State<WorkspacePanel> {
                                 onPressed: () {
                                   unawaited(closeSession(session.sessionId));
                                 },
-                                icon: const Icon(Icons.close_rounded),
+                                icon: const Icon(OperitIcons.close_rounded),
                               ),
                               onTap: () async {
                                 Navigator.of(context).pop();
@@ -1766,7 +1767,7 @@ class _WorkspacePanelState extends State<WorkspacePanel> {
     final tab = WorkspaceTab(
       kind: WorkspaceTabKind.terminal,
       title: session.title,
-      icon: Icons.terminal_rounded,
+      icon: OperitIcons.terminal_rounded,
       terminalSessionId: session.sessionId,
       terminalType: session.terminalType,
       terminalWorkingDir: session.workingDir,
@@ -1906,7 +1907,7 @@ class _WorkspacePanelState extends State<WorkspacePanel> {
         WorkspaceTab(
           kind: WorkspaceTabKind.files,
           title: title,
-          icon: Icons.folder_outlined,
+          icon: OperitIcons.folder_outlined,
           filePath: relativePath,
           identityToken: 'mounted-folder-$_session.tabIdentitySequence',
         ),
@@ -1922,7 +1923,7 @@ class _WorkspacePanelState extends State<WorkspacePanel> {
       WorkspaceTab(
         kind: WorkspaceTabKind.workspacePicker,
         title: widget.hasBoundWorkspace ? l10n.workspaceAddFolderTitle : '',
-        icon: Icons.folder_open_outlined,
+        icon: OperitIcons.folder_open_outlined,
       ),
     );
   }
@@ -1980,7 +1981,7 @@ class _WorkspacePanelState extends State<WorkspacePanel> {
           const WorkspaceTab(
             kind: WorkspaceTabKind.files,
             title: '',
-            icon: Icons.folder_outlined,
+            icon: OperitIcons.folder_outlined,
           ),
         );
         filesIndex = _session.tabs.length - 1;
@@ -2213,8 +2214,8 @@ class _WorkspacePanelState extends State<WorkspacePanel> {
                   children: [
                     Icon(
                       current == opener?.identity
-                          ? Icons.radio_button_checked_rounded
-                          : Icons.radio_button_unchecked_rounded,
+                          ? OperitIcons.radio_button_checked_rounded
+                          : OperitIcons.radio_button_unchecked_rounded,
                     ),
                     const SizedBox(width: 12),
                     Expanded(

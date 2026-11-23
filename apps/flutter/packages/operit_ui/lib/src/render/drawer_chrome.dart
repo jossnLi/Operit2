@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'desktop_sidebar_surface.dart';
 
+import '../icons/operit_icons.dart';
 class ThemeBottomThemeToggleButton extends StatelessWidget {
   const ThemeBottomThemeToggleButton({
     super.key,
@@ -40,8 +41,8 @@ class ThemeBottomThemeToggleButton extends StatelessWidget {
               child: Center(
                 child: Icon(
                   darkThemeActive
-                      ? Icons.light_mode_outlined
-                      : Icons.dark_mode_outlined,
+                      ? OperitIcons.light_mode_outlined
+                      : OperitIcons.dark_mode_outlined,
                   size: 16,
                   color: appearance.itemColor.withValues(alpha: 0.85),
                 ),
@@ -260,7 +261,7 @@ class ThemeUnifiedCreateBar extends StatelessWidget {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      Icon(Icons.add_rounded, size: 17, color: contentColor),
+                      Icon(OperitIcons.add_rounded, size: 17, color: contentColor),
                       const SizedBox(width: 6),
                       Text(
                         conversationLabel,
@@ -297,7 +298,7 @@ class ThemeUnifiedCreateBar extends StatelessWidget {
                   onTap: onCreateGroup,
                   child: Center(
                     child: Icon(
-                      Icons.create_new_folder_outlined,
+                      OperitIcons.create_new_folder_outlined,
                       size: 16,
                       color: contentColor,
                     ),

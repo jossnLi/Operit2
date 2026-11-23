@@ -12,6 +12,7 @@ import '../../../theme/OperitFormStyles.dart';
 import '../components/EmptyState.dart';
 import '../market/ArtifactMarketSupport.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class RepoMarketPublishContext {
   const RepoMarketPublishContext({
     required this.entry,
@@ -304,12 +305,12 @@ class _RepoMarketPublishScreenState extends State<RepoMarketPublishScreen> {
           }
           if (error != null) {
             return EmptyState(
-              icon: Icons.error_outline_rounded,
+              icon: OperitIcons.error_outline_rounded,
               title: '加载失败',
               message: error,
               action: TextButton.icon(
                 onPressed: _loadManifest,
-                icon: const Icon(Icons.refresh_rounded),
+                icon: const Icon(OperitIcons.refresh_rounded),
                 label: const Text('刷新'),
               ),
             );
@@ -477,7 +478,7 @@ class _RepoMarketPublishScreenState extends State<RepoMarketPublishScreen> {
                         dimension: 18,
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
-                    : const Icon(Icons.cloud_upload_outlined),
+                    : const Icon(OperitIcons.cloud_upload_outlined),
                 label: Text(
                   _publishing
                       ? '提交中'
@@ -511,8 +512,8 @@ class _PublishModeNotice extends StatelessWidget {
           children: <Widget>[
             Icon(
               canEditEntry
-                  ? Icons.admin_panel_settings_outlined
-                  : Icons.group_add_outlined,
+                  ? OperitIcons.admin_panel_settings_outlined
+                  : OperitIcons.group_add_outlined,
               color: colorScheme.primary,
             ),
             const SizedBox(width: 10),

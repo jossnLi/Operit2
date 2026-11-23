@@ -6,6 +6,7 @@ import '../../../../core/proxy/generated/CoreProxyModels.g.dart' as core;
 import '../../../../l10n/generated/app_localizations.dart';
 import '../components/ApiKeyTextField.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// Edits a provider's draft key pool without writing application preferences.
 class ApiKeyPoolEditor extends StatefulWidget {
   /// Creates the pool controls and an optional explicit credential probe.
@@ -356,7 +357,7 @@ class _ApiKeyPoolEditorState extends State<ApiKeyPoolEditor> {
                             IconButton(
                               tooltip: l10n.settingsModelEditApiKey,
                               onPressed: _testing ? null : () => _edit(entry),
-                              icon: const Icon(Icons.edit_outlined),
+                              icon: const Icon(OperitIcons.edit_outlined),
                             ),
                             IconButton(
                               tooltip: l10n.delete,
@@ -367,7 +368,7 @@ class _ApiKeyPoolEditorState extends State<ApiKeyPoolEditor> {
                                           .where((item) => item.id != entry.id)
                                           .toList(),
                                     ),
-                              icon: const Icon(Icons.delete_outline_rounded),
+                              icon: const Icon(OperitIcons.delete_outline_rounded),
                             ),
                           ],
                         ),
@@ -387,7 +388,7 @@ class _ApiKeyPoolEditorState extends State<ApiKeyPoolEditor> {
                 children: [
                   TextButton.icon(
                     onPressed: _testing ? null : _edit,
-                    icon: const Icon(Icons.add_rounded),
+                    icon: const Icon(OperitIcons.add_rounded),
                     label: Text(l10n.settingsModelAddApiKey),
                   ),
                   TextButton(

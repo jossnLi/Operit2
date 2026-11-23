@@ -15,6 +15,7 @@ import '../layout/DrawerMotionScope.dart';
 import '../screens/OperitScreens.dart';
 import 'TopBarTitleText.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class AppContent extends StatefulWidget {
   /// Creates a page host whose cached screens retain their transition state.
   const AppContent({
@@ -287,10 +288,10 @@ class _AppContentState extends State<AppContent> {
                 final titleContent = widget.topBarController.titleContent;
                 final actions = widget.topBarController.actions;
                 final navigationIcon = widget.canGoBack
-                    ? Icons.arrow_back_rounded
+                    ? OperitIcons.arrow_back_rounded
                     : widget.useTabletLayout
                     ? null
-                    : Icons.view_sidebar_outlined;
+                    : OperitIcons.view_sidebar_outlined;
                 final shouldFlipNavigationIcon =
                     !widget.canGoBack && !widget.useTabletLayout;
                 return ThemeTopBarChrome(

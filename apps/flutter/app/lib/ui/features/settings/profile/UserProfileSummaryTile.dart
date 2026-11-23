@@ -13,6 +13,7 @@ import '../../../theme/OperitGlassSurface.dart';
 import '../../../theme/OperitTheme.dart';
 import '../../../theme/OperitThemeAssets.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class UserProfileSummaryTile extends StatefulWidget {
   const UserProfileSummaryTile({
     super.key,
@@ -127,7 +128,7 @@ class _UserProfileSummaryTileState extends State<UserProfileSummaryTile> {
                   ),
                 ),
                 const SizedBox(width: 8),
-                Icon(Icons.chevron_right_rounded, color: foreground, size: 20),
+                Icon(OperitIcons.chevron_right_rounded, color: foreground, size: 20),
               ],
             ),
           ),
@@ -224,7 +225,7 @@ class UserProfileAvatar extends StatelessWidget {
       ),
       child: normalizedPath == null || normalizedPath.isEmpty
           ? Icon(
-              Icons.person_outline_rounded,
+              OperitIcons.person_outline_rounded,
               size: size * 0.54,
               color: colorScheme.onSurfaceVariant,
             )

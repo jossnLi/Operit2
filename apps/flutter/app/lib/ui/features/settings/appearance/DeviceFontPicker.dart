@@ -6,6 +6,7 @@ import '../../../../l10n/generated/app_localizations.dart';
 import '../../../common/components/OperitDialog.dart';
 import '../../../theme/DeviceFontService.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// Opens device font access from a user gesture, including browser permission requests.
 Future<PreparedDeviceFont?> showDeviceFontPicker(
   BuildContext context, {
@@ -121,7 +122,7 @@ class _DeviceFontPickerState extends State<DeviceFontPicker> {
             TextField(
               controller: _search,
               decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.search_rounded),
+                prefixIcon: const Icon(OperitIcons.search_rounded),
                 hintText: l10n.search,
               ),
               onChanged: (value) =>
@@ -180,7 +181,7 @@ class _DeviceFontPickerState extends State<DeviceFontPicker> {
                                 ),
                               )
                             : _selected?.name == name
-                            ? const Icon(Icons.check_rounded)
+                            ? const Icon(OperitIcons.check_rounded)
                             : null,
                         onTap: () => _select(name),
                       );

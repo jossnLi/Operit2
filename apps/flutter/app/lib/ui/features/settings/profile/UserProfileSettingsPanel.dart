@@ -16,6 +16,7 @@ import '../../../theme/OperitThemeAssets.dart';
 import '../../packages/screens/GitHubOAuthLoginDialog.dart';
 import 'UserProfileSummaryTile.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 const double _profileOverviewAvatarSize = 56;
 const double _profileTileAvatarSize = 36;
 const double _githubAvatarRadius = 18;
@@ -102,7 +103,7 @@ class _UserProfileSettingsPanelState extends State<UserProfileSettingsPanel> {
                 FilledButton.tonalIcon(
                   onPressed: _chooseAvatar,
                   style: _profileActionButtonStyle(),
-                  icon: const Icon(Icons.image_outlined, size: 18),
+                  icon: const Icon(OperitIcons.image_outlined, size: 18),
                   label: Text(l10n.settingsUserProfileChooseAvatar),
                 ),
                 OutlinedButton.icon(
@@ -110,7 +111,7 @@ class _UserProfileSettingsPanelState extends State<UserProfileSettingsPanel> {
                       ? null
                       : _clearAvatar,
                   style: _profileActionButtonStyle(),
-                  icon: const Icon(Icons.person_off_outlined, size: 18),
+                  icon: const Icon(OperitIcons.person_off_outlined, size: 18),
                   label: Text(l10n.settingsUserProfileClearAvatar),
                 ),
               ],
@@ -122,7 +123,7 @@ class _UserProfileSettingsPanelState extends State<UserProfileSettingsPanel> {
               visualDensity: VisualDensity.compact,
               minLeadingWidth: _profileTileAvatarSize,
               horizontalTitleGap: 10,
-              leading: const Icon(Icons.badge_outlined, size: 22),
+              leading: const Icon(OperitIcons.badge_outlined, size: 22),
               title: Text(l10n.settingsUserProfileName),
               subtitle: Text(runtimeIdentityDisplayName(activeIdentity, l10n)),
               trailing: IconButton(
@@ -135,7 +136,7 @@ class _UserProfileSettingsPanelState extends State<UserProfileSettingsPanel> {
                 ),
                 padding: EdgeInsets.zero,
                 iconSize: 20,
-                icon: const Icon(Icons.edit_outlined),
+                icon: const Icon(OperitIcons.edit_outlined),
               ),
             ),
           ],
@@ -153,8 +154,8 @@ class _UserProfileSettingsPanelState extends State<UserProfileSettingsPanel> {
                 selected: identity.id == activeIdentity.id,
                 leading: Icon(
                   identity.id == activeIdentity.id
-                      ? Icons.radio_button_checked_rounded
-                      : Icons.radio_button_unchecked_rounded,
+                      ? OperitIcons.radio_button_checked_rounded
+                      : OperitIcons.radio_button_unchecked_rounded,
                   size: 22,
                 ),
                 title: Text(
@@ -179,7 +180,7 @@ class _UserProfileSettingsPanelState extends State<UserProfileSettingsPanel> {
                   ),
                   padding: EdgeInsets.zero,
                   iconSize: 20,
-                  icon: const Icon(Icons.edit_outlined),
+                  icon: const Icon(OperitIcons.edit_outlined),
                 ),
               ),
             Align(
@@ -187,7 +188,7 @@ class _UserProfileSettingsPanelState extends State<UserProfileSettingsPanel> {
               child: FilledButton.tonalIcon(
                 onPressed: _createIdentity,
                 style: _profileActionButtonStyle(),
-                icon: const Icon(Icons.person_add_alt_1_outlined, size: 18),
+                icon: const Icon(OperitIcons.person_add_alt_1_outlined, size: 18),
                 label: Text(l10n.runtimeIdentityCreate),
               ),
             ),
@@ -216,7 +217,7 @@ class _UserProfileSettingsPanelState extends State<UserProfileSettingsPanel> {
                     OutlinedButton.icon(
                       onPressed: _logoutGitHub,
                       style: _profileActionButtonStyle(),
-                      icon: const Icon(Icons.logout_rounded, size: 18),
+                      icon: const Icon(OperitIcons.logout_rounded, size: 18),
                       label: Text(l10n.settingsUserProfileLogout),
                     ),
                   ],
@@ -242,13 +243,13 @@ class _UserProfileSettingsPanelState extends State<UserProfileSettingsPanel> {
                     ? OutlinedButton.icon(
                         onPressed: _logoutGitHub,
                         style: _profileActionButtonStyle(),
-                        icon: const Icon(Icons.logout_rounded, size: 18),
+                        icon: const Icon(OperitIcons.logout_rounded, size: 18),
                         label: Text(l10n.settingsUserProfileLogout),
                       )
                     : FilledButton.tonalIcon(
                         onPressed: _loginGitHub,
                         style: _profileActionButtonStyle(),
-                        icon: const Icon(Icons.login_rounded, size: 18),
+                        icon: const Icon(OperitIcons.login_rounded, size: 18),
                         label: Text(l10n.settingsUserProfileLogin),
                       ),
               ),
@@ -609,7 +610,7 @@ class _GitHubAvatar extends StatelessWidget {
         radius: _githubAvatarRadius,
         backgroundColor: colorScheme.secondaryContainer.withValues(alpha: 0.72),
         child: Icon(
-          Icons.code_outlined,
+          OperitIcons.code_outlined,
           size: 20,
           color: colorScheme.onSecondaryContainer,
         ),

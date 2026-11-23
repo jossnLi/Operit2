@@ -6,6 +6,7 @@ import '../../../../../../../l10n/generated/app_localizations.dart';
 import '../chrome/WorkspaceBrowserPopupWidgets.dart';
 import 'WorkspaceBrowserHistoryStore.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class WorkspaceBrowserHistorySheet extends StatefulWidget {
   const WorkspaceBrowserHistorySheet({
     super.key,
@@ -46,7 +47,7 @@ class _WorkspaceBrowserHistorySheetState
                     widget.onChanged();
                     setState(() {});
                   },
-            icon: const Icon(Icons.delete_sweep_outlined, size: 18),
+            icon: const Icon(OperitIcons.delete_sweep_outlined, size: 18),
             visualDensity: VisualDensity.compact,
             constraints: const BoxConstraints.tightFor(width: 32, height: 32),
             padding: EdgeInsets.zero,
@@ -61,7 +62,7 @@ class _WorkspaceBrowserHistorySheetState
               style: theme.textTheme.bodySmall,
               textAlignVertical: TextAlignVertical.center,
               decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.search_rounded, size: 17),
+                prefixIcon: const Icon(OperitIcons.search_rounded, size: 17),
                 prefixIconConstraints: const BoxConstraints(
                   minWidth: 32,
                   minHeight: 32,
@@ -80,11 +81,11 @@ class _WorkspaceBrowserHistorySheetState
           ),
         ),
         if (items.isEmpty)
-          WorkspaceBrowserPopupEmpty(icon: Icons.history_rounded, text: l10n.history)
+          WorkspaceBrowserPopupEmpty(icon: OperitIcons.history_rounded, text: l10n.history)
         else
           for (final item in items)
             WorkspaceBrowserPopupRow(
-              icon: Icons.history_rounded,
+              icon: OperitIcons.history_rounded,
               title: item.title,
               subtitle: item.url,
               detail:

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../common/interactions/MessagePressShield.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class CanvasExpandableHeaderRow extends StatelessWidget {
   const CanvasExpandableHeaderRow({
     super.key,
@@ -39,7 +40,7 @@ class CanvasExpandableHeaderRow extends StatelessWidget {
                   turns: rotationTurns,
                   duration: const Duration(milliseconds: 300),
                   child: Icon(
-                    Icons.chevron_right_rounded,
+                    OperitIcons.chevron_right_rounded,
                     size: 18,
                     color: titleColor,
                   ),

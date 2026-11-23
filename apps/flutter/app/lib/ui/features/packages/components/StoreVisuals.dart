@@ -12,6 +12,7 @@ import '../../../theme/OperitTheme.dart';
 import '../../settings/components/SettingsControlStyles.dart';
 import 'ExtensionMotion.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// Label and icon shared by catalog kinds and marketplace entry types.
 class StoreKind {
   const StoreKind._({
@@ -27,28 +28,28 @@ class StoreKind {
   static const StoreKind toolpkg = StoreKind._(
     id: 'toolpkg',
     label: '插件',
-    icon: Icons.extension_rounded,
+    icon: OperitIcons.extension_rounded,
   );
   static const StoreKind script = StoreKind._(
     id: 'script',
     label: '脚本包',
-    icon: Icons.code_rounded,
+    icon: OperitIcons.code_rounded,
   );
   static const StoreKind skill = StoreKind._(
     id: 'skill',
     label: '技能',
-    icon: Icons.auto_awesome_rounded,
+    icon: OperitIcons.auto_awesome_rounded,
   );
   static const StoreKind mcp = StoreKind._(
     id: 'mcp',
     label: 'MCP',
-    icon: Icons.cable_rounded,
+    icon: OperitIcons.cable_rounded,
   );
 
   static const StoreKind a2a = StoreKind._(
     id: 'a2a',
     label: 'A2A',
-    icon: Icons.hub_outlined,
+    icon: OperitIcons.hub_outlined,
   );
 
   static const List<StoreKind> values = <StoreKind>[
@@ -126,9 +127,9 @@ String storeScopeLabel(String scope) => switch (scope) {
 };
 
 IconData storeScopeIcon(String scope) => switch (scope) {
-  'device' => Icons.my_location_rounded,
-  'space' => Icons.hub_outlined,
-  'localOnly' => Icons.terminal_rounded,
+  'device' => OperitIcons.my_location_rounded,
+  'space' => OperitIcons.hub_outlined,
+  'localOnly' => OperitIcons.terminal_rounded,
   _ => throw StateError('Unknown extension scope: $scope'),
 };
 
@@ -327,7 +328,7 @@ class StoreGetButton extends StatelessWidget {
         key: ValueKey<String>('done:$doneLabel'),
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Icon(Icons.check_rounded, size: glyphSize, color: foreground),
+          Icon(OperitIcons.check_rounded, size: glyphSize, color: foreground),
           const SizedBox(width: 6),
           Text(doneLabel),
         ],
@@ -482,7 +483,7 @@ class StoreSeeAllButton extends StatelessWidget {
       onPressed: onPressed,
       style: SettingsControlStyles.sectionTextButton(),
       iconAlignment: IconAlignment.end,
-      icon: const Icon(Icons.chevron_right_rounded, size: 18),
+      icon: const Icon(OperitIcons.chevron_right_rounded, size: 18),
       label: const Text('查看全部'),
     );
   }
@@ -962,13 +963,13 @@ class _StoreShelfState extends State<StoreShelf> {
                   children: <Widget>[
                     _ShelfArrow(
                       alignment: Alignment.centerLeft,
-                      icon: Icons.chevron_left_rounded,
+                      icon: OperitIcons.chevron_left_rounded,
                       visible: _hovered && canBack,
                       onPressed: () => _page(-1),
                     ),
                     _ShelfArrow(
                       alignment: Alignment.centerRight,
-                      icon: Icons.chevron_right_rounded,
+                      icon: OperitIcons.chevron_right_rounded,
                       visible: _hovered && canForward,
                       onPressed: () => _page(1),
                     ),

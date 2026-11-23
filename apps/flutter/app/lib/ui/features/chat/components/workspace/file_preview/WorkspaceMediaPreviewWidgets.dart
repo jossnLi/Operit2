@@ -8,6 +8,7 @@ import 'package:video_player/video_player.dart';
 
 import 'WorkspaceVideoControllerFactory.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class WorkspaceAudioPreview extends StatefulWidget {
   const WorkspaceAudioPreview({
     super.key,
@@ -68,7 +69,7 @@ class _WorkspaceAudioPreviewState extends State<WorkspaceAudioPreview> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Icon(
-                Icons.audio_file_outlined,
+                OperitIcons.audio_file_outlined,
                 size: 54,
                 color: theme.colorScheme.primary,
               ),
@@ -110,7 +111,7 @@ class _WorkspaceAudioPreviewState extends State<WorkspaceAudioPreview> {
                         _player.resume();
                       }
                     },
-                    icon: Icon(playing ? Icons.pause_rounded : Icons.play_arrow_rounded),
+                    icon: Icon(playing ? OperitIcons.pause_rounded : OperitIcons.play_arrow_rounded),
                   ),
                   const SizedBox(width: 14),
                   Text(_formatDuration(_duration)),
@@ -192,8 +193,8 @@ class _WorkspaceVideoPreviewState extends State<WorkspaceVideoPreview> {
                         },
                         icon: Icon(
                           controller.value.isPlaying
-                              ? Icons.pause_rounded
-                              : Icons.play_arrow_rounded,
+                              ? OperitIcons.pause_rounded
+                              : OperitIcons.play_arrow_rounded,
                         ),
                       );
                     },

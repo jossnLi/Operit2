@@ -10,6 +10,7 @@ import '../../../theme/OperitGlassSurface.dart';
 import '../components/SettingsControlStyles.dart';
 import 'TerminalProfilesSettings.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class WorkspaceSettingsPanel extends StatefulWidget {
   const WorkspaceSettingsPanel({super.key, GeneratedCoreProxyClients? clients})
     : clients =
@@ -323,7 +324,7 @@ class _UnboundWorkspaceCard extends StatelessWidget {
                       color: colorScheme.onError,
                     ),
                   )
-                : const Icon(Icons.delete_outline_rounded),
+                : const Icon(OperitIcons.delete_outline_rounded),
             label: Text(
               l10n.settingsWorkspaceDeleteSelected(
                 selectedWorkspaceNames.length,
@@ -391,7 +392,7 @@ class _UnboundWorkspaceRow extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 12),
-            Icon(Icons.folder_outlined, color: colorScheme.onSurfaceVariant),
+            Icon(OperitIcons.folder_outlined, color: colorScheme.onSurfaceVariant),
           ],
         ),
       ),

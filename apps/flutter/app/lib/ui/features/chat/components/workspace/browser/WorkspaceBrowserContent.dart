@@ -23,6 +23,7 @@ import 'permissions/WorkspaceBrowserPermissionSheet.dart';
 import 'surface/WorkspaceBrowserSurface.dart';
 import 'userscripts/WorkspaceUserscriptSheet.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class WorkspaceBrowserContent extends StatefulWidget {
   const WorkspaceBrowserContent({
     super.key,
@@ -247,7 +248,7 @@ class _WorkspaceBrowserContentState extends State<WorkspaceBrowserContent> {
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           child: Row(
             children: <Widget>[
-              const Icon(Icons.download_outlined, size: 20),
+              const Icon(OperitIcons.download_outlined, size: 20),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
@@ -262,7 +263,7 @@ class _WorkspaceBrowserContentState extends State<WorkspaceBrowserContent> {
                 l10n.downloads,
                 style: Theme.of(context).textTheme.labelMedium,
               ),
-              const Icon(Icons.chevron_right_rounded, size: 20),
+              const Icon(OperitIcons.chevron_right_rounded, size: 20),
             ],
           ),
         ),

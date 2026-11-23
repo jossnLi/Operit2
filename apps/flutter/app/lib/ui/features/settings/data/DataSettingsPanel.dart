@@ -27,6 +27,7 @@ import '../../../common/components/M3LoadingIndicator.dart';
 import '../../../theme/OperitGlassSurface.dart';
 import '../components/SettingsControlStyles.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 const XTypeGroup _rawSnapshotFileTypeGroup = XTypeGroup(
   label: 'Operit snapshot',
   extensions: <String>['opsnapshot', 'zip'],
@@ -613,7 +614,7 @@ class _DataSettingsPanelState extends State<DataSettingsPanel> {
           onPressed: _busy ? null : _exportDiagnosticLogs,
           icon: _exportingLogs
               ? const M3LoadingIndicator(size: 20)
-              : const Icon(Icons.download_outlined),
+              : const Icon(OperitIcons.download_outlined),
           label: Text(
             _exportingLogs
                 ? l10n.settingsDataLogsExporting
@@ -692,7 +693,7 @@ class _DataSettingsPanelState extends State<DataSettingsPanel> {
                             _showMessage(l10n.settingsDataBackupSaved);
                           }
                         }),
-                  icon: const Icon(Icons.backup_outlined),
+                  icon: const Icon(OperitIcons.backup_outlined),
                   label: Text(l10n.settingsDataBackupNow),
                 ),
               OutlinedButton.icon(
@@ -701,7 +702,7 @@ class _DataSettingsPanelState extends State<DataSettingsPanel> {
                     : () => _runBackupAction(() async {
                         await service.selectDirectory();
                       }),
-                icon: const Icon(Icons.folder_open_outlined),
+                icon: const Icon(OperitIcons.folder_open_outlined),
                 label: Text(
                   ready ? l10n.chatBackupChange : l10n.chatBackupChoose,
                 ),
@@ -743,7 +744,7 @@ class _DataSettingsPanelState extends State<DataSettingsPanel> {
           subtitle: description == null ? null : Text(description),
           trailing: working
               ? const M3LoadingIndicator(size: 20)
-              : const Icon(Icons.chevron_right_rounded),
+              : const Icon(OperitIcons.chevron_right_rounded),
           onTap: _busy ? null : onTap,
         ),
         if (working && progress != null)
@@ -780,7 +781,7 @@ class _DataSettingsPanelState extends State<DataSettingsPanel> {
               title: l10n.settingsDataRecoverySection,
               children: [
                 _action(
-                  icon: Icons.restore_outlined,
+                  icon: OperitIcons.restore_outlined,
                   title: l10n.chatRestoreTitle,
                   description: l10n.settingsDataRestoreDatabaseDescription,
                   onTap: () => _runBackupAction(() async {
@@ -789,7 +790,7 @@ class _DataSettingsPanelState extends State<DataSettingsPanel> {
                 ),
                 const Divider(height: 1),
                 _action(
-                  icon: Icons.folder_zip_outlined,
+                  icon: OperitIcons.folder_zip_outlined,
                   title: l10n.settingsDataImportRawSnapshot,
                   description: l10n.settingsDataRestoreArchiveDescription,
                   onTap: _importRawSnapshot,
@@ -800,7 +801,7 @@ class _DataSettingsPanelState extends State<DataSettingsPanel> {
               title: l10n.settingsDataImportSection,
               children: [
                 _action(
-                  icon: Icons.move_to_inbox_outlined,
+                  icon: OperitIcons.move_to_inbox_outlined,
                   title: l10n.settingsDataImportOperit1Snapshot,
                   description: l10n.settingsDataImportOperit1Description,
                   onTap: _importOperit1Snapshot,
@@ -812,14 +813,14 @@ class _DataSettingsPanelState extends State<DataSettingsPanel> {
                 ),
                 const Divider(height: 1),
                 _action(
-                  icon: Icons.chat_bubble_outline_rounded,
+                  icon: OperitIcons.chat_bubble_outline_rounded,
                   title: l10n.settingsDataImportChatJson,
                   description: l10n.settingsDataImportChatJsonDescription,
                   onTap: () => _importJson(chat: true),
                 ),
                 const Divider(height: 1),
                 _action(
-                  icon: Icons.tune_outlined,
+                  icon: OperitIcons.tune_outlined,
                   title: l10n.settingsDataImportModelJson,
                   description: l10n.settingsDataImportModelJsonDescription,
                   onTap: () => _importJson(chat: false),
@@ -839,19 +840,19 @@ class _DataSettingsPanelState extends State<DataSettingsPanel> {
                   expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     _action(
-                      icon: Icons.folder_zip_outlined,
+                      icon: OperitIcons.folder_zip_outlined,
                       title: l10n.settingsDataExportRawSnapshot,
                       description:
                           l10n.settingsDataExportRawSnapshotDescription,
                       onTap: _exportRawSnapshot,
                     ),
                     _action(
-                      icon: Icons.chat_bubble_outline_rounded,
+                      icon: OperitIcons.chat_bubble_outline_rounded,
                       title: l10n.settingsDataExportChatJson,
                       onTap: () => _exportJson(chat: true),
                     ),
                     _action(
-                      icon: Icons.tune_outlined,
+                      icon: OperitIcons.tune_outlined,
                       title: l10n.settingsDataExportModelJson,
                       onTap: () => _exportJson(chat: false),
                     ),
@@ -921,7 +922,7 @@ class _StorageLocationLine extends StatelessWidget {
       children: <Widget>[
         ListTile(
           contentPadding: EdgeInsets.zero,
-          leading: Icon(Icons.folder_copy_outlined, color: colorScheme.primary),
+          leading: Icon(OperitIcons.folder_copy_outlined, color: colorScheme.primary),
           title: Text(
             l10n.settingsDataStorageSection,
             style: const TextStyle(fontWeight: FontWeight.w700),
@@ -932,7 +933,7 @@ class _StorageLocationLine extends StatelessWidget {
           ),
           trailing: FilledButton.tonalIcon(
             onPressed: onChange,
-            icon: const Icon(Icons.drive_folder_upload_outlined),
+            icon: const Icon(OperitIcons.drive_folder_upload_outlined),
             label: Text(l10n.settingsDataChooseStorageRoots),
           ),
         ),
@@ -1247,7 +1248,7 @@ class _StorageRootEditField extends StatelessWidget {
         suffixIcon: IconButton(
           onPressed: onBrowse,
           tooltip: label,
-          icon: const Icon(Icons.folder_open_outlined),
+          icon: const Icon(OperitIcons.folder_open_outlined),
         ),
       ),
       autocorrect: false,

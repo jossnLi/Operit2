@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../viewmodel/ChatViewModel.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 enum WorkspaceChangeConfirmMode { rollback, editAndResend }
 
 class WorkspaceChangeConfirmDialog extends StatelessWidget {
@@ -113,10 +114,10 @@ class WorkspaceChangeConfirmDialog extends StatelessWidget {
 IconData _iconForChange(Object? changeType) {
   final type = changeType.toString().toLowerCase();
   if (type.contains('delete')) {
-    return Icons.delete_outline_rounded;
+    return OperitIcons.delete_outline_rounded;
   }
   if (type.contains('create') || type.contains('add')) {
-    return Icons.add_circle_outline_rounded;
+    return OperitIcons.add_circle_outline_rounded;
   }
-  return Icons.edit_outlined;
+  return OperitIcons.edit_outlined;
 }

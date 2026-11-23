@@ -10,6 +10,7 @@ import '../../../../core/proxy/generated/CoreProxyModels.g.dart' as core_proxy;
 import '../../../../l10n/generated/app_localizations.dart';
 import 'CodexLoginCallback.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// Signs in to ChatGPT Codex through the browser callback or a device code.
 Future<core_proxy.CodexLoginResult?> showCodexLoginDialog({
   required BuildContext context,
@@ -219,7 +220,7 @@ class _CodexLoginDialogState extends State<CodexLoginDialog> {
                     Uri.parse(_device!.verificationUrl),
                     mode: LaunchMode.externalApplication,
                   ),
-                  icon: const Icon(Icons.open_in_browser_rounded),
+                  icon: const Icon(OperitIcons.open_in_browser_rounded),
                   label: Text(l10n.settingsModelCodexOpenPage),
                 ),
               ),

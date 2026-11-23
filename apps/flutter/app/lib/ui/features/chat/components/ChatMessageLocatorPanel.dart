@@ -8,6 +8,7 @@ import '../../../../l10n/generated/app_localizations.dart';
 import '../viewmodel/ChatViewModel.dart';
 import 'ChatMessageLocatorContent.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// Searches persisted history independently of the transcript's display window.
 class ChatMessageLocatorPanel extends StatefulWidget {
   const ChatMessageLocatorPanel({
@@ -138,7 +139,7 @@ class _ChatMessageLocatorPanelState extends State<ChatMessageLocatorPanel> {
                 child: Row(
                   children: [
                     Icon(
-                      Icons.manage_search_rounded,
+                      OperitIcons.manage_search_rounded,
                       size: 21,
                       color: colors.primary,
                     ),
@@ -154,7 +155,7 @@ class _ChatMessageLocatorPanelState extends State<ChatMessageLocatorPanel> {
                     IconButton(
                       tooltip: l10n.close,
                       onPressed: widget.onClose,
-                      icon: const Icon(Icons.close_rounded, size: 19),
+                      icon: const Icon(OperitIcons.close_rounded, size: 19),
                     ),
                   ],
                 ),
@@ -173,7 +174,7 @@ class _ChatMessageLocatorPanelState extends State<ChatMessageLocatorPanel> {
                     hintStyle: theme.textTheme.bodyMedium?.copyWith(
                       color: colors.onSurfaceVariant,
                     ),
-                    prefixIcon: const Icon(Icons.search_rounded, size: 20),
+                    prefixIcon: const Icon(OperitIcons.search_rounded, size: 20),
                     suffixIcon: _search.text.isEmpty
                         ? null
                         : IconButton(
@@ -182,7 +183,7 @@ class _ChatMessageLocatorPanelState extends State<ChatMessageLocatorPanel> {
                               _search.clear();
                               _queryChanged('');
                             },
-                            icon: const Icon(Icons.close_rounded, size: 18),
+                            icon: const Icon(OperitIcons.close_rounded, size: 18),
                           ),
                     filled: true,
                     fillColor: colors.surfaceContainerHighest.withValues(
@@ -255,19 +256,19 @@ class _ChatMessageLocatorPanelState extends State<ChatMessageLocatorPanel> {
                       )
                     : _loadFailed
                     ? _empty(
-                        Icons.cloud_off_rounded,
+                        OperitIcons.cloud_off_rounded,
                         l10n.messageLocatorLoadFailed,
                         action: TextButton.icon(
                           onPressed: _loadEntries,
-                          icon: const Icon(Icons.refresh_rounded, size: 17),
+                          icon: const Icon(OperitIcons.refresh_rounded, size: 17),
                           label: Text(l10n.retry),
                         ),
                       )
                     : entries.isEmpty
                     ? _empty(
                         _favoritesOnly
-                            ? Icons.star_outline_rounded
-                            : Icons.search_off_rounded,
+                            ? OperitIcons.star_outline_rounded
+                            : OperitIcons.search_off_rounded,
                         _favoritesOnly && _search.text.trim().isEmpty
                             ? l10n.messageLocatorNoFavorites
                             : l10n.messageLocatorNoMatches,
@@ -301,7 +302,7 @@ class _ChatMessageLocatorPanelState extends State<ChatMessageLocatorPanel> {
       label: Text(label),
       avatar: favorites
           ? Icon(
-              Icons.star_rounded,
+              OperitIcons.star_rounded,
               size: 15,
               color: selected
                   ? colors.onSecondaryContainer
@@ -387,7 +388,7 @@ class _ChatMessageLocatorPanelState extends State<ChatMessageLocatorPanel> {
                       Row(
                         children: [
                           if (active) ...[
-                            Icon(Icons.circle_outlined, size: 5, color: colors.primary),
+                            Icon(OperitIcons.circle_outlined, size: 5, color: colors.primary),
                             const SizedBox(width: 6),
                           ],
                           Expanded(
@@ -447,8 +448,8 @@ class _ChatMessageLocatorPanelState extends State<ChatMessageLocatorPanel> {
                     )
                   : Icon(
                       favorite
-                          ? Icons.star_rounded
-                          : Icons.star_outline_rounded,
+                          ? OperitIcons.star_rounded
+                          : OperitIcons.star_outline_rounded,
                       size: 19,
                       color: favorite
                           ? colors.primary

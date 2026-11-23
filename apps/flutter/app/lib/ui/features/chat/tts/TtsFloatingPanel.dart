@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'TtsPlaybackController.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class TtsFloatingPanel extends StatefulWidget {
   /// Creates the process-wide floating TTS control panel.
   const TtsFloatingPanel({super.key});
@@ -108,7 +109,7 @@ class _TtsFloatingPanelState extends State<TtsFloatingPanel> {
                 Row(
                   children: <Widget>[
                     Icon(
-                      Icons.graphic_eq_rounded,
+                      OperitIcons.graphic_eq_rounded,
                       size: 18,
                       color: Theme.of(context).colorScheme.primary,
                     ),
@@ -124,7 +125,7 @@ class _TtsFloatingPanelState extends State<TtsFloatingPanel> {
                     IconButton(
                       tooltip: '关闭',
                       visualDensity: VisualDensity.compact,
-                      icon: const Icon(Icons.close_rounded, size: 18),
+                      icon: const Icon(OperitIcons.close_rounded, size: 18),
                       onPressed: () {
                         if (state.phase == TtsPlaybackPhase.playing ||
                             state.phase == TtsPlaybackPhase.paused ||
@@ -174,8 +175,8 @@ class _TtsFloatingPanelState extends State<TtsFloatingPanel> {
                           : '暂停',
                       icon: Icon(
                         state.phase == TtsPlaybackPhase.paused
-                            ? Icons.play_arrow_rounded
-                            : Icons.pause_rounded,
+                            ? OperitIcons.play_arrow_rounded
+                            : OperitIcons.pause_rounded,
                         size: 18,
                       ),
                       onPressed: state.phase == TtsPlaybackPhase.playing
@@ -187,7 +188,7 @@ class _TtsFloatingPanelState extends State<TtsFloatingPanel> {
                     const SizedBox(width: 8),
                     IconButton.filledTonal(
                       tooltip: '停止',
-                      icon: const Icon(Icons.stop_rounded, size: 18),
+                      icon: const Icon(OperitIcons.stop_rounded, size: 18),
                       onPressed:
                           state.phase == TtsPlaybackPhase.playing ||
                               state.phase == TtsPlaybackPhase.paused ||

@@ -13,6 +13,7 @@ import '../components/SettingsControlStyles.dart';
 import 'SpaceAuditLabels.dart';
 import 'SpaceIdentityLabels.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// Shows the local identity and the administrator controls it unlocks.
 ///
 /// The panel owns identity definitions and audit only: devices and their
@@ -109,7 +110,7 @@ class _NetworkControlPanelState extends State<NetworkControlPanel> {
                 ).refreshIndicatorSemanticLabel,
                 style: SettingsControlStyles.entityIconButton(),
                 onPressed: _reloadSettings,
-                icon: const Icon(Icons.refresh_outlined),
+                icon: const Icon(OperitIcons.refresh_outlined),
               ),
             ],
           )
@@ -149,7 +150,7 @@ class _NetworkControlPanelState extends State<NetworkControlPanel> {
           action: TextButton.icon(
             style: SettingsControlStyles.sectionTextButton(),
             onPressed: () => _defineIdentity(l10n),
-            icon: const Icon(Icons.add_outlined, size: 16),
+            icon: const Icon(OperitIcons.add_outlined, size: 16),
             label: Text(l10n.settingsRuntimeControlAddRole),
           ),
           child: _FlatList(
@@ -193,7 +194,7 @@ class _NetworkControlPanelState extends State<NetworkControlPanel> {
                 runSpacing: 4,
                 children: <Widget>[
                   Icon(
-                    Icons.verified_user_outlined,
+                    OperitIcons.verified_user_outlined,
                     size: 18,
                     color: theme.colorScheme.primary,
                   ),
@@ -226,7 +227,7 @@ class _NetworkControlPanelState extends State<NetworkControlPanel> {
               ).refreshIndicatorSemanticLabel,
               style: SettingsControlStyles.entityIconButton(),
               onPressed: _reloadSettings,
-              icon: const Icon(Icons.refresh_outlined),
+              icon: const Icon(OperitIcons.refresh_outlined),
             ),
           ],
         ),
@@ -256,13 +257,13 @@ class _NetworkControlPanelState extends State<NetworkControlPanel> {
               IconButton(
                 tooltip: l10n.settingsRuntimeControlEditRole,
                 style: SettingsControlStyles.entityIconButton(),
-                icon: const Icon(Icons.edit_outlined, size: 20),
+                icon: const Icon(OperitIcons.edit_outlined, size: 20),
                 onPressed: () => _editIdentity(role, l10n),
               ),
               IconButton(
                 tooltip: l10n.settingsRuntimeControlDeleteRole,
                 style: SettingsControlStyles.entityIconButton(),
-                icon: const Icon(Icons.delete_outline_rounded, size: 20),
+                icon: const Icon(OperitIcons.delete_outline_rounded, size: 20),
                 onPressed: () => _deleteIdentity(role, l10n),
               ),
             ],
@@ -412,7 +413,7 @@ class _NetworkControlPanelState extends State<NetworkControlPanel> {
         child: Row(
           children: <Widget>[
             Icon(
-              Icons.history_outlined,
+              OperitIcons.history_outlined,
               size: 18,
               color: Theme.of(context).colorScheme.onSurfaceVariant,
             ),
@@ -483,8 +484,8 @@ class _NetworkControlPanelState extends State<NetworkControlPanel> {
               padding: const EdgeInsets.only(top: 2),
               child: Icon(
                 record.accepted
-                    ? Icons.check_circle_outline_rounded
-                    : Icons.block_outlined,
+                    ? OperitIcons.check_circle_outline_rounded
+                    : OperitIcons.block_outlined,
                 size: 18,
                 color: resultColor,
               ),
@@ -535,7 +536,7 @@ class _NetworkControlPanelState extends State<NetworkControlPanel> {
               ),
             ),
             Icon(
-              Icons.chevron_right_rounded,
+              OperitIcons.chevron_right_rounded,
               size: 18,
               color: theme.colorScheme.onSurfaceVariant,
             ),

@@ -27,6 +27,7 @@ import '../common/ChatPastedImageHandler.dart';
 import '../common/InputProcessingStatusLane.dart';
 import '../common/PendingQueueMessageItem.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class ClassicChatInputSection extends StatefulWidget {
   const ClassicChatInputSection({
     super.key,
@@ -597,7 +598,7 @@ class _ClassicInputBody extends StatelessWidget {
             settings: KeyedSubtree(
               key: settingsKey,
               child: _ClassicIconTapTarget(
-                icon: Icons.tune_outlined,
+                icon: OperitIcons.tune_outlined,
                 color: colorScheme.onSurfaceVariant,
                 onTap: onSettings,
                 imageAsset: OperitTheme.of(
@@ -640,7 +641,7 @@ class _ClassicInputBody extends StatelessWidget {
               : const CircleBorder(),
           clipBehavior: Clip.antiAlias,
           child: _ClassicIconTapTarget(
-            icon: Icons.add_rounded,
+            icon: OperitIcons.add_rounded,
             color: colorScheme.onSurfaceVariant.withValues(alpha: 0.9),
             onTap: onAttach,
             imageAsset: OperitTheme.of(
@@ -709,11 +710,11 @@ class _ClassicInputBody extends StatelessWidget {
                     canSend: canSendMessage,
                   ),
             icon: isSpeechRecording
-                ? Icons.stop_rounded
+                ? OperitIcons.stop_rounded
                 : isSpeechTranscribing
-                ? Icons.graphic_eq_rounded
+                ? OperitIcons.graphic_eq_rounded
                 : showMissingHost
-                ? Icons.device_unknown_rounded
+                ? OperitIcons.device_unknown_rounded
                 : _classicActionIcon(
                     showCancelAction: showCancelAction,
                     showQueueAction: showQueueAction,
@@ -775,7 +776,7 @@ class _ClassicInputBody extends StatelessWidget {
                   ),
                   child: Center(
                     child: Icon(
-                      Icons.attach_file_rounded,
+                      OperitIcons.attach_file_rounded,
                       color: colorScheme.primary.withValues(alpha: 0.9),
                     ),
                   ),
@@ -969,7 +970,7 @@ class _ClassicAttachmentPackageOptionTile extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
           child: Row(
             children: <Widget>[
-              Icon(Icons.auto_awesome_rounded, size: 20, color: colorScheme.primary),
+              Icon(OperitIcons.auto_awesome_rounded, size: 20, color: colorScheme.primary),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
@@ -1177,7 +1178,7 @@ class _ClassicAttachmentRemoveButton extends StatelessWidget {
         containedInkWell: true,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(3, 2, 5, 2),
-          child: Icon(Icons.close_rounded, size: 10, color: color),
+          child: Icon(OperitIcons.close_rounded, size: 10, color: color),
         ),
       ),
     );
@@ -1209,7 +1210,7 @@ class _ClassicAttachmentImageRemoveButton extends StatelessWidget {
           child: const SizedBox(
             width: 18,
             height: 18,
-            child: Icon(Icons.close_rounded, size: 10, color: Colors.white),
+            child: Icon(OperitIcons.close_rounded, size: 10, color: Colors.white),
           ),
         ),
       ),
@@ -1301,9 +1302,9 @@ class _ClassicActionButton extends StatelessWidget {
 /// Chooses an icon for the attachment MIME type.
 IconData _classicAttachmentIcon(String mimeType) {
   if (_classicIsAttachmentImage(mimeType)) {
-    return Icons.image_outlined;
+    return OperitIcons.image_outlined;
   }
-  return Icons.description_outlined;
+  return OperitIcons.description_outlined;
 }
 
 /// Returns whether one attachment MIME type represents an image.
@@ -1364,15 +1365,15 @@ IconData _classicActionIcon({
   required bool canSend,
 }) {
   if (showCancelAction) {
-    return Icons.close_rounded;
+    return OperitIcons.close_rounded;
   }
   if (showQueueAction) {
-    return Icons.add_rounded;
+    return OperitIcons.add_rounded;
   }
   if (canSend) {
-    return Icons.arrow_upward_rounded;
+    return OperitIcons.arrow_upward_rounded;
   }
-  return Icons.mic_none_rounded;
+  return OperitIcons.mic_none_rounded;
 }
 
 /// Loads package attachment choices from package, skill, and MCP sources.

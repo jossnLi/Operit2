@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../runtime/RuntimeSettingsPanel.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class AccessLinksSettingsPanel extends StatelessWidget {
   const AccessLinksSettingsPanel({super.key, required this.onOpenProfile});
 
@@ -28,7 +29,7 @@ class AccessLinksSettingsPanel extends StatelessWidget {
   Widget _buildWebEntry(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return ListTile(
-      leading: const Icon(Icons.open_in_browser_outlined),
+      leading: const Icon(OperitIcons.open_in_browser_outlined),
       title: const Text('web.operit.app'),
       subtitle: Text(l10n.openInBrowser),
       onTap: () async {

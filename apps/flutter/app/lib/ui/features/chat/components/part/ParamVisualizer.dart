@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class ParamItem {
   const ParamItem({required this.name, required this.value});
 
@@ -78,7 +79,7 @@ class _ParamItemView extends StatelessWidget {
                   }
                 },
                 icon: Icon(
-                  Icons.content_copy_outlined,
+                  OperitIcons.content_copy_outlined,
                   size: 16,
                   color: theme.colorScheme.primary.withValues(alpha: 0.6),
                 ),

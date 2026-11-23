@@ -29,6 +29,7 @@ import 'ThinkingPreviewBuffer.dart';
 import 'ToolDisplayComponents.dart';
 import 'XmlCanvasBlockComponents.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class CustomXmlRenderer extends StatelessWidget {
   const CustomXmlRenderer({
     super.key,
@@ -734,7 +735,7 @@ class _ThinkPanelState extends State<_ThinkPanel> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Icon(
-                          Icons.psychology_outlined,
+                          OperitIcons.psychology_outlined,
                           size: ChatActivityRowStyle.iconSize,
                           color: widget.isStreaming
                               ? theme.colorScheme.primary
@@ -1296,7 +1297,7 @@ class _SearchSourceRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final icon = source.url.isEmpty ? Icons.search_rounded : Icons.language_rounded;
+    final icon = source.url.isEmpty ? OperitIcons.search_rounded : OperitIcons.language_rounded;
     return MessagePressShieldRegion(
       child: Material(
         color: Colors.transparent,
@@ -1367,14 +1368,14 @@ class _SearchFavicon extends StatelessWidget {
             return child;
           }
           return Icon(
-            Icons.language_rounded,
+            OperitIcons.language_rounded,
             size: size * 0.78,
             color: color.withValues(alpha: 0.45),
           );
         },
         errorBuilder: (context, error, stackTrace) {
           return Icon(
-            Icons.language_rounded,
+            OperitIcons.language_rounded,
             size: size * 0.78,
             color: color.withValues(alpha: 0.55),
           );
@@ -1398,7 +1399,7 @@ class _SearchSourceDetailDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
-    final icon = source.url.isEmpty ? Icons.search_rounded : Icons.language_rounded;
+    final icon = source.url.isEmpty ? OperitIcons.search_rounded : OperitIcons.language_rounded;
     return AlertDialog(
       icon: source.faviconUrl.isNotEmpty
           ? SizedBox.square(
@@ -1887,7 +1888,7 @@ class _WarningStatusRow extends StatelessWidget {
                 return ContentDetailDialog(
                   title: detailTitle,
                   content: detailText,
-                  icon: Icons.error_outline_rounded,
+                  icon: OperitIcons.error_outline_rounded,
                   onDismiss: () => Navigator.of(dialogContext).pop(),
                 );
               },

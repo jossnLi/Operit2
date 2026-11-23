@@ -33,6 +33,7 @@ import 'NavigationDrawerAppearance.dart';
 import 'SidebarMoreMenu.dart';
 import 'SidebarChatCreation.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 part 'DrawerContentGroups.dart';
 part 'DrawerContentDesktop.dart';
 part 'DrawerContentList.dart';
@@ -247,7 +248,7 @@ class _DrawerContentState extends State<DrawerContent> {
                   Navigator.of(context).pop(_WorkspaceBindingChoice.existing),
               child: const ListTile(
                 contentPadding: EdgeInsets.zero,
-                leading: Icon(Icons.folder_special_outlined),
+                leading: Icon(OperitIcons.folder_special_outlined),
                 title: Text('选择已有项目'),
                 subtitle: Text('把当前对话移动到已有项目'),
               ),
@@ -257,7 +258,7 @@ class _DrawerContentState extends State<DrawerContent> {
                 Navigator.of(context).pop(_WorkspaceBindingChoice.folder),
             child: const ListTile(
               contentPadding: EdgeInsets.zero,
-              leading: Icon(Icons.folder_open_outlined),
+              leading: Icon(OperitIcons.folder_open_outlined),
               title: Text('绑定本地文件夹'),
               subtitle: Text('无项目时创建项目，有项目时追加文件夹'),
             ),
@@ -267,7 +268,7 @@ class _DrawerContentState extends State<DrawerContent> {
                 Navigator.of(context).pop(_WorkspaceBindingChoice.create),
             child: const ListTile(
               contentPadding: EdgeInsets.zero,
-              leading: Icon(Icons.create_new_folder_outlined),
+              leading: Icon(OperitIcons.create_new_folder_outlined),
               title: Text('新建空白项目'),
               subtitle: Text('创建内部项目并移动当前对话'),
             ),
@@ -921,8 +922,8 @@ class _DrawerContentState extends State<DrawerContent> {
                 }),
                 child: Icon(
                   childrenExpanded
-                      ? Icons.keyboard_arrow_up_rounded
-                      : Icons.keyboard_arrow_down_rounded,
+                      ? OperitIcons.keyboard_arrow_up_rounded
+                      : OperitIcons.keyboard_arrow_down_rounded,
                   size: 16,
                   color: widget.appearance.itemColor.withValues(alpha: 0.78),
                 ),
@@ -982,7 +983,7 @@ class _DrawerContentState extends State<DrawerContent> {
               tooltip: widget.conversationsOnly ? '收起会话列表' : '收起侧边栏',
               onPressed: onCollapse,
               icon: Icon(
-                Icons.chevron_left_rounded,
+                OperitIcons.chevron_left_rounded,
                 size: 20,
                 color: widget.appearance.itemColor.withValues(alpha: 0.82),
               ),
@@ -1070,8 +1071,8 @@ class _DrawerContentState extends State<DrawerContent> {
                       const SizedBox(width: 8),
                       _ToolbarIconButton(
                         icon: _searchExpanded
-                            ? Icons.search_off_rounded
-                            : Icons.search_rounded,
+                            ? OperitIcons.search_off_rounded
+                            : OperitIcons.search_rounded,
                         tooltip: _searchExpanded ? '收起搜索' : '搜索对话',
                         appearance: widget.appearance,
                         active: _searchExpanded || searching,
@@ -1172,7 +1173,7 @@ class _DrawerContentState extends State<DrawerContent> {
               children: <Widget>[
                 Expanded(
                   child: BottomSidebarAction(
-                    icon: Icons.inventory_2_outlined,
+                    icon: OperitIcons.inventory_2_outlined,
                     label: '包管理',
                     appearance: widget.appearance,
                     selected:
@@ -1186,7 +1187,7 @@ class _DrawerContentState extends State<DrawerContent> {
                 const SizedBox(width: 8),
                 Expanded(
                   child: BottomSidebarAction(
-                    icon: Icons.settings_outlined,
+                    icon: OperitIcons.settings_outlined,
                     label: '设置',
                     appearance: widget.appearance,
                     selected:
@@ -1247,7 +1248,7 @@ class _WorkspaceCreateBar extends StatelessWidget {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      Icon(Icons.add_rounded, size: 17, color: contentColor),
+                      Icon(OperitIcons.add_rounded, size: 17, color: contentColor),
                       const SizedBox(width: 6),
                       Flexible(
                         child: Text(
@@ -1361,7 +1362,7 @@ class _WorkspaceHeader extends StatelessWidget {
           children: <Widget>[
             if (!unbound && !flat) ...<Widget>[
               Icon(
-                Icons.folder_outlined,
+                OperitIcons.folder_outlined,
                 size: 15,
                 color: appearance.itemColor.withValues(alpha: 0.82),
               ),
@@ -1387,7 +1388,7 @@ class _WorkspaceHeader extends StatelessWidget {
             if (pinned) ...<Widget>[
               const SizedBox(width: 4),
               Icon(
-                Icons.push_pin_rounded,
+                OperitIcons.push_pin_rounded,
                 size: 13,
                 color: appearance.itemColor.withValues(alpha: 0.65),
               ),
@@ -1402,7 +1403,7 @@ class _WorkspaceHeader extends StatelessWidget {
             ),
             const SizedBox(width: 4),
             Icon(
-              expanded ? Icons.expand_less_rounded : Icons.expand_more_rounded,
+              expanded ? OperitIcons.expand_less_rounded : OperitIcons.expand_more_rounded,
               size: 18,
               color: appearance.itemColor.withValues(alpha: 0.70),
             ),
@@ -1566,25 +1567,25 @@ class _WorkspaceActionsMenu extends StatelessWidget {
         actions: <SidebarMenuAction<_WorkspaceQuickAction>>[
           SidebarMenuAction(
             value: _WorkspaceQuickAction.createChat,
-            icon: Icons.edit_note_rounded,
+            icon: OperitIcons.edit_note_rounded,
             label: '新建对话',
             enabled: canCreate,
           ),
           SidebarMenuAction(
             value: _WorkspaceQuickAction.createGroup,
-            icon: Icons.create_new_folder_outlined,
+            icon: OperitIcons.create_new_folder_outlined,
             label: '新建分组',
             enabled: canCreate,
           ),
           SidebarMenuAction(
             value: _WorkspaceQuickAction.togglePinned,
-            icon: pinned ? Icons.push_pin_outlined : Icons.push_pin_rounded,
+            icon: pinned ? OperitIcons.push_pin_outlined : OperitIcons.push_pin_rounded,
             label: pinned ? '取消置顶' : '置顶',
           ),
           if (canDelete)
             const SidebarMenuAction(
               value: _WorkspaceQuickAction.delete,
-              icon: Icons.delete_outline_rounded,
+              icon: OperitIcons.delete_outline_rounded,
               label: '删除工作区',
               dividerBefore: true,
               danger: true,

@@ -10,6 +10,7 @@ import '../../../theme/OperitFormStyles.dart';
 import '../utils/MCPCommandRunner.dart';
 import '../components/ExtensionScopeControls.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class MCPImportResult {
   const MCPImportResult({required this.message});
 
@@ -62,7 +63,7 @@ class _MCPImportDialogState extends State<MCPImportDialog> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     return AlertDialog(
-      icon: const Icon(Icons.cloud_outlined),
+      icon: const Icon(OperitIcons.cloud_outlined),
       title: const Text('添加 MCP'),
       content: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 520),
@@ -75,22 +76,22 @@ class _MCPImportDialogState extends State<MCPImportDialog> {
                 segments: const <ButtonSegment<_MCPImportMode>>[
                   ButtonSegment<_MCPImportMode>(
                     value: _MCPImportMode.zip,
-                    icon: Icon(Icons.archive_outlined),
+                    icon: Icon(OperitIcons.archive_outlined),
                     label: Text('ZIP'),
                   ),
                   ButtonSegment<_MCPImportMode>(
                     value: _MCPImportMode.github,
-                    icon: Icon(Icons.code_rounded),
+                    icon: Icon(OperitIcons.code_rounded),
                     label: Text('GitHub'),
                   ),
                   ButtonSegment<_MCPImportMode>(
                     value: _MCPImportMode.config,
-                    icon: Icon(Icons.data_object_outlined),
+                    icon: Icon(OperitIcons.data_object_outlined),
                     label: Text('配置'),
                   ),
                   ButtonSegment<_MCPImportMode>(
                     value: _MCPImportMode.form,
-                    icon: Icon(Icons.tune_outlined),
+                    icon: Icon(OperitIcons.tune_outlined),
                     label: Text('表单'),
                   ),
                 ],
@@ -144,7 +145,7 @@ class _MCPImportDialogState extends State<MCPImportDialog> {
                                 enabled: !_busy,
                                 decoration: const InputDecoration(
                                   labelText: 'GitHub 仓库 URL',
-                                  prefixIcon: Icon(Icons.link_rounded),
+                                  prefixIcon: Icon(OperitIcons.link_rounded),
                                 ),
                                 validator: _required,
                               ),
@@ -154,7 +155,7 @@ class _MCPImportDialogState extends State<MCPImportDialog> {
                               enabled: !_busy,
                               decoration: const InputDecoration(
                                 labelText: 'MCP ID',
-                                prefixIcon: Icon(Icons.tag_rounded),
+                                prefixIcon: Icon(OperitIcons.tag_rounded),
                               ),
                               validator: _required,
                             ),
@@ -164,7 +165,7 @@ class _MCPImportDialogState extends State<MCPImportDialog> {
                               enabled: !_busy,
                               decoration: const InputDecoration(
                                 labelText: '名称',
-                                prefixIcon: Icon(Icons.title_rounded),
+                                prefixIcon: Icon(OperitIcons.title_rounded),
                               ),
                               validator: _required,
                             ),
@@ -466,7 +467,7 @@ class _ZipPickerRow extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     return OutlinedButton.icon(
       onPressed: enabled ? onPick : null,
-      icon: const Icon(Icons.folder_zip_outlined),
+      icon: const Icon(OperitIcons.folder_zip_outlined),
       label: Align(
         alignment: Alignment.centerLeft,
         child: Text(
@@ -686,12 +687,12 @@ class _FormConfigPane extends StatelessWidget {
           segments: const <ButtonSegment<bool>>[
             ButtonSegment<bool>(
               value: false,
-              icon: Icon(Icons.terminal_outlined),
+              icon: Icon(OperitIcons.terminal_outlined),
               label: Text('本地'),
             ),
             ButtonSegment<bool>(
               value: true,
-              icon: Icon(Icons.public_outlined),
+              icon: Icon(OperitIcons.public_outlined),
               label: Text('远程'),
             ),
           ],
@@ -706,7 +707,7 @@ class _FormConfigPane extends StatelessWidget {
           enabled: enabled,
           decoration: const InputDecoration(
             labelText: '服务 ID',
-            prefixIcon: Icon(Icons.tag_rounded),
+            prefixIcon: Icon(OperitIcons.tag_rounded),
           ),
           validator: _required,
         ),
@@ -717,7 +718,7 @@ class _FormConfigPane extends StatelessWidget {
             enabled: enabled,
             decoration: const InputDecoration(
               labelText: 'URL',
-              prefixIcon: Icon(Icons.link_rounded),
+              prefixIcon: Icon(OperitIcons.link_rounded),
             ),
             validator: _required,
           ),
@@ -767,7 +768,7 @@ class _FormConfigPane extends StatelessWidget {
             enabled: enabled,
             decoration: const InputDecoration(
               labelText: '命令',
-              prefixIcon: Icon(Icons.terminal_outlined),
+              prefixIcon: Icon(OperitIcons.terminal_outlined),
             ),
             validator: _required,
           ),

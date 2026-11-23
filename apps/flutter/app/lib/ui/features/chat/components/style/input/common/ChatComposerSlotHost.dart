@@ -14,6 +14,7 @@ import '../../../../../../main/navigation/ToolPkgCatalogChangeBus.dart';
 import '../../../../../../theme/OperitTheme.dart';
 import '../../../../viewmodel/ChatViewModel.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// Renders enabled Compose DSL contributions for the host-owned composer slot.
 class ChatComposerSlotHost extends StatefulWidget {
   /// Creates the host for one chat composer slot.
@@ -116,7 +117,7 @@ class _ChatComposerSlotHostState extends State<ChatComposerSlotHost> {
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.error_outline_rounded, size: 14, color: errorColor),
+                    Icon(OperitIcons.error_outline_rounded, size: 14, color: errorColor),
                     const SizedBox(width: 6),
                     Expanded(
                       child: Text(

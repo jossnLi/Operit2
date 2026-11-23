@@ -12,6 +12,7 @@ import '../../../../../theme/OperitTheme.dart';
 import 'WorkspacePtyProcess.dart';
 import 'TerminalPinchZoom.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class WorkspaceTerminalContent extends StatefulWidget {
   const WorkspaceTerminalContent({
     super.key,
@@ -118,7 +119,7 @@ class _WorkspaceTerminalContentState extends State<WorkspaceTerminalContent> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Icon(
-                    Icons.terminal_outlined,
+                    OperitIcons.terminal_outlined,
                     size: 42,
                     color: theme.colorScheme.error,
                   ),
@@ -140,7 +141,7 @@ class _WorkspaceTerminalContentState extends State<WorkspaceTerminalContent> {
                   const SizedBox(height: 12),
                   FilledButton.icon(
                     onPressed: _restartSession,
-                    icon: const Icon(Icons.refresh_rounded),
+                    icon: const Icon(OperitIcons.refresh_rounded),
                     label: const Text('重试'),
                   ),
                 ],

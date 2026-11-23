@@ -17,6 +17,7 @@ import '../../features/packages/screens/ComposeDslImageSource.dart';
 import 'MarkdownImagePreview.dart';
 import 'MarkdownFileScope.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class MarkdownRemoteImage extends StatelessWidget {
   /// Creates a Markdown image backed by the runtime file or HTTP service.
   const MarkdownRemoteImage({
@@ -41,7 +42,7 @@ class MarkdownRemoteImage extends StatelessWidget {
   Widget build(BuildContext context) {
     final label = alt.trim().isEmpty ? url : alt.trim();
     final error = _MarkdownImageStatus(
-      icon: Icons.broken_image_outlined,
+      icon: OperitIcons.broken_image_outlined,
       label: label,
     );
     return LayoutBuilder(

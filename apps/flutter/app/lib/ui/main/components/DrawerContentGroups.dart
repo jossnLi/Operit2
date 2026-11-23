@@ -346,7 +346,7 @@ class _GroupSectionHeaderState extends State<_GroupSectionHeader> {
                     child: Row(
                       children: <Widget>[
                         Icon(
-                          Icons.folder_outlined,
+                          OperitIcons.folder_outlined,
                           size: widget.compact ? 13 : 14,
                           color: appearance.itemColor.withValues(
                             alpha: widget.compact ? 0.7 : 0.76,
@@ -371,7 +371,7 @@ class _GroupSectionHeaderState extends State<_GroupSectionHeader> {
                         if (widget.pinned) ...<Widget>[
                           const SizedBox(width: 4),
                           Icon(
-                            Icons.push_pin_rounded,
+                            OperitIcons.push_pin_rounded,
                             size: 12,
                             color: appearance.itemColor.withValues(alpha: 0.65),
                           ),
@@ -395,33 +395,33 @@ class _GroupSectionHeaderState extends State<_GroupSectionHeader> {
                               actions: <SidebarMenuAction<_GroupQuickAction>>[
                                 SidebarMenuAction(
                                   value: _GroupQuickAction.createChat,
-                                  icon: Icons.edit_note_rounded,
+                                  icon: OperitIcons.edit_note_rounded,
                                   label: '新建对话',
                                   enabled: widget.canCreate,
                                 ),
                                 SidebarMenuAction(
                                   value: _GroupQuickAction.createGroup,
-                                  icon: Icons.create_new_folder_outlined,
+                                  icon: OperitIcons.create_new_folder_outlined,
                                   label: '新建分组',
                                   enabled: widget.canCreate,
                                 ),
                                 if (widget.group.name != null)
                                   const SidebarMenuAction(
                                     value: _GroupQuickAction.rename,
-                                    icon: Icons.edit_outlined,
+                                    icon: OperitIcons.edit_outlined,
                                     label: '重命名',
                                   ),
                                 SidebarMenuAction(
                                   value: _GroupQuickAction.togglePinned,
                                   icon: widget.pinned
-                                      ? Icons.push_pin_outlined
-                                      : Icons.push_pin_rounded,
+                                      ? OperitIcons.push_pin_outlined
+                                      : OperitIcons.push_pin_rounded,
                                   label: widget.pinned ? '取消置顶' : '置顶',
                                 ),
                                 if (widget.group.name != null)
                                   const SidebarMenuAction(
                                     value: _GroupQuickAction.dissolve,
-                                    icon: Icons.folder_off_outlined,
+                                    icon: OperitIcons.folder_off_outlined,
                                     label: '解散分组',
                                     dividerBefore: true,
                                   ),
@@ -432,8 +432,8 @@ class _GroupSectionHeaderState extends State<_GroupSectionHeader> {
                         const SizedBox(width: 2),
                         Icon(
                           widget.expanded
-                              ? Icons.expand_less_rounded
-                              : Icons.expand_more_rounded,
+                              ? OperitIcons.expand_less_rounded
+                              : OperitIcons.expand_more_rounded,
                           size: 17,
                           color: appearance.itemColor.withValues(alpha: 0.62),
                         ),

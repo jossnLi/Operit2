@@ -11,6 +11,7 @@ import '../../../../core/proxy/generated/CoreProxyModels.g.dart';
 import '../market/ArtifactMarketSupport.dart';
 import 'GitHubOAuthLoginCallback.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// Selects whether GitHub authentication is rendered in Operit or externally.
 enum GitHubOAuthLoginMode { embedded, external }
 
@@ -343,7 +344,7 @@ class _GitHubOAuthLoginDialogState extends State<GitHubOAuthLoginDialog> {
               padding: const EdgeInsets.fromLTRB(24, 18, 16, 14),
               child: Row(
                 children: <Widget>[
-                  const Icon(Icons.account_circle_outlined),
+                  const Icon(OperitIcons.account_circle_outlined),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
@@ -365,7 +366,7 @@ class _GitHubOAuthLoginDialogState extends State<GitHubOAuthLoginDialog> {
                     IconButton(
                       tooltip: '取消登录',
                       onPressed: _cancelLogin,
-                      icon: const Icon(Icons.close_rounded),
+                      icon: const Icon(OperitIcons.close_rounded),
                     ),
                 ],
               ),
@@ -394,7 +395,7 @@ class _GitHubOAuthLoginDialogState extends State<GitHubOAuthLoginDialog> {
             if (waitingForBrowser || _isCompleting)
               const CircularProgressIndicator()
             else
-              const Icon(Icons.open_in_browser_rounded, size: 64),
+              const Icon(OperitIcons.open_in_browser_rounded, size: 64),
             const SizedBox(height: 24),
             Text(
               waitingForBrowser
@@ -469,14 +470,14 @@ class _GitHubOAuthLoginMethodDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             _GitHubOAuthLoginMethodTile(
-              icon: Icons.open_in_browser_rounded,
+              icon: OperitIcons.open_in_browser_rounded,
               title: '系统默认浏览器',
               subtitle: '使用浏览器现有的 GitHub 登录状态',
               onTap: () =>
                   Navigator.of(context).pop(GitHubOAuthLoginMode.external),
             ),
             _GitHubOAuthLoginMethodTile(
-              icon: Icons.web_outlined,
+              icon: OperitIcons.web_outlined,
               title: '内置浏览器',
               subtitle: '在 Operit 内完成 GitHub 登录',
               onTap: () =>

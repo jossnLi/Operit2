@@ -7,6 +7,7 @@ import 'file_preview/WorkspaceTextDocument.dart';
 import '../../../../common/contributions/PluginWorkspacePresentation.dart';
 import '../../../../common/icons/MaterialIconNameResolver.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// Describes the orientation of the two workspace panes.
 enum WorkspaceSplitAxis { horizontal, vertical }
 
@@ -22,7 +23,7 @@ class WorkspaceSession extends ChangeNotifier {
     const WorkspaceTab(
       kind: WorkspaceTabKind.home,
       title: '',
-      icon: Icons.home_outlined,
+      icon: OperitIcons.home_outlined,
       closable: false,
     ),
   ];
@@ -111,7 +112,7 @@ class WorkspaceSession extends ChangeNotifier {
       kind: WorkspaceTabKind.plugin,
       title: presentation.title,
       icon: presentation.icon == null
-          ? Icons.extension_outlined
+          ? OperitIcons.extension_outlined
           : MaterialIconNameResolver.resolve(presentation.icon!),
       pluginPresentation: presentation,
       identityToken: presentation.identity,

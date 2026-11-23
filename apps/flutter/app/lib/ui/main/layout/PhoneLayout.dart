@@ -23,6 +23,7 @@ import '../../theme/OperitGlassSurface.dart';
 import '../../common/interactions/DrawerGestureExclusion.dart';
 import '../../common/components/RetainedPage.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class PhoneLayout extends StatefulWidget {
   /// Creates the retained phone content and its animated navigation drawer.
   const PhoneLayout({
@@ -519,7 +520,7 @@ class _PhoneWorkspaceDropTarget extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     Icon(
-                      Icons.drive_folder_upload_outlined,
+                      OperitIcons.drive_folder_upload_outlined,
                       color: colors.primary,
                     ),
                     const SizedBox(height: 8),

@@ -11,6 +11,7 @@ import '../../../common/components/OperitDialog.dart';
 import '../../../theme/ThemeTemplateService.dart';
 import 'ThemeAppearancePreview.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class ThemeCreationChoice {
   const ThemeCreationChoice(this.name, this.source);
   final String name;
@@ -279,7 +280,7 @@ class _ThemeCreationDialogState extends State<ThemeCreationDialog> {
                       height: compact ? 44 : 58,
                       child: snapshot == null
                           ? Icon(
-                              Icons.extension_outlined,
+                              OperitIcons.extension_outlined,
                               color: scheme.primary,
                             )
                           : ClipRRect(
@@ -310,8 +311,8 @@ class _ThemeCreationDialogState extends State<ThemeCreationDialog> {
                     );
                     final selectedIcon = Icon(
                       selected
-                          ? Icons.check_circle_outline_rounded
-                          : Icons.radio_button_unchecked_rounded,
+                          ? OperitIcons.check_circle_outline_rounded
+                          : OperitIcons.radio_button_unchecked_rounded,
                       size: 18,
                       color: selected ? scheme.primary : scheme.outline,
                     );

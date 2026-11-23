@@ -9,6 +9,7 @@ import '../../../../core/proxy/generated/CoreProxyModels.g.dart' as core_proxy;
 import '../model/ExtensionCatalogController.dart';
 import 'ExtensionNavigation.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 enum _QuickAction { open, toggle, update, copyId }
 
 /// Quick actions for one extension: a menu at the pointer for right-clicks,
@@ -28,17 +29,17 @@ Future<void> showExtensionQuickActions(
       ExtensionCatalogController.isEnabled(entry);
   final skill = entry.kind == 'skill';
   final items = <(_QuickAction, IconData, String)>[
-    (_QuickAction.open, Icons.open_in_new_rounded, '打开详情'),
+    (_QuickAction.open, OperitIcons.open_in_new_rounded, '打开详情'),
     (
       _QuickAction.toggle,
-      enabled ? Icons.toggle_off_outlined : Icons.toggle_on_outlined,
+      enabled ? OperitIcons.toggle_off_outlined : OperitIcons.toggle_on_outlined,
       skill
           ? (enabled ? '对 AI 隐藏' : '让 AI 可见')
           : (enabled ? '停用' : '启用'),
     ),
     if (controller.hasUpdate(entry))
-      (_QuickAction.update, Icons.arrow_circle_up_rounded, '更新'),
-    (_QuickAction.copyId, Icons.content_copy_outlined, '复制 ID'),
+      (_QuickAction.update, OperitIcons.arrow_circle_up_rounded, '更新'),
+    (_QuickAction.copyId, OperitIcons.content_copy_outlined, '复制 ID'),
   ];
   final _QuickAction? action;
   if (pointer != null) {

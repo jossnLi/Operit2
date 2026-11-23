@@ -6,6 +6,7 @@ import '../components/ExtensionScopeControls.dart';
 
 import '../../../../core/proxy/generated/CoreProxyClients.g.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class SkillImportResult {
   const SkillImportResult({required this.message});
 
@@ -48,7 +49,7 @@ class _SkillImportDialogState extends State<SkillImportDialog> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     return AlertDialog(
-      icon: const Icon(Icons.build_outlined),
+      icon: const Icon(OperitIcons.build_outlined),
       title: const Text('添加技能'),
       content: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 560),
@@ -63,17 +64,17 @@ class _SkillImportDialogState extends State<SkillImportDialog> {
                   segments: const <ButtonSegment<_SkillImportMode>>[
                     ButtonSegment<_SkillImportMode>(
                       value: _SkillImportMode.github,
-                      icon: Icon(Icons.code_rounded),
+                      icon: Icon(OperitIcons.code_rounded),
                       label: Text('GitHub'),
                     ),
                     ButtonSegment<_SkillImportMode>(
                       value: _SkillImportMode.zip,
-                      icon: Icon(Icons.archive_outlined),
+                      icon: Icon(OperitIcons.archive_outlined),
                       label: Text('ZIP'),
                     ),
                     ButtonSegment<_SkillImportMode>(
                       value: _SkillImportMode.direct,
-                      icon: Icon(Icons.edit_note_rounded),
+                      icon: Icon(OperitIcons.edit_note_rounded),
                       label: Text('手写'),
                     ),
                   ],
@@ -99,7 +100,7 @@ class _SkillImportDialogState extends State<SkillImportDialog> {
                       decoration: const InputDecoration(
                         labelText: '仓库链接',
                         hintText: 'https://github.com/username/repo',
-                        prefixIcon: Icon(Icons.link_rounded),
+                        prefixIcon: Icon(OperitIcons.link_rounded),
                       ),
                       validator: _required,
                     ),
@@ -123,7 +124,7 @@ class _SkillImportDialogState extends State<SkillImportDialog> {
                           decoration: const InputDecoration(
                             labelText: '技能 ID',
                             hintText: 'my-skill',
-                            prefixIcon: Icon(Icons.tag_rounded),
+                            prefixIcon: Icon(OperitIcons.tag_rounded),
                           ),
                           validator: _required,
                         ),
@@ -133,7 +134,7 @@ class _SkillImportDialogState extends State<SkillImportDialog> {
                           enabled: !_busy,
                           decoration: const InputDecoration(
                             labelText: '描述',
-                            prefixIcon: Icon(Icons.notes_outlined),
+                            prefixIcon: Icon(OperitIcons.notes_outlined),
                           ),
                         ),
                         const SizedBox(height: 12),
@@ -163,7 +164,7 @@ class _SkillImportDialogState extends State<SkillImportDialog> {
                             ),
                             TextButton.icon(
                               onPressed: _busy ? null : _pickAttachments,
-                              icon: const Icon(Icons.attach_file_rounded, size: 18),
+                              icon: const Icon(OperitIcons.attach_file_rounded, size: 18),
                               label: const Text('添加附件'),
                             ),
                           ],
@@ -195,7 +196,7 @@ class _SkillImportDialogState extends State<SkillImportDialog> {
                                               ];
                                             });
                                           },
-                                    icon: const Icon(Icons.close_rounded, size: 18),
+                                    icon: const Icon(OperitIcons.close_rounded, size: 18),
                                   ),
                                 );
                               },
@@ -360,7 +361,7 @@ class _ZipPickerRow extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     return OutlinedButton.icon(
       onPressed: enabled ? onPick : null,
-      icon: const Icon(Icons.folder_zip_outlined),
+      icon: const Icon(OperitIcons.folder_zip_outlined),
       label: Align(
         alignment: Alignment.centerLeft,
         child: Text(

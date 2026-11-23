@@ -6,6 +6,7 @@ import '../../../../../../../l10n/generated/app_localizations.dart';
 import '../chrome/WorkspaceBrowserPopupWidgets.dart';
 import 'WorkspaceBrowserBookmarkStore.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class WorkspaceBrowserBookmarkSheet extends StatelessWidget {
   const WorkspaceBrowserBookmarkSheet({
     super.key,
@@ -27,13 +28,13 @@ class WorkspaceBrowserBookmarkSheet extends StatelessWidget {
         WorkspaceBrowserPopupHeader(title: l10n.bookmarks),
         if (items.isEmpty)
           WorkspaceBrowserPopupEmpty(
-            icon: Icons.bookmark_outline_rounded,
+            icon: OperitIcons.bookmark_outline_rounded,
             text: l10n.noBookmarks,
           )
         else
           for (final item in items)
             WorkspaceBrowserPopupRow(
-              icon: Icons.bookmark_outline_rounded,
+              icon: OperitIcons.bookmark_outline_rounded,
               title: item.title,
               subtitle: item.url,
               onTap: () => onOpen(item.url),
@@ -43,7 +44,7 @@ class WorkspaceBrowserBookmarkSheet extends StatelessWidget {
                   store.remove(item.url);
                   onChanged();
                 },
-                icon: const Icon(Icons.close_rounded, size: 17),
+                icon: const Icon(OperitIcons.close_rounded, size: 17),
                 visualDensity: VisualDensity.compact,
                 style: const ButtonStyle(
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,

@@ -26,6 +26,7 @@ import '../../common/components/CommonNetworkErrorView.dart';
 import '../../main/navigation/StartupRouteStrategy.dart';
 import '../../theme/OperitFormStyles.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 enum _AiSetupPage {
   intro,
   agreement,
@@ -1501,8 +1502,6 @@ class _AiSetupGuidePageState extends State<_AiSetupGuidePage>
                           ((ChatBackupService.instance.directory != null &&
                                   !ChatBackupService.instance.needsDirectory) ||
                               ChatBackupService.instance.promptDeferred),
-                      isAgreementPage: _isAgreementPage,
-                      isPermissionPage: _isPermissionPage,
                       onBack: _goToPreviousPage,
                       onPrimary: _primaryAction,
                       onSkip: () {
@@ -1708,8 +1707,6 @@ class _AiSetupSharedChrome extends StatelessWidget {
     required this.progressLabel,
     required this.primaryActionLabel,
     required this.canSkip,
-    required this.isAgreementPage,
-    required this.isPermissionPage,
     required this.onBack,
     required this.onPrimary,
     required this.onSkip,
@@ -1725,8 +1722,6 @@ class _AiSetupSharedChrome extends StatelessWidget {
   final String progressLabel;
   final String primaryActionLabel;
   final bool canSkip;
-  final bool isAgreementPage;
-  final bool isPermissionPage;
   final VoidCallback onBack;
   final VoidCallback onPrimary;
   final VoidCallback onSkip;
@@ -1933,7 +1928,7 @@ class _AiSetupSharedChrome extends StatelessWidget {
                   opacity: progressOpacity,
                   child: IconButton(
                     onPressed: currentPage == 0 ? null : onBack,
-                    icon: const Icon(Icons.arrow_back_rounded),
+                    icon: const Icon(OperitIcons.arrow_back_rounded),
                     color: colorScheme.primary,
                     disabledColor: colorScheme.onSurface.withValues(alpha: 0.3),
                     tooltip: '上一页',
@@ -1995,13 +1990,6 @@ class _AiSetupSharedChrome extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(fontWeight: FontWeight.w600),
                           ),
-                        ),
-                        const SizedBox(width: 6),
-                        Icon(
-                          isAgreementPage || isPermissionPage
-                              ? Icons.check_rounded
-                              : Icons.arrow_forward_rounded,
-                          size: 18,
                         ),
                       ],
                     ),
@@ -2088,19 +2076,19 @@ class _AiSetupIntroPage extends StatelessWidget {
                                 ),
                                 SizedBox(height: compact ? 16 : 22),
                                 const _ChatGptFeatureCard(
-                                  icon: Icons.chat_bubble_outline_rounded,
+                                  icon: OperitIcons.chat_bubble_outline_rounded,
                                   title: '智能对话与深度思考',
                                   description: '支持主流顶尖模型切换，理解长上下文，随时激发创作灵感与分析问题',
                                 ),
                                 SizedBox(height: compact ? 8 : 12),
                                 const _ChatGptFeatureCard(
-                                  icon: Icons.terminal_rounded,
+                                  icon: OperitIcons.terminal_rounded,
                                   title: '随身运行与本地沙盒',
                                   description: '内置独立安全终端与插件扩展，数据完全保留在本地，私密可控',
                                 ),
                                 SizedBox(height: compact ? 8 : 12),
                                 const _ChatGptFeatureCard(
-                                  icon: Icons.devices_rounded,
+                                  icon: OperitIcons.devices_rounded,
                                   title: '多端互联与设备空间',
                                   description: '局域网点对点免密协同配对，模型配置与对话数据多端实时同步',
                                 ),
@@ -2290,14 +2278,14 @@ class _AiSetupModePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               const _SetupSectionHeader(
-                icon: Icons.route_rounded,
+                icon: OperitIcons.route_rounded,
                 eyebrow: '启动方式',
                 title: '选择上手方式',
                 description: '可以配置新环境、导入 Operit1 数据、加入已有设备空间，或从以前的备份恢复聊天记录。',
               ),
               const SizedBox(height: 22),
               _SetupModeTile(
-                icon: Icons.flash_on_rounded,
+                icon: OperitIcons.flash_on_rounded,
                 title: '快速开始',
                 subtitle: '配置模型供应商，直接完成基础设置',
                 selected: selectedMode == _AiSetupStartMode.quickStart,
@@ -2305,7 +2293,7 @@ class _AiSetupModePage extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               _SetupModeTile(
-                icon: Icons.move_to_inbox_rounded,
+                icon: OperitIcons.move_to_inbox_rounded,
                 title: '从 Operit1 导入',
                 subtitle: '导入旧版配置和数据',
                 selected: selectedMode == _AiSetupStartMode.operit1Import,
@@ -2313,7 +2301,7 @@ class _AiSetupModePage extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               _SetupModeTile(
-                icon: Icons.cloud_sync_rounded,
+                icon: OperitIcons.cloud_sync_rounded,
                 title: '加入已有设备空间',
                 subtitle: '扫描附近设备空间，加入后直接同步模型和数据',
                 selected: selectedMode == _AiSetupStartMode.deviceSpace,
@@ -2321,7 +2309,7 @@ class _AiSetupModePage extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               _SetupModeTile(
-                icon: Icons.restore_rounded,
+                icon: OperitIcons.restore_rounded,
                 title: AppLocalizations.of(context)!.chatRestoreOnboardingTitle,
                 subtitle: AppLocalizations.of(
                   context,
@@ -2363,7 +2351,7 @@ class _AiSetupDeviceSpacePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               const _SetupSectionHeader(
-                icon: Icons.cloud_sync_rounded,
+                icon: OperitIcons.cloud_sync_rounded,
                 eyebrow: '设备空间',
                 title: '加入设备空间',
                 description: '点击添加设备，选择附近的设备并完成配对。管理员批准加入后，才会同步配置和数据。',
@@ -2418,7 +2406,7 @@ class _AiSetupAgreementPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 _SetupSectionHeader(
-                  icon: Icons.description_outlined,
+                  icon: OperitIcons.description_outlined,
                   eyebrow: isEnglish ? 'User Agreement' : '用户协议',
                   title: isEnglish
                       ? 'User Agreement and Privacy Policy'
@@ -2666,7 +2654,7 @@ class _AiSetupStoragePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               const _SetupSectionHeader(
-                icon: Icons.folder_copy_rounded,
+                icon: OperitIcons.folder_copy_rounded,
                 eyebrow: '存储位置',
                 title: '确认本地存储位置',
                 description: '运行时数据和工作区数据相互独立，可以直接输入路径或分别选择目录。',
@@ -2675,7 +2663,7 @@ class _AiSetupStoragePage extends StatelessWidget {
               _StoragePathField(
                 controller: runtimeRootController,
                 label: '运行时目录',
-                icon: Icons.memory_rounded,
+                icon: OperitIcons.memory_rounded,
                 enabled: !loading && !saving,
                 onChanged: onPathChanged,
                 onBrowse: onChooseRuntimeRoot,
@@ -2684,7 +2672,7 @@ class _AiSetupStoragePage extends StatelessWidget {
               _StoragePathField(
                 controller: workspaceRootController,
                 label: '工作区目录',
-                icon: Icons.workspaces_outlined,
+                icon: OperitIcons.workspaces_outlined,
                 enabled: !loading && !saving,
                 onChanged: onPathChanged,
                 onBrowse: onChooseWorkspaceRoot,
@@ -2767,7 +2755,7 @@ class _StoragePathField extends StatelessWidget {
         suffixIcon: IconButton(
           onPressed: enabled ? onBrowse : null,
           tooltip: '选择$label',
-          icon: const Icon(Icons.folder_open_rounded),
+          icon: const Icon(OperitIcons.folder_open_rounded),
         ),
         border: const OutlineInputBorder(),
       ),
@@ -2831,7 +2819,7 @@ class OnboardingSnapshotImportPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               const _SetupSectionHeader(
-                icon: Icons.move_to_inbox_rounded,
+                icon: OperitIcons.move_to_inbox_rounded,
                 eyebrow: '导入配置',
                 title: '从 Operit1 导入',
                 description:
@@ -2847,7 +2835,7 @@ class OnboardingSnapshotImportPage extends StatelessWidget {
                           dimension: 18,
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
-                      : const Icon(Icons.folder_open_rounded, size: 18),
+                      : const Icon(OperitIcons.folder_open_rounded, size: 18),
                   label: Text(reading ? '正在读取快照' : '选择快照文件'),
                 ),
               ),
@@ -3182,8 +3170,8 @@ class _SetupModeTile extends StatelessWidget {
                 const SizedBox(width: 12),
                 Icon(
                   selected
-                      ? Icons.check_circle_rounded
-                      : Icons.radio_button_unchecked_rounded,
+                      ? OperitIcons.check_circle_rounded
+                      : OperitIcons.radio_button_unchecked_rounded,
                   size: 22,
                   color: selected
                       ? colorScheme.primary
@@ -3267,7 +3255,7 @@ class _AiSetupModelPage extends StatelessWidget {
                 return ListTile(
                   selected: selected,
                   leading: selected
-                      ? const Icon(Icons.check_rounded)
+                      ? const Icon(OperitIcons.check_rounded)
                       : const SizedBox(width: 24),
                   title: Text(option.endpoint),
                   subtitle: option.label == option.endpoint
@@ -3307,7 +3295,7 @@ class _AiSetupModelPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 _SetupSectionHeader(
-                  icon: Icons.auto_awesome_rounded,
+                  icon: OperitIcons.auto_awesome_rounded,
                   eyebrow: '模型配置',
                   title: '完成模型配置',
                   description: '选择模型供应商，填写 API Key，拉取并设置默认模型。',
@@ -3344,15 +3332,11 @@ class _AiSetupModelPage extends StatelessWidget {
                       : Align(
                           key: const ValueKey<String>('confirm-provider'),
                           alignment: Alignment.centerLeft,
-                          child: FilledButton.tonalIcon(
+                          child: FilledButton.tonal(
                             onPressed: selectedProviderTypeId == null
                                 ? null
                                 : onProviderConfirmed,
-                            icon: const Icon(
-                              Icons.arrow_forward_rounded,
-                              size: 18,
-                            ),
-                            label: const Text('继续配置'),
+                            child: const Text('继续配置'),
                           ),
                         ),
                 ),
@@ -3375,7 +3359,7 @@ class _AiSetupModelPage extends StatelessWidget {
                                     : IconButton(
                                         tooltip: '服务地址',
                                         icon: const Icon(
-                                          Icons.arrow_drop_down_rounded,
+                                          OperitIcons.arrow_drop_down_rounded,
                                         ),
                                         onPressed: () =>
                                             _showEndpointOptionsDialog(
@@ -3410,7 +3394,7 @@ class _AiSetupModelPage extends StatelessWidget {
                                           strokeWidth: 2,
                                         ),
                                       )
-                                    : const Icon(Icons.sync_rounded, size: 18),
+                                    : const Icon(OperitIcons.sync_rounded, size: 18),
                                 label: Text(
                                   loadingModels ? '正在拉取模型' : '拉取可用模型',
                                 ),
@@ -3572,7 +3556,7 @@ class _AiSetupPermissionPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               _SetupSectionHeader(
-                icon: Icons.admin_panel_settings_rounded,
+                icon: OperitIcons.admin_panel_settings_rounded,
                 eyebrow: '系统授权',
                 title: '按需授予系统权限',
                 description: '权限可按您要使用的功能选择授予。您可以不授予任何一项并继续；未授予权限对应的功能将无法使用。',
@@ -3583,7 +3567,7 @@ class _AiSetupPermissionPage extends StatelessWidget {
                   elevation: 0,
                   color: colorScheme.surfaceContainerHighest,
                   child: const ListTile(
-                    leading: Icon(Icons.check_circle_rounded),
+                    leading: Icon(OperitIcons.check_circle_rounded),
                     title: Text('当前设备没有需要处理的授权项'),
                     subtitle: Text('当前运行环境没有需要在欢迎页处理的系统授权。'),
                   ),
@@ -3596,7 +3580,7 @@ class _AiSetupPermissionPage extends StatelessWidget {
                 ),
               TextButton.icon(
                 onPressed: requesting ? null : onRefresh,
-                icon: const Icon(Icons.refresh_rounded),
+                icon: const Icon(OperitIcons.refresh_rounded),
                 label: const Text('刷新授权状态'),
               ),
               if (errorText != null)
@@ -3642,7 +3626,7 @@ class _PermissionTile extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 10),
       child: ListTile(
         leading: Icon(
-          granted ? Icons.check_circle_rounded : Icons.radio_button_unchecked_rounded,
+          granted ? OperitIcons.check_circle_rounded : OperitIcons.radio_button_unchecked_rounded,
           color: granted ? colorScheme.primary : colorScheme.onSurfaceVariant,
         ),
         title: Row(

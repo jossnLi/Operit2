@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class OperitDialogScaffold extends StatelessWidget {
   /// Creates the shared dialog shell with bounded or expanding content.
   const OperitDialogScaffold({
@@ -94,7 +95,7 @@ class OperitDialogScaffold extends StatelessWidget {
                         onPressed: closeButtonEnabled
                             ? onClose ?? () => Navigator.of(context).maybePop()
                             : null,
-                        icon: const Icon(Icons.close_rounded),
+                        icon: const Icon(OperitIcons.close_rounded),
                       ),
                   ],
                 ),

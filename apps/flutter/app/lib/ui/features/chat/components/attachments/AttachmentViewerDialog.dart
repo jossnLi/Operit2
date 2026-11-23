@@ -12,6 +12,7 @@ import '../../../packages/screens/ComposeDslImageSource.dart';
 import '../style/input/common/ChatAttachmentImagePreview.dart';
 import '../workspace/file_preview/WorkspaceMediaPreviewWidgets.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 const GeneratedCoreProxyClients _attachmentMediaClients =
     GeneratedCoreProxyClients(
       ProxyCoreRuntimeBridge(coreProxy: platformCoreProxy),
@@ -297,7 +298,7 @@ class _ImageLightboxViewerState extends State<_ImageLightboxViewer>
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         const Icon(
-                          Icons.image_outlined,
+                          OperitIcons.image_outlined,
                           size: 15,
                           color: Colors.white70,
                         ),
@@ -339,7 +340,7 @@ class _ImageLightboxViewerState extends State<_ImageLightboxViewer>
                     Padding(
                       padding: const EdgeInsets.only(right: 10),
                       child: _FrostedCircleButton(
-                        icon: Icons.content_copy_outlined,
+                        icon: OperitIcons.content_copy_outlined,
                         tooltip: '复制文件位置\n${widget.attachment.fileLocation}',
                         onTap: () => Clipboard.setData(
                           ClipboardData(text: widget.attachment.fileLocation!),
@@ -350,13 +351,13 @@ class _ImageLightboxViewerState extends State<_ImageLightboxViewer>
                     Padding(
                       padding: const EdgeInsets.only(right: 10),
                       child: _FrostedCircleButton(
-                        icon: Icons.zoom_out_map_rounded,
+                        icon: OperitIcons.zoom_out_map_rounded,
                         tooltip: '重置缩放',
                         onTap: _resetZoom,
                       ),
                     ),
                   _FrostedCircleButton(
-                    icon: Icons.close_rounded,
+                    icon: OperitIcons.close_rounded,
                     tooltip: '关闭 (Esc)',
                     onTap: widget.onDismiss,
                   ),
@@ -543,7 +544,7 @@ class _GeneralAttachmentViewer extends StatelessWidget {
                         ),
                         if (isTextLike && attachment.content.isNotEmpty)
                           IconButton(
-                            icon: const Icon(Icons.content_copy_outlined, size: 18),
+                            icon: const Icon(OperitIcons.content_copy_outlined, size: 18),
                             tooltip: '复制内容',
                             onPressed: () {
                               Clipboard.setData(
@@ -558,7 +559,7 @@ class _GeneralAttachmentViewer extends StatelessWidget {
                             },
                           ),
                         IconButton(
-                          icon: const Icon(Icons.close_rounded, size: 20),
+                          icon: const Icon(OperitIcons.close_rounded, size: 20),
                           tooltip: '关闭',
                           onPressed: onDismiss,
                         ),
@@ -580,7 +581,7 @@ class _GeneralAttachmentViewer extends StatelessWidget {
                           ),
                           IconButton(
                             tooltip: '复制文件位置',
-                            icon: const Icon(Icons.content_copy_outlined, size: 18),
+                            icon: const Icon(OperitIcons.content_copy_outlined, size: 18),
                             onPressed: () => Clipboard.setData(
                               ClipboardData(text: attachment.fileLocation!),
                             ),
@@ -644,7 +645,7 @@ class _GeneralAttachmentViewer extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Icon(
-              Icons.insert_drive_file_outlined,
+              OperitIcons.insert_drive_file_outlined,
               size: 48,
               color: colorScheme.primary.withValues(alpha: 0.7),
             ),
@@ -734,15 +735,15 @@ IconData _attachmentIcon({
   required bool isVideo,
 }) {
   if (isImage) {
-    return Icons.image_outlined;
+    return OperitIcons.image_outlined;
   }
   if (isAudio) {
-    return Icons.volume_up_outlined;
+    return OperitIcons.volume_up_outlined;
   }
   if (isVideo) {
-    return Icons.play_arrow_outlined;
+    return OperitIcons.play_arrow_outlined;
   }
-  return Icons.description_outlined;
+  return OperitIcons.description_outlined;
 }
 
 String _cleanImageTitle(String filename) {

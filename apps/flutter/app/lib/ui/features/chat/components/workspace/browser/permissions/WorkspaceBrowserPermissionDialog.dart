@@ -5,6 +5,7 @@ import 'package:webview_all/webview_all.dart';
 
 import '../../../../../../../l10n/generated/app_localizations.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class WorkspaceBrowserPermissionDialog extends StatelessWidget {
   const WorkspaceBrowserPermissionDialog({
     super.key,
@@ -57,15 +58,15 @@ class WorkspaceBrowserPermissionDialog extends StatelessWidget {
 IconData _iconForType(WebViewPermissionResourceType type) {
   switch (type.name) {
     case 'camera':
-      return Icons.photo_camera_outlined;
+      return OperitIcons.photo_camera_outlined;
     case 'microphone':
-      return Icons.mic_none_outlined;
+      return OperitIcons.mic_none_outlined;
     case 'protectedMediaId':
-      return Icons.verified_user_outlined;
+      return OperitIcons.verified_user_outlined;
     case 'midiSysex':
-      return Icons.piano_outlined;
+      return OperitIcons.piano_outlined;
     default:
-      return Icons.security_outlined;
+      return OperitIcons.security_outlined;
   }
 }
 

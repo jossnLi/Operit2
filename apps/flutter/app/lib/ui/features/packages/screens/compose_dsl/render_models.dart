@@ -177,7 +177,7 @@ class _NoUiView extends StatelessWidget {
   /// Builds the widget for the current DSL state.
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Icon(Icons.extension_off_outlined, size: 42));
+    return const Center(child: Icon(OperitIcons.extension_off_outlined, size: 42));
   }
 }
 

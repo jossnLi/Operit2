@@ -6,6 +6,7 @@ import '../../../../common/components/OperitDialog.dart';
 import 'ParamVisualizer.dart';
 import 'ToolDisplayComponents.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 class ContentDetailDialog extends StatefulWidget {
   const ContentDetailDialog({
     super.key,
@@ -42,7 +43,7 @@ class _ContentDetailDialogState extends State<ContentDetailDialog> {
           TextButton.icon(
             onPressed: () => setState(() => _splitView = !_splitView),
             icon: Icon(
-              _splitView ? Icons.view_agenda_outlined : Icons.view_column_outlined,
+              _splitView ? OperitIcons.view_agenda_outlined : OperitIcons.view_column_outlined,
               size: 16,
             ),
             label: Text(_splitView ? 'Unified' : 'Split'),

@@ -7,6 +7,7 @@ import '../render/chat_input_surface.dart';
 import '../render/composer_surface.dart';
 import '../render/theme_glass_surface.dart';
 
+import '../icons/operit_icons.dart';
 /// Versioned feasibility fixture, not a substitute for the full chat renderer.
 /// The app and standalone preview use these exact production surface widgets.
 class ThemeSurfaceProbe extends StatelessWidget {
@@ -40,7 +41,7 @@ class ThemeSurfaceProbe extends StatelessWidget {
           child: Row(
             children: <Widget>[
               const Expanded(child: Text('Message / 输入消息')),
-              Icon(Icons.arrow_upward_rounded, color: scheme.primary),
+              Icon(OperitIcons.arrow_upward_rounded, color: scheme.primary),
             ],
           ),
         );

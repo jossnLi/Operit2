@@ -33,6 +33,7 @@ import '../model/ExtensionCatalogController.dart';
 import 'ExtensionsPane.dart';
 import 'MarketPane.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// Package files that can be imported by dropping them on the page.
 const Set<String> _importableExtensions = <String>{
   'toolpkg',
@@ -242,46 +243,46 @@ class _PackageManagerScreenState extends State<PackageManagerScreen>
             builder: (context, open, child) => IconButton(
               tooltip: open ? '关闭搜索' : '搜索（Ctrl+F）',
               onPressed: open ? _closeSearch : _openSearch,
-              icon: Icon(open ? Icons.close_rounded : Icons.search_rounded),
+              icon: Icon(open ? OperitIcons.close_rounded : OperitIcons.search_rounded),
             ),
           ),
           if (!narrow)
             IconButton(
               tooltip: '添加扩展',
               onPressed: _showAddSheet,
-              icon: const Icon(Icons.add_rounded),
+              icon: const Icon(OperitIcons.add_rounded),
             ),
           PopupMenuButton<_MoreAction>(
             tooltip: '更多',
-            icon: const Icon(Icons.more_horiz_rounded),
+            icon: const Icon(OperitIcons.more_horiz_rounded),
             onSelected: _onMoreSelected,
             itemBuilder: (context) => <PopupMenuEntry<_MoreAction>>[
               if (narrow)
                 const PopupMenuItem<_MoreAction>(
                   value: _MoreAction.add,
                   child: ListTile(
-                    leading: Icon(Icons.add_rounded),
+                    leading: Icon(OperitIcons.add_rounded),
                     title: Text('添加扩展'),
                   ),
                 ),
               const PopupMenuItem<_MoreAction>(
                 value: _MoreAction.checkUpdates,
                 child: ListTile(
-                  leading: Icon(Icons.system_update_alt_rounded),
+                  leading: Icon(OperitIcons.system_update_alt_rounded),
                   title: Text('检查更新'),
                 ),
               ),
               const PopupMenuItem<_MoreAction>(
                 value: _MoreAction.environment,
                 child: ListTile(
-                  leading: Icon(Icons.key_outlined),
+                  leading: Icon(OperitIcons.key_outlined),
                   title: Text('环境变量'),
                 ),
               ),
               const PopupMenuItem<_MoreAction>(
                 value: _MoreAction.refresh,
                 child: ListTile(
-                  leading: Icon(Icons.refresh_rounded),
+                  leading: Icon(OperitIcons.refresh_rounded),
                   title: Text('重新加载目录'),
                 ),
               ),
@@ -568,14 +569,14 @@ class _TopBarTitle extends StatelessWidget {
                     onSelected: (index) => onSelect(PackageTab.values[index]),
                     labels: <Widget>[
                       _TabLabel(
-                        icon: Icons.extension_outlined,
+                        icon: OperitIcons.extension_outlined,
                         label: '扩展',
                         compact: compact,
                         count: snapshot?.installed.length,
                         alert: attention > 0,
                       ),
                       _TabLabel(
-                        icon: Icons.storefront_outlined,
+                        icon: OperitIcons.storefront_outlined,
                         label: '市场',
                         compact: compact,
                       ),
@@ -698,7 +699,7 @@ class _SearchField extends StatelessWidget {
           color: contentColor.withValues(alpha: 0.6),
         ),
         prefixIcon: Icon(
-          Icons.search_rounded,
+          OperitIcons.search_rounded,
           color: contentColor.withValues(alpha: 0.8),
         ),
         border: InputBorder.none,
@@ -734,7 +735,7 @@ class _DropOverlay extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Icon(
-                Icons.file_download_outlined,
+                OperitIcons.file_download_outlined,
                 size: 36,
                 color: colorScheme.primary,
               ),
@@ -844,7 +845,7 @@ class _AddExtensionSheet extends StatelessWidget {
               child: Row(
                 children: <Widget>[
                   StoreRowGlyph(
-                    icon: Icons.auto_awesome_rounded,
+                    icon: OperitIcons.auto_awesome_rounded,
                     color: theme.colorScheme.primary,
                   ),
                   const SizedBox(width: 12),
@@ -869,7 +870,7 @@ class _AddExtensionSheet extends StatelessWidget {
                     ),
                   ),
                   Icon(
-                    Icons.arrow_forward_rounded,
+                    OperitIcons.arrow_forward_rounded,
                     color: theme.colorScheme.primary,
                   ),
                 ],

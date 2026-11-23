@@ -10,6 +10,7 @@ import 'package:operit2/core/bridge/ProxyCoreRuntimeBridge.dart';
 import 'package:operit2/core/proxy/generated/CoreProxyClients.g.dart';
 import '../../../../../packages/screens/ComposeDslImageSource.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// Renders a chat attachment image from client-readable attachment bytes.
 class ChatAttachmentImagePreview extends StatefulWidget {
   /// Creates an image preview for one attachment path.
@@ -84,7 +85,7 @@ class _ChatAttachmentImagePreviewState
             color: colorScheme.surfaceContainerHighest,
             child: Center(
               child: Icon(
-                Icons.broken_image_outlined,
+                OperitIcons.broken_image_outlined,
                 color: colorScheme.onSurfaceVariant,
               ),
             ),

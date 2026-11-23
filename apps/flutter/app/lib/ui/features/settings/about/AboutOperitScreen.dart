@@ -12,6 +12,7 @@ import '../../../../core/update/AppUpdateModels.dart';
 import '../../update/AppUpdateBadge.dart';
 import '../../update/AppUpdateDialog.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 final Uri _projectUri = Uri.parse('https://github.com/AAswordman/Operit2');
 final Uri _documentationUri = Uri.parse(
   'https://github.com/AAswordman/Operit2#readme',
@@ -186,7 +187,7 @@ class _AboutUpdateAction extends StatelessWidget {
             : '点击检查最新版本';
         return ListTile(
           contentPadding: EdgeInsets.zero,
-          leading: Icon(Icons.system_update_alt_rounded, color: colors.primary),
+          leading: Icon(OperitIcons.system_update_alt_rounded, color: colors.primary),
           title: const Text('检查更新'),
           subtitle: Text(subtitle),
           trailing: checking
@@ -194,7 +195,7 @@ class _AboutUpdateAction extends StatelessWidget {
                   dimension: 18,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
-              : Icon(Icons.chevron_right_rounded, color: colors.onSurfaceVariant),
+              : Icon(OperitIcons.chevron_right_rounded, color: colors.onSurfaceVariant),
           onTap: checking ? null : () => _openUpdates(context, controller),
         );
       },
@@ -213,21 +214,21 @@ class _ProjectLinksSection extends StatelessWidget {
       child: Column(
         children: <Widget>[
           _AboutActionRow(
-            icon: Icons.code_outlined,
+            icon: OperitIcons.code_outlined,
             title: '项目源码',
             subtitle: 'github.com/AAswordman/Operit2',
             onTap: () => _launchExternalUri(context, _projectUri),
           ),
           const Divider(height: 1),
           _AboutActionRow(
-            icon: Icons.menu_book_outlined,
+            icon: OperitIcons.menu_book_outlined,
             title: '使用文档',
             subtitle: 'README 与命令行说明',
             onTap: () => _launchExternalUri(context, _documentationUri),
           ),
           const Divider(height: 1),
           _AboutActionRow(
-            icon: Icons.description_outlined,
+            icon: OperitIcons.description_outlined,
             title: '开源许可证',
             subtitle: 'Operit2 使用 AGPL-3.0',
             onTap: () => _showOpenSourceLicenses(context),
@@ -247,7 +248,7 @@ class _SupportSection extends StatelessWidget {
     return _AboutSection(
       title: '联系',
       child: _AboutActionRow(
-        icon: Icons.alternate_email_outlined,
+        icon: OperitIcons.alternate_email_outlined,
         title: '开发者 AAswordman',
         subtitle: 'aaswordsman@foxmail.com',
         onTap: () => _launchExternalUri(context, _contactUri),
@@ -331,7 +332,7 @@ class _AboutActionRow extends StatelessWidget {
       leading: Icon(icon, color: colorScheme.primary),
       title: Text(title),
       subtitle: Text(subtitle),
-      trailing: const Icon(Icons.open_in_new_outlined, size: 20),
+      trailing: const Icon(OperitIcons.open_in_new_outlined, size: 20),
       onTap: onTap,
     );
   }
