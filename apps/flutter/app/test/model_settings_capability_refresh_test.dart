@@ -262,17 +262,23 @@ void main() {
       final editorScrollable = find
           .descendant(of: editorScrollView, matching: find.byType(Scrollable))
           .first;
-      await tester.scrollUntilVisible(
-        toggle,
-        300,
-        scrollable: editorScrollable,
-      );
-      await tester.pumpAndSettle();
-      final viewport = tester.getRect(editorScrollView);
-      expect(viewport.contains(tester.getCenter(toggle)), isTrue);
+      Future<void> reveal(Finder target) async {
+        await tester.scrollUntilVisible(
+          target,
+          300,
+          scrollable: editorScrollable,
+        );
+        await tester.pumpAndSettle();
+        expect(
+          tester.getRect(editorScrollView).contains(tester.getCenter(target)),
+          isTrue,
+        );
+      }
+
+      await reveal(toggle);
       await tester.tap(toggle);
       await tester.pumpAndSettle();
-      await tester.ensureVisible(advanced);
+      await reveal(advanced);
       await tester.tap(advanced);
       await tester.pumpAndSettle();
       expect(toggle, findsNothing);
@@ -280,8 +286,9 @@ void main() {
       await tester.pumpAndSettle();
       expect(bridge.savedProvider, isNull);
       expect(find.text(l10n.settingsModelPoolNoEligible), findsOneWidget);
-      await tester.ensureVisible(find.text(l10n.settingsModelAddApiKey));
-      await tester.tap(find.text(l10n.settingsModelAddApiKey));
+      final addKey = find.text(l10n.settingsModelAddApiKey);
+      await reveal(addKey);
+      await tester.tap(addKey);
       await tester.pumpAndSettle();
       await tester.enterText(
         find.byKey(const ValueKey('pool-key-input')),
@@ -289,7 +296,7 @@ void main() {
       );
       await tester.tap(find.text(l10n.save).last);
       await tester.pumpAndSettle();
-      await tester.ensureVisible(advanced);
+      await reveal(advanced);
       await tester.tap(advanced);
       await tester.pumpAndSettle();
       await tester.tap(find.text(l10n.save).last);
