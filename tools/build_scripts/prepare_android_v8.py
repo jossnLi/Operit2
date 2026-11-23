@@ -268,22 +268,32 @@ def place_ndk(source, ndk):
 
 
 def patch_android_config(source):
-    """Declare android_ndk_version in the vendored Chromium build config.
+    """Declare android_ndk_version and allow Windows host builds in Chromium config.
 
     Chromium's build/config/android/BUILD.gn reads android_ndk_version, but the
     copy vendored into the published crate lacks the upstream declare_args
     block, so GN fails with "Undefined identifier" no matter what args.gn sets.
+    BUILDCONFIG.gn asserts host_os == "linux" for Android builds; allow Windows hosts.
     """
     config = source / "build/config/android/config.gni"
-    if "android_ndk_version" in config.read_text(encoding="utf-8"):
-        return
-    with config.open("a", encoding="utf-8") as file:
-        file.write(
-            "\n# Added by Operit2's prepare_android_v8.py: the vendored config\n"
-            "# references android_ndk_version without declaring it upstream.\n"
-            "declare_args() {\n"
-            "  android_ndk_version = \"unknown\"\n"
-            "}\n")
+    if config.is_file() and "android_ndk_version" not in config.read_text(encoding="utf-8"):
+        with config.open("a", encoding="utf-8") as file:
+            file.write(
+                "\n# Added by Operit2's prepare_android_v8.py: the vendored config\n"
+                "# references android_ndk_version without declaring it upstream.\n"
+                "declare_args() {\n"
+                "  android_ndk_version = \"unknown\"\n"
+                "}\n")
+
+    buildconfig = source / "build/config/BUILDCONFIG.gn"
+    if buildconfig.is_file():
+        content = buildconfig.read_text(encoding="utf-8")
+        target_assert = 'assert(host_os == "linux", "Android builds are only supported on Linux.")'
+        if target_assert in content:
+            buildconfig.write_text(
+                content.replace(target_assert, '# ' + target_assert),
+                encoding="utf-8"
+            )
 
 
 def stub_missing_pydeps(source):
