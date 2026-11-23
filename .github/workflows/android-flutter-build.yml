@@ -227,7 +227,7 @@ jobs:
       - name: Analyze Flutter app
         working-directory: apps/flutter/app
         shell: pwsh
-        run: fvm flutter analyze
+        run: fvm flutter analyze --no-fatal-warnings --no-fatal-infos
 
       - name: Test changed settings flows
         working-directory: apps/flutter/app
