@@ -795,6 +795,7 @@ core_proxy.ToolPkgContainerRuntime _runtime(String owner) =>
       chatRuntimeHooks: const [],
       hostEventHooks: const [],
       toolLifecycleHooks: const [],
+      toolPermissionHooks: const [],
       promptInputHooks: const [],
       promptHistoryHooks: const [],
       promptEstimateHistoryHooks: const [],

@@ -1735,6 +1735,7 @@ core_proxy.ToolPkgContainerRuntime _toolpkgRuntime({
   chatResponseHooks: [],
   hostEventHooks: [],
   toolLifecycleHooks: [],
+  toolPermissionHooks: [],
   promptInputHooks: [],
   promptHistoryHooks: [],
   promptEstimateHistoryHooks: [],

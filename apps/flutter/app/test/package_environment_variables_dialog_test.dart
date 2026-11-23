@@ -275,6 +275,7 @@ TextEditingController _controller(
 /// Creates a manifest with explicit environment declarations.
 core_proxy.ToolPackage _package(String name, List<String> keys) =>
     core_proxy.ToolPackage(
+      apiVersion: '2.0.0',
       name: name,
       description: const core_proxy.LocalizedText(values: {}),
       displayName: const core_proxy.LocalizedText(values: {}),
