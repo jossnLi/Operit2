@@ -81,11 +81,14 @@ ARTIFACTS = ("librusty_v8.a", "src_binding.rs", "args.gn")
 def run(command, **kwargs):
     print("+ " + shlex.join(map(str, command)), file=sys.stderr, flush=True)
     kwargs.setdefault("check", True)
+    if kwargs.get("text"):
+        kwargs.setdefault("encoding", "utf-8")
+        kwargs.setdefault("errors", "replace")
     return subprocess.run(list(map(str, command)), **kwargs)
 
 
 def output(command):
-    return run(command, capture_output=True, text=True).stdout.strip()
+    return run(command, capture_output=True, text=True, encoding="utf-8", errors="replace").stdout.strip()
 
 
 def api_level():
@@ -96,7 +99,7 @@ def api_level():
 
 
 def version_from_lock(lock=BRIDGE_LOCK):
-    packages = tomllib.loads(lock.read_text())["package"]
+    packages = tomllib.loads(lock.read_text(encoding="utf-8"))["package"]
     versions = {p["version"] for p in packages if p["name"] == "v8"}
     if len(versions) != 1:
         raise RuntimeError(f"Expected exactly one V8 version in {lock}: {versions}")
@@ -136,7 +139,7 @@ def digest(path):
 
 def check_gn(path, config):
     args = {}
-    for line in path.read_text().splitlines():
+    for line in path.read_text(encoding="utf-8").splitlines():
         match = re.fullmatch(r"\s*(\w+)\s*=\s*(.*?)\s*", line)
         if match:
             args[match[1]] = match[2]
@@ -147,7 +150,7 @@ def check_gn(path, config):
 
 def cache_valid(directory, config):
     try:
-        manifest = json.loads((directory / "manifest.json").read_text())
+        manifest = json.loads((directory / "manifest.json").read_text(encoding="utf-8"))
         if manifest["configuration"] != config:
             return False
         if any(manifest["sha256"][name] != digest(directory / name) for name in ARTIFACTS):
@@ -170,7 +173,7 @@ def store_artifacts(gn_out, directory, config):
     manifest = {"configuration": config,
                 "sha256": {name: digest(directory / name) for name in ARTIFACTS}}
     temporary = directory / "manifest.json.tmp"
-    temporary.write_text(json.dumps(manifest, indent=2) + "\n")
+    temporary.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     temporary.replace(directory / "manifest.json")
 
 
@@ -272,9 +275,9 @@ def patch_android_config(source):
     block, so GN fails with "Undefined identifier" no matter what args.gn sets.
     """
     config = source / "build/config/android/config.gni"
-    if "android_ndk_version" in config.read_text():
+    if "android_ndk_version" in config.read_text(encoding="utf-8"):
         return
-    with config.open("a") as file:
+    with config.open("a", encoding="utf-8") as file:
         file.write(
             "\n# Added by Operit2's prepare_android_v8.py: the vendored config\n"
             "# references android_ndk_version without declaring it upstream.\n"
@@ -292,12 +295,12 @@ def stub_missing_pydeps(source):
     compiles, so empty manifests let GN evaluate the build files.
     """
     build_android = source / "build/android"
-    for match in re.finditer(r'pydeps_file = "([^"]+)"', (build_android / "BUILD.gn").read_text()):
+    for match in re.finditer(r'pydeps_file = "([^"]+)"', (build_android / "BUILD.gn").read_text(encoding="utf-8")):
         manifest = build_android / match.group(1)
         if manifest.is_file():
             continue
         manifest.parent.mkdir(parents=True, exist_ok=True)
-        manifest.write_text("# stub: omitted from the published rusty_v8 crate\n")
+        manifest.write_text("# stub: omitted from the published rusty_v8 crate\n", encoding="utf-8")
 
 
 def install_linux_sysroot(source):
@@ -317,7 +320,7 @@ def install_linux_sysroot(source):
 
 
 def prepare_icu(source):
-    deps = (source / "v8/DEPS").read_text()
+    deps = (source / "v8/DEPS").read_text(encoding="utf-8")
     revision = re.search(r"/chromium/deps/icu\.git'\s*\+\s*'@'\s*\+\s*'([a-f0-9]{40})'", deps)
     if not revision:
         raise RuntimeError("Cannot find V8's pinned ICU revision")
@@ -421,7 +424,7 @@ def find_lld(clang_base):
 
 def deps_version(source, name):
     """Read a pinned tool version from V8's DEPS (as the crate's v8_deps.py does)."""
-    deps = (source / "v8/DEPS").read_text()
+    deps = (source / "v8/DEPS").read_text(encoding="utf-8")
     match = re.search(rf"'{name}':\s*'([^']+)'", deps)
     if not match:
         raise RuntimeError(f"Cannot find V8's pinned {name}")
@@ -485,8 +488,8 @@ def build(cache, config, ndk):
     (probe / "Cargo.toml").write_text(
         '[package]\nname="operit-android-v8-build"\nversion="0.0.0"\nedition="2021"\n'
         '[lib]\ncrate-type=["staticlib"]\n[dependencies]\n'
-        f'v8="={config["version"]}"\n[workspace]\n')
-    (probe / "src/lib.rs").write_text('pub fn version() -> &\'static str { v8::V8::get_version() }\n')
+        f'v8="={config["version"]}"\n[workspace]\n', encoding="utf-8")
+    (probe / "src/lib.rs").write_text('pub fn version() -> &\'static str { v8::V8::get_version() }\n', encoding="utf-8")
     metadata = json.loads(output(["cargo", "metadata", "--manifest-path", probe / "Cargo.toml",
                                   "--format-version", "1"]))
     source = Path(next(p["manifest_path"] for p in metadata["packages"] if p["name"] == "v8")).parent
@@ -554,7 +557,7 @@ def prepare(target, env_file, cache_root=CACHE_ROOT):
                   "RUSTY_V8_SRC_BINDING_PATH": str(directory / "src_binding.rs")}
         env_file.parent.mkdir(parents=True, exist_ok=True)
         env_file.write_text("unset V8_FROM_SOURCE DOCS_RS V8_FORCE_DEBUG\n" + "".join(
-            f"export {name}={shlex.quote(value)}\n" for name, value in values.items()))
+            f"export {name}={shlex.quote(value)}\n" for name, value in values.items()), encoding="utf-8")
 
 
 def main():

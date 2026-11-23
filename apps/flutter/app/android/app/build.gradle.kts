@@ -383,6 +383,8 @@ val prepareOperitAndroidV8Tasks = selectedOperitRustTargets.associateWith { targ
         environment("OPERIT_ANDROID_V8_NDK", android.ndkDirectory.absolutePath)
         // Windows source builds locate libclang for the bindings generation.
         environment("OPERIT_LIBCLANG_DIR", operitLibclangDir.absolutePath)
+        environment("PYTHONUTF8", "1")
+        environment("PYTHONIOENCODING", "utf-8")
     }
 }
 
