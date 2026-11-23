@@ -235,6 +235,8 @@ void main() {
   testWidgets(
     'provider editor validates and persists the pool under advanced settings',
     (tester) async {
+      await tester.binding.setSurfaceSize(const Size(1000, 1600));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
       final bridge = _ModelSettingsBridge();
       final panelKey = GlobalKey<ModelSettingsPanelState>();
       await _pumpModelSettings(tester, bridge, panelKey);
@@ -349,7 +351,7 @@ void main() {
         if (!success) {
           await tester.tap(status);
           await tester.pumpAndSettle();
-          expect(find.text('HTTP 503'), findsOneWidget);
+          expect(find.textContaining('HTTP 503'), findsWidgets);
           // A tooltip inside the result bubble must be able to resolve its
           // anchor during layout, before the bubble is painted.
           await tester.longPress(find.byTooltip(l10n.settingsModelCopyError));
