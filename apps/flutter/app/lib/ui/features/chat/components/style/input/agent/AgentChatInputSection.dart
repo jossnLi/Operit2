@@ -1722,7 +1722,7 @@ Color _actionBackground(
   required bool canSend,
 }) {
   if (showCancelAction) {
-    return colorScheme.error;
+    return colorScheme.onSurface;
   }
   if (showQueueAction) {
     return colorScheme.tertiary;
@@ -1730,7 +1730,7 @@ Color _actionBackground(
   if (canSend) {
     return colorScheme.primary;
   }
-  return colorScheme.primary;
+  return colorScheme.surfaceContainerHighest.withValues(alpha: 0.85);
 }
 
 Color _actionForeground(
@@ -1740,12 +1740,15 @@ Color _actionForeground(
   required bool canSend,
 }) {
   if (showCancelAction) {
-    return colorScheme.onError;
+    return colorScheme.surface;
   }
   if (showQueueAction) {
     return colorScheme.onTertiary;
   }
-  return colorScheme.onPrimary;
+  if (canSend) {
+    return colorScheme.onPrimary;
+  }
+  return colorScheme.onSurfaceVariant;
 }
 
 IconData _actionIcon({
@@ -1754,7 +1757,7 @@ IconData _actionIcon({
   required bool canSend,
 }) {
   if (showCancelAction) {
-    return OperitIcons.close_rounded;
+    return OperitIcons.stop_rounded;
   }
   if (showQueueAction) {
     return OperitIcons.add_rounded;

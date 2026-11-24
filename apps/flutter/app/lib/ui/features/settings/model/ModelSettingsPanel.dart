@@ -7949,7 +7949,7 @@ class _SectionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final radius = BorderRadius.circular(12);
+    final radius = BorderRadius.circular(16);
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: Material(
@@ -7957,7 +7957,8 @@ class _SectionCard extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: radius,
           side: BorderSide(
-            color: colorScheme.outlineVariant.withValues(alpha: 0.18),
+            color: colorScheme.outlineVariant.withValues(alpha: 0.25),
+            width: 0.8,
           ),
         ),
         clipBehavior: Clip.antiAlias,

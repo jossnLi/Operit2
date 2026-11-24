@@ -751,11 +751,12 @@ class _ToolInlineDetailSurfaceState extends State<ToolInlineDetailSurface> {
                   ),
                   decoration: BoxDecoration(
                     color: theme.colorScheme.surfaceContainerLow,
-                    borderRadius: BorderRadius.circular(6),
+                    borderRadius: BorderRadius.circular(10),
                     border: Border.all(
                       color: theme.colorScheme.outlineVariant.withValues(
-                        alpha: 0.35,
+                        alpha: 0.3,
                       ),
+                      width: 0.8,
                     ),
                   ),
                   child: ConstrainedBox(

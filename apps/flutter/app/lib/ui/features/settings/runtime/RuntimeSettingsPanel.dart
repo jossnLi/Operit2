@@ -1834,9 +1834,10 @@ class _SectionCard extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 10),
       child: OperitGlassSurface(
         color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.36),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: colorScheme.outlineVariant.withValues(alpha: 0.18),
+          color: colorScheme.outlineVariant.withValues(alpha: 0.25),
+          width: 0.8,
         ),
         material: true,
         child: Padding(

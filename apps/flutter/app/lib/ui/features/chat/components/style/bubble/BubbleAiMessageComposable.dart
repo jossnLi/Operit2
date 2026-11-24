@@ -35,8 +35,8 @@ class BubbleAiMessageComposable extends StatefulWidget {
     this.transparentSurface = false,
     this.bubbleImageStyle,
     this.bubbleRoundedCornersEnabled = true,
-    this.bubbleContentPaddingLeft = 8,
-    this.bubbleContentPaddingRight = 8,
+    this.bubbleContentPaddingLeft = 14,
+    this.bubbleContentPaddingRight = 14,
     this.avatarImagePath,
     this.initialThinkingExpanded = false,
     this.allowExpandedThinkingFullHeight = false,
@@ -160,7 +160,7 @@ class _BubbleAiMessageComposableState extends State<BubbleAiMessageComposable> {
     );
     final effectiveBubbleImageStyle = widget.bubbleImageStyle;
     final bubbleShape = widget.bubbleRoundedCornersEnabled
-        ? const BorderRadius.all(Radius.circular(16))
+        ? const BorderRadius.all(Radius.circular(18))
         : BorderRadius.zero;
     final contentPadding = EdgeInsets.fromLTRB(
       widget.bubbleContentPaddingLeft,

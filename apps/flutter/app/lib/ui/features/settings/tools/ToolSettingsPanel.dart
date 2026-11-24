@@ -814,14 +814,15 @@ class _SectionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final radius = BorderRadius.circular(12);
+    final radius = BorderRadius.circular(16);
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: OperitGlassSurface(
         color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.36),
         borderRadius: radius,
         border: Border.all(
-          color: colorScheme.outlineVariant.withValues(alpha: 0.18),
+          color: colorScheme.outlineVariant.withValues(alpha: 0.25),
+          width: 0.8,
         ),
         material: true,
         child: ExpansionTile(

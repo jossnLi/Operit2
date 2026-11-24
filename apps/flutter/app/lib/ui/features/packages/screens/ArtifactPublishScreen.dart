@@ -830,6 +830,13 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
               ],
               const SizedBox(height: 16),
               FilledButton.icon(
+                style: FilledButton.styleFrom(
+                  shape: const StadiumBorder(),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 14,
+                    horizontal: 20,
+                  ),
+                ),
                 onPressed: _publishing
                     ? null
                     : () => _publish(allowCreateForgeRepo: false),

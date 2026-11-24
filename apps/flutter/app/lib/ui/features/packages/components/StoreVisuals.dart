@@ -84,7 +84,7 @@ double storeTextScale(BuildContext context) {
 }
 
 /// Corner radius of cards, matching the settings cards.
-const BorderRadius storeCardRadius = BorderRadius.all(Radius.circular(12));
+const BorderRadius storeCardRadius = BorderRadius.all(Radius.circular(16));
 
 /// Card fill used by the settings cards.
 Color storeCardColor(ColorScheme colorScheme) =>
@@ -92,7 +92,7 @@ Color storeCardColor(ColorScheme colorScheme) =>
 
 /// Hairline around cards.
 Color storeCardBorderColor(ColorScheme colorScheme) =>
-    colorScheme.outlineVariant.withValues(alpha: 0.18);
+    colorScheme.outlineVariant.withValues(alpha: 0.25);
 
 /// Gradient card that opens a page: the device space and the creator account.
 BoxDecoration storeHeroDecoration(ThemeData theme) {

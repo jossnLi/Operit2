@@ -57,12 +57,19 @@ class ThemeComposerCard extends StatelessWidget {
         final radius = !roundedCorners
             ? BorderRadius.zero
             : floating
-            ? BorderRadius.circular(22)
-            : const BorderRadius.vertical(top: Radius.circular(20));
+            ? BorderRadius.circular(26)
+            : const BorderRadius.vertical(top: Radius.circular(24));
+        final shape = RoundedRectangleBorder(
+          borderRadius: radius,
+          side: BorderSide(
+            color: scheme.outlineVariant.withValues(alpha: 0.35),
+            width: 0.8,
+          ),
+        );
         return AgentInputSurface(
           floating: floating,
           color: backgroundColor ?? scheme.surfaceContainer,
-          shape: RoundedRectangleBorder(borderRadius: radius),
+          shape: shape,
           borderRadius: radius,
           transparentSurface: transparentSurface,
           imageStyle: imageStyle,
@@ -71,7 +78,7 @@ class ThemeComposerCard extends StatelessWidget {
               ? const EdgeInsets.fromLTRB(8, 4, 8, 6)
               : const EdgeInsets.only(top: 4),
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(12, 14, 12, 8),
+            padding: const EdgeInsets.fromLTRB(14, 14, 14, 8),
             child: child,
           ),
         );
@@ -79,12 +86,21 @@ class ThemeComposerCard extends StatelessWidget {
         final radius = !roundedCorners
             ? BorderRadius.zero
             : floating
-            ? BorderRadius.circular(22)
+            ? BorderRadius.circular(24)
             : BorderRadius.zero;
+        final shape = RoundedRectangleBorder(
+          borderRadius: radius,
+          side: floating
+              ? BorderSide(
+                  color: scheme.outlineVariant.withValues(alpha: 0.35),
+                  width: 0.8,
+                )
+              : BorderSide.none,
+        );
         return ClassicInputSurface(
           floating: floating,
           color: backgroundColor ?? scheme.surface,
-          shape: RoundedRectangleBorder(borderRadius: radius),
+          shape: shape,
           borderRadius: radius,
           transparentSurface: transparentSurface,
           imageStyle: imageStyle,

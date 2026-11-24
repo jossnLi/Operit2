@@ -338,12 +338,12 @@ class SettingsSwitchRow extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     return InkWell(
-      borderRadius: BorderRadius.circular(10),
+      borderRadius: BorderRadius.circular(12),
       onTap: () => onChanged(!value),
       child: Padding(
         padding: EdgeInsets.symmetric(
-          horizontal: 4,
-          vertical: dense ? 4 : 6,
+          horizontal: 8,
+          vertical: dense ? 4 : 8,
         ),
         child: Row(
           children: <Widget>[
@@ -591,7 +591,7 @@ class SettingsSegmentedSelector<T> extends StatelessWidget {
             ? colorScheme.surfaceContainerHighest.withValues(alpha: 0.40)
             : colorScheme.surfaceContainerHigh.withValues(alpha: 0.50),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(999),
         ),
         side: BorderSide(
           color: colorScheme.outlineVariant.withValues(

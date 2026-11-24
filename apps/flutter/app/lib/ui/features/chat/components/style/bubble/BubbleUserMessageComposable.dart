@@ -100,13 +100,16 @@ class _BubbleUserMessageComposableState
     );
     final effectiveBubbleImageStyle = widget.bubbleImageStyle;
     final bubbleShape = widget.bubbleRoundedCornersEnabled
-        ? const BorderRadius.all(Radius.circular(16))
+        ? const BorderRadius.all(Radius.circular(18))
         : BorderRadius.zero;
+    final paddingH = widget.bubbleContentPaddingLeft == 8
+        ? 14.0
+        : widget.bubbleContentPaddingLeft;
     final contentPadding = EdgeInsets.fromLTRB(
-      widget.bubbleContentPaddingLeft,
-      12,
-      widget.bubbleContentPaddingRight,
-      12,
+      paddingH,
+      11,
+      paddingH,
+      11,
     );
 
     return Theme(

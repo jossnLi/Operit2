@@ -203,13 +203,14 @@ class _AgentInputMenuPopupState extends State<AgentInputMenuPopup> {
         color: colorScheme.surfaceContainer,
         elevation: 0,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(14),
+          borderRadius: BorderRadius.circular(18),
           side: BorderSide(
-            color: colorScheme.outlineVariant.withValues(alpha: 0.5),
+            color: colorScheme.outlineVariant.withValues(alpha: 0.35),
+            width: 0.8,
           ),
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(14),
+          borderRadius: BorderRadius.circular(18),
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 300, maxHeight: 420),
             child: FutureBuilder<_AgentInputMenuData>(
@@ -983,21 +984,22 @@ class _PermissionModeSelector extends StatelessWidget {
         for (final mode in _ToolPermissionMode.values) ...[
           Expanded(
             child: InkWell(
-              borderRadius: BorderRadius.circular(6),
+              borderRadius: BorderRadius.circular(999),
               onTap: () => onSelected(mode),
               child: Container(
                 height: 30,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   color: mode == selectedMode
-                      ? colorScheme.primaryContainer
+                      ? colorScheme.primary.withValues(alpha: 0.12)
                       : Colors.transparent,
                   border: Border.all(
                     color: mode == selectedMode
                         ? colorScheme.primary
-                        : colorScheme.outline.withValues(alpha: 0.35),
+                        : colorScheme.outline.withValues(alpha: 0.25),
+                    width: mode == selectedMode ? 1.2 : 0.8,
                   ),
-                  borderRadius: BorderRadius.circular(6),
+                  borderRadius: BorderRadius.circular(999),
                 ),
                 child: Text(
                   mode.label,

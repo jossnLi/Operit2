@@ -428,42 +428,62 @@ class _ThinkToolsXmlGroupState extends State<_ThinkToolsXmlGroup> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               MessagePressShieldRegion(
-                child: InkWell(
-                  onTap: () {
-                    setState(() {
-                      final nextExpanded = !_expanded;
-                      _expanded = nextExpanded;
-                      _userOverride = nextExpanded;
-                    });
-                  },
-                  borderRadius: BorderRadius.circular(6),
-                  child: Padding(
-                    padding: EdgeInsets.zero,
-                    child: Row(
-                      children: <Widget>[
-                        AnimatedRotation(
-                          turns: _expanded ? 0.25 : 0,
-                          duration: widget.forceExpandGroups
-                              ? _instantDuration
-                              : _arrowRotationDuration,
-                          child: Icon(
-                            OperitIcons.chevron_right_rounded,
-                            size: 20,
-                            color: widget.textColor.withValues(alpha: 0.7),
+                child: Material(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .surfaceContainerHighest
+                      .withValues(alpha: 0.35),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(999),
+                    side: BorderSide(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .outlineVariant
+                          .withValues(alpha: 0.25),
+                      width: 0.8,
+                    ),
+                  ),
+                  child: InkWell(
+                    onTap: () {
+                      setState(() {
+                        final nextExpanded = !_expanded;
+                        _expanded = nextExpanded;
+                        _userOverride = nextExpanded;
+                      });
+                    },
+                    borderRadius: BorderRadius.circular(999),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 4,
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          AnimatedRotation(
+                            turns: _expanded ? 0.25 : 0,
+                            duration: widget.forceExpandGroups
+                                ? _instantDuration
+                                : _arrowRotationDuration,
+                            child: Icon(
+                              OperitIcons.chevron_right_rounded,
+                              size: 16,
+                              color: widget.textColor.withValues(alpha: 0.7),
+                            ),
                           ),
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          titleText,
-                          style: Theme.of(context).textTheme.bodySmall
-                              ?.copyWith(
-                                color: isExecutionActive
-                                    ? Theme.of(context).colorScheme.primary
-                                    : widget.textColor.withValues(alpha: 0.7),
-                                fontWeight: FontWeight.w500,
-                              ),
-                        ),
-                      ],
+                          const SizedBox(width: 4),
+                          Text(
+                            titleText,
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(
+                                  color: isExecutionActive
+                                      ? Theme.of(context).colorScheme.primary
+                                      : widget.textColor.withValues(alpha: 0.7),
+                                  fontWeight: FontWeight.w500,
+                                ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -487,8 +507,8 @@ class _ThinkToolsXmlGroupState extends State<_ThinkToolsXmlGroup> {
                         border: Border(
                           left: BorderSide(
                             color: Theme.of(context).colorScheme.outlineVariant
-                                .withValues(alpha: 0.55),
-                            width: 1.5,
+                                .withValues(alpha: 0.35),
+                            width: 1.0,
                           ),
                         ),
                       ),

@@ -170,13 +170,14 @@ class _AgentModelSelectorPopupState extends State<AgentModelSelectorPopup> {
         color: popupContainerColor,
         elevation: 0,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(14),
+          borderRadius: BorderRadius.circular(18),
           side: BorderSide(
-            color: colorScheme.outlineVariant.withValues(alpha: 0.5),
+            color: colorScheme.outlineVariant.withValues(alpha: 0.35),
+            width: 0.8,
           ),
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(14),
+          borderRadius: BorderRadius.circular(18),
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 300, maxHeight: 420),
             child: FutureBuilder<_AgentModelSelectorData>(
@@ -1665,20 +1666,20 @@ class _ModelNameRow extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     return InkWell(
-      borderRadius: BorderRadius.circular(5),
+      borderRadius: BorderRadius.circular(8),
       hoverColor: colorScheme.onSurface.withValues(alpha: 0.08),
       splashColor: colorScheme.onSurface.withValues(alpha: 0.05),
       highlightColor: colorScheme.onSurface.withValues(alpha: 0.06),
       onTap: onTap,
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
-        constraints: const BoxConstraints(minHeight: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+        constraints: const BoxConstraints(minHeight: 24),
         decoration: BoxDecoration(
           color: selected
               ? colorScheme.primary.withValues(alpha: 0.12)
               : Colors.transparent,
-          borderRadius: BorderRadius.circular(5),
+          borderRadius: BorderRadius.circular(8),
         ),
         child: Row(
           children: <Widget>[

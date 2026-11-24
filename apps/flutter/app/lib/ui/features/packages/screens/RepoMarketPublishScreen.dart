@@ -527,6 +527,13 @@ class _RepoMarketPublishScreenState extends State<RepoMarketPublishScreen> {
               ),
               const SizedBox(height: 18),
               FilledButton.icon(
+                style: FilledButton.styleFrom(
+                  shape: const StadiumBorder(),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 14,
+                    horizontal: 20,
+                  ),
+                ),
                 onPressed: _publishing ? null : _publish,
                 icon: _publishing
                     ? const SizedBox.square(
@@ -563,9 +570,10 @@ class _PublishModeNotice extends StatelessWidget {
       color: colorScheme.surfaceContainerHigh.withValues(alpha: 0.5),
       elevation: 0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(16),
         side: BorderSide(
-          color: colorScheme.outlineVariant.withValues(alpha: 0.5),
+          color: colorScheme.outlineVariant.withValues(alpha: 0.35),
+          width: 0.8,
         ),
       ),
       child: Padding(

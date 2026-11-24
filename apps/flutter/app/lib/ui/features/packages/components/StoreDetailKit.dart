@@ -483,7 +483,7 @@ class StoreRowGlyph extends StatelessWidget {
       height: 32,
       decoration: BoxDecoration(
         color: tint.withValues(alpha: 0.14),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(10),
       ),
       child: Icon(icon, size: 18, color: tint),
     );
