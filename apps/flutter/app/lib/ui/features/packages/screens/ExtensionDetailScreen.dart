@@ -1803,7 +1803,7 @@ class _ContentCount extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
         color: storeCardColor(theme.colorScheme),
-        borderRadius: BorderRadius.circular(storeCardRadius),
+        borderRadius: storeCardRadius,
         border: Border.all(color: storeCardBorderColor(theme.colorScheme)),
       ),
       child: Row(
