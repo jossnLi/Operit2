@@ -62,7 +62,10 @@ function Get-VerifiedArchive($Item, [string] $ArchivePath) {
 $items = @(
     @{
         Name = "busybox-1.38.0"
-        Url = "https://busybox.net/downloads/busybox-1.38.0.tar.bz2"
+          Urls = @(
+              "https://busybox.net/downloads/busybox-1.38.0.tar.bz2"
+              "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/busybox/1%3A1.38.0-3ubuntu5/busybox_1.38.0.orig.tar.bz2"
+          )
         Archive = "busybox-1.38.0.tar.bz2"
         Sha256 = "34F9EA6FF8636F2C9241153B9114EEFA9E65674A45318AE1EF95BB5F31C53BB2"
         Extracted = "busybox-1.38.0"
