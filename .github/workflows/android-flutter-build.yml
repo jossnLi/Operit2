@@ -339,7 +339,7 @@ jobs:
           if ($LASTEXITCODE -ne 0) {
             throw "Isolated Flutter test workspace is not recognized as a Git worktree"
           }
-          git -C $testRoot ls-files --error-unmatch "plugins/packages/buildin/automatic_ui_base/package.json" | Out-Null
+          git -C $testRoot ls-files --error-unmatch "plugins/packages/buildin/automatic_ui_base/manifest.json" | Out-Null
           if ($LASTEXITCODE -ne 0) {
             throw "Git metadata in the isolated test workspace does not expose plugin files"
           }
