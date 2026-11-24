@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:operit_ui/operit_ui.dart';
 
 import '../../../../l10n/generated/app_localizations.dart';
+import '../../../theme/OperitGlassSurface.dart';
 import '../models/SettingsModels.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
@@ -139,9 +140,17 @@ class SettingsCategoryTile extends StatelessWidget {
         : colorScheme.onSurfaceVariant;
     return Padding(
       padding: const EdgeInsets.only(bottom: 2),
-      child: Material(
+      child: OperitGlassSurface(
         color: background,
+        layer: OperitGlassSurfaceLayer.control,
         borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color: selected
+              ? colorScheme.primary.withValues(alpha: 0.25)
+              : Colors.transparent,
+          width: 0.8,
+        ),
+        material: true,
         child: InkWell(
           borderRadius: BorderRadius.circular(10),
           onTap: onTap,
