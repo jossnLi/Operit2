@@ -85,7 +85,7 @@ class _UserProfileSummaryTileState extends State<UserProfileSummaryTile> {
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
       child: OperitGlassSurface(
         color: background,
-        layer: OperitGlassSurfaceLayer.card,
+        layer: OperitGlassSurfaceLayer.control,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: widget.selected
