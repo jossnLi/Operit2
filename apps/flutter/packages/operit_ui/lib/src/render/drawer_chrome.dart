@@ -163,24 +163,24 @@ class ThemeBottomSidebarAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final shape = BorderRadius.circular(8);
+    final shape = BorderRadius.circular(12);
     final backgroundColor = selected
         ? appearance.selectedContainerColor.withValues(alpha: 0.65)
-        : appearance.buttonContainerColor.withValues(alpha: 0.55);
+        : appearance.buttonContainerColor.withValues(alpha: 0.45);
     final borderColor = selected
-        ? appearance.selectedContentColor.withValues(alpha: 0.12)
-        : appearance.dividerColor.withValues(alpha: 0.35);
+        ? appearance.selectedContentColor.withValues(alpha: 0.16)
+        : appearance.dividerColor.withValues(alpha: 0.28);
     final contentColor = selected
         ? appearance.selectedContentColor
         : appearance.itemColor.withValues(alpha: 0.88);
 
     return SizedBox(
-      height: 34,
+      height: 36,
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: backgroundColor,
           borderRadius: shape,
-          border: Border.all(color: borderColor, width: 1),
+          border: Border.all(color: borderColor, width: 0.8),
         ),
         child: Material(
           color: Colors.transparent,
@@ -189,7 +189,7 @@ class ThemeBottomSidebarAction extends StatelessWidget {
             borderRadius: shape,
             onTap: onClick,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -238,36 +238,43 @@ class ThemeUnifiedCreateBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    final contentColor = scheme.onPrimaryContainer;
+    final contentColor = scheme.onSurface;
+    final shape = RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12),
+      side: BorderSide(
+        color: scheme.outlineVariant.withValues(alpha: 0.32),
+        width: 0.8,
+      ),
+    );
     return SizedBox(
-      height: 34,
+      height: 36,
       child: Material(
-        color: scheme.primaryContainer,
-        shape: const StadiumBorder(),
+        color: scheme.surfaceContainerHighest.withValues(alpha: 0.40),
+        shape: shape,
         clipBehavior: Clip.antiAlias,
         child: Row(
           children: <Widget>[
             Expanded(
               child: InkWell(
                 borderRadius: const BorderRadius.horizontal(
-                  left: Radius.circular(17),
+                  left: Radius.circular(12),
                 ),
-                hoverColor: contentColor.withValues(alpha: 0.08),
-                focusColor: contentColor.withValues(alpha: 0.10),
-                splashColor: contentColor.withValues(alpha: 0.10),
-                highlightColor: contentColor.withValues(alpha: 0.10),
+                hoverColor: contentColor.withValues(alpha: 0.06),
+                focusColor: contentColor.withValues(alpha: 0.08),
+                splashColor: contentColor.withValues(alpha: 0.08),
+                highlightColor: contentColor.withValues(alpha: 0.08),
                 onTap: onCreateConversation,
                 child: Center(
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      Icon(OperitIcons.edit_outlined, size: 17, color: contentColor),
-                      const SizedBox(width: 6),
+                      Icon(OperitIcons.edit_outlined, size: 16, color: contentColor),
+                      const SizedBox(width: 7),
                       Text(
                         conversationLabel,
                         style: TextStyle(
                           fontSize: 13,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w500,
                           color: contentColor,
                           letterSpacing: -0.1,
                         ),
@@ -278,29 +285,29 @@ class ThemeUnifiedCreateBar extends StatelessWidget {
               ),
             ),
             Container(
-              width: 1,
-              height: 16,
-              color: contentColor.withValues(alpha: 0.16),
+              width: 0.8,
+              height: 18,
+              color: scheme.outlineVariant.withValues(alpha: 0.32),
             ),
             Tooltip(
               message: groupTooltip,
               child: SizedBox(
-                width: 38,
-                height: 34,
+                width: 40,
+                height: 36,
                 child: InkWell(
                   borderRadius: const BorderRadius.horizontal(
-                    right: Radius.circular(17),
+                    right: Radius.circular(12),
                   ),
-                  hoverColor: contentColor.withValues(alpha: 0.08),
-                  focusColor: contentColor.withValues(alpha: 0.10),
-                  splashColor: contentColor.withValues(alpha: 0.10),
-                  highlightColor: contentColor.withValues(alpha: 0.10),
+                  hoverColor: contentColor.withValues(alpha: 0.06),
+                  focusColor: contentColor.withValues(alpha: 0.08),
+                  splashColor: contentColor.withValues(alpha: 0.08),
+                  highlightColor: contentColor.withValues(alpha: 0.08),
                   onTap: onCreateGroup,
                   child: Center(
                     child: Icon(
                       OperitIcons.create_new_folder_outlined,
                       size: 16,
-                      color: contentColor,
+                      color: contentColor.withValues(alpha: 0.82),
                     ),
                   ),
                 ),

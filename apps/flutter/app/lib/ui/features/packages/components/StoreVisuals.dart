@@ -515,7 +515,7 @@ class StoreFilterChip extends StatelessWidget {
         ? colorScheme.onSecondaryContainer
         : colorScheme.onSurfaceVariant;
     final count = this.count;
-    final radius = BorderRadius.circular(8);
+    final radius = BorderRadius.circular(20);
     return Semantics(
       selected: selected,
       button: true,
@@ -532,6 +532,7 @@ class StoreFilterChip extends StatelessWidget {
             color: selected
                 ? colorScheme.secondaryContainer
                 : colorScheme.outlineVariant.withValues(alpha: 0.72),
+            width: 0.8,
           ),
         ),
         child: Material(
@@ -616,7 +617,7 @@ class StoreSegmentedTabs extends StatelessWidget {
         color: dark
             ? colorScheme.surfaceContainerHighest.withValues(alpha: 0.40)
             : colorScheme.surfaceContainerHigh.withValues(alpha: 0.50),
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: colorScheme.outlineVariant.withValues(
             alpha: dark ? 0.30 : 0.45,
@@ -640,7 +641,7 @@ class StoreSegmentedTabs extends StatelessWidget {
               child: DecoratedBox(
                 decoration: BoxDecoration(
                   color: selectedBackground,
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(16),
                 ),
               ),
             ),
@@ -655,7 +656,7 @@ class StoreSegmentedTabs extends StatelessWidget {
                       child: Material(
                         type: MaterialType.transparency,
                         child: InkWell(
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(16),
                           onTap: () => onSelected(index),
                           child: Center(
                             child: AnimatedDefaultTextStyle(

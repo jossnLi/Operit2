@@ -33,7 +33,6 @@ import 'NavigationDrawerAppearance.dart';
 import 'SidebarMoreMenu.dart';
 import 'SidebarChatCreation.dart';
 
-import 'package:operit2/ui/common/icons/operit_icons.dart';
 part 'DrawerContentGroups.dart';
 part 'DrawerContentDesktop.dart';
 part 'DrawerContentList.dart';
@@ -1173,7 +1172,7 @@ class _DrawerContentState extends State<DrawerContent> {
               children: <Widget>[
                 Expanded(
                   child: BottomSidebarAction(
-                    icon: OperitIcons.inventory_2_outlined,
+                    icon: OperitIcons.extension_outlined,
                     label: '包管理',
                     appearance: widget.appearance,
                     selected:

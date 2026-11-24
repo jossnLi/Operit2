@@ -779,7 +779,7 @@ class _DateRangePickerDialogState extends State<_DateRangePickerDialog> {
                           SizedBox(
                             width: double.infinity,
                             child: OutlinedButton.icon(
-                              icon: const Icon(OperitIcons.today_outlined),
+                              icon: const Icon(OperitIcons.date_range_outlined),
                               label: Text(
                                 '${materialL10n.dateRangeStartLabel}: ${_formatDate(_customRange.start)}',
                               ),
@@ -791,7 +791,7 @@ class _DateRangePickerDialogState extends State<_DateRangePickerDialog> {
                           SizedBox(
                             width: double.infinity,
                             child: OutlinedButton.icon(
-                              icon: const Icon(OperitIcons.event_available_outlined),
+                              icon: const Icon(OperitIcons.date_range_outlined),
                               label: Text(
                                 '${materialL10n.dateRangeEndLabel}: ${_formatDate(_customRange.end)}',
                               ),

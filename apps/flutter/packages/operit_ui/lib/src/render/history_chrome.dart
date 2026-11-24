@@ -430,7 +430,7 @@ class ThemeConversationRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final itemShape = BorderRadius.circular(8);
+    final itemShape = BorderRadius.circular(10);
     final titleColor = selected
         ? appearance.selectedContentColor
         : active
@@ -438,10 +438,10 @@ class ThemeConversationRow extends StatelessWidget {
         : appearance.itemColor.withValues(alpha: 0.80);
     final containerColor = selected
         ? appearance.selectedContainerColor.withValues(
-            alpha: workspaceStyle ? 0.50 : 0.62,
+            alpha: workspaceStyle ? 0.45 : 0.55,
           )
         : active
-        ? appearance.itemColor.withValues(alpha: 0.07)
+        ? appearance.itemColor.withValues(alpha: 0.06)
         : Colors.transparent;
     final rowHeight = workspaceStyle ? 30.0 : 34.0;
     final surface = SizedBox.expand(

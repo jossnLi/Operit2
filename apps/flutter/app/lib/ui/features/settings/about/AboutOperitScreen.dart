@@ -285,9 +285,10 @@ class _AboutSection extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     return OperitGlassSurface(
       color: colorScheme.surfaceContainerLow,
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: BorderRadius.circular(16),
       border: Border.all(
-        color: colorScheme.outlineVariant.withValues(alpha: 0.18),
+        color: colorScheme.outlineVariant.withValues(alpha: 0.22),
+        width: 0.8,
       ),
       material: true,
       child: Padding(
