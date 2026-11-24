@@ -294,6 +294,10 @@ jobs:
               throw "Failed to copy Flutter $dependencyDirectory path dependencies (robocopy exit $LASTEXITCODE)"
             }
           }
+          robocopy "plugins" (Join-Path $testRoot "plugins") /E /NFL /NDL /NJH /NJS /NP /XD node_modules .pnpm-store .git | Out-Null
+          if ($LASTEXITCODE -gt 7) {
+            throw "Failed to copy plugin source dependencies (robocopy exit $LASTEXITCODE)"
+          }
           Push-Location $testWorkspace
           try {
             fvm flutter test `
