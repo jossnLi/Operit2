@@ -431,6 +431,18 @@ jobs:
           "@ | Set-Content -Path $signingProps -Encoding utf8
           }
 
+      - name: Disable Kotlin incremental compilation
+        shell: pwsh
+        run: |
+          # Kotlin cannot close incremental caches when dependency sources come
+          # from the C: drive Pub cache and the Gradle project is on D:.
+          $props = "apps/flutter/app/android/gradle.properties"
+          $content = @(Get-Content -LiteralPath $props | Where-Object {
+            $_ -notmatch '^\s*kotlin\.incremental\s*='
+          })
+          $content += 'kotlin.incremental=false'
+          Set-Content -LiteralPath $props -Value $content -Encoding utf8
+
       - name: Build and package Android app
         shell: pwsh
         run: |
