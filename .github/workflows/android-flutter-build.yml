@@ -221,6 +221,23 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pub-
 
+      - name: Cache built plugins and prebuild state
+        uses: actions/cache@v4
+        with:
+          path: |
+            plugins/packages/buildin/.sync_state.json
+            plugins/packages/external/.sync_state.json
+            plugins/packages/*/*/dist
+            plugins/packages/*/*/node_modules
+            core/crates/runtime/application/assets/plugins/buildin
+            core/crates/runtime/application/assets/plugins/external
+            plugins/.out
+            ~/.local/share/pnpm/store
+            ~/AppData/Local/pnpm/store
+          key: ${{ runner.os }}-plugins-${{ hashFiles('plugins/packages/**', 'plugins/types/**', 'plugins/tools/**') }}
+          restore-keys: |
+            ${{ runner.os }}-plugins-
+
       - name: Prepare bundled models.dev catalog
         shell: pwsh
         run: python tools/build_scripts/models_dev_bundle.py
