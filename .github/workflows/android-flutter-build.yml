@@ -304,6 +304,10 @@ jobs:
               throw "Failed to copy $sourceDirectory source dependencies (robocopy exit $LASTEXITCODE)"
             }
           }
+          robocopy "edge" (Join-Path $testRoot "edge") /E /NFL /NDL /NJH /NJS /NP /XD target node_modules .pnpm-store .git | Out-Null
+          if ($LASTEXITCODE -gt 7) {
+            throw "Failed to copy edge SDK source dependencies (robocopy exit $LASTEXITCODE)"
+          }
           Push-Location $testWorkspace
           try {
             fvm flutter test `
