@@ -86,6 +86,7 @@ $items = @(
         Urls = @(
             "https://ftpmirror.gnu.org/bash/bash-5.2.37.tar.gz"
             "https://ftp.gnu.org/gnu/bash/bash-5.2.37.tar.gz"
+            "https://github.com/gnu-mirror-unofficial/bash/archive/refs/tags/bash-5.2.37.tar.gz"
         )
         Archive = "bash-5.2.37.tar.gz"
         Sha256 = "9599B22ECD1D5787AD7D3B7BF0C59F312B3396D1E281175DD1F8A4014DA621FF"
