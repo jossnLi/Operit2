@@ -6,8 +6,7 @@ import 'package:operit_ui/operit_ui.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../theme/OperitGlassSurface.dart';
 import '../models/SettingsModels.dart';
-
-import 'package:operit2/ui/common/icons/operit_icons.dart';
+import '../profile/UserProfileSummaryTile.dart';
 
 class SettingsCategoryList extends StatelessWidget {
   const SettingsCategoryList({
@@ -29,14 +28,7 @@ class SettingsCategoryList extends StatelessWidget {
         categories: const <SettingsCategory>[
           SettingsCategory.model,
           SettingsCategory.localModels,
-          SettingsCategory.usage,
-        ],
-      ),
-      _SettingsCategoryGroup(
-        title: l10n.settingsCategoryGroupWorkspace,
-        categories: const <SettingsCategory>[
-          SettingsCategory.tools,
-          SettingsCategory.workspace,
+          SettingsCategory.tts,
         ],
       ),
       _SettingsCategoryGroup(
@@ -44,12 +36,16 @@ class SettingsCategoryList extends StatelessWidget {
         categories: const <SettingsCategory>[
           SettingsCategory.globalBehavior,
           SettingsCategory.appearance,
+          SettingsCategory.tools,
+          SettingsCategory.workspace,
         ],
       ),
       _SettingsCategoryGroup(
         title: l10n.settingsCategoryGroupSystem,
         categories: const <SettingsCategory>[
           SettingsCategory.data,
+          SettingsCategory.usage,
+          SettingsCategory.accessLinks,
           SettingsCategory.about,
         ],
       ),
@@ -60,7 +56,7 @@ class SettingsCategoryList extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(16, 18, 16, 24),
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.fromLTRB(10, 4, 10, 20),
+            padding: const EdgeInsets.fromLTRB(10, 4, 10, 16),
             child: Text(
               l10n.settings,
               style: theme.textTheme.headlineSmall?.copyWith(
@@ -70,12 +66,12 @@ class SettingsCategoryList extends StatelessWidget {
               ),
             ),
           ),
-          SettingsCategoryTile(
-            spec: SettingsCategorySpec.of(SettingsCategory.accessLinks, l10n),
-            selected: selectedCategory == SettingsCategory.accessLinks,
-            onTap: () => onCategorySelected(SettingsCategory.accessLinks),
-            prominent: true,
+          UserProfileSummaryTile(
+            selected: selectedCategory == SettingsCategory.profile,
+            revision: 0,
+            onTap: () => onCategorySelected(SettingsCategory.profile),
           ),
+          const SizedBox(height: 6),
           for (final groupEntry in groups.asMap().entries) ...<Widget>[
             Padding(
               padding: EdgeInsets.fromLTRB(

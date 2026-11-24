@@ -18,12 +18,14 @@ class GlobalBehaviorSettingsPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return ListView(
-      padding: const EdgeInsets.fromLTRB(16, 12, 16, 20),
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
       children: <Widget>[
         _GlobalBehaviorSectionCard(
           title: l10n.settingsGlobalBehaviorChatInputSection,
+          description: '调整聊天界面的键盘回车与文本输入交互',
           children: const <Widget>[
             _EnterSendsMessageControl(),
+            Divider(height: 20, thickness: 0.6),
             _LongPastedTextBehaviorControl(),
           ],
         ),
@@ -35,66 +37,56 @@ class GlobalBehaviorSettingsPanel extends StatelessWidget {
 class _GlobalBehaviorSectionCard extends StatelessWidget {
   const _GlobalBehaviorSectionCard({
     required this.title,
+    this.description,
     required this.children,
   });
 
   final String title;
+  final String? description;
   final List<Widget> children;
 
-  /// Builds a grouped settings card for this page.
+  /// Builds a grouped settings card for this page in ChatGPT layout style.
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final radius = BorderRadius.circular(12);
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
-      child: OperitGlassSurface(
-        color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.36),
-        borderRadius: radius,
-        border: Border.all(
-          color: colorScheme.outlineVariant.withValues(alpha: 0.18),
-        ),
-        material: true,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(14, 12, 14, 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                title,
-                style: SettingsControlStyles.sectionTitleTextStyle(context),
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final radius = BorderRadius.circular(16);
+    return OperitGlassSurface(
+      color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.32),
+      borderRadius: radius,
+      border: Border.all(
+        color: colorScheme.outlineVariant.withValues(alpha: 0.22),
+        width: 0.8,
+      ),
+      material: true,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              title,
+              style: theme.textTheme.titleSmall?.copyWith(
+                fontWeight: FontWeight.w700,
+                color: colorScheme.onSurface,
+                letterSpacing: -0.2,
               ),
-              const SizedBox(height: 6),
-              ...children,
+            ),
+            if (description != null) ...<Widget>[
+              const SizedBox(height: 3),
+              Text(
+                description!,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                  fontSize: 12,
+                ),
+              ),
             ],
-          ),
+            const SizedBox(height: 12),
+            ...children,
+          ],
         ),
       ),
-    );
-  }
-}
-
-class _GlobalBehaviorSettingSwitch extends StatelessWidget {
-  const _GlobalBehaviorSettingSwitch({
-    required this.title,
-    required this.value,
-    required this.onChanged,
-  });
-
-  final String title;
-  final bool value;
-  final ValueChanged<bool> onChanged;
-
-  /// Builds a compact switch row for one global behavior preference.
-  @override
-  Widget build(BuildContext context) {
-    return SwitchListTile(
-      contentPadding: EdgeInsets.zero,
-      dense: true,
-      visualDensity: VisualDensity.compact,
-      title: Text(title),
-      value: value,
-      onChanged: onChanged,
     );
   }
 }
@@ -108,13 +100,10 @@ class _EnterSendsMessageControl extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     return ValueListenableBuilder<bool?>(
       valueListenable: UserPreferencesManager.enterSendsMessage,
-      builder: (context, enabled, _) => SwitchListTile(
+      builder: (context, enabled, _) => SettingsSwitchRow(
         key: const ValueKey('settings.enterSendsMessage'),
-        contentPadding: EdgeInsets.zero,
-        dense: true,
-        visualDensity: VisualDensity.compact,
-        title: Text(l10n.settingsGlobalBehaviorEnterSendsMessage),
-        subtitle: Text(l10n.settingsGlobalBehaviorEnterSendsMessageDescription),
+        title: l10n.settingsGlobalBehaviorEnterSendsMessage,
+        subtitle: l10n.settingsGlobalBehaviorEnterSendsMessageDescription,
         value: enabled ?? useTabletLayoutForContext(context),
         onChanged: (value) => unawaited(
           const UserPreferencesManager().saveEnterSendsMessage(value),
@@ -180,9 +169,11 @@ class _LongPastedTextBehaviorControlState
       valueListenable: UserPreferencesManager.longPastedTextInputSettings,
       builder: (context, settings, _) {
         return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            _GlobalBehaviorSettingSwitch(
+            SettingsSwitchRow(
               title: l10n.settingsGlobalBehaviorLongPastedTextAsAttachment,
+              subtitle: '输入大段内容时自动封装为文件胶囊附件，保持对话流轻盈',
               value: settings.enabled,
               onChanged: (enabled) {
                 UserPreferencesManager.longPastedTextInputSettings.value =
@@ -198,97 +189,49 @@ class _LongPastedTextBehaviorControlState
                 );
               },
             ),
-            _GlobalBehaviorValueSlider(
-              label: l10n.settingsGlobalBehaviorLongPastedTextThreshold,
-              value: settings.threshold.toDouble(),
-              min: UserPreferencesManager.longPastedTextInputMinimumThreshold
-                  .toDouble(),
-              max: UserPreferencesManager.longPastedTextInputMaximumThreshold
-                  .toDouble(),
-              divisions:
-                  (UserPreferencesManager.longPastedTextInputMaximumThreshold -
-                      UserPreferencesManager
-                          .longPastedTextInputMinimumThreshold) ~/
-                  UserPreferencesManager.longPastedTextInputThresholdStep,
-              valueText: l10n
-                  .settingsGlobalBehaviorLongPastedTextThresholdValue(
-                    settings.threshold,
-                  ),
-              onChanged: (value) {
-                final threshold = value.round();
-                UserPreferencesManager.longPastedTextInputSettings.value =
-                    LongPastedTextInputSettings(
-                      enabled: settings.enabled,
-                      threshold: threshold,
+            if (settings.enabled) ...<Widget>[
+              const SizedBox(height: 8),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: SettingsSliderRow(
+                  label: l10n.settingsGlobalBehaviorLongPastedTextThreshold,
+                  value: settings.threshold.toDouble(),
+                  min: UserPreferencesManager.longPastedTextInputMinimumThreshold
+                      .toDouble(),
+                  max: UserPreferencesManager.longPastedTextInputMaximumThreshold
+                      .toDouble(),
+                  divisions:
+                      (UserPreferencesManager.longPastedTextInputMaximumThreshold -
+                          UserPreferencesManager
+                              .longPastedTextInputMinimumThreshold) ~/
+                      UserPreferencesManager.longPastedTextInputThresholdStep,
+                  valueText: l10n
+                      .settingsGlobalBehaviorLongPastedTextThresholdValue(
+                        settings.threshold,
+                      ),
+                  onChanged: (value) {
+                    final threshold = value.round();
+                    UserPreferencesManager.longPastedTextInputSettings.value =
+                        LongPastedTextInputSettings(
+                          enabled: settings.enabled,
+                          threshold: threshold,
+                        );
+                  },
+                  onChangeEnd: (value) {
+                    final threshold = value.round();
+                    unawaited(
+                      _saveSettings(
+                        enabled: settings.enabled,
+                        threshold: threshold,
+                      ),
                     );
-              },
-              onChangeEnd: (value) {
-                final threshold = value.round();
-                unawaited(
-                  _saveSettings(
-                    enabled: settings.enabled,
-                    threshold: threshold,
-                  ),
-                );
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-}
-
-class _GlobalBehaviorValueSlider extends StatelessWidget {
-  const _GlobalBehaviorValueSlider({
-    required this.label,
-    required this.value,
-    required this.min,
-    required this.max,
-    required this.divisions,
-    required this.valueText,
-    required this.onChanged,
-    required this.onChangeEnd,
-  });
-
-  final String label;
-  final double value;
-  final double min;
-  final double max;
-  final int divisions;
-  final String valueText;
-  final ValueChanged<double> onChanged;
-  final ValueChanged<double> onChangeEnd;
-
-  /// Builds a labeled slider with its selected value.
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Column(
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              Expanded(child: Text(label)),
-              Text(
-                valueText,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  },
                 ),
               ),
             ],
-          ),
-          Slider(
-            value: value.clamp(min, max).toDouble(),
-            min: min,
-            max: max,
-            divisions: divisions,
-            label: valueText,
-            onChanged: onChanged,
-            onChangeEnd: onChangeEnd,
-          ),
-        ],
-      ),
+          ],
+        );
+      },
     );
   }
 }

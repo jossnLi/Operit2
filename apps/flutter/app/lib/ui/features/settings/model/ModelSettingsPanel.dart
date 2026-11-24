@@ -23,7 +23,6 @@ import 'ApiKeyPoolEditor.dart';
 import 'ModelConnectionTestCapabilities.dart';
 import 'ProviderLogo.dart';
 import 'ProviderTypePicker.dart';
-import '../tts/TtsSettingsPanel.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
 
@@ -575,14 +574,6 @@ class ModelSettingsPanelState extends State<ModelSettingsPanel> {
                   onOpenProvider: _openProviderDetail,
                 ),
               ],
-            ),
-            TtsProviderSection(
-              clients: widget.clients,
-              initiallyExpanded: false,
-            ),
-            SttProviderSection(
-              clients: widget.clients,
-              initiallyExpanded: false,
             ),
             _SectionCard(
               title: l10n.settingsModelFunctionMappingsSection,
