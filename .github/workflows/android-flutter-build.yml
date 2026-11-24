@@ -270,10 +270,25 @@ jobs:
         run: fvm flutter analyze --no-fatal-warnings --no-fatal-infos
 
       - name: Test changed settings flows
-        working-directory: apps/flutter/app
         shell: pwsh
         run: |
-          fvm flutter test `
+          # Run widget tests in a copy without Android's Gradle project. Flutter
+          # otherwise discovers the Android project from the working directory
+          # and builds native plugin assets, which invokes esbuild over pnpm's
+          # Windows virtual-store links even though these are widget tests.
+          $source = (Resolve-Path "apps/flutter/app").Path
+          $testRoot = Join-Path $env:RUNNER_TEMP "operit-settings-test"
+          if (Test-Path -LiteralPath $testRoot) {
+            Remove-Item -LiteralPath $testRoot -Recurse -Force
+          }
+          New-Item -ItemType Directory -Force -Path $testRoot | Out-Null
+          robocopy $source $testRoot /E /NFL /NDL /NJH /NJS /NP /XD android build .dart_tool .fvm | Out-Null
+          if ($LASTEXITCODE -gt 7) {
+            throw "Failed to prepare isolated Flutter test workspace (robocopy exit $LASTEXITCODE)"
+          }
+          Push-Location $testRoot
+          try {
+            fvm flutter test `
             test/settings_screen_layout_test.dart `
             test/settings_detail_transition_test.dart `
             test/model_provider_display_test.dart `
@@ -284,6 +299,9 @@ jobs:
             test/onboarding_snapshot_import_progress_test.dart `
             test/storage_directory_selection_test.dart `
             test/widget_test.dart
+          } finally {
+            Pop-Location
+          }
 
       - name: Cache Android bindgen libclang
         id: libclang-cache
