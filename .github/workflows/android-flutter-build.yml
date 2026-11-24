@@ -278,7 +278,8 @@ jobs:
           # Windows virtual-store links even though these are widget tests.
           $source = (Resolve-Path "apps/flutter/app").Path
           $testRoot = Join-Path $env:RUNNER_TEMP "operit-settings-test"
-          $testWorkspace = Join-Path $testRoot "apps/flutter/app"
+          $flutterRoot = Join-Path $testRoot "apps/flutter"
+          $testWorkspace = Join-Path $flutterRoot "app"
           if (Test-Path -LiteralPath $testRoot) {
             Remove-Item -LiteralPath $testRoot -Recurse -Force
           }
@@ -287,9 +288,11 @@ jobs:
           if ($LASTEXITCODE -gt 7) {
             throw "Failed to prepare isolated Flutter test workspace (robocopy exit $LASTEXITCODE)"
           }
-          robocopy "apps/flutter/thirdparty" (Join-Path $testRoot "apps/flutter/thirdparty") /E /NFL /NDL /NJH /NJS /NP | Out-Null
-          if ($LASTEXITCODE -gt 7) {
-            throw "Failed to copy Flutter third-party path dependencies (robocopy exit $LASTEXITCODE)"
+          foreach ($dependencyDirectory in @("packages", "thirdparty")) {
+            robocopy (Join-Path "apps/flutter" $dependencyDirectory) (Join-Path $flutterRoot $dependencyDirectory) /E /NFL /NDL /NJH /NJS /NP | Out-Null
+            if ($LASTEXITCODE -gt 7) {
+              throw "Failed to copy Flutter $dependencyDirectory path dependencies (robocopy exit $LASTEXITCODE)"
+            }
           }
           Push-Location $testWorkspace
           try {
