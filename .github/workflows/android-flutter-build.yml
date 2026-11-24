@@ -330,6 +330,19 @@ jobs:
           if ($LASTEXITCODE -gt 7) {
             throw "Failed to copy edge SDK source dependencies (robocopy exit $LASTEXITCODE)"
           }
+          # Plugin packaging uses git ls-files to preserve tracked-file semantics.
+          robocopy ".git" (Join-Path $testRoot ".git") /E /NFL /NDL /NJH /NJS /NP | Out-Null
+          if ($LASTEXITCODE -gt 7) {
+            throw "Failed to copy Git metadata for plugin packaging (robocopy exit $LASTEXITCODE)"
+          }
+          git -C $testRoot rev-parse --is-inside-work-tree | Out-Null
+          if ($LASTEXITCODE -ne 0) {
+            throw "Isolated Flutter test workspace is not recognized as a Git worktree"
+          }
+          git -C $testRoot ls-files --error-unmatch "plugins/packages/buildin/automatic_ui_base/package.json" | Out-Null
+          if ($LASTEXITCODE -ne 0) {
+            throw "Git metadata in the isolated test workspace does not expose plugin files"
+          }
           Push-Location $testWorkspace
           try {
             fvm flutter test `
