@@ -330,9 +330,26 @@ class _StoreMarketListingState extends State<StoreMarketListing> {
                 SliverFillRemaining(
                   hasScrollBody: false,
                   child: Center(
-                    child: Text(
-                      '没有符合筛选条件的内容',
-                      style: Theme.of(context).textTheme.titleMedium,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Icon(
+                          OperitIcons.search_off_rounded,
+                          size: 32,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant
+                              .withValues(alpha: 0.55),
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          '没有符合筛选条件的内容',
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurfaceVariant,
+                              ),
+                        ),
+                      ],
                     ),
                   ),
                 )

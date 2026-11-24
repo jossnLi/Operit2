@@ -33,6 +33,7 @@ import 'ToolPkgDesktopWidgetsScreen.dart';
 import 'ToolPkgUiLauncherScreen.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
+
 /// Detail route shared by installed extensions and offline official ones.
 class ExtensionDetailScreen extends StatefulWidget {
   const ExtensionDetailScreen({
@@ -711,7 +712,9 @@ class _ExtensionDetailScreenState extends State<ExtensionDetailScreen>
                 children: <Widget>[
                   for (final skill in skills)
                     StoreListRow(
-                      leading: const StoreRowGlyph(icon: OperitIcons.hub_outlined),
+                      leading: const StoreRowGlyph(
+                        icon: OperitIcons.hub_outlined,
+                      ),
                       title: '${skill['name'] ?? skill['id'] ?? ''}',
                       subtitle: '${skill['description'] ?? ''}',
                     ),
@@ -863,7 +866,9 @@ class _ExtensionDetailScreenState extends State<ExtensionDetailScreen>
           child: StoreGroupedList(
             children: <Widget>[
               StoreListRow(
-                leading: const StoreRowGlyph(icon: OperitIcons.widgets_outlined),
+                leading: const StoreRowGlyph(
+                  icon: OperitIcons.widgets_outlined,
+                ),
                 title: '管理桌面小组件',
                 subtitle: enabled ? '查看并添加这个插件提供的小组件' : '启用插件后可用',
                 trailing: const Icon(OperitIcons.chevron_right_rounded),
@@ -988,14 +993,19 @@ class _ExtensionDetailScreenState extends State<ExtensionDetailScreen>
                 children: <Widget>[
                   for (final tool in package.tools)
                     StoreListRow(
-                      leading: const StoreRowGlyph(icon: OperitIcons.build_outlined),
+                      leading: const StoreRowGlyph(
+                        icon: OperitIcons.build_outlined,
+                      ),
                       title: _toolTitle(tool),
                       subtitle: localizedText(tool.description),
                       footer: Wrap(
                         spacing: 6,
                         runSpacing: 6,
                         children: <Widget>[
-                          StoreBadge(label: tool.name, icon: OperitIcons.tag_rounded),
+                          StoreBadge(
+                            label: tool.name,
+                            icon: OperitIcons.tag_rounded,
+                          ),
                           for (final parameter in tool.parameters)
                             StoreBadge(
                               label:
@@ -1172,7 +1182,10 @@ class _ExtensionDetailScreenState extends State<ExtensionDetailScreen>
                                 serverId: entry.id,
                               ),
                             ),
-                            icon: const Icon(OperitIcons.stop_rounded, size: 18),
+                            icon: const Icon(
+                              OperitIcons.stop_rounded,
+                              size: 18,
+                            ),
                             label: const Text('停止'),
                           ),
                       ],
@@ -1204,7 +1217,9 @@ class _ExtensionDetailScreenState extends State<ExtensionDetailScreen>
                 children: <Widget>[
                   for (final tool in tools)
                     StoreListRow(
-                      leading: const StoreRowGlyph(icon: OperitIcons.build_outlined),
+                      leading: const StoreRowGlyph(
+                        icon: OperitIcons.build_outlined,
+                      ),
                       title: tool.name,
                       subtitle: tool.description,
                       footer: _mcpParameterBadges(tool),
@@ -1548,7 +1563,10 @@ class _ExtensionDetailScreenState extends State<ExtensionDetailScreen>
           StoreBadge(label: kind.label, icon: kind.icon),
           if (candidate.version.trim().isNotEmpty)
             StoreBadge(label: 'v${candidate.version}'),
-          const StoreBadge(label: '无需联网', icon: OperitIcons.offline_bolt_outlined),
+          const StoreBadge(
+            label: '无需联网',
+            icon: OperitIcons.offline_bolt_outlined,
+          ),
         ],
         actions: <Widget>[
           StoreGetButton(
@@ -1785,7 +1803,7 @@ class _ContentCount extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
         color: storeCardColor(theme.colorScheme),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(storeCardRadius),
         border: Border.all(color: storeCardBorderColor(theme.colorScheme)),
       ),
       child: Row(

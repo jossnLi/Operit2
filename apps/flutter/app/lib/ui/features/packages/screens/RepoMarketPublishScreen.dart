@@ -13,6 +13,7 @@ import '../components/EmptyState.dart';
 import '../market/ArtifactMarketSupport.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
+
 class RepoMarketPublishContext {
   const RepoMarketPublishContext({
     required this.entry,
@@ -320,13 +321,17 @@ class _RepoMarketPublishScreenState extends State<RepoMarketPublishScreen> {
             children: <Widget>[
               if (_isContinuationMode)
                 _PublishModeNotice(canEditEntry: _canEditEntry),
-              if (_isContinuationMode) const SizedBox(height: 12),
+              if (_isContinuationMode) const SizedBox(height: 16),
+              const _PublishSectionLabel('条目信息'),
+              const SizedBox(height: 8),
               TextField(
                 controller: _titleController,
                 enabled: entryFieldsEnabled,
                 decoration: const InputDecoration(
                   labelText: '名称',
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                  ),
                 ),
               ),
               const SizedBox(height: 12),
@@ -337,7 +342,9 @@ class _RepoMarketPublishScreenState extends State<RepoMarketPublishScreen> {
                 maxLines: 4,
                 decoration: const InputDecoration(
                   labelText: '简介',
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                  ),
                 ),
               ),
               const SizedBox(height: 12),
@@ -348,7 +355,9 @@ class _RepoMarketPublishScreenState extends State<RepoMarketPublishScreen> {
                 maxLines: 12,
                 decoration: const InputDecoration(
                   labelText: '详情',
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                  ),
                 ),
               ),
               const SizedBox(height: 12),
@@ -358,7 +367,9 @@ class _RepoMarketPublishScreenState extends State<RepoMarketPublishScreen> {
                 style: OperitFormStyles.dropdownTextStyle(context),
                 decoration: const InputDecoration(
                   labelText: '分类',
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                  ),
                 ),
                 items: _categories
                     .map(
@@ -379,7 +390,7 @@ class _RepoMarketPublishScreenState extends State<RepoMarketPublishScreen> {
                     ? (value) => setState(() => _categoryId = value)
                     : null,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 4),
               SwitchListTile(
                 contentPadding: EdgeInsets.zero,
                 value: _allowPublicUpdates,
@@ -389,14 +400,18 @@ class _RepoMarketPublishScreenState extends State<RepoMarketPublishScreen> {
                 title: const Text('允许所有人发布新版本'),
                 subtitle: const Text('开启后，登录用户可为该插件提交新版本。'),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 16),
+              const _PublishSectionLabel('版本来源'),
+              const SizedBox(height: 8),
               TextField(
                 controller: _sourceUrlController,
                 enabled: !_publishing && !_isContinuationMode,
                 decoration: const InputDecoration(
                   labelText: 'GitHub 地址',
                   hintText: 'https://github.com/owner/repo/tree/main/path',
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                  ),
                 ),
               ),
               const SizedBox(height: 12),
@@ -406,7 +421,9 @@ class _RepoMarketPublishScreenState extends State<RepoMarketPublishScreen> {
                 style: OperitFormStyles.dropdownTextStyle(context),
                 decoration: const InputDecoration(
                   labelText: '引用类型',
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                  ),
                 ),
                 items: const <DropdownMenuItem<String>>[
                   DropdownMenuItem(value: 'branch', child: Text('branch')),
@@ -426,7 +443,9 @@ class _RepoMarketPublishScreenState extends State<RepoMarketPublishScreen> {
                 enabled: versionFieldsEnabled,
                 decoration: const InputDecoration(
                   labelText: '引用名称',
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                  ),
                 ),
               ),
               const SizedBox(height: 12),
@@ -437,28 +456,62 @@ class _RepoMarketPublishScreenState extends State<RepoMarketPublishScreen> {
                 maxLines: 12,
                 decoration: const InputDecoration(
                   labelText: '安装配置 JSON',
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                  ),
                 ),
               ),
-              const SizedBox(height: 12),
-              TextField(
-                controller: _versionController,
-                enabled: versionFieldsEnabled,
-                decoration: InputDecoration(
-                  labelText: _isContinuationMode ? '新版本号' : '版本号',
-                  border: const OutlineInputBorder(),
+              if (!_isContinuationMode) ...<Widget>[
+                const SizedBox(height: 16),
+                const _PublishSectionLabel('版本信息'),
+                const SizedBox(height: 8),
+                TextField(
+                  controller: _versionController,
+                  enabled: versionFieldsEnabled,
+                  decoration: InputDecoration(
+                    labelText: '版本号',
+                    border: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                    ),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 12),
-              TextField(
-                controller: _formatVerController,
-                enabled: versionFieldsEnabled,
-                decoration: const InputDecoration(
-                  labelText: '格式版本',
-                  border: OutlineInputBorder(),
+                const SizedBox(height: 12),
+                TextField(
+                  controller: _formatVerController,
+                  enabled: versionFieldsEnabled,
+                  decoration: const InputDecoration(
+                    labelText: '格式版本',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                    ),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 12),
+              ] else ...<Widget>[
+                const SizedBox(height: 16),
+                const _PublishSectionLabel('版本信息'),
+                const SizedBox(height: 8),
+                TextField(
+                  controller: _versionController,
+                  enabled: versionFieldsEnabled,
+                  decoration: InputDecoration(
+                    labelText: '新版本号',
+                    border: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                TextField(
+                  controller: _formatVerController,
+                  enabled: versionFieldsEnabled,
+                  decoration: const InputDecoration(
+                    labelText: '格式版本',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                    ),
+                  ),
+                ),
+              ],
               const SizedBox(height: 12),
               TextField(
                 controller: _changelogController,
@@ -467,7 +520,9 @@ class _RepoMarketPublishScreenState extends State<RepoMarketPublishScreen> {
                 maxLines: 5,
                 decoration: const InputDecoration(
                   labelText: '更新说明（可选）',
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                  ),
                 ),
               ),
               const SizedBox(height: 18),
@@ -504,7 +559,15 @@ class _PublishModeNotice extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     return Card(
-      color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.55),
+      margin: EdgeInsets.zero,
+      color: colorScheme.surfaceContainerHigh.withValues(alpha: 0.5),
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(
+          color: colorScheme.outlineVariant.withValues(alpha: 0.5),
+        ),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Row(
@@ -514,6 +577,7 @@ class _PublishModeNotice extends StatelessWidget {
               canEditEntry
                   ? OperitIcons.admin_panel_settings_outlined
                   : OperitIcons.group_add_outlined,
+              size: 18,
               color: colorScheme.primary,
             ),
             const SizedBox(width: 10),
@@ -522,10 +586,33 @@ class _PublishModeNotice extends StatelessWidget {
                 canEditEntry
                     ? '你是最初发布者，本次提交可同时更新名称、简介、详情、分类和公开协作开关。'
                     : '你将作为贡献者提交版本内容，不能修改该条目的简介、详情、分类或协作开关。',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                  height: 1.4,
+                ),
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// Restrained section heading used by the publish form.
+class _PublishSectionLabel extends StatelessWidget {
+  const _PublishSectionLabel(this.text);
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Text(
+      text,
+      style: theme.textTheme.titleSmall?.copyWith(
+        fontWeight: FontWeight.w600,
+        color: theme.colorScheme.onSurface,
       ),
     );
   }

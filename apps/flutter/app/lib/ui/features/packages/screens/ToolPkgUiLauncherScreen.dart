@@ -1289,7 +1289,12 @@ class _ToolPkgUiLauncherScreenState extends State<ToolPkgUiLauncherScreen> {
       return content;
     }
     return Scaffold(
-      appBar: AppBar(title: Text(toolPkgContainerDisplayName(widget.plugin))),
+      appBar: AppBar(
+        title: Text(toolPkgContainerDisplayName(widget.plugin)),
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        surfaceTintColor: Colors.transparent,
+      ),
       body: SafeArea(child: content),
     );
   }

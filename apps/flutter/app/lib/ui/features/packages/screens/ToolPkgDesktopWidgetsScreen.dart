@@ -9,6 +9,7 @@ import '../../../../l10n/generated/app_localizations.dart';
 import 'ToolPkgUiLauncherScreen.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
+
 /// Shows a package's registered widget render routes through the shared Flutter host.
 class ToolPkgDesktopWidgetsScreen extends StatefulWidget {
   /// Creates the widget gallery for one enabled package.
@@ -102,12 +103,59 @@ class _ToolPkgDesktopWidgetsScreenState
         future: _widgets,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return Center(child: Text(snapshot.error.toString()));
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Icon(
+                      Icons.error_outline_rounded,
+                      size: 32,
+                      color: Theme.of(context).colorScheme.error,
+                    ),
+                    const SizedBox(height: 12),
+                    SelectableText(
+                      snapshot.error.toString(),
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
           }
           if (!snapshot.hasData) {
             return const Center(child: CircularProgressIndicator());
           }
           final definitions = snapshot.data!;
+          if (definitions.isEmpty) {
+            return Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Icon(
+                    OperitIcons.widgets_outlined,
+                    size: 32,
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurfaceVariant.withValues(alpha: 0.55),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    _language == 'en'
+                        ? 'No desktop widgets registered'
+                        : '暂无桌面小组件',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
           return GridView.builder(
             padding: const EdgeInsets.all(16),
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
@@ -119,7 +167,16 @@ class _ToolPkgDesktopWidgetsScreenState
             itemCount: definitions.length,
             itemBuilder: (context, index) {
               final definition = definitions[index];
-              return Card(
+              return Card.filled(
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                  side: BorderSide(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.outlineVariant.withValues(alpha: 0.5),
+                  ),
+                ),
                 child: Padding(
                   padding: const EdgeInsets.all(16),
                   child: Column(
@@ -133,7 +190,9 @@ class _ToolPkgDesktopWidgetsScreenState
                         alignment: Alignment.centerRight,
                         child: TextButton.icon(
                           onPressed: () => _addToDesktop(definition),
-                          icon: const Icon(OperitIcons.add_to_home_screen_outlined),
+                          icon: const Icon(
+                            OperitIcons.add_to_home_screen_outlined,
+                          ),
                           label: Text(
                             _language == 'en' ? 'Add to desktop' : '添加到桌面',
                           ),

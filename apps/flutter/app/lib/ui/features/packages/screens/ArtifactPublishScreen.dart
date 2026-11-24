@@ -10,12 +10,14 @@ import 'package:http/http.dart' as http;
 import '../../../../core/proxy/generated/CoreProxyClients.g.dart';
 import '../../../../core/proxy/generated/CoreProxyModels.g.dart' as core_proxy;
 import '../../../../core/runtime/RuntimeFileBytes.dart';
+import '../../../common/components/M3LoadingIndicator.dart';
 import '../../../theme/OperitFormStyles.dart';
 import '../../../theme/OperitGlassSurface.dart';
 import '../components/EmptyState.dart';
 import '../market/ArtifactMarketSupport.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
+
 const String _forgeRepoName = 'OperitForge';
 const List<String> _artifactMarketTypes = <String>['script', 'package'];
 
@@ -453,7 +455,7 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
       body: Builder(
         builder: (context) {
           if (_loading) {
-            return const Center(child: CircularProgressIndicator());
+            return const M3LoadingPane();
           }
           if (error != null && _sources.isEmpty) {
             return EmptyState(
@@ -484,8 +486,10 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
             children: <Widget>[
               if (publishContext != null) ...<Widget>[
                 _PublishContinuationPanel(contextInfo: publishContext),
-                const SizedBox(height: 12),
+                const SizedBox(height: 16),
               ],
+              const _PublishSectionLabel('本地资源'),
+              const SizedBox(height: 8),
               OperitFormStyles.dropdownButtonFormField<String>(
                 context,
                 key: ValueKey<String?>(source?.packageName),
@@ -493,7 +497,9 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
                 style: OperitFormStyles.dropdownTextStyle(context),
                 decoration: const InputDecoration(
                   labelText: '本地 Artifact',
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                  ),
                 ),
                 items: _sources
                     .map(
@@ -520,13 +526,15 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
                 InputDecorator(
                   decoration: const InputDecoration(
                     labelText: 'API 版本',
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                    ),
                   ),
                   child: Text(source.apiVersion ?? '1.0.0'),
                 ),
                 const SizedBox(height: 12),
               ],
-              Text('发布资源来源', style: Theme.of(context).textTheme.titleSmall),
+              const _PublishSectionLabel('发布资源来源'),
               const SizedBox(height: 8),
               SegmentedButton<_ArtifactPublishAssetSource>(
                 segments: const <ButtonSegment<_ArtifactPublishAssetSource>>[
@@ -561,7 +569,9 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
                   decoration: const InputDecoration(
                     labelText: 'GitHub 仓库链接',
                     hintText: 'https://github.com/owner/repository',
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                    ),
                   ),
                   onChanged: (_) {
                     setState(() {
@@ -611,7 +621,9 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
                     style: OperitFormStyles.dropdownTextStyle(context),
                     decoration: const InputDecoration(
                       labelText: 'GitHub Release',
-                      border: OutlineInputBorder(),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                      ),
                     ),
                     items: githubReleaseCatalog.releases
                         .map(
@@ -650,7 +662,9 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
                     style: OperitFormStyles.dropdownTextStyle(context),
                     decoration: const InputDecoration(
                       labelText: 'Release 资产',
-                      border: OutlineInputBorder(),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                      ),
                     ),
                     items: selectedGitHubRelease.assets
                         .map(
@@ -679,7 +693,9 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
                 enabled: !_publishing && !isDisplayNameLocked,
                 decoration: InputDecoration(
                   labelText: '显示名称',
-                  border: const OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                  ),
                   helperText: !isDisplayNameLocked ? null : '基于版本发布时，名字沿用来源版本。',
                 ),
               ),
@@ -691,7 +707,9 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
                 maxLines: 4,
                 decoration: const InputDecoration(
                   labelText: '简介',
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                  ),
                 ),
               ),
               const SizedBox(height: 12),
@@ -702,7 +720,9 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
                 maxLines: 12,
                 decoration: const InputDecoration(
                   labelText: '详情',
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                  ),
                 ),
               ),
               const SizedBox(height: 12),
@@ -712,7 +732,9 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
                 style: OperitFormStyles.dropdownTextStyle(context),
                 decoration: const InputDecoration(
                   labelText: '分类',
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                  ),
                 ),
                 items: _categories
                     .map(
@@ -775,7 +797,9 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
                 enabled: !_publishing,
                 decoration: const InputDecoration(
                   labelText: '版本',
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                  ),
                 ),
               ),
               const SizedBox(height: 12),
@@ -826,6 +850,24 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
             ],
           );
         },
+      ),
+    );
+  }
+}
+
+class _PublishSectionLabel extends StatelessWidget {
+  const _PublishSectionLabel(this.text);
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Text(
+      text,
+      style: theme.textTheme.titleSmall?.copyWith(
+        fontWeight: FontWeight.w600,
+        color: theme.colorScheme.onSurface,
       ),
     );
   }

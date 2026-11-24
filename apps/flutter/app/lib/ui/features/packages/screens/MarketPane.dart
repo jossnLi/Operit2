@@ -25,6 +25,7 @@ import '../model/GitHubAccountState.dart';
 import 'StoreBrowseScreen.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
+
 /// Market section: featured entries, official offline extensions, community
 /// shelves, categories, search and the way into the creator center.
 class MarketPane extends StatefulWidget {
@@ -612,12 +613,34 @@ class _MarketPaneState extends State<MarketPane> {
               )
             else if (market.isEmpty)
               SliverPadding(
-                padding: EdgeInsets.fromLTRB(padding.left, 8, padding.right, 0),
+                padding: EdgeInsets.fromLTRB(
+                  padding.left,
+                  16,
+                  padding.right,
+                  0,
+                ),
                 sliver: SliverToBoxAdapter(
-                  child: Text(
-                    '市场里没有找到「${widget.query.trim()}」',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  child: Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Icon(
+                          OperitIcons.search_off_rounded,
+                          size: 30,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant
+                              .withValues(alpha: 0.55),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          '市场里没有找到「${widget.query.trim()}」',
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurfaceVariant,
+                              ),
+                        ),
+                      ],
                     ),
                   ),
                 ),

@@ -22,6 +22,7 @@ import 'ArtifactPublishScreen.dart';
 import 'RepoMarketPublishScreen.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
+
 class MarketEntryDetailScreen extends StatefulWidget {
   const MarketEntryDetailScreen({
     super.key,
@@ -780,7 +781,10 @@ class _MarketEntryDetailScreenState extends State<MarketEntryDetailScreen> {
                     : TextButton.icon(
                         onPressed: () =>
                             setState(() => _commentsExpanded = true),
-                        icon: const Icon(OperitIcons.unfold_more_rounded, size: 18),
+                        icon: const Icon(
+                          OperitIcons.unfold_more_rounded,
+                          size: 18,
+                        ),
                         label: Text('查看全部 $_commentTotal 条评论'),
                       ),
               ),
@@ -1094,24 +1098,26 @@ class _LikeButton extends StatelessWidget {
   final bool busy;
   final VoidCallback onPressed;
 
-  static const Color _heart = Color(0xFFF06292);
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final motion = ExtensionMotion.of(context);
-    final heart = liked ? _heart : theme.colorScheme.onSurfaceVariant;
+    // Theme-aware liked accent so custom themes keep working and the contrast
+    // stays correct in both light and dark surfaces.
+    final heart = liked
+        ? theme.colorScheme.error
+        : theme.colorScheme.onSurfaceVariant;
     return AnimatedContainer(
       duration: motion.standard,
       height: 38,
       decoration: ShapeDecoration(
         color: liked
-            ? _heart.withValues(alpha: 0.14)
+            ? theme.colorScheme.error.withValues(alpha: 0.12)
             : theme.colorScheme.surface.withValues(alpha: 0),
         shape: StadiumBorder(
           side: BorderSide(
             color: liked
-                ? _heart.withValues(alpha: 0.4)
+                ? theme.colorScheme.error.withValues(alpha: 0.4)
                 : theme.colorScheme.outlineVariant,
           ),
         ),

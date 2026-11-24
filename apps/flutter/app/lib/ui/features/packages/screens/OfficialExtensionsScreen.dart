@@ -14,6 +14,7 @@ import '../model/ExtensionCatalogController.dart';
 import 'StoreBrowseScreen.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
+
 /// All bundled extensions, available without requesting the online market.
 class OfficialExtensionsScreen extends StatefulWidget {
   const OfficialExtensionsScreen({
@@ -122,9 +123,33 @@ class _OfficialExtensionsScreenState extends State<OfficialExtensionsScreen>
                     ),
                   )
                 else if (_candidates.isEmpty)
-                  const SliverFillRemaining(
+                  SliverFillRemaining(
                     hasScrollBody: false,
-                    child: Center(child: Text('暂无可安装的官方扩展')),
+                    child: Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Icon(
+                            OperitIcons.extension_outlined,
+                            size: 32,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurfaceVariant
+                                .withValues(alpha: 0.55),
+                          ),
+                          const SizedBox(height: 12),
+                          Text(
+                            '暂无可安装的官方扩展',
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurfaceVariant,
+                                ),
+                          ),
+                        ],
+                      ),
+                    ),
                   )
                 else
                   SliverPadding(
