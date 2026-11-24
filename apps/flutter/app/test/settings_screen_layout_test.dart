@@ -52,7 +52,9 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Token Usage Report'));
+    final usageFinder = find.text('Token Usage Report');
+    await tester.scrollUntilVisible(usageFinder, 50);
+    await tester.tap(usageFinder);
     expect(
       openedRoute?.routeId,
       ScreenRouteRegistry.routeIdOf(const SettingsScreenRoute()),
