@@ -35,6 +35,7 @@ import '../components/ChatScrollNavigator.dart'
 import '../components/ChatMessageLocatorHost.dart';
 import '../components/ChatRuntimeScope.dart';
 import '../components/MessageEditorDialog.dart';
+import '../components/NewChatIntro.dart';
 import '../components/attachments/AttachmentViewerDialog.dart';
 import '../components/WorkspaceChangeConfirmDialog.dart';
 import '../components/WorkspaceShell.dart';
@@ -2744,6 +2745,22 @@ class _AIChatSurfaceState extends State<_AIChatSurface> {
     );
   }
 
+  Future<void> _handleNewChat() async {
+    newChatIntroArmed.value = true;
+    try {
+      await _viewModel.clients.chatRuntimeHolderMain.createNewChat(
+        setAsCurrentChat: true,
+        sourceChatId: null,
+        parentChatId: null,
+        workspaceId: _currentWorkspacePath,
+        input: null,
+      );
+    } catch (error) {
+      newChatIntroArmed.value = false;
+      _showLocalToast('创建新对话失败: $error');
+    }
+  }
+
   void _updateTopBarActions() {
     final controller = _topBarController;
     if (controller == null || !_isCurrentMainScreen) {
@@ -2755,10 +2772,16 @@ class _AIChatSurfaceState extends State<_AIChatSurface> {
           viewModel: _viewModel,
           currentChatId: _currentChatId,
         ),
-        WorkspaceTopBarButton(
-          open: _workspaceOpen,
-          hasBoundWorkspace: _currentWorkspacePath?.trim().isNotEmpty == true,
-          onPressed: _toggleWorkspace,
+        if (_workspaceOpen || (_currentWorkspacePath?.trim().isNotEmpty == true))
+          WorkspaceTopBarButton(
+            open: _workspaceOpen,
+            hasBoundWorkspace: _currentWorkspacePath?.trim().isNotEmpty == true,
+            onPressed: _toggleWorkspace,
+          ),
+        IconButton(
+          icon: const Icon(OperitIcons.edit_outlined, size: 20),
+          tooltip: '新建对话',
+          onPressed: _handleNewChat,
         ),
       ];
     }, owner: _topBarActionsOwner);

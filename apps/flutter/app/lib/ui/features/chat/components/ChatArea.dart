@@ -1883,29 +1883,131 @@ class _EmptyChatArea extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     if (!showMark) {
       return const SizedBox.shrink();
     }
-    // Restrained empty state: a muted wordmark plus a one-line hint. Kept
-    // quiet so the new-chat intro never competes with it.
     return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Text(
-            'Operit',
-            textAlign: TextAlign.center,
-            style: theme.textTheme.headlineMedium?.copyWith(
-              color: theme.colorScheme.primary.withValues(alpha: 0.3),
-              fontWeight: FontWeight.w700,
-              letterSpacing: 1.5,
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Container(
+              width: 58,
+              height: 58,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+                border: Border.all(
+                  color: colorScheme.outlineVariant.withValues(alpha: 0.25),
+                  width: 0.8,
+                ),
+              ),
+              child: Center(
+                child: Icon(
+                  OperitIcons.auto_awesome_rounded,
+                  size: 28,
+                  color: colorScheme.primary,
+                ),
+              ),
             ),
+            const SizedBox(height: 16),
+            Text(
+              '今天有什么我可以帮您？',
+              textAlign: TextAlign.center,
+              style: theme.textTheme.titleMedium?.copyWith(
+                color: colorScheme.onSurface,
+                fontWeight: FontWeight.w600,
+                letterSpacing: -0.3,
+              ),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              '提出问题、探讨创意或开启一段深度分析',
+              textAlign: TextAlign.center,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: colorScheme.onSurfaceVariant.withValues(alpha: 0.75),
+              ),
+            ),
+            const SizedBox(height: 24),
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 420),
+              child: Column(
+                children: <Widget>[
+                  _PromptSuggestionPill(
+                    icon: OperitIcons.code_outlined,
+                    text: '编写或优化一段代码',
+                    colorScheme: colorScheme,
+                    theme: theme,
+                  ),
+                  const SizedBox(height: 8),
+                  _PromptSuggestionPill(
+                    icon: OperitIcons.auto_awesome_rounded,
+                    text: '头脑风暴并探索方案创意',
+                    colorScheme: colorScheme,
+                    theme: theme,
+                  ),
+                  const SizedBox(height: 8),
+                  _PromptSuggestionPill(
+                    icon: OperitIcons.article_outlined,
+                    text: '总结分析文档或提炼核心要点',
+                    colorScheme: colorScheme,
+                    theme: theme,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _PromptSuggestionPill extends StatelessWidget {
+  const _PromptSuggestionPill({
+    required this.icon,
+    required this.text,
+    required this.colorScheme,
+    required this.theme,
+  });
+
+  final IconData icon;
+  final String text;
+  final ColorScheme colorScheme;
+  final ThemeData theme;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+      decoration: BoxDecoration(
+        color: colorScheme.surfaceContainerLow.withValues(alpha: 0.5),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: colorScheme.outlineVariant.withValues(alpha: 0.22),
+          width: 0.8,
+        ),
+      ),
+      child: Row(
+        children: <Widget>[
+          Icon(
+            icon,
+            size: 16,
+            color: colorScheme.primary.withValues(alpha: 0.85),
           ),
-          const SizedBox(height: 10),
-          Text(
-            '开始一段新的对话',
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              text,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+                fontWeight: FontWeight.w400,
+              ),
             ),
           ),
         ],

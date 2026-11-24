@@ -147,15 +147,15 @@ class ThemeWorkspaceTopBarButton extends StatelessWidget {
 
   static const String _workspaceClosedSvg = '''
 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-  <rect width="18" height="18" x="3" y="3" rx="3"/>
-  <path d="M15 3v18"/>
+  <path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/>
+  <path d="M2 10h20"/>
 </svg>''';
 
   static const String _workspaceOpenSvg = '''
 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-  <rect width="18" height="18" x="3" y="3" rx="3"/>
-  <path d="M15 3v18"/>
-  <path d="M15 3h3a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3h-3V3z" fill="currentColor"/>
+  <path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/>
+  <path d="M2 10h20"/>
+  <circle cx="17" cy="15" r="2" fill="currentColor"/>
 </svg>''';
 
   @override

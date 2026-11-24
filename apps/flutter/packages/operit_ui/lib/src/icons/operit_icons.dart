@@ -193,6 +193,7 @@ abstract final class OperitIcons {
   static const IconData memory_outlined = LucideIcons.memoryStick;
   static const IconData memory_rounded = LucideIcons.memoryStick;
   static const IconData menu_book_outlined = LucideIcons.bookOpen;
+  static const IconData menu_rounded = LucideIcons.menu;
   static const IconData mic_none_outlined = LucideIcons.mic;
   static const IconData mic_none_rounded = LucideIcons.mic;
   static const IconData more_horiz_rounded = LucideIcons.ellipsis;

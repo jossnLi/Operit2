@@ -918,7 +918,8 @@ class _InputBody extends StatelessWidget {
           imageSize: OperitTheme.of(
             context,
           ).themePreferenceSnapshot.inputSettingsAssetSize,
-          targetSize: 34,
+          size: 20,
+          targetSize: 36,
           tooltip: l10n.settings,
         ),
       ),
@@ -934,7 +935,8 @@ class _InputBody extends StatelessWidget {
           imageSize: OperitTheme.of(
             context,
           ).themePreferenceSnapshot.inputAttachmentAssetSize,
-          size: 24,
+          size: 20,
+          targetSize: 36,
           tooltip: l10n.addAttachment,
         ),
       ),

@@ -292,9 +292,8 @@ class _AppContentState extends State<AppContent> {
                     : widget.useTabletLayout ||
                           !widget.currentScreen.showTopBarNavigation
                     ? null
-                    : OperitIcons.view_sidebar_outlined;
-                final shouldFlipNavigationIcon =
-                    !widget.canGoBack && !widget.useTabletLayout;
+                    : OperitIcons.menu_rounded;
+                final shouldFlipNavigationIcon = false;
                 return ThemeTopBarChrome(
                   title:
                       titleContent?.content(context) ??

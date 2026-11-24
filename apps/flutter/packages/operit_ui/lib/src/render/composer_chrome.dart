@@ -384,32 +384,42 @@ class ThemeComposerModelSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    const radius = BorderRadius.all(Radius.circular(12));
-    return Material(
-      color: expanded
-          ? scheme.onSurface.withValues(alpha: 0.08)
-          : Colors.transparent,
-      borderRadius: radius,
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
+    final radius = BorderRadius.circular(20);
+    return Container(
+      decoration: BoxDecoration(
+        color: expanded
+            ? scheme.surfaceContainerHighest
+            : scheme.surfaceContainerHigh.withValues(alpha: 0.45),
         borderRadius: radius,
-        splashFactory: NoSplash.splashFactory,
-        overlayColor: WidgetStateProperty.resolveWith((states) {
-          if (states.contains(WidgetState.pressed)) {
-            return scheme.onSurface.withValues(alpha: 0.12);
-          }
-          if (states.contains(WidgetState.hovered) ||
-              states.contains(WidgetState.focused)) {
-            return scheme.onSurface.withValues(alpha: 0.08);
-          }
-          return Colors.transparent;
-        }),
-        onTap: onTap,
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 220),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-            child: identity,
+        border: Border.all(
+          color: scheme.outlineVariant.withValues(alpha: 0.25),
+          width: 0.8,
+        ),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        borderRadius: radius,
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          borderRadius: radius,
+          splashFactory: NoSplash.splashFactory,
+          overlayColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.pressed)) {
+              return scheme.onSurface.withValues(alpha: 0.12);
+            }
+            if (states.contains(WidgetState.hovered) ||
+                states.contains(WidgetState.focused)) {
+              return scheme.onSurface.withValues(alpha: 0.08);
+            }
+            return Colors.transparent;
+          }),
+          onTap: onTap,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 220),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              child: identity,
+            ),
           ),
         ),
       ),
@@ -519,20 +529,21 @@ class ThemeComposerTextEditor extends StatelessWidget {
               border: InputBorder.none,
               enabledBorder: InputBorder.none,
               focusedBorder: InputBorder.none,
-              contentPadding: const EdgeInsets.fromLTRB(16, 10, 48, 8),
+              contentPadding: EdgeInsets.fromLTRB(16, 10, inputExpanded ? 48 : 16, 8),
             ),
             onSubmitted: onSubmitted,
           ),
-          PositionedDirectional(
-            top: 0,
-            end: 4,
-            child: ThemeComposerIconTarget(
-              icon: inputExpanded ? OperitIcons.fullscreen_exit_rounded : OperitIcons.fullscreen_rounded,
-              color: scheme.onSurfaceVariant,
-              onTap: onToggleExpansion,
-              tooltip: inputExpanded ? collapseTooltip : expandTooltip,
+          if (inputExpanded)
+            PositionedDirectional(
+              top: 0,
+              end: 4,
+              child: ThemeComposerIconTarget(
+                icon: OperitIcons.fullscreen_exit_rounded,
+                color: scheme.onSurfaceVariant,
+                onTap: onToggleExpansion,
+                tooltip: collapseTooltip,
+              ),
             ),
-          ),
         ],
       ),
     );
