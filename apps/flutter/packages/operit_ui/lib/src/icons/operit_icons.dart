@@ -18,6 +18,7 @@ abstract final class OperitIcons {
   static const IconData admin_panel_settings_rounded = LucideIcons.shieldCheck;
   static const IconData ads_click_outlined = LucideIcons.mousePointerClick;
   static const IconData alt_route_rounded = LucideIcons.split;
+  static const IconData analytics_outlined = LucideIcons.barChart;
   static const IconData alternate_email_outlined = LucideIcons.atSign;
   static const IconData android_rounded = LucideIcons.smartphone;
   static const IconData apps_rounded = LucideIcons.layoutGrid;
@@ -38,6 +39,7 @@ abstract final class OperitIcons {
   static const IconData auto_fix_high_outlined = LucideIcons.wandSparkles;
   static const IconData backup_outlined = LucideIcons.cloudUpload;
   static const IconData badge_outlined = LucideIcons.badge;
+  static const IconData bar_chart_outlined = LucideIcons.barChart;
   static const IconData block_outlined = LucideIcons.ban;
   static const IconData block_rounded = LucideIcons.ban;
   static const IconData blur_on_outlined = LucideIcons.circleDashed;
