@@ -86,6 +86,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         return SettingsDetailView(
           category: selectedCategory,
           onOpenProfile: () => _openPhoneCategory(SettingsCategory.profile),
+          showHeader: false,
         );
       },
     );
@@ -154,6 +155,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               category: _wideSelectedCategory,
               onOpenProfile: () =>
                   _selectWideCategory(SettingsCategory.profile),
+              showHeader: true,
             ),
           ),
         ),
