@@ -450,17 +450,21 @@ class ThemeAgentComposerBody extends StatelessWidget {
     children: <Widget>[
       ...attachments,
       editor,
-      const SizedBox(height: 8),
+      const SizedBox(height: 6),
       Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
+          attachment,
+          const SizedBox(width: 8),
           Expanded(
-            child: Align(alignment: Alignment.centerLeft, child: modelSelector),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: modelSelector,
+            ),
           ),
           const SizedBox(width: 6),
           settings,
           const SizedBox(width: 8),
-          attachment,
-          const SizedBox(width: 6),
           action,
         ],
       ),

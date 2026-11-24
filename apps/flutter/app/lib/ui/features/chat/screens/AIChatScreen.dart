@@ -2729,7 +2729,7 @@ class _AIChatSurfaceState extends State<_AIChatSurface> {
       primaryText = workspaceName;
       secondaryText = chatTitle;
     } else {
-      primaryText = chatTitle.isNotEmpty ? chatTitle : 'New Chat';
+      primaryText = chatTitle.isNotEmpty ? chatTitle : '新对话';
       secondaryText = '';
     }
 
@@ -2767,11 +2767,13 @@ class _AIChatSurfaceState extends State<_AIChatSurface> {
       return;
     }
     controller.setActions((context) {
+      final isWide = MediaQuery.sizeOf(context).width >= 600;
       return <Widget>[
-        ChatContextStatsTopBarButton(
-          viewModel: _viewModel,
-          currentChatId: _currentChatId,
-        ),
+        if (isWide)
+          ChatContextStatsTopBarButton(
+            viewModel: _viewModel,
+            currentChatId: _currentChatId,
+          ),
         if (_workspaceOpen || (_currentWorkspacePath?.trim().isNotEmpty == true))
           WorkspaceTopBarButton(
             open: _workspaceOpen,

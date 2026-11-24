@@ -199,10 +199,24 @@ class _MessageContextMenuState extends State<MessageContextMenu> {
     if (!mounted) {
       return;
     }
+    final colorScheme = Theme.of(context).colorScheme;
     final action = await showMenu<_MessageMenuSelection>(
       context: context,
       position: rect,
       constraints: const BoxConstraints(minWidth: 180, maxWidth: 220),
+      color: Color.alphaBlend(
+        colorScheme.surfaceContainerHighest.withValues(alpha: 0.85),
+        colorScheme.surface,
+      ),
+      elevation: 6,
+      shadowColor: Colors.black.withValues(alpha: 0.35),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(14),
+        side: BorderSide(
+          color: colorScheme.outlineVariant.withValues(alpha: 0.35),
+          width: 0.8,
+        ),
+      ),
       popUpAnimationStyle: AnimationStyle.noAnimation,
       items: _menuItems(context, toolPkgItems),
     );

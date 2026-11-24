@@ -32,7 +32,6 @@ import '../common/PendingQueueMessageItem.dart';
 import 'AgentInputMenuPopup.dart';
 import 'AgentModelSelectorPopup.dart';
 
-import 'package:operit2/ui/common/icons/operit_icons.dart';
 class AgentChatInputSection extends StatefulWidget {
   /// Creates the Agent composer with the shared registered attachment menu.
   const AgentChatInputSection({
@@ -1730,9 +1729,9 @@ Color _actionBackground(
     return colorScheme.tertiary;
   }
   if (canSend) {
-    return colorScheme.primary;
+    return colorScheme.onSurface;
   }
-  return colorScheme.surfaceContainerHighest.withValues(alpha: 0.85);
+  return colorScheme.onSurface.withValues(alpha: 0.08);
 }
 
 Color _actionForeground(
@@ -1748,9 +1747,9 @@ Color _actionForeground(
     return colorScheme.onTertiary;
   }
   if (canSend) {
-    return colorScheme.onPrimary;
+    return colorScheme.surface;
   }
-  return colorScheme.onSurfaceVariant;
+  return colorScheme.onSurface.withValues(alpha: 0.38);
 }
 
 IconData _actionIcon({

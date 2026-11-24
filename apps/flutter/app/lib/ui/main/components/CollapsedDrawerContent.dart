@@ -22,7 +22,6 @@ import 'NavigationDrawerAppearance.dart';
 import 'SidebarMoreMenu.dart';
 import 'SidebarChatCreation.dart';
 
-import 'package:operit2/ui/common/icons/operit_icons.dart';
 class CollapsedDrawerContent extends StatelessWidget {
   /// Receives the real nullable chat source without decoding plugin configuration.
   const CollapsedDrawerContent({
@@ -322,7 +321,7 @@ class ConversationSearchField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final shape = BorderRadius.circular(14);
+    final shape = BorderRadius.circular(20);
     return TextField(
       controller: controller,
       minLines: 1,
@@ -338,26 +337,35 @@ class ConversationSearchField extends StatelessWidget {
         ),
         prefixIcon: Icon(
           OperitIcons.search_rounded,
-          size: 20,
+          size: 18,
           color: appearance.itemColor.withValues(alpha: 0.72),
         ),
         filled: true,
-        fillColor: appearance.buttonContainerColor,
+        fillColor: appearance.buttonContainerColor.withValues(alpha: 0.45),
         border: OutlineInputBorder(
           borderRadius: shape,
-          borderSide: BorderSide.none,
+          borderSide: BorderSide(
+            color: appearance.dividerColor.withValues(alpha: 0.28),
+            width: 0.8,
+          ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: shape,
-          borderSide: BorderSide.none,
+          borderSide: BorderSide(
+            color: appearance.dividerColor.withValues(alpha: 0.28),
+            width: 0.8,
+          ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: shape,
-          borderSide: BorderSide(color: appearance.statusAvailableColor),
+          borderSide: BorderSide(
+            color: appearance.statusAvailableColor,
+            width: 0.8,
+          ),
         ),
         contentPadding: const EdgeInsets.symmetric(
-          horizontal: 12,
-          vertical: 10,
+          horizontal: 14,
+          vertical: 9,
         ),
       ),
     );

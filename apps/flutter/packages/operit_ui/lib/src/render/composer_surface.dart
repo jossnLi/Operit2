@@ -57,28 +57,32 @@ class ThemeComposerCard extends StatelessWidget {
         final radius = !roundedCorners
             ? BorderRadius.zero
             : floating
-            ? BorderRadius.circular(26)
-            : const BorderRadius.vertical(top: Radius.circular(24));
+            ? BorderRadius.circular(28)
+            : const BorderRadius.vertical(top: Radius.circular(26));
         final shape = RoundedRectangleBorder(
           borderRadius: radius,
           side: BorderSide(
-            color: scheme.outlineVariant.withValues(alpha: 0.35),
+            color: scheme.outlineVariant.withValues(alpha: 0.28),
             width: 0.8,
           ),
         );
         return AgentInputSurface(
           floating: floating,
-          color: backgroundColor ?? scheme.surfaceContainer,
+          color: backgroundColor ??
+              Color.alphaBlend(
+                scheme.surfaceContainerHighest.withValues(alpha: 0.40),
+                scheme.surface,
+              ),
           shape: shape,
           borderRadius: radius,
           transparentSurface: transparentSurface,
           imageStyle: imageStyle,
           width: double.infinity,
           margin: floating
-              ? const EdgeInsets.fromLTRB(8, 4, 8, 6)
+              ? const EdgeInsets.fromLTRB(12, 4, 12, 10)
               : const EdgeInsets.only(top: 4),
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(14, 14, 14, 8),
+            padding: const EdgeInsets.fromLTRB(14, 8, 14, 10),
             child: child,
           ),
         );

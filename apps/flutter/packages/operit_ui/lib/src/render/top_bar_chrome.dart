@@ -17,45 +17,51 @@ class ThemeTopBarTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        if (primaryText.isNotEmpty)
-          Flexible(
-            fit: FlexFit.loose,
-            child: Text(
-              primaryText,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: theme.textTheme.titleSmall?.copyWith(
-                color: contentColor,
-                fontWeight: FontWeight.w600,
+    return Center(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          if (primaryText.isNotEmpty)
+            Flexible(
+              fit: FlexFit.loose,
+              child: Text(
+                primaryText,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+                style: theme.textTheme.titleSmall?.copyWith(
+                  color: contentColor,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: -0.2,
+                ),
               ),
             ),
-          ),
-        if (primaryText.isNotEmpty && secondaryText.isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 6),
-            child: Text(
-              '-',
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: contentColor.withValues(alpha: 0.6),
-                fontWeight: FontWeight.w400,
+          if (primaryText.isNotEmpty && secondaryText.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 6),
+              child: Text(
+                '·',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: contentColor.withValues(alpha: 0.6),
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
-          ),
-        if (secondaryText.isNotEmpty)
-          Flexible(
-            child: Text(
-              secondaryText,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: contentColor.withValues(alpha: 0.85),
+          if (secondaryText.isNotEmpty)
+            Flexible(
+              child: Text(
+                secondaryText,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: contentColor.withValues(alpha: 0.78),
+                ),
               ),
             ),
-          ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -77,7 +83,7 @@ class ThemeTopBarChrome extends StatelessWidget {
   });
 
   /// Shared vertical geometry for the app bar and desktop sidebar headers.
-  static const double toolbarHeight = 64;
+  static const double toolbarHeight = 52;
 
   final Widget title;
   final IconData? navigationIcon;
@@ -93,7 +99,7 @@ class ThemeTopBarChrome extends StatelessWidget {
   Widget build(BuildContext context) {
     final navIcon = navigationIcon;
     final navigationIconWidget = navIcon != null
-        ? Icon(navIcon, color: contentForeground)
+        ? Icon(navIcon, size: 22, color: contentForeground)
         : null;
     return ColoredBox(
       color: contentColor,
@@ -102,13 +108,15 @@ class ThemeTopBarChrome extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.only(top: topPadding),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               if (navIcon != null && navigationIconWidget != null) ...<Widget>[
-                const SizedBox(width: 4),
+                const SizedBox(width: 6),
                 SizedBox(
-                  width: 48,
-                  height: 48,
+                  width: 40,
+                  height: 40,
                   child: IconButton(
+                    padding: EdgeInsets.zero,
                     onPressed: onNavigationPressed,
                     icon: flipNavigationIcon
                         ? Transform(
@@ -121,9 +129,10 @@ class ThemeTopBarChrome extends StatelessWidget {
                     tooltip: navigationTooltip,
                   ),
                 ),
-              ] else ...<Widget>[const SizedBox(width: 16)],
+              ] else ...<Widget>[const SizedBox(width: 14)],
               Expanded(child: title),
               ...actions,
+              const SizedBox(width: 6),
             ],
           ),
         ),
