@@ -14,6 +14,28 @@
 - 已改动 `apps/flutter/app/lib/ui/features/packages/screens/PackageManagerScreen.dart`：为包管理页单独实现“扩展 / 市场”顶部切换器；计数、问题提醒、选择回调、搜索、快捷键和导入入口保留。
 - 修改前执行过 `dart format` 与针对上述 UI 文件的 `git diff --check`。没有运行 Flutter analyze、构建或测试，也没有做设备截图验收。
 
+### 新提交（本次会话，均已执行 `dart format` + `git diff --check`；未运行 analyze/构建/截图验收）
+
+- 已提交 `f62e664ae`（`ui: redesign chat and workspace components`，11 个文件）：
+  - `components/ChatArea.dart`：错误状态改为 errorContainer 浅底 + 图标 + 圆角容器，空会话改为克制的字标 + 一行提示。
+  - `components/ChatToolPermissionPanel.dart`：审批卡改 surface 底色、14 圆角、标题层级下调，参数与操作语义不变。
+  - `components/ChatMessageLocatorPanel.dart`：标题/条目间距与选中态微调。
+  - `components/ChatMultiSelectBar.dart`：浮条降低阴影、圆角 14→16 收敛。
+  - `style/input/agent/AgentInputMenuPopup.dart`、`AgentModelSelectorPopup.dart`、`style/input/common/ChatAttachmentMenuPopup.dart`：弹层外壳改无阴影 + 边框 + 14 圆角。
+  - `style/input/common/ChatPendingMessageQueuePanel.dart`：折叠标签/展开抽屉的表面透明度与字重微调。
+  - `style/input/common/MentionSuggestionPanel.dart`：面板圆角与阴影收敛。
+  - `tts/TtsFloatingPanel.dart`：浮层圆角 8→14、阴影 10→6。
+  - `screens/AIChatScreen.dart`：仅 embedded 绑定的错误态改为图标 + 可选中文案布局。
+- 已提交 `65b6f0ac4`（`ui: redesign package publish and browse screens`，9 个文件）：
+  - `screens/RepoMarketPublishScreen.dart`：发布表单按「条目信息 / 版本来源 / 版本信息」分组，字段统一 12 圆角，修复重复间距，模式提示卡改描边浅卡。
+  - `screens/ArtifactPublishScreen.dart`：加载改 `M3LoadingPane`，字段统一 12 圆角，新增分组小节标题（发布协议逻辑区域原样保留）。
+  - `screens/ToolPkgDesktopWidgetsScreen.dart`：错误/空态改图标 + 提示，卡片改描边 `Card.filled`。
+  - `screens/OfficialExtensionsScreen.dart`、`screens/StoreBrowseScreen.dart`、`screens/MarketPane.dart`：搜索/筛选空结果统一为图标空态。
+  - `screens/ExtensionDetailScreen.dart`：`_ContentCount` 圆角对齐 store 卡 token。
+  - `screens/MarketEntryDetailScreen.dart`：点赞强调色由硬编码粉色改为主题化 `colorScheme.error`。
+  - `screens/ToolPkgUiLauncherScreen.dart`：宿主 AppBar 取消滚动着色（插件协议未变）。
+- 说明：以上两批以克制、中性的层级/留白/空状态/圆角/错误呈现修订为主，尚未达到逐页结构的完整重做；清单中未勾选的大项（消息气泡层、输入区主体、详情页大结构、设置页、其他宿主页）仍待后续逐页处理。
+
 ## 待重做页面
 
 ### 聊天与工作区
