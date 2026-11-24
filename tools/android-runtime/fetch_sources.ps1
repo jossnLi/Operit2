@@ -7,6 +7,58 @@ $sourcesDir = Join-Path $runtimeDir "sources"
 New-Item -ItemType Directory -Force -Path $downloadsDir | Out-Null
 New-Item -ItemType Directory -Force -Path $sourcesDir | Out-Null
 
+function Get-ArchiveSha256([string] $Path) {
+    return (Get-FileHash -Algorithm SHA256 -LiteralPath $Path).Hash.ToUpperInvariant()
+}
+
+function Get-VerifiedArchive($Item, [string] $ArchivePath) {
+    if (Test-Path -LiteralPath $ArchivePath -PathType Leaf) {
+        $cachedSha256 = Get-ArchiveSha256 $ArchivePath
+        if ($cachedSha256 -eq $Item.Sha256) {
+            Write-Host "Using verified archive $($Item.Archive)"
+            return
+        }
+        Write-Warning "Discarding incomplete or invalid archive $($Item.Archive)"
+        Remove-Item -LiteralPath $ArchivePath -Force
+    }
+
+    $maxAttempts = 5
+    $downloadUrls = if ($Item.Urls) { @($Item.Urls) } else { @($Item.Url) }
+    $lastError = $null
+    for ($attempt = 1; $attempt -le $maxAttempts; $attempt++) {
+        $urlIndex = ($attempt - 1) % $downloadUrls.Count
+        $downloadUrl = $downloadUrls[$urlIndex]
+        try {
+            # A failed request can leave a partial file. Never reuse it on retry.
+            if (Test-Path -LiteralPath $ArchivePath) {
+                Remove-Item -LiteralPath $ArchivePath -Force
+            }
+
+            Write-Host "Downloading $($Item.Name) from $downloadUrl (attempt $attempt/$maxAttempts)"
+            Invoke-WebRequest -Uri $downloadUrl -OutFile $ArchivePath -TimeoutSec 120
+
+            $actualSha256 = Get-ArchiveSha256 $ArchivePath
+            if ($actualSha256 -ne $Item.Sha256) {
+                throw "$($Item.Archive) SHA256 mismatch: $actualSha256"
+            }
+            return
+        }
+        catch {
+            $lastError = $_.Exception.Message
+            if (Test-Path -LiteralPath $ArchivePath) {
+                Remove-Item -LiteralPath $ArchivePath -Force
+            }
+            if ($attempt -eq $maxAttempts) {
+                throw "Failed to download and verify $($Item.Archive) after $maxAttempts attempts. Last URL: $downloadUrl. Last error: $lastError"
+            }
+
+            $delaySeconds = [Math]::Min(30, [Math]::Pow(2, $attempt))
+            Write-Warning "Download failed from $downloadUrl`: $lastError. Retrying in $delaySeconds seconds."
+            Start-Sleep -Seconds $delaySeconds
+        }
+    }
+}
+
 $items = @(
     @{
         Name = "busybox-1.38.0"
@@ -31,7 +83,10 @@ $items = @(
     },
     @{
         Name = "bash-5.2.37"
-        Url = "https://ftp.gnu.org/gnu/bash/bash-5.2.37.tar.gz"
+        Urls = @(
+            "https://ftpmirror.gnu.org/bash/bash-5.2.37.tar.gz"
+            "https://ftp.gnu.org/gnu/bash/bash-5.2.37.tar.gz"
+        )
         Archive = "bash-5.2.37.tar.gz"
         Sha256 = "9599B22ECD1D5787AD7D3B7BF0C59F312B3396D1E281175DD1F8A4014DA621FF"
         Extracted = "bash-5.2.37"
@@ -40,13 +95,7 @@ $items = @(
 
 foreach ($item in $items) {
     $archivePath = Join-Path $downloadsDir $item.Archive
-    Write-Host "Downloading $($item.Name)"
-    Invoke-WebRequest -Uri $item.Url -OutFile $archivePath
-
-    $actualSha256 = (Get-FileHash -Algorithm SHA256 -Path $archivePath).Hash.ToUpperInvariant()
-    if ($actualSha256 -ne $item.Sha256) {
-        throw "$($item.Archive) SHA256 mismatch: $actualSha256"
-    }
+    Get-VerifiedArchive $item $archivePath
 
     $extractPath = Join-Path $sourcesDir $item.Extracted
     if (Test-Path $extractPath) {
