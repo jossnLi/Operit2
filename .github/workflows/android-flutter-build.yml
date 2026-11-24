@@ -269,6 +269,28 @@ jobs:
         shell: pwsh
         run: fvm flutter analyze --no-fatal-warnings --no-fatal-infos
 
+      - name: Install LLVM for plugin WASM builds
+        shell: pwsh
+        run: |
+          $llvmBin = "C:\Program Files\LLVM\bin"
+          $clang = Get-Command clang.exe -ErrorAction SilentlyContinue
+          $wasmLd = Get-Command wasm-ld.exe -ErrorAction SilentlyContinue
+          if (-not $clang -or -not $wasmLd -or -not (Test-Path -LiteralPath $llvmBin)) {
+            choco install llvm --yes --no-progress
+            if ($LASTEXITCODE -ne 0) {
+              throw "Failed to install LLVM (choco exit $LASTEXITCODE)"
+            }
+          }
+          if (-not (Test-Path -LiteralPath $llvmBin)) {
+            throw "LLVM bin directory was not found at $llvmBin"
+          }
+          $env:Path = "$llvmBin;$env:Path"
+          $llvmBin | Out-File -FilePath $env:GITHUB_PATH -Append -Encoding utf8
+          $clang = Get-Command clang.exe -ErrorAction Stop
+          $wasmLd = Get-Command wasm-ld.exe -ErrorAction Stop
+          & $clang.Source --version
+          & $wasmLd.Source --version
+
       - name: Test changed settings flows
         shell: pwsh
         run: |
