@@ -278,15 +278,20 @@ jobs:
           # Windows virtual-store links even though these are widget tests.
           $source = (Resolve-Path "apps/flutter/app").Path
           $testRoot = Join-Path $env:RUNNER_TEMP "operit-settings-test"
+          $testWorkspace = Join-Path $testRoot "apps/flutter/app"
           if (Test-Path -LiteralPath $testRoot) {
             Remove-Item -LiteralPath $testRoot -Recurse -Force
           }
-          New-Item -ItemType Directory -Force -Path $testRoot | Out-Null
-          robocopy $source $testRoot /E /NFL /NDL /NJH /NJS /NP /XD android build .dart_tool .fvm | Out-Null
+          New-Item -ItemType Directory -Force -Path $testWorkspace | Out-Null
+          robocopy $source $testWorkspace /E /NFL /NDL /NJH /NJS /NP /XD android build .dart_tool .fvm | Out-Null
           if ($LASTEXITCODE -gt 7) {
             throw "Failed to prepare isolated Flutter test workspace (robocopy exit $LASTEXITCODE)"
           }
-          Push-Location $testRoot
+          robocopy "apps/flutter/thirdparty" (Join-Path $testRoot "apps/flutter/thirdparty") /E /NFL /NDL /NJH /NJS /NP | Out-Null
+          if ($LASTEXITCODE -gt 7) {
+            throw "Failed to copy Flutter third-party path dependencies (robocopy exit $LASTEXITCODE)"
+          }
+          Push-Location $testWorkspace
           try {
             fvm flutter test `
             test/settings_screen_layout_test.dart `
