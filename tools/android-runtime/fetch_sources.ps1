@@ -23,7 +23,7 @@ function Get-VerifiedArchive($Item, [string] $ArchivePath) {
     }
 
     $maxAttempts = 5
-    $downloadUrls = if ($Item.Urls) { @($Item.Urls) } else { @($Item.Url) }
+    $downloadUrls = if ($Item.Urls) { @($Item.Urls) } else { ,@($Item.Url) }
     $lastError = $null
     for ($attempt = 1; $attempt -le $maxAttempts; $attempt++) {
         $urlIndex = ($attempt - 1) % $downloadUrls.Count
