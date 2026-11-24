@@ -30,6 +30,7 @@ import 'ChatMessageSlotHost.dart';
 import 'TransformedChatMessage.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
+
 const Duration _navigatorHideDelay = Duration(milliseconds: 1200);
 const Duration _viewportResizeSettleDelay = Duration(milliseconds: 120);
 const Duration _bottomFollowDuration = Duration(milliseconds: 240);
@@ -1596,14 +1597,42 @@ class _StatusMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final label = SelectableText(
+      isError ? apiErrorText(text) : text,
+      style: theme.textTheme.bodySmall?.copyWith(
+        color: isError ? colorScheme.error : colorScheme.onSurfaceVariant,
+        height: 1.4,
+      ),
+    );
+    if (!isError) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+        child: label,
+      );
+    }
+    // Errors get a quiet, distinct surface so recovery remains scannable
+    // without shouting over the transcript.
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      child: SelectableText(
-        isError ? apiErrorText(text) : text,
-        style: theme.textTheme.bodySmall?.copyWith(
-          color: isError
-              ? theme.colorScheme.error
-              : theme.colorScheme.onSurfaceVariant,
+      padding: const EdgeInsets.fromLTRB(16, 4, 16, 10),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        decoration: BoxDecoration(
+          color: colorScheme.errorContainer.withValues(alpha: 0.45),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: colorScheme.error.withValues(alpha: 0.3)),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Icon(
+              Icons.error_outline_rounded,
+              size: 16,
+              color: colorScheme.error,
+            ),
+            const SizedBox(width: 8),
+            Expanded(child: label),
+          ],
         ),
       ),
     );
@@ -1649,7 +1678,9 @@ class _SelectableMessageFrame extends StatelessWidget {
           left: 6,
           top: 6,
           child: Icon(
-            selected ? OperitIcons.check_circle_outline_rounded : OperitIcons.radio_button_unchecked_rounded,
+            selected
+                ? OperitIcons.check_circle_outline_rounded
+                : OperitIcons.radio_button_unchecked_rounded,
             size: 18,
             color: selected
                 ? colorScheme.primary
@@ -1855,13 +1886,29 @@ class _EmptyChatArea extends StatelessWidget {
     if (!showMark) {
       return const SizedBox.shrink();
     }
+    // Restrained empty state: a muted wordmark plus a one-line hint. Kept
+    // quiet so the new-chat intro never competes with it.
     return Center(
-      child: Text(
-        'Operit',
-        style: theme.textTheme.displaySmall?.copyWith(
-          color: theme.colorScheme.primary.withValues(alpha: 0.38),
-          fontWeight: FontWeight.w600,
-        ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Text(
+            'Operit',
+            textAlign: TextAlign.center,
+            style: theme.textTheme.headlineMedium?.copyWith(
+              color: theme.colorScheme.primary.withValues(alpha: 0.3),
+              fontWeight: FontWeight.w700,
+              letterSpacing: 1.5,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            '开始一段新的对话',
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+            ),
+          ),
+        ],
       ),
     );
   }

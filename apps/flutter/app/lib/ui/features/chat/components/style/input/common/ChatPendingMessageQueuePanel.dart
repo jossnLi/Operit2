@@ -8,6 +8,7 @@ import '../../../../../../theme/OperitTheme.dart';
 import 'PendingQueueMessageItem.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
+
 /// Displays the shared pending queue as a folder-ear tab / drawer above chat input.
 class ChatPendingMessageQueuePanel extends StatelessWidget {
   /// Creates the queue with host-owned message actions.
@@ -51,11 +52,11 @@ class ChatPendingMessageQueuePanel extends StatelessWidget {
         padding: EdgeInsets.only(left: floating ? 22 : 12),
         child: Material(
           key: const ValueKey("chat.pending-queue.surface"),
-          color: colorScheme.surfaceContainerHigh.withValues(alpha: 0.85),
+          color: colorScheme.surfaceContainerHigh,
           shape: RoundedRectangleBorder(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
             side: BorderSide(
-              color: colorScheme.outlineVariant.withValues(alpha: 0.25),
+              color: colorScheme.outlineVariant.withValues(alpha: 0.35),
               width: 0.8,
             ),
           ),
@@ -66,24 +67,21 @@ class ChatPendingMessageQueuePanel extends StatelessWidget {
                 ? null
                 : () => onExpandedChange!(true),
             child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 10,
-                vertical: 4,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Icon(
                     OperitIcons.schedule_rounded,
                     size: 13,
-                    color: colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
+                    color: colorScheme.onSurfaceVariant,
                   ),
                   const SizedBox(width: 5),
                   Text(
                     l10n.chatPendingQueueTitle(queuedMessages.length),
                     style: theme.textTheme.labelSmall?.copyWith(
                       color: colorScheme.onSurfaceVariant,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w600,
                       fontSize: 11.5,
                     ),
                   ),
@@ -131,7 +129,9 @@ class ChatPendingMessageQueuePanel extends StatelessWidget {
                     Icon(
                       OperitIcons.schedule_rounded,
                       size: 13,
-                      color: colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
+                      color: colorScheme.onSurfaceVariant.withValues(
+                        alpha: 0.8,
+                      ),
                     ),
                     const SizedBox(width: 5),
                     Expanded(
@@ -147,7 +147,9 @@ class ChatPendingMessageQueuePanel extends StatelessWidget {
                     Icon(
                       OperitIcons.keyboard_arrow_down_rounded,
                       size: 16,
-                      color: colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+                      color: colorScheme.onSurfaceVariant.withValues(
+                        alpha: 0.7,
+                      ),
                     ),
                   ],
                 ),
@@ -214,7 +216,9 @@ class _PendingQueueMessageTile extends StatelessWidget {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final l10n = AppLocalizations.of(context)!;
-    final defaultIconColor = colorScheme.onSurfaceVariant.withValues(alpha: 0.7);
+    final defaultIconColor = colorScheme.onSurfaceVariant.withValues(
+      alpha: 0.7,
+    );
 
     return Container(
       decoration: BoxDecoration(
@@ -232,9 +236,7 @@ class _PendingQueueMessageTile extends StatelessWidget {
             icon: OperitIcons.edit_note_rounded,
             tooltip: l10n.chatQueueWithdrawToEditor,
             color: defaultIconColor,
-            onTap: onEditMessage == null
-                ? null
-                : () => onEditMessage!(item.id),
+            onTap: onEditMessage == null ? null : () => onEditMessage!(item.id),
           ),
           const SizedBox(width: 6),
           Expanded(
@@ -279,9 +281,7 @@ class _PendingQueueMessageTile extends StatelessWidget {
             tooltip: l10n.chatInterruptAndSend,
             color: defaultIconColor,
             hoverColor: colorScheme.primary,
-            onTap: onSendMessage == null
-                ? null
-                : () => onSendMessage!(item.id),
+            onTap: onSendMessage == null ? null : () => onSendMessage!(item.id),
           ),
           _QueueIconAction(
             icon: OperitIcons.close_rounded,
@@ -341,16 +341,14 @@ class _QueueIconActionState extends State<_QueueIconAction> {
             height: 24,
             decoration: BoxDecoration(
               color: _isHovered
-                  ? theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.4)
+                  ? theme.colorScheme.surfaceContainerHighest.withValues(
+                      alpha: 0.4,
+                    )
                   : Colors.transparent,
               borderRadius: BorderRadius.circular(5),
             ),
             child: Center(
-              child: Icon(
-                widget.icon,
-                size: 14,
-                color: activeColor,
-              ),
+              child: Icon(widget.icon, size: 14, color: activeColor),
             ),
           ),
         ),

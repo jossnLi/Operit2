@@ -16,6 +16,7 @@ import '../../../../viewmodel/ChatSelectionTransition.dart';
 import '../../../../viewmodel/ChatViewModel.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
+
 class AgentInputMenuPopup extends StatefulWidget {
   /// Creates the shared menu with a lifecycle guard owned by its real composer.
   const AgentInputMenuPopup({
@@ -200,126 +201,134 @@ class _AgentInputMenuPopupState extends State<AgentInputMenuPopup> {
       child: Card(
         margin: EdgeInsets.zero,
         color: colorScheme.surfaceContainer,
-        elevation: 4,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 300, maxHeight: 420),
-          child: FutureBuilder<_AgentInputMenuData>(
-            future: _settingsFuture,
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Padding(
-                  padding: const EdgeInsets.all(16),
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(14),
+          side: BorderSide(
+            color: colorScheme.outlineVariant.withValues(alpha: 0.5),
+          ),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(14),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 300, maxHeight: 420),
+            child: FutureBuilder<_AgentInputMenuData>(
+              future: _settingsFuture,
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('菜单加载失败：${snapshot.error}'),
+                        TextButton(
+                          onPressed: _reloadSettings,
+                          child: const Text('重试'),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+                final data = snapshot.data;
+                if (data == null) {
+                  return const SizedBox(
+                    width: 300,
+                    height: 96,
+                    child: Center(child: CircularProgressIndicator()),
+                  );
+                }
+                return SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text('菜单加载失败：${snapshot.error}'),
-                      TextButton(
-                        onPressed: _reloadSettings,
-                        child: const Text('重试'),
+                    children: <Widget>[
+                      _ChatSessionSummarySection(
+                        viewModel: widget.viewModel,
+                        currentChatId: widget.currentChatId,
+                        onDismiss: widget.onDismiss,
+                        isChatContextCurrent: widget.isChatContextCurrent,
+                        showNativeStatistics: widget.showNativeStatistics,
+                      ),
+                      const Divider(height: 1),
+                      ...widget.leadingChildren,
+                      ChatInputMenuHost(
+                        clients: widget.viewModel.clients,
+                        chatId: widget.currentChatId,
+                        surface: 'chat_input_menu_sections',
+                        onPresent: _presentSectionAction,
+                      ),
+                      _MenuSection(
+                        icon: OperitIcons.security_outlined,
+                        title: '工具',
+                        value: data.toolPermissionMode.label,
+                        expanded: _toolsExpanded,
+                        onTap: () {
+                          setState(() {
+                            _toolsExpanded = !_toolsExpanded;
+                          });
+                        },
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 3,
+                            ),
+                            child: _PermissionModeSelector(
+                              selectedMode: data.toolPermissionMode,
+                              onSelected: _setPermissionMode,
+                            ),
+                          ),
+                        ],
+                      ),
+                      _MenuSection(
+                        icon: OperitIcons.bolt_outlined,
+                        title: '行为',
+                        value: data.disableStreamOutput ? '非流式' : '流式',
+                        expanded: _behaviorExpanded,
+                        onTap: () {
+                          setState(() {
+                            _behaviorExpanded = !_behaviorExpanded;
+                          });
+                        },
+                        children: <Widget>[
+                          _SwitchRow(
+                            icon: OperitIcons.speed_outlined,
+                            title: '流式输出',
+                            value: data.disableStreamOutput ? '关' : '开',
+                            checked: !data.disableStreamOutput,
+                            onTap: () => _toggleDisableStreamOutput(data),
+                          ),
+                        ],
+                      ),
+                      _MenuSection(
+                        icon: OperitIcons.extension_outlined,
+                        title: '插件',
+                        value: data.pluginSummary,
+                        expanded: _pluginsExpanded,
+                        onTap: () {
+                          setState(() {
+                            _pluginsExpanded = !_pluginsExpanded;
+                          });
+                        },
+                        children: <Widget>[
+                          for (final toggle in data.pluginToggles)
+                            _SwitchRow(
+                              icon: OperitIcons.hub_outlined,
+                              materialIconName: toggle.icon,
+                              title: toggle.title ?? toggle.id,
+                              value: toggle.isChecked ? '开' : '关',
+                              checked: toggle.isChecked,
+                              enabled: toggle.isEnabled,
+                              onTap: () => _togglePlugin(toggle),
+                            ),
+                        ],
                       ),
                     ],
                   ),
                 );
-              }
-              final data = snapshot.data;
-              if (data == null) {
-                return const SizedBox(
-                  width: 300,
-                  height: 96,
-                  child: Center(child: CircularProgressIndicator()),
-                );
-              }
-              return SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(vertical: 4),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    _ChatSessionSummarySection(
-                      viewModel: widget.viewModel,
-                      currentChatId: widget.currentChatId,
-                      onDismiss: widget.onDismiss,
-                      isChatContextCurrent: widget.isChatContextCurrent,
-                      showNativeStatistics: widget.showNativeStatistics,
-                    ),
-                    const Divider(height: 1),
-                    ...widget.leadingChildren,
-                    ChatInputMenuHost(
-                      clients: widget.viewModel.clients,
-                      chatId: widget.currentChatId,
-                      surface: 'chat_input_menu_sections',
-                      onPresent: _presentSectionAction,
-                    ),
-                    _MenuSection(
-                      icon: OperitIcons.security_outlined,
-                      title: '工具',
-                      value: data.toolPermissionMode.label,
-                      expanded: _toolsExpanded,
-                      onTap: () {
-                        setState(() {
-                          _toolsExpanded = !_toolsExpanded;
-                        });
-                      },
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 3,
-                          ),
-                          child: _PermissionModeSelector(
-                            selectedMode: data.toolPermissionMode,
-                            onSelected: _setPermissionMode,
-                          ),
-                        ),
-                      ],
-                    ),
-                    _MenuSection(
-                      icon: OperitIcons.bolt_outlined,
-                      title: '行为',
-                      value: data.disableStreamOutput ? '非流式' : '流式',
-                      expanded: _behaviorExpanded,
-                      onTap: () {
-                        setState(() {
-                          _behaviorExpanded = !_behaviorExpanded;
-                        });
-                      },
-                      children: <Widget>[
-                        _SwitchRow(
-                          icon: OperitIcons.speed_outlined,
-                          title: '流式输出',
-                          value: data.disableStreamOutput ? '关' : '开',
-                          checked: !data.disableStreamOutput,
-                          onTap: () => _toggleDisableStreamOutput(data),
-                        ),
-                      ],
-                    ),
-                    _MenuSection(
-                      icon: OperitIcons.extension_outlined,
-                      title: '插件',
-                      value: data.pluginSummary,
-                      expanded: _pluginsExpanded,
-                      onTap: () {
-                        setState(() {
-                          _pluginsExpanded = !_pluginsExpanded;
-                        });
-                      },
-                      children: <Widget>[
-                        for (final toggle in data.pluginToggles)
-                          _SwitchRow(
-                            icon: OperitIcons.hub_outlined,
-                            materialIconName: toggle.icon,
-                            title: toggle.title ?? toggle.id,
-                            value: toggle.isChecked ? '开' : '关',
-                            checked: toggle.isChecked,
-                            enabled: toggle.isEnabled,
-                            onTap: () => _togglePlugin(toggle),
-                          ),
-                      ],
-                    ),
-                  ],
-                ),
-              );
-            },
+              },
+            ),
           ),
         ),
       ),

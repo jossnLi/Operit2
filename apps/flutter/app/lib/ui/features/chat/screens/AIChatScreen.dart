@@ -188,7 +188,29 @@ class _BoundAIChatEmbedState extends State<_BoundAIChatEmbed> {
       future: _binding,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return Center(child: SelectableText(snapshot.error.toString()));
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Icon(
+                    Icons.error_outline_rounded,
+                    size: 32,
+                    color: Theme.of(context).colorScheme.error,
+                  ),
+                  const SizedBox(height: 12),
+                  SelectableText(
+                    snapshot.error.toString(),
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
         }
         if (snapshot.connectionState != ConnectionState.done) {
           return const Center(child: CircularProgressIndicator());

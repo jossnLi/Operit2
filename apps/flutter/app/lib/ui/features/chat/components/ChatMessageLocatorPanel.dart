@@ -9,6 +9,7 @@ import '../viewmodel/ChatViewModel.dart';
 import 'ChatMessageLocatorContent.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
+
 /// Searches persisted history independently of the transcript's display window.
 class ChatMessageLocatorPanel extends StatefulWidget {
   const ChatMessageLocatorPanel({
@@ -135,19 +136,19 @@ class _ChatMessageLocatorPanelState extends State<ChatMessageLocatorPanel> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(20, 12, 8, 8),
+                padding: const EdgeInsets.fromLTRB(20, 14, 8, 8),
                 child: Row(
                   children: [
                     Icon(
                       OperitIcons.manage_search_rounded,
-                      size: 21,
-                      color: colors.primary,
+                      size: 20,
+                      color: colors.onSurfaceVariant,
                     ),
                     const SizedBox(width: 10),
                     Expanded(
                       child: Text(
                         l10n.messageLocatorTitle,
-                        style: theme.textTheme.titleSmall?.copyWith(
+                        style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -174,7 +175,10 @@ class _ChatMessageLocatorPanelState extends State<ChatMessageLocatorPanel> {
                     hintStyle: theme.textTheme.bodyMedium?.copyWith(
                       color: colors.onSurfaceVariant,
                     ),
-                    prefixIcon: const Icon(OperitIcons.search_rounded, size: 20),
+                    prefixIcon: const Icon(
+                      OperitIcons.search_rounded,
+                      size: 20,
+                    ),
                     suffixIcon: _search.text.isEmpty
                         ? null
                         : IconButton(
@@ -183,7 +187,10 @@ class _ChatMessageLocatorPanelState extends State<ChatMessageLocatorPanel> {
                               _search.clear();
                               _queryChanged('');
                             },
-                            icon: const Icon(OperitIcons.close_rounded, size: 18),
+                            icon: const Icon(
+                              OperitIcons.close_rounded,
+                              size: 18,
+                            ),
                           ),
                     filled: true,
                     fillColor: colors.surfaceContainerHighest.withValues(
@@ -260,7 +267,10 @@ class _ChatMessageLocatorPanelState extends State<ChatMessageLocatorPanel> {
                         l10n.messageLocatorLoadFailed,
                         action: TextButton.icon(
                           onPressed: _loadEntries,
-                          icon: const Icon(OperitIcons.refresh_rounded, size: 17),
+                          icon: const Icon(
+                            OperitIcons.refresh_rounded,
+                            size: 17,
+                          ),
                           label: Text(l10n.retry),
                         ),
                       )
@@ -370,7 +380,7 @@ class _ChatMessageLocatorPanelState extends State<ChatMessageLocatorPanel> {
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Material(
         color: active
-            ? colors.primary.withValues(alpha: 0.06)
+            ? colors.primary.withValues(alpha: 0.07)
             : Colors.transparent,
         borderRadius: BorderRadius.circular(10),
         child: Row(
@@ -381,14 +391,18 @@ class _ChatMessageLocatorPanelState extends State<ChatMessageLocatorPanel> {
                 borderRadius: BorderRadius.circular(10),
                 onTap: () => widget.onSelected(entry.timestamp),
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(12, 12, 0, 12),
+                  padding: const EdgeInsets.fromLTRB(12, 10, 0, 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         children: [
                           if (active) ...[
-                            Icon(OperitIcons.circle_outlined, size: 5, color: colors.primary),
+                            Icon(
+                              OperitIcons.circle_outlined,
+                              size: 5,
+                              color: colors.primary,
+                            ),
                             const SizedBox(width: 6),
                           ],
                           Expanded(
@@ -419,13 +433,13 @@ class _ChatMessageLocatorPanelState extends State<ChatMessageLocatorPanel> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 5),
+                      const SizedBox(height: 4),
                       Text.rich(
                         _highlight(preview),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: theme.textTheme.bodySmall?.copyWith(
-                          height: 1.5,
+                          height: 1.45,
                           color: colors.onSurfaceVariant,
                         ),
                       ),

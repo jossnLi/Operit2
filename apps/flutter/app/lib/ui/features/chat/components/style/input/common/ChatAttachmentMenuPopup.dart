@@ -15,6 +15,7 @@ import '../../../../../../common/icons/MaterialIconNameResolver.dart';
 import '../../../../../../main/navigation/ToolPkgCatalogChangeBus.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
+
 /// Delivers a generic attachment completion to the chat that requested it.
 typedef ChatAttachmentCompletion =
     Future<void> Function(Object? value, String? expectedChatId);
@@ -226,11 +227,18 @@ class _ChatAttachmentMenuPopupState extends State<ChatAttachmentMenuPopup> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final colorScheme = Theme.of(context).colorScheme;
     return Material(
-      color: Theme.of(context).colorScheme.surfaceContainer,
-      elevation: 4,
-      borderRadius: BorderRadius.circular(8),
+      color: colorScheme.surfaceContainer,
+      elevation: 0,
+      borderRadius: BorderRadius.circular(14),
       clipBehavior: Clip.antiAlias,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(14),
+        side: BorderSide(
+          color: colorScheme.outlineVariant.withValues(alpha: 0.5),
+        ),
+      ),
       child: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(vertical: 4),
         child: Column(

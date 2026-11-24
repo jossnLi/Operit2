@@ -18,6 +18,7 @@ import '../../../../viewmodel/ChatViewModel.dart';
 import '../../../../../settings/model/ProviderLogo.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
+
 class AgentModelSelectorPopup extends StatefulWidget {
   const AgentModelSelectorPopup({
     super.key,
@@ -167,76 +168,85 @@ class _AgentModelSelectorPopupState extends State<AgentModelSelectorPopup> {
       child: Card(
         margin: EdgeInsets.zero,
         color: popupContainerColor,
-        elevation: 4,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 300, maxHeight: 420),
-          child: FutureBuilder<_AgentModelSelectorData>(
-            future: _settingsFuture,
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return const Padding(
-                  padding: EdgeInsets.all(12),
-                  child: Text('模型配置不可用，请检查当前会话的模型绑定。'),
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(14),
+          side: BorderSide(
+            color: colorScheme.outlineVariant.withValues(alpha: 0.5),
+          ),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(14),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 300, maxHeight: 420),
+            child: FutureBuilder<_AgentModelSelectorData>(
+              future: _settingsFuture,
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return const Padding(
+                    padding: EdgeInsets.all(12),
+                    child: Text('模型配置不可用，请检查当前会话的模型绑定。'),
+                  );
+                }
+                final data = snapshot.data;
+                if (data == null) {
+                  return const SizedBox(
+                    width: 300,
+                    height: 96,
+                    child: Center(child: CircularProgressIndicator()),
+                  );
+                }
+                return SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      if (_thinking ?? data.thinkingSettings
+                          case final settings?)
+                        AgentThinkingLevelRow(
+                          settings: settings,
+                          onChanged: (level) => _setThinkingLevel(data, level),
+                        ),
+                      if (!data.selection.canSelectGlobal)
+                        _BoundModelSelection(
+                          selection: data.selection,
+                          providers: data.providers,
+                        ),
+                      if (data.selection.canSelectGlobal)
+                        _ModelSelectorItem(
+                          popupContainerColor: popupContainerColor,
+                          providers: data.providers,
+                          summaries: data.summaries,
+                          currentBinding: data.currentBinding,
+                          expanded: true,
+                          expandedProviderId: _expandedProviderId,
+                          expandedFamilyKey: _expandedFamilyKey,
+                          onExpandedChanged: (_) {},
+                          onExpandedProviderChanged: (providerId) {
+                            setState(() {
+                              _expandedProviderId = providerId;
+                              if (providerId == null) {
+                                _expandedFamilyKey = null;
+                              }
+                            });
+                          },
+                          onFamilyExpandedChanged: (familyKey) {
+                            setState(() {
+                              _expandedFamilyKey = familyKey;
+                            });
+                          },
+                          onSelectModel: _selectModel,
+                          onManageClick: _openModelSettings,
+                          onInfoClick: () {},
+                          showChevron: false,
+                          showInfoButton: false,
+                          manageInHeader: true,
+                        ),
+                    ],
+                  ),
                 );
-              }
-              final data = snapshot.data;
-              if (data == null) {
-                return const SizedBox(
-                  width: 300,
-                  height: 96,
-                  child: Center(child: CircularProgressIndicator()),
-                );
-              }
-              return SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(vertical: 4),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    if (_thinking ?? data.thinkingSettings case final settings?)
-                      AgentThinkingLevelRow(
-                        settings: settings,
-                        onChanged: (level) => _setThinkingLevel(data, level),
-                      ),
-                    if (!data.selection.canSelectGlobal)
-                      _BoundModelSelection(
-                        selection: data.selection,
-                        providers: data.providers,
-                      ),
-                    if (data.selection.canSelectGlobal)
-                      _ModelSelectorItem(
-                        popupContainerColor: popupContainerColor,
-                        providers: data.providers,
-                        summaries: data.summaries,
-                        currentBinding: data.currentBinding,
-                        expanded: true,
-                        expandedProviderId: _expandedProviderId,
-                        expandedFamilyKey: _expandedFamilyKey,
-                        onExpandedChanged: (_) {},
-                        onExpandedProviderChanged: (providerId) {
-                          setState(() {
-                            _expandedProviderId = providerId;
-                            if (providerId == null) {
-                              _expandedFamilyKey = null;
-                            }
-                          });
-                        },
-                        onFamilyExpandedChanged: (familyKey) {
-                          setState(() {
-                            _expandedFamilyKey = familyKey;
-                          });
-                        },
-                        onSelectModel: _selectModel,
-                        onManageClick: _openModelSettings,
-                        onInfoClick: () {},
-                        showChevron: false,
-                        showInfoButton: false,
-                        manageInHeader: true,
-                      ),
-                  ],
-                ),
-              );
-            },
+              },
+            ),
           ),
         ),
       ),
@@ -1032,7 +1042,11 @@ class _ThinkingNoteRow extends StatelessWidget {
         height: 40,
         child: Row(
           children: <Widget>[
-            Icon(OperitIcons.psychology_outlined, size: 16, color: colorScheme.primary),
+            Icon(
+              OperitIcons.psychology_outlined,
+              size: 16,
+              color: colorScheme.primary,
+            ),
             const SizedBox(width: 4),
             Text('${l10n.thinkingLevelLabel}:', style: textTheme.bodySmall),
             const SizedBox(width: 6),
@@ -1348,7 +1362,11 @@ class AgentModelProviderRow extends StatelessWidget {
                     ),
                     if (selected) ...<Widget>[
                       const SizedBox(width: 4),
-                      Icon(OperitIcons.check_rounded, size: 12, color: colorScheme.primary),
+                      Icon(
+                        OperitIcons.check_rounded,
+                        size: 12,
+                        color: colorScheme.primary,
+                      ),
                     ],
                   ],
                 ],
@@ -1480,7 +1498,9 @@ class _ModelFamilyRow extends StatelessWidget {
               ),
               const SizedBox(width: 2),
               Icon(
-                open ? OperitIcons.keyboard_arrow_up_rounded : OperitIcons.keyboard_arrow_down_rounded,
+                open
+                    ? OperitIcons.keyboard_arrow_up_rounded
+                    : OperitIcons.keyboard_arrow_down_rounded,
                 size: 12,
                 color: colorScheme.onSurfaceVariant,
               ),
@@ -1676,7 +1696,11 @@ class _ModelNameRow extends StatelessWidget {
             ..._modelMetaChips(context, summary),
             if (selected) ...<Widget>[
               const SizedBox(width: 4),
-              Icon(OperitIcons.check_rounded, size: 11, color: colorScheme.primary),
+              Icon(
+                OperitIcons.check_rounded,
+                size: 11,
+                color: colorScheme.primary,
+              ),
             ],
           ],
         ),

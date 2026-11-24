@@ -9,6 +9,7 @@ import '../../../../viewmodel/WorkspaceFileModels.dart';
 import 'MentionPackageOptions.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
+
 /// Renders package and workspace suggestions for @ and / input mentions.
 class MentionSuggestionPanel extends StatefulWidget {
   /// Creates a mention suggestion panel for the active input token.
@@ -67,15 +68,15 @@ class _MentionSuggestionPanelState extends State<MentionSuggestionPanel> {
       child: OperitGlassSurface(
         color: colorScheme.surface,
         layer: OperitGlassSurfaceLayer.card,
-        borderRadius: BorderRadius.circular(22),
+        borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: colorScheme.outlineVariant.withValues(alpha: 0.32),
+          color: colorScheme.outlineVariant.withValues(alpha: 0.3),
         ),
         shadows: <BoxShadow>[
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.10),
-            blurRadius: 20,
-            offset: const Offset(0, 8),
+            color: Colors.black.withValues(alpha: 0.08),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
           ),
         ],
         material: true,
@@ -430,7 +431,9 @@ class _MentionSuggestionFileRow extends StatelessWidget {
           child: Row(
             children: <Widget>[
               Icon(
-                entry.isDirectory ? OperitIcons.folder_outlined : OperitIcons.description_outlined,
+                entry.isDirectory
+                    ? OperitIcons.folder_outlined
+                    : OperitIcons.description_outlined,
                 size: 14,
                 color: entry.isDirectory ? colors.secondary : colors.primary,
               ),

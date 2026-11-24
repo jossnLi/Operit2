@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'TtsPlaybackController.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
+
 class TtsFloatingPanel extends StatefulWidget {
   /// Creates the process-wide floating TTS control panel.
   const TtsFloatingPanel({super.key});
@@ -87,8 +88,8 @@ class _TtsFloatingPanelState extends State<TtsFloatingPanel> {
     double maxPanelHeight,
   ) {
     return Material(
-      elevation: 10,
-      borderRadius: BorderRadius.circular(8),
+      elevation: 6,
+      borderRadius: BorderRadius.circular(14),
       color: Theme.of(context).colorScheme.surfaceContainerHigh,
       child: ConstrainedBox(
         constraints: BoxConstraints(maxHeight: maxPanelHeight),
@@ -97,9 +98,11 @@ class _TtsFloatingPanelState extends State<TtsFloatingPanel> {
             width: panelWidth,
             padding: const EdgeInsets.fromLTRB(14, 12, 10, 10),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(14),
               border: Border.all(
-                color: Theme.of(context).colorScheme.outlineVariant,
+                color: Theme.of(
+                  context,
+                ).colorScheme.outlineVariant.withValues(alpha: 0.5),
               ),
             ),
             child: Column(

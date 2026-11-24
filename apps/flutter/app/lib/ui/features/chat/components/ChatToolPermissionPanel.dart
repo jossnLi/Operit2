@@ -7,6 +7,7 @@ import '../../../../l10n/generated/app_localizations.dart';
 import '../viewmodel/ChatViewModel.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
+
 class ChatToolPermissionPanel extends StatefulWidget {
   /// Creates the inline permission state surface for one chat.
   const ChatToolPermissionPanel({
@@ -191,13 +192,15 @@ class _ChatToolPermissionPanelState extends State<ChatToolPermissionPanel> {
     return Container(
       margin: const EdgeInsets.fromLTRB(0, 6, 0, 8),
       decoration: BoxDecoration(
-        color: colorScheme.surfaceContainerLow,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: colorScheme.outlineVariant),
+        color: colorScheme.surface,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(
+          color: colorScheme.outlineVariant.withValues(alpha: 0.7),
+        ),
       ),
       clipBehavior: Clip.antiAlias,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(12, 10, 12, 8),
+        padding: const EdgeInsets.fromLTRB(14, 12, 14, 10),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -212,18 +215,18 @@ class _ChatToolPermissionPanelState extends State<ChatToolPermissionPanel> {
                 const SizedBox(width: 8),
                 Text(
                   l10n.toolApprovalTitle,
-                  style: theme.textTheme.labelLarge?.copyWith(
-                    fontWeight: FontWeight.w700,
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: 12),
                 Expanded(
                   child: Text(
                     widget.request.tool.name,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.end,
-                    style: theme.textTheme.labelMedium?.copyWith(
+                    style: theme.textTheme.bodySmall?.copyWith(
                       color: colorScheme.primary,
                       fontWeight: FontWeight.w600,
                     ),
@@ -231,11 +234,11 @@ class _ChatToolPermissionPanelState extends State<ChatToolPermissionPanel> {
                 ),
               ],
             ),
-            const SizedBox(height: 6),
+            const SizedBox(height: 8),
             Text(
               widget.request.description,
               style: theme.textTheme.bodySmall?.copyWith(
-                height: 1.3,
+                height: 1.45,
                 color: colorScheme.onSurfaceVariant,
               ),
             ),

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
+
 class ChatMultiSelectBar extends StatelessWidget {
   const ChatMultiSelectBar({
     super.key,
@@ -36,9 +37,9 @@ class ChatMultiSelectBar extends StatelessWidget {
           constraints: const BoxConstraints(maxWidth: 520),
           child: Material(
             color: colorScheme.surface.withValues(alpha: 0.98),
-            elevation: 8,
-            shadowColor: Colors.black.withValues(alpha: 0.16),
-            borderRadius: BorderRadius.circular(14),
+            elevation: 4,
+            shadowColor: Colors.black.withValues(alpha: 0.10),
+            borderRadius: BorderRadius.circular(16),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
               child: Row(
@@ -59,7 +60,11 @@ class ChatMultiSelectBar extends StatelessWidget {
                   ),
                   IconButton(
                     onPressed: onToggleSelectAll,
-                    icon: Icon(allSelected ? OperitIcons.deselect_rounded : OperitIcons.select_all_rounded),
+                    icon: Icon(
+                      allSelected
+                          ? OperitIcons.deselect_rounded
+                          : OperitIcons.select_all_rounded,
+                    ),
                     tooltip: allSelected ? '清空选择' : '全选',
                     visualDensity: VisualDensity.compact,
                   ),
