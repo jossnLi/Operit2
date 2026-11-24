@@ -181,6 +181,12 @@ jobs:
           distribution: temurin
           java-version: "17"
 
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-read-only: false
+          gradle-home-cache-cleanup: true
+
       - name: Install FVM
         shell: pwsh
         run: |
@@ -197,6 +203,23 @@ jobs:
         with:
           toolchain: ${{ env.RUST_TOOLCHAIN_VERSION }}
           targets: aarch64-linux-android
+
+      - name: Rust Cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: |
+            core
+            apps/flutter/native/operit-flutter-bridge
+
+      - name: Cache Pub dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pub-cache
+            ~/AppData/Local/Pub/Cache
+          key: ${{ runner.os }}-pub-${{ hashFiles('apps/flutter/app/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pub-
 
       - name: Prepare bundled models.dev catalog
         shell: pwsh
@@ -245,7 +268,15 @@ jobs:
             test/storage_directory_selection_test.dart `
             test/widget_test.dart
 
+      - name: Cache Android bindgen libclang
+        id: libclang-cache
+        uses: actions/cache@v4
+        with:
+          path: target/operit-build-tools
+          key: ${{ runner.os }}-libclang-21.1.8
+
       - name: Prepare Android bindgen libclang
+        if: steps.libclang-cache.outputs.cache-hit != 'true'
         shell: pwsh
         run: |
           $version = "21.1.8"
@@ -253,10 +284,14 @@ jobs:
           $toolsDir = "target/operit-build-tools"
           $packageDir = Join-Path $toolsDir $packageName
           $archive = Join-Path $toolsDir "$packageName.nupkg"
+          $libclang = Join-Path $packageDir "runtimes/win-x64/native/libclang.dll"
+          if (Test-Path -LiteralPath $libclang) {
+            Write-Host "Android bindgen libclang already exists at $libclang"
+            return
+          }
           New-Item -ItemType Directory -Force -Path $toolsDir | Out-Null
           Invoke-WebRequest -Uri "https://www.nuget.org/api/v2/package/libclang.runtime.win-x64/$version" -OutFile $archive
           Expand-Archive -Path $archive -DestinationPath $packageDir -Force
-          $libclang = Join-Path $packageDir "runtimes/win-x64/native/libclang.dll"
           if (-not (Test-Path -LiteralPath $libclang)) {
             throw "Android bindgen libclang was not prepared at $libclang"
           }
