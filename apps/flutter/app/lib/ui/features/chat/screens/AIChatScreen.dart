@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';
 import 'package:mime/mime.dart';
 
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 import '../../../../core/application/PluginHotReload.dart';
 import '../../../../core/host/SelectedFileInput.dart';
 import '../../../../core/host/IncomingAttachmentService.dart';
@@ -195,7 +196,7 @@ class _BoundAIChatEmbedState extends State<_BoundAIChatEmbed> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Icon(
-                    Icons.error_outline_rounded,
+                    OperitIcons.error_outline_rounded,
                     size: 32,
                     color: Theme.of(context).colorScheme.error,
                   ),

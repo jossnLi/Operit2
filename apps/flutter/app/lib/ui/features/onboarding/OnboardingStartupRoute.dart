@@ -2116,7 +2116,7 @@ class _AiSetupIntroPage extends StatelessWidget {
                                 ),
                                 SizedBox(height: compact ? 16 : 22),
                                 const _ChatGptFeatureCard(
-                                  icon: OperitIcons.chat_bubble_outline_rounded,
+                                  icon: OperitIcons.auto_awesome_rounded,
                                   title: '智能对话与深度思考',
                                   description:
                                       '支持主流顶尖模型切换，理解长上下文，随时激发创作灵感与分析问题',
@@ -2330,7 +2330,7 @@ class _AiSetupModePage extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               _SetupModeTile(
-                icon: OperitIcons.move_to_inbox_rounded,
+                icon: OperitIcons.download_rounded,
                 title: '从 Operit1 导入',
                 subtitle: '导入旧版配置和数据',
                 selected: selectedMode == _AiSetupStartMode.operit1Import,
@@ -2856,7 +2856,7 @@ class OnboardingSnapshotImportPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               const _SetupSectionHeader(
-                icon: OperitIcons.move_to_inbox_rounded,
+                icon: OperitIcons.download_rounded,
                 eyebrow: '导入配置',
                 title: '从 Operit1 导入',
                 description:

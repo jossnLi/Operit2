@@ -1626,7 +1626,7 @@ class _StatusMessage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Icon(
-              Icons.error_outline_rounded,
+              OperitIcons.error_outline_rounded,
               size: 16,
               color: colorScheme.error,
             ),

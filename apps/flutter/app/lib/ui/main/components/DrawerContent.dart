@@ -1248,7 +1248,7 @@ class _WorkspaceCreateBar extends StatelessWidget {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      Icon(OperitIcons.add_rounded, size: 17, color: contentColor),
+                      Icon(OperitIcons.edit_outlined, size: 17, color: contentColor),
                       const SizedBox(width: 6),
                       Flexible(
                         child: Text(

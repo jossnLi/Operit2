@@ -641,7 +641,7 @@ class _ClassicInputBody extends StatelessWidget {
               : const CircleBorder(),
           clipBehavior: Clip.antiAlias,
           child: _ClassicIconTapTarget(
-            icon: OperitIcons.add_rounded,
+            icon: OperitIcons.attach_file_rounded,
             color: colorScheme.onSurfaceVariant.withValues(alpha: 0.9),
             onTap: onAttach,
             imageAsset: OperitTheme.of(

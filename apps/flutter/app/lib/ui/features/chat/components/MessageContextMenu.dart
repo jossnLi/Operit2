@@ -313,13 +313,13 @@ class _MessageContextMenuState extends State<MessageContextMenu> {
       ),
       _menuItem(
         value: _MessageMenuAction.createBranch,
-        icon: OperitIcons.account_tree_outlined,
+        icon: OperitIcons.alt_route_rounded,
         label: '创建分支',
       ),
       _menuItem(value: _MessageMenuAction.info, icon: OperitIcons.info_outline_rounded, label: '信息'),
       _menuItem(
         value: _MessageMenuAction.multiSelect,
-        icon: OperitIcons.check_circle_outline_rounded,
+        icon: OperitIcons.checklist_rounded,
         label: '多选',
       ),
     ]);

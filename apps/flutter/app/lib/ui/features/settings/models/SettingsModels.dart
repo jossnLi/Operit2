@@ -50,7 +50,7 @@ class SettingsCategorySpec {
         title: l10n.settingsCategoryModelTitle,
         subtitle: l10n.settingsCategoryModelSubtitle,
         description: l10n.settingsCategoryModelDescription,
-        icon: OperitIcons.smart_toy_outlined,
+        icon: OperitIcons.auto_awesome_rounded,
       ),
       SettingsCategory.localModels => SettingsCategorySpec(
         title: l10n.settingsCategoryLocalModelsTitle,
@@ -62,19 +62,19 @@ class SettingsCategorySpec {
         title: l10n.settingsUsageReportTitle,
         subtitle: l10n.settingsUsageReportSubtitle,
         description: l10n.settingsDataDetailedStatsDescription,
-        icon: OperitIcons.query_stats_outlined,
+        icon: OperitIcons.analytics_outlined,
       ),
       SettingsCategory.tts => const SettingsCategorySpec(
         title: '语音与识别',
         subtitle: 'TTS 与 STT 供应商',
         description: '管理语音合成与语音识别供应商，并分别选择当前配置。',
-        icon: OperitIcons.record_voice_over_outlined,
+        icon: OperitIcons.volume_up_outlined,
       ),
       SettingsCategory.tools => SettingsCategorySpec(
         title: l10n.settingsCategoryToolsTitle,
         subtitle: l10n.settingsCategoryToolsSubtitle,
         description: l10n.settingsCategoryToolsDescription,
-        icon: OperitIcons.admin_panel_settings_outlined,
+        icon: OperitIcons.build_outlined,
       ),
       SettingsCategory.workspace => SettingsCategorySpec(
         title: l10n.settingsCategoryWorkspaceTitle,
@@ -86,7 +86,7 @@ class SettingsCategorySpec {
         title: l10n.settingsCategoryGlobalBehaviorTitle,
         subtitle: l10n.settingsCategoryGlobalBehaviorSubtitle,
         description: l10n.settingsCategoryGlobalBehaviorDescription,
-        icon: OperitIcons.tune_outlined,
+        icon: OperitIcons.tune_rounded,
       ),
       SettingsCategory.appearance => SettingsCategorySpec(
         title: l10n.settingsCategoryAppearanceTitle,
@@ -98,7 +98,7 @@ class SettingsCategorySpec {
         title: l10n.settingsCategoryDataTitle,
         subtitle: l10n.settingsCategoryDataSubtitle,
         description: l10n.settingsCategoryDataDescription,
-        icon: OperitIcons.backup_outlined,
+        icon: OperitIcons.inventory_2_outlined,
       ),
       SettingsCategory.accessLinks => SettingsCategorySpec(
         title: l10n.settingsCategoryAccessLinksTitle,

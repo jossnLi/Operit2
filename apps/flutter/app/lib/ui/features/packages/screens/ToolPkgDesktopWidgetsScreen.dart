@@ -110,7 +110,7 @@ class _ToolPkgDesktopWidgetsScreenState
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     Icon(
-                      Icons.error_outline_rounded,
+                      OperitIcons.error_outline_rounded,
                       size: 32,
                       color: Theme.of(context).colorScheme.error,
                     ),
