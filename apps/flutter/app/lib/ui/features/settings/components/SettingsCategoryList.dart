@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:operit_ui/operit_ui.dart';
 
 import '../../../../l10n/generated/app_localizations.dart';
-import '../../../theme/OperitGlassSurface.dart';
 import '../models/SettingsModels.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
@@ -57,8 +56,19 @@ class SettingsCategoryList extends StatelessWidget {
     final theme = Theme.of(context);
     return ThemeGlassSurfaceGroup(
       child: ListView(
-        padding: const EdgeInsets.fromLTRB(10, 10, 10, 16),
+        padding: const EdgeInsets.fromLTRB(16, 18, 16, 24),
         children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.fromLTRB(10, 4, 10, 20),
+            child: Text(
+              l10n.settings,
+              style: theme.textTheme.headlineSmall?.copyWith(
+                color: theme.colorScheme.onSurface,
+                fontWeight: FontWeight.w700,
+                letterSpacing: -0.4,
+              ),
+            ),
+          ),
           SettingsCategoryTile(
             spec: SettingsCategorySpec.of(SettingsCategory.accessLinks, l10n),
             selected: selectedCategory == SettingsCategory.accessLinks,
@@ -68,17 +78,17 @@ class SettingsCategoryList extends StatelessWidget {
           for (final groupEntry in groups.asMap().entries) ...<Widget>[
             Padding(
               padding: EdgeInsets.fromLTRB(
+                10,
+                groupEntry.key == 0 ? 10 : 20,
+                10,
                 8,
-                groupEntry.key == 0 ? 2 : 12,
-                8,
-                6,
               ),
               child: Text(
                 groupEntry.value.title,
                 style: theme.textTheme.labelSmall?.copyWith(
                   color: theme.colorScheme.onSurfaceVariant,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: 0.6,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 0.15,
                 ),
               ),
             ),
@@ -122,73 +132,44 @@ class SettingsCategoryTile extends StatelessWidget {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final background = selected
-        ? colorScheme.primaryContainer
-        : colorScheme.surfaceContainerHighest.withValues(alpha: 0.34);
+        ? colorScheme.surfaceContainerHigh
+        : Colors.transparent;
     final foreground = selected
-        ? colorScheme.onPrimaryContainer
-        : colorScheme.onSurface;
+        ? colorScheme.onSurface
+        : colorScheme.onSurfaceVariant;
     return Padding(
-      padding: const EdgeInsets.only(bottom: 6),
-      child: OperitGlassSurface(
+      padding: const EdgeInsets.only(bottom: 2),
+      child: Material(
         color: background,
-        layer: OperitGlassSurfaceLayer.control,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: selected
-              ? colorScheme.primary.withValues(alpha: 0.24)
-              : colorScheme.outlineVariant.withValues(alpha: 0.18),
-        ),
-        material: true,
+        borderRadius: BorderRadius.circular(10),
         child: InkWell(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(10),
           onTap: onTap,
           child: Padding(
-            padding: EdgeInsets.fromLTRB(
-              12,
-              prominent ? 13 : 9,
-              10,
-              prominent ? 13 : 9,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 11),
             child: Row(
               children: <Widget>[
-                CircleAvatar(
-                  radius: prominent ? 20 : 16,
-                  backgroundColor: selected
-                      ? colorScheme.primary.withValues(alpha: 0.16)
-                      : colorScheme.surface,
-                  child: Icon(
-                    spec.icon,
-                    size: prominent ? 22 : 18,
-                    color: foreground,
-                  ),
-                ),
-                const SizedBox(width: 10),
+                Icon(spec.icon, size: 18, color: foreground),
+                const SizedBox(width: 12),
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        spec.title,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: foreground,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                      const SizedBox(height: 3),
-                      Text(
-                        spec.subtitle,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: foreground.withValues(alpha: 0.70),
-                        ),
-                      ),
-                    ],
+                  child: Text(
+                    spec.title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: foreground,
+                      fontWeight: selected || prominent
+                          ? FontWeight.w600
+                          : FontWeight.w400,
+                    ),
                   ),
                 ),
-                if (prominent) const SizedBox(width: 4),
+                if (selected)
+                  Icon(
+                    OperitIcons.check_rounded,
+                    size: 16,
+                    color: colorScheme.onSurfaceVariant,
+                  ),
               ],
             ),
           ),

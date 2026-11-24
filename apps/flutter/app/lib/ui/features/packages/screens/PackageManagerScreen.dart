@@ -34,6 +34,7 @@ import 'ExtensionsPane.dart';
 import 'MarketPane.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
+
 /// Package files that can be imported by dropping them on the page.
 const Set<String> _importableExtensions = <String>{
   'toolpkg',
@@ -243,7 +244,9 @@ class _PackageManagerScreenState extends State<PackageManagerScreen>
             builder: (context, open, child) => IconButton(
               tooltip: open ? '关闭搜索' : '搜索（Ctrl+F）',
               onPressed: open ? _closeSearch : _openSearch,
-              icon: Icon(open ? OperitIcons.close_rounded : OperitIcons.search_rounded),
+              icon: Icon(
+                open ? OperitIcons.close_rounded : OperitIcons.search_rounded,
+              ),
             ),
           ),
           if (!narrow)
@@ -563,7 +566,7 @@ class _TopBarTitle extends StatelessWidget {
                 child: FittedBox(
                   fit: BoxFit.scaleDown,
                   alignment: Alignment.centerLeft,
-                  child: StoreSegmentedTabs(
+                  child: _PackageTabSwitcher(
                     segmentWidth: compact ? 54 : 88,
                     selectedIndex: tab.value.index,
                     onSelected: (index) => onSelect(PackageTab.values[index]),
@@ -662,6 +665,99 @@ class _TabLabel extends StatelessWidget {
           ),
         ],
       ],
+    );
+  }
+}
+
+/// Compact package-section switcher designed for the page's shared top bar.
+///
+/// These choices replace the whole package workspace, so the active state uses
+/// a quiet filled tab instead of an accent-colored filter control.
+class _PackageTabSwitcher extends StatelessWidget {
+  const _PackageTabSwitcher({
+    required this.labels,
+    required this.selectedIndex,
+    required this.onSelected,
+    required this.segmentWidth,
+  });
+
+  final List<Widget> labels;
+  final int selectedIndex;
+  final ValueChanged<int> onSelected;
+  final double segmentWidth;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colors = theme.colorScheme;
+    final motion = ExtensionMotion.of(context);
+    return Container(
+      height: 38,
+      padding: const EdgeInsets.all(3),
+      decoration: BoxDecoration(
+        color: colors.surfaceContainerHigh.withValues(alpha: 0.62),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          for (var index = 0; index < labels.length; index++)
+            SizedBox(
+              width: segmentWidth,
+              child: Semantics(
+                selected: index == selectedIndex,
+                button: true,
+                child: Material(
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.circular(9),
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(9),
+                    onTap: () => onSelected(index),
+                    child: AnimatedContainer(
+                      duration: motion.standard,
+                      curve: Curves.easeOutCubic,
+                      decoration: BoxDecoration(
+                        color: index == selectedIndex
+                            ? colors.surface
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.circular(9),
+                        boxShadow: index == selectedIndex
+                            ? <BoxShadow>[
+                                BoxShadow(
+                                  color: colors.shadow.withValues(alpha: 0.08),
+                                  blurRadius: 3,
+                                  offset: const Offset(0, 1),
+                                ),
+                              ]
+                            : null,
+                      ),
+                      alignment: Alignment.center,
+                      child: DefaultTextStyle.merge(
+                        style: TextStyle(
+                          color: index == selectedIndex
+                              ? colors.onSurface
+                              : colors.onSurfaceVariant,
+                          fontWeight: index == selectedIndex
+                              ? FontWeight.w600
+                              : FontWeight.w500,
+                        ),
+                        child: IconTheme.merge(
+                          data: IconThemeData(
+                            color: index == selectedIndex
+                                ? colors.onSurface
+                                : colors.onSurfaceVariant,
+                            size: 16,
+                          ),
+                          child: labels[index],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
     );
   }
 }
