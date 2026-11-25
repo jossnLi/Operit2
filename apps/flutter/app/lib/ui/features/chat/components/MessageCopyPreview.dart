@@ -83,6 +83,7 @@ class _MessageCopyPreviewSheetState extends State<MessageCopyPreviewSheet> {
             Text('复制消息', style: theme.textTheme.titleMedium),
             const SizedBox(height: 12),
             SegmentedButton<MessageCopyFormat>(
+              showSelectedIcon: false,
               segments: const <ButtonSegment<MessageCopyFormat>>[
                 ButtonSegment<MessageCopyFormat>(
                   value: MessageCopyFormat.plainText,

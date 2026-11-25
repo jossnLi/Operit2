@@ -284,7 +284,7 @@ class _MessageContextMenuState extends State<MessageContextMenu> {
         ),
         _menuItem(
           value: _MessageMenuAction.modifyMemory,
-          icon: OperitIcons.auto_awesome_rounded,
+          icon: OperitIcons.psychology_outlined,
           label: '修改记忆',
         ),
         _menuItem(

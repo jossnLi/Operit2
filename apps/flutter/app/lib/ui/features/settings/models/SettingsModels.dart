@@ -50,7 +50,7 @@ class SettingsCategorySpec {
         title: l10n.settingsCategoryModelTitle,
         subtitle: l10n.settingsCategoryModelSubtitle,
         description: l10n.settingsCategoryModelDescription,
-        icon: OperitIcons.auto_awesome_rounded,
+        icon: OperitIcons.psychology_outlined,
       ),
       SettingsCategory.localModels => SettingsCategorySpec(
         title: l10n.settingsCategoryLocalModelsTitle,

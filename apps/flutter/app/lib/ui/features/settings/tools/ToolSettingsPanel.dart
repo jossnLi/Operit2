@@ -294,6 +294,7 @@ class _ModeChip extends StatelessWidget {
     return ChoiceChip(
       label: Text(label),
       selected: selected,
+      showCheckmark: false,
       onSelected: (_) => onTap(),
     );
   }
@@ -661,7 +662,7 @@ String _statusLabel(String status) {
 
 IconData _statusIcon(String status) {
   return switch (status) {
-    'Satisfied' => OperitIcons.check_circle_rounded,
+    'Satisfied' => OperitIcons.verified_user_outlined,
     'Missing' => OperitIcons.error_outline_rounded,
     'Unavailable' => OperitIcons.info_outline_rounded,
     _ => OperitIcons.help_outline_rounded,

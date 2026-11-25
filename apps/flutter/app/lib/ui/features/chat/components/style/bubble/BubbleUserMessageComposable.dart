@@ -612,7 +612,7 @@ class _MessageAvatar extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final square = avatarShape == UserPreferencesManager.AVATAR_SHAPE_SQUARE;
     final avatarImagePath = imagePath;
-    final icon = isProxySender ? OperitIcons.auto_awesome_rounded : OperitIcons.person_outline_rounded;
+    final icon = isProxySender ? OperitIcons.smart_toy_outlined : OperitIcons.person_outline_rounded;
     final backgroundColor = isProxySender
         ? colorScheme.secondaryContainer
         : colorScheme.primaryContainer;

@@ -73,6 +73,7 @@ class _MCPImportDialogState extends State<MCPImportDialog> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               SegmentedButton<_MCPImportMode>(
+                showSelectedIcon: false,
                 segments: const <ButtonSegment<_MCPImportMode>>[
                   ButtonSegment<_MCPImportMode>(
                     value: _MCPImportMode.zip,

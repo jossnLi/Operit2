@@ -154,7 +154,7 @@ class _MarketFilterPanelState extends State<MarketFilterPanel> {
           label: Text(label),
           selected: selected,
           onSelected: (_) => onTap(),
-          showCheckmark: true,
+          showCheckmark: false,
           visualDensity: VisualDensity.standard,
         );
     return SafeArea(

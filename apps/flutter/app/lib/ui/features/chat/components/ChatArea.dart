@@ -1906,8 +1906,8 @@ class _EmptyChatArea extends StatelessWidget {
               ),
               child: Center(
                 child: Icon(
-                  OperitIcons.auto_awesome_rounded,
-                  size: 28,
+                  OperitIcons.smart_toy_outlined,
+                  size: 26,
                   color: colorScheme.primary,
                 ),
               ),
@@ -1943,7 +1943,7 @@ class _EmptyChatArea extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   _PromptSuggestionPill(
-                    icon: OperitIcons.auto_awesome_rounded,
+                    icon: OperitIcons.lightbulb_outlined,
                     text: '头脑风暴并探索方案创意',
                     colorScheme: colorScheme,
                     theme: theme,

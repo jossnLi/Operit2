@@ -61,6 +61,7 @@ class _SkillImportDialogState extends State<SkillImportDialog> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 SegmentedButton<_SkillImportMode>(
+                  showSelectedIcon: false,
                   segments: const <ButtonSegment<_SkillImportMode>>[
                     ButtonSegment<_SkillImportMode>(
                       value: _SkillImportMode.github,

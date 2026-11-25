@@ -66,9 +66,64 @@ class AppearanceSettingsPanel extends StatelessWidget {
       onEdit: (name) => Navigator.of(context).push<void>(
         MaterialPageRoute<void>(
           builder: (context) => Scaffold(
-            appBar: AppBar(title: Text(name)),
+            appBar: AppBar(
+              leading: IconButton(
+                icon: const Icon(OperitIcons.chevron_left_rounded, size: 22),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+              title: Text(
+                name,
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: -0.3,
+                ),
+              ),
+              centerTitle: true,
+              actions: <Widget>[
+                IconButton(
+                  tooltip: '实时预览',
+                  icon: const Icon(OperitIcons.preview_outlined, size: 20),
+                  onPressed: () => Navigator.of(context).push<void>(
+                    MaterialPageRoute<void>(
+                      builder: (context) => const _StandaloneAppearancePreviewScreen(),
+                    ),
+                  ),
+                ),
+              ],
+            ),
             body: const ThemeGlassSurfaceGroup(child: _AppearanceThemeEditor()),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _StandaloneAppearancePreviewScreen extends StatelessWidget {
+  const _StandaloneAppearancePreviewScreen();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(OperitIcons.chevron_left_rounded, size: 22),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: Text(
+          l10n.settingsAppearanceLivePreviewTitle,
+          style: Theme.of(context).textTheme.titleSmall?.copyWith(
+            fontWeight: FontWeight.w600,
+            letterSpacing: -0.3,
+          ),
+        ),
+        centerTitle: true,
+      ),
+      body: const SafeArea(
+        child: Padding(
+          padding: EdgeInsets.all(16),
+          child: ChatAppearancePreview(showInputPreview: true),
         ),
       ),
     );
@@ -1208,9 +1263,8 @@ class _ResponsivePreviewSplitTabViewState
 
         final l10n = AppLocalizations.of(context)!;
         final colorScheme = Theme.of(context).colorScheme;
-        // Keeps the preview on screen while the settings list scrolls below.
-        final previewExpanded =
-            _mobilePreviewExpanded ?? (constraints.maxHeight >= 440);
+        // Keep settings list clean and accessible without crowding the screen.
+        final previewExpanded = _mobilePreviewExpanded ?? false;
         final Widget pinnedPreviewArea;
         if (previewExpanded) {
           pinnedPreviewArea = ConstrainedBox(

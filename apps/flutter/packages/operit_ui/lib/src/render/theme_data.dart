@@ -59,6 +59,12 @@ ThemeData buildOperitThemeData(
     popupMenuTheme: _popupMenuTheme(colorScheme, textTheme),
     buttonTheme: _buttonTheme(colorScheme),
     dialogTheme: _dialogTheme(colorScheme, textTheme),
+    chipTheme: const ChipThemeData(
+      showCheckmark: false,
+    ),
+    segmentedButtonTheme: const SegmentedButtonThemeData(
+      selectedIcon: SizedBox.shrink(),
+    ),
     // ignore: deprecated_member_use
     progressIndicatorTheme: const ProgressIndicatorThemeData(year2023: false),
     appBarTheme: AppBarTheme(

@@ -129,7 +129,9 @@ class ThemeTopBarChrome extends StatelessWidget {
                     tooltip: navigationTooltip,
                   ),
                 ),
-              ] else ...<Widget>[const SizedBox(width: 14)],
+              ] else ...<Widget>[
+                SizedBox(width: actions.isNotEmpty ? 46 : 16),
+              ],
               Expanded(child: title),
               ...actions,
               const SizedBox(width: 6),

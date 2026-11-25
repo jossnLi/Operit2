@@ -51,50 +51,60 @@ class SettingsCategoryList extends StatelessWidget {
       ),
     ];
     final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     return ThemeGlassSurfaceGroup(
       child: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 18, 16, 24),
+        padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.fromLTRB(10, 4, 10, 16),
-            child: Text(
-              l10n.settings,
-              style: theme.textTheme.headlineSmall?.copyWith(
-                color: theme.colorScheme.onSurface,
-                fontWeight: FontWeight.w700,
-                letterSpacing: -0.4,
-              ),
-            ),
-          ),
           UserProfileSummaryTile(
             selected: selectedCategory == SettingsCategory.profile,
             revision: 0,
             onTap: () => onCategorySelected(SettingsCategory.profile),
           ),
-          const SizedBox(height: 6),
           for (final groupEntry in groups.asMap().entries) ...<Widget>[
             Padding(
-              padding: EdgeInsets.fromLTRB(
-                10,
-                groupEntry.key == 0 ? 10 : 20,
-                10,
-                8,
-              ),
+              padding: const EdgeInsets.fromLTRB(8, 18, 8, 8),
               child: Text(
                 groupEntry.value.title,
-                style: theme.textTheme.labelSmall?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
+                style: theme.textTheme.labelMedium?.copyWith(
+                  color: colorScheme.onSurfaceVariant.withValues(alpha: 0.85),
                   fontWeight: FontWeight.w600,
                   letterSpacing: 0.15,
                 ),
               ),
             ),
-            for (final category in groupEntry.value.categories)
-              SettingsCategoryTile(
-                spec: SettingsCategorySpec.of(category, l10n),
-                selected: selectedCategory == category,
-                onTap: () => onCategorySelected(category),
+            OperitGlassSurface(
+              color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.35),
+              layer: OperitGlassSurfaceLayer.control,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: colorScheme.outlineVariant.withValues(alpha: 0.22),
+                width: 0.8,
               ),
+              material: true,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Column(
+                  children: <Widget>[
+                    for (var i = 0; i < groupEntry.value.categories.length; i++) ...<Widget>[
+                      if (i > 0)
+                        Divider(
+                          height: 1,
+                          thickness: 0.6,
+                          indent: 44,
+                          endIndent: 12,
+                          color: colorScheme.outlineVariant.withValues(alpha: 0.2),
+                        ),
+                      SettingsCategoryTile(
+                        spec: SettingsCategorySpec.of(groupEntry.value.categories[i], l10n),
+                        selected: selectedCategory == groupEntry.value.categories[i],
+                        onTap: () => onCategorySelected(groupEntry.value.categories[i]),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ),
           ],
         ],
       ),
@@ -129,54 +139,44 @@ class SettingsCategoryTile extends StatelessWidget {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final background = selected
-        ? colorScheme.surfaceContainerHigh
+        ? colorScheme.surfaceContainerHigh.withValues(alpha: 0.7)
         : Colors.transparent;
     final foreground = selected
-        ? colorScheme.onSurface
-        : colorScheme.onSurfaceVariant;
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 2),
-      child: OperitGlassSurface(
-        color: background,
-        layer: OperitGlassSurfaceLayer.control,
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(
-          color: selected
-              ? colorScheme.primary.withValues(alpha: 0.25)
-              : Colors.transparent,
-          width: 0.8,
-        ),
-        material: true,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(10),
-          onTap: onTap,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 11),
-            child: Row(
-              children: <Widget>[
-                Icon(spec.icon, size: 18, color: foreground),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    spec.title,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: foreground,
-                      fontWeight: selected || prominent
-                          ? FontWeight.w600
-                          : FontWeight.w400,
-                    ),
+        ? colorScheme.primary
+        : colorScheme.onSurface;
+    return Material(
+      color: background,
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
+          child: Row(
+            children: <Widget>[
+              Icon(
+                spec.icon,
+                size: 20,
+                color: selected ? colorScheme.primary : colorScheme.onSurfaceVariant,
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  spec.title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: foreground,
+                    fontWeight: selected || prominent
+                        ? FontWeight.w600
+                        : FontWeight.w400,
                   ),
                 ),
-                if (selected)
-                  Icon(
-                    OperitIcons.check_rounded,
-                    size: 16,
-                    color: colorScheme.onSurfaceVariant,
-                  ),
-              ],
-            ),
+              ),
+              Icon(
+                OperitIcons.chevron_right_rounded,
+                size: 16,
+                color: colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
+              ),
+            ],
           ),
         ),
       ),

@@ -9,6 +9,7 @@ import '../../../../core/proxy/generated/CoreProxyClients.g.dart';
 import '../../../../core/proxy/generated/CoreProxyModels.g.dart' as core_proxy;
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../common/components/M3LoadingIndicator.dart';
+import '../../../main/TopBarController.dart';
 import '../../../theme/OperitGlassSurface.dart';
 import 'UsageTimeline.dart';
 import 'UsagePricing.dart';
@@ -61,11 +62,47 @@ class _UsageStatisticsDetailScreenState
   _UsageDateRange _selectedDateRange = _UsageDateRange.lastDay;
   DateTimeRange? _customDateRange;
   bool _resetting = false;
+  TopBarController? _topBarController;
 
   @override
   void initState() {
     super.initState();
     _future = _load();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _topBarController = TopBarScope.of(context);
+    _syncTopBarActions();
+  }
+
+  void _syncTopBarActions() {
+    final controller = _topBarController;
+    if (controller == null) return;
+    final l10n = AppLocalizations.of(context);
+    if (l10n == null) return;
+    controller.setActions(
+      (context) => <Widget>[
+        IconButton(
+          tooltip: l10n.refresh,
+          onPressed: _resetting ? null : _reload,
+          icon: const Icon(OperitIcons.refresh_rounded, size: 20),
+        ),
+        IconButton(
+          tooltip: l10n.settingsDataResetTokenStats,
+          onPressed: _resetting ? null : _resetStatistics,
+          icon: const Icon(OperitIcons.restart_alt_rounded, size: 20),
+        ),
+      ],
+      owner: this,
+    );
+  }
+
+  @override
+  void dispose() {
+    _topBarController?.clearActions(owner: this);
+    super.dispose();
   }
 
   Future<_UsageStatisticsSnapshot> _load() async {
@@ -182,45 +219,17 @@ class _UsageStatisticsDetailScreenState
     );
   }
 
-  /// Embeds the report in settings with actions available in every state.
+  /// Embeds the report in settings with actions available in the top bar.
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return Column(
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: _dashboardCompactPadding,
-          ),
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: _dashboardMaxWidth),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                IconButton(
-                  tooltip: l10n.refresh,
-                  onPressed: _resetting ? null : _reload,
-                  icon: const Icon(OperitIcons.refresh_rounded),
-                ),
-                IconButton(
-                  tooltip: l10n.settingsDataResetTokenStats,
-                  onPressed: _resetting ? null : _resetStatistics,
-                  icon: const Icon(OperitIcons.restart_alt_rounded),
-                ),
-              ],
-            ),
-          ),
-        ),
-        _buildReport(l10n),
-      ],
-    );
+    return _buildReport(l10n);
   }
 
   /// Renders saved request totals and trends for the selected time range.
   Widget _buildReport(AppLocalizations l10n) {
-    return Expanded(
-      child: FutureBuilder<_UsageStatisticsSnapshot>(
-        future: _future,
+    return FutureBuilder<_UsageStatisticsSnapshot>(
+      future: _future,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             Error.throwWithStackTrace(snapshot.error!, snapshot.stackTrace!);

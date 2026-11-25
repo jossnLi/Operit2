@@ -537,6 +537,7 @@ class _ArtifactPublishScreenState extends State<ArtifactPublishScreen> {
               const _PublishSectionLabel('发布资源来源'),
               const SizedBox(height: 8),
               SegmentedButton<_ArtifactPublishAssetSource>(
+                showSelectedIcon: false,
                 segments: const <ButtonSegment<_ArtifactPublishAssetSource>>[
                   ButtonSegment<_ArtifactPublishAssetSource>(
                     value: _ArtifactPublishAssetSource.directUpload,
