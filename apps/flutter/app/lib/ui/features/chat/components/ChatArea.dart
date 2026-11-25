@@ -1943,7 +1943,7 @@ class _EmptyChatArea extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   _PromptSuggestionPill(
-                    icon: OperitIcons.lightbulb_outlined,
+                    icon: Icons.lightbulb_outline_rounded,
                     text: '头脑风暴并探索方案创意',
                     colorScheme: colorScheme,
                     theme: theme,

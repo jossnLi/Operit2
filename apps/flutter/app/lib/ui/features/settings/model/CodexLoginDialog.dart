@@ -184,26 +184,91 @@ class _CodexLoginDialogState extends State<CodexLoginDialog> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     final status = _status;
     final account = status == null
         ? ''
         : (status.email.trim().isEmpty ? status.accountId : status.email);
     return AlertDialog(
-      title: Text(l10n.settingsModelCodexLoginTitle),
+      title: Row(
+        children: [
+          Expanded(child: Text(l10n.settingsModelCodexLoginTitle)),
+          IconButton(
+            tooltip: l10n.cancel,
+            icon: const Icon(OperitIcons.close_rounded, size: 20),
+            onPressed: _busy ? null : () => Navigator.of(context).pop(),
+          ),
+        ],
+      ),
       content: SizedBox(
         width: 480,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Text(l10n.settingsModelCodexLoginDescription),
-            const SizedBox(height: 16),
             Text(
-              status == null
-                  ? l10n.settingsModelCodexWaiting
-                  : status.signedIn
-                  ? l10n.settingsModelCodexSignedIn(account)
-                  : l10n.settingsModelCodexSignedOut,
+              l10n.settingsModelCodexLoginDescription,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+              ),
+            ),
+            const SizedBox(height: 14),
+            // 红框内容 1：单行展示账号状态和退出登录
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              decoration: BoxDecoration(
+                color: colorScheme.surfaceContainerHighest.withValues(
+                  alpha: 0.45,
+                ),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: (status?.signedIn == true)
+                      ? colorScheme.primary.withValues(alpha: 0.3)
+                      : colorScheme.outlineVariant.withValues(alpha: 0.2),
+                ),
+              ),
+              child: Row(
+                children: <Widget>[
+                  Icon(
+                    (status?.signedIn == true)
+                        ? OperitIcons.verified_user_outlined
+                        : OperitIcons.person_outline_rounded,
+                    size: 18,
+                    color: (status?.signedIn == true)
+                        ? colorScheme.primary
+                        : colorScheme.onSurfaceVariant,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      status == null
+                          ? l10n.settingsModelCodexWaiting
+                          : status.signedIn
+                          ? l10n.settingsModelCodexSignedIn(account)
+                          : l10n.settingsModelCodexSignedOut,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 13,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  if (status?.signedIn == true)
+                    TextButton(
+                      onPressed: _busy ? null : _logout,
+                      style: TextButton.styleFrom(
+                        foregroundColor: colorScheme.error,
+                        visualDensity: VisualDensity.compact,
+                        padding: const EdgeInsets.symmetric(horizontal: 6),
+                        minimumSize: Size.zero,
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
+                      child: Text(l10n.settingsModelCodexLogout),
+                    ),
+                ],
+              ),
             ),
             if (_device != null) ...<Widget>[
               const SizedBox(height: 16),
@@ -211,7 +276,7 @@ class _CodexLoginDialogState extends State<CodexLoginDialog> {
               const SizedBox(height: 8),
               SelectableText(
                 _device!.userCode,
-                style: Theme.of(context).textTheme.headlineSmall,
+                style: theme.textTheme.headlineSmall,
               ),
               Align(
                 alignment: Alignment.centerLeft,
@@ -235,31 +300,50 @@ class _CodexLoginDialogState extends State<CodexLoginDialog> {
               const SizedBox(height: 12),
               Text(
                 l10n.settingsModelCodexLoginFailed(_error!),
-                style: TextStyle(color: Theme.of(context).colorScheme.error),
+                style: TextStyle(color: colorScheme.error),
               ),
             ],
+            const SizedBox(height: 18),
+            // 红框内容 2：单行展示设备码登录和浏览器登录
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: _busy ? null : _deviceLogin,
+                    style: OutlinedButton.styleFrom(
+                      minimumSize: const Size(0, 42),
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      shape: const StadiumBorder(),
+                    ),
+                    child: Text(
+                      l10n.settingsModelCodexDevice,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: FilledButton(
+                    onPressed: _busy ? null : _browserLogin,
+                    style: FilledButton.styleFrom(
+                      minimumSize: const Size(0, 42),
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      shape: const StadiumBorder(),
+                    ),
+                    child: Text(
+                      l10n.settingsModelCodexBrowser,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),
-      actions: <Widget>[
-        if (status?.signedIn == true)
-          TextButton(
-            onPressed: _busy ? null : _logout,
-            child: Text(l10n.settingsModelCodexLogout),
-          ),
-        TextButton(
-          onPressed: _busy ? null : () => Navigator.of(context).pop(),
-          child: Text(l10n.cancel),
-        ),
-        OutlinedButton(
-          onPressed: _busy ? null : _deviceLogin,
-          child: Text(l10n.settingsModelCodexDevice),
-        ),
-        FilledButton(
-          onPressed: _busy ? null : _browserLogin,
-          child: Text(l10n.settingsModelCodexBrowser),
-        ),
-      ],
+      actions: const <Widget>[],
     );
   }
 }

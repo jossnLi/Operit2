@@ -392,8 +392,7 @@ class _UsageStatisticsDetailScreenState
             },
           );
         },
-      ),
-    );
+      );
   }
 }
 

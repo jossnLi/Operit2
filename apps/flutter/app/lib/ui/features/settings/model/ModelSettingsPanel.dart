@@ -20,6 +20,7 @@ import '../components/ApiKeyTextField.dart';
 import '../components/SettingsControlStyles.dart';
 import 'CodexLoginDialog.dart';
 import 'ProviderAccountLoginDialog.dart';
+import 'ProviderBalanceService.dart';
 import 'ApiKeyPoolEditor.dart';
 import 'ModelConnectionTestCapabilities.dart';
 import 'ProviderLogo.dart';
@@ -713,6 +714,8 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
   late bool _useKeyPool;
   late List<core_proxy.ApiKeyInfo> _keyPool;
   bool _keyTesting = false;
+  ProviderBalanceInfo? _balanceInfo;
+  bool _fetchingBalance = false;
 
   @override
   void initState() {
@@ -739,11 +742,48 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
             'https://chatgpt.com/backend-api/codex/responses';
         unawaited(_refreshCodexStatus());
       }
+      if (_apiKeyController.text.isNotEmpty ||
+          provider.providerTypeId == 'OPENAI_CODEX') {
+        unawaited(_fetchBalance());
+      }
     } else {
       _selectedProviderTypeId = _catalogDeepseek()?.providerTypeId;
       final catalog = _selectedCatalog();
       if (catalog != null) {
         _endpointController.text = catalog.defaultEndpoint;
+      }
+    }
+  }
+
+  Future<void> _fetchBalance() async {
+    final typeId = _selectedProviderTypeId;
+    if (typeId == null) {
+      return;
+    }
+    setState(() {
+      _fetchingBalance = true;
+    });
+    try {
+      final info = await ProviderBalanceService.instance.fetchBalance(
+        providerTypeId: typeId,
+        apiKey: _apiKeyController.text,
+        endpoint: _endpointController.text,
+        isCodexSignedIn: _codexStatus?.signedIn == true,
+        codexAccount: _codexStatus?.email.isNotEmpty == true
+            ? _codexStatus?.email
+            : _codexStatus?.accountId,
+      );
+      if (mounted) {
+        setState(() {
+          _balanceInfo = info;
+          _fetchingBalance = false;
+        });
+      }
+    } catch (_) {
+      if (mounted) {
+        setState(() {
+          _fetchingBalance = false;
+        });
       }
     }
   }
@@ -803,12 +843,16 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
     final catalog = _catalogByProviderTypeId(providerTypeId);
     setState(() {
       _selectedProviderTypeId = providerTypeId;
+      _balanceInfo = null;
       if (catalog != null) {
         _endpointController.text = catalog.defaultEndpoint;
       }
     });
     if (providerTypeId == 'OPENAI_CODEX') {
       unawaited(_refreshCodexStatus());
+    }
+    if (_apiKeyController.text.isNotEmpty || providerTypeId == 'OPENAI_CODEX') {
+      unawaited(_fetchBalance());
     }
   }
 
@@ -838,6 +882,7 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
       setState(() {
         _codexStatus = status;
       });
+      unawaited(_fetchBalance());
     } catch (_) {
       if (!mounted) {
         return;
@@ -854,6 +899,7 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
       return;
     }
     await _refreshCodexStatus();
+    unawaited(_fetchBalance());
   }
 
   bool get _isAccountLoginSupported =>
@@ -876,6 +922,7 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('账号授权成功，凭证已自动填入！')),
       );
+      unawaited(_fetchBalance());
     }
   }
 
@@ -1147,6 +1194,13 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
                             ),
                           ),
                       ],
+                      if (_selectedProviderTypeId != null && !_isLocalProvider)
+                        _ProviderBalanceCard(
+                          info: _balanceInfo,
+                          loading: _fetchingBalance,
+                          onRefresh: _fetchBalance,
+                          providerTypeId: _selectedProviderTypeId,
+                        ),
                     ],
                   ),
                   const SizedBox(height: 14),
@@ -8141,6 +8195,144 @@ class _ProviderAccountLoginField extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _ProviderBalanceCard extends StatelessWidget {
+  const _ProviderBalanceCard({
+    required this.info,
+    required this.loading,
+    required this.onRefresh,
+    required this.providerTypeId,
+  });
+
+  final ProviderBalanceInfo? info;
+  final bool loading;
+  final VoidCallback onRefresh;
+  final String? providerTypeId;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    return Container(
+      margin: const EdgeInsets.only(top: 4, bottom: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      decoration: BoxDecoration(
+        color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.35),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(
+          color: (info?.success == true)
+              ? colorScheme.primary.withValues(alpha: 0.25)
+              : colorScheme.outlineVariant.withValues(alpha: 0.2),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              Icon(
+                OperitIcons.account_balance_wallet_outlined,
+                size: 18,
+                color: colorScheme.primary,
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  '账户余额与用量',
+                  style: theme.textTheme.labelMedium?.copyWith(
+                    fontWeight: FontWeight.w700,
+                    color: colorScheme.onSurface,
+                  ),
+                ),
+              ),
+              if (loading)
+                const SizedBox(
+                  width: 16,
+                  height: 16,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
+              else
+                IconButton(
+                  tooltip: '刷新余额与用量',
+                  icon: const Icon(OperitIcons.refresh_rounded, size: 18),
+                  visualDensity: VisualDensity.compact,
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(
+                    minWidth: 28,
+                    minHeight: 28,
+                  ),
+                  onPressed: onRefresh,
+                ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          if (info == null && !loading)
+            Text(
+              '点击刷新查询当前供应商的账户余额或订阅用量',
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+              ),
+            )
+          else if (loading)
+            Text(
+              '正在查询供应商最新余额与订阅用量…',
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+              ),
+            )
+          else if (info!.success) ...[
+            if (info!.balanceText != null)
+              Row(
+                children: [
+                  Text(
+                    '当前余额: ',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                  Text(
+                    info!.balanceText!,
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: colorScheme.primary,
+                    ),
+                  ),
+                ],
+              ),
+            if (info!.usageText != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 2),
+                child: Text(
+                  info!.usageText!,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ),
+            if (info!.details != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 2),
+                child: Text(
+                  info!.details!,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
+                    fontSize: 11,
+                  ),
+                ),
+              ),
+          ] else
+            Text(
+              info!.error ?? '未能获取到余额信息',
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: colorScheme.error,
+              ),
+            ),
+        ],
       ),
     );
   }
