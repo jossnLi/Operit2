@@ -250,7 +250,7 @@ class _GlassToastState extends State<GlassToast> {
     // Use user-provided icon or fall back to default for the toast type
     final Widget displayIcon = widget.icon ??
         Icon(widget.type == GlassToastType.success
-            ? CupertinoIcons.check_mark_circled_solid
+            ? CupertinoIcons.circle_fill
             : widget.type == GlassToastType.error
                 ? CupertinoIcons.xmark_circle_fill
                 : widget.type == GlassToastType.info

@@ -256,7 +256,7 @@ class _WizardStepRow extends StatelessWidget {
     if (_isCompleted) {
       fill = completedColor;
       child =
-          Icon(Icons.check, size: indicatorSize * 0.55, color: Colors.white);
+          Icon(Icons.circle, size: indicatorSize * 0.45, color: Colors.white);
     } else if (_isActive) {
       fill = activeColor;
       child = Text(

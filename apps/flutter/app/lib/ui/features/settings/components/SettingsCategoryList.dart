@@ -27,6 +27,8 @@ class SettingsCategoryList extends StatelessWidget {
         title: l10n.settingsCategoryGroupAssistant,
         categories: const <SettingsCategory>[
           SettingsCategory.model,
+          SettingsCategory.characters,
+          SettingsCategory.memory,
           SettingsCategory.localModels,
           SettingsCategory.usage,
           SettingsCategory.tts,

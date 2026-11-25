@@ -1935,19 +1935,16 @@ class _AiSetupSharedChrome extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           SizedBox(
-                            width: 72,
+                            width: 108,
                             child: currentPage > 0
-                                ? TextButton(
+                                ? FilledButton.tonal(
                                     onPressed: onBack,
-                                    style: TextButton.styleFrom(
-                                      minimumSize: const Size(60, 40),
+                                    style: FilledButton.styleFrom(
+                                      minimumSize: const Size(88, 42),
                                       padding: const EdgeInsets.symmetric(
-                                        horizontal: 12,
+                                        horizontal: 16,
                                       ),
-                                      tapTargetSize:
-                                          MaterialTapTargetSize.shrinkWrap,
-                                      foregroundColor:
-                                          colorScheme.onSurfaceVariant,
+                                      shape: const StadiumBorder(),
                                     ),
                                     child: const Text(
                                       '返回',
@@ -2096,7 +2093,7 @@ class _AiSetupIntroPage extends StatelessWidget {
                                 ),
                                 SizedBox(height: compact ? 16 : 22),
                                 const _ChatGptFeatureCard(
-                                  icon: OperitIcons.auto_awesome_rounded,
+                                  icon: OperitIcons.psychology_outlined,
                                   title: '智能对话与深度思考',
                                   description:
                                       '支持主流顶尖模型切换，理解长上下文，随时激发创作灵感与分析问题',
@@ -3323,7 +3320,7 @@ class _AiSetupModelPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 _SetupSectionHeader(
-                  icon: OperitIcons.auto_awesome_rounded,
+                  icon: OperitIcons.smart_toy_outlined,
                   eyebrow: '模型配置',
                   title: '完成模型配置',
                   description: '选择模型供应商，填写 API Key，拉取并设置默认模型。',

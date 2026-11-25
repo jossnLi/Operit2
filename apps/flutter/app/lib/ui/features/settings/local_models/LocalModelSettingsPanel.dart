@@ -699,54 +699,40 @@ class _LocalModelSettingsPanelState extends State<LocalModelSettingsPanel>
         ),
       ],
     );
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final inline =
-            constraints.maxWidth >= MediaQuery.textScalerOf(context).scale(640);
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    l10n.localModelsCatalog,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
-                if (inline) ...[actions, const SizedBox(width: 8)],
-                PopupMenuButton<core_proxy.LocalModelSourceKind>(
-                  tooltip:
-                      '${l10n.localModelsDownloadSource}: ${_sourceKindTitle(l10n, source)}',
-                  icon: const Icon(OperitIcons.cloud_download_outlined, size: 20),
-                  initialValue: source,
-                  onSelected: _setPreferredSource,
-                  itemBuilder: (_) => [
-                    for (final kind in [
-                      core_proxy.LocalModelSourceKind.huggingFace,
-                      core_proxy.LocalModelSourceKind.modelScope,
-                      core_proxy.LocalModelSourceKind.hfMirror,
-                    ])
-                      CheckedPopupMenuItem(
-                        value: kind,
-                        checked: source == kind,
-                        child: Text(_sourceKindTitle(l10n, kind)),
-                      ),
-                  ],
-                ),
-                IconButton(
-                  onPressed: _reload,
-                  icon: const Icon(OperitIcons.refresh_rounded, size: 20),
-                  tooltip: l10n.refresh,
-                ),
-              ],
-            ),
-            if (!inline) ...[const SizedBox(height: 4), actions],
+    return Row(
+      children: [
+        Expanded(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: actions,
+          ),
+        ),
+        const SizedBox(width: 8),
+        PopupMenuButton<core_proxy.LocalModelSourceKind>(
+          tooltip:
+              '${l10n.localModelsDownloadSource}: ${_sourceKindTitle(l10n, source)}',
+          icon: const Icon(OperitIcons.cloud_download_outlined, size: 20),
+          initialValue: source,
+          onSelected: _setPreferredSource,
+          itemBuilder: (_) => [
+            for (final kind in [
+              core_proxy.LocalModelSourceKind.huggingFace,
+              core_proxy.LocalModelSourceKind.modelScope,
+              core_proxy.LocalModelSourceKind.hfMirror,
+            ])
+              CheckedPopupMenuItem(
+                value: kind,
+                checked: source == kind,
+                child: Text(_sourceKindTitle(l10n, kind)),
+              ),
           ],
-        );
-      },
+        ),
+        IconButton(
+          onPressed: _reload,
+          icon: const Icon(OperitIcons.refresh_rounded, size: 20),
+          tooltip: l10n.refresh,
+        ),
+      ],
     );
   }
 

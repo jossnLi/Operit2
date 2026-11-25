@@ -69,7 +69,7 @@ class AiChatScreenRoute extends OperitScreen {
         routeTypeName: 'AiChat',
         title: 'AI Chat',
         handlesBottomSafeArea: true,
-        showTopBarNavigation: false,
+        showTopBarNavigation: true,
       );
 
   @override

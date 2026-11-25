@@ -17,6 +17,7 @@ import '../profile/UserProfileSettingsPanel.dart';
 import '../tools/ToolSettingsPanel.dart';
 import '../tts/TtsSettingsPanel.dart';
 import '../workspace/WorkspaceSettingsPanel.dart';
+import '../../../main/screens/OperitScreens.dart';
 
 class SettingsDetailView extends StatelessWidget {
   const SettingsDetailView({
@@ -40,6 +41,14 @@ class SettingsDetailView extends StatelessWidget {
         onProfileChanged: onProfileChanged,
       ),
       SettingsCategory.model => const ModelSettingsPanel(),
+      SettingsCategory.characters => const ToolPkgComposeDslScreenRoute(
+        containerPackageName: 'com.operit.character_cards',
+        uiModuleId: 'main',
+      ).build(context),
+      SettingsCategory.memory => const ToolPkgComposeDslScreenRoute(
+        containerPackageName: 'com.operit.character_cards',
+        uiModuleId: 'memory',
+      ).build(context),
       SettingsCategory.localModels => const LocalModelSettingsPanel(),
       SettingsCategory.usage => const UsageStatisticsDetailScreen(),
       SettingsCategory.tts => const TtsSettingsPanel(),

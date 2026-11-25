@@ -465,8 +465,8 @@ class _ToolCallRowState extends State<ToolCallRow> {
                     child: Icon(
                       presentation.isSuccess == false
                           ? OperitIcons.error_outline_rounded
-                          : OperitIcons.check_rounded,
-                      size: 14,
+                          : OperitIcons.circle_outlined,
+                      size: 12,
                       color: color,
                     ),
                   ),

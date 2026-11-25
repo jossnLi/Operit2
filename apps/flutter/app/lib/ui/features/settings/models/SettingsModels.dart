@@ -9,6 +9,8 @@ import 'package:operit2/ui/common/icons/operit_icons.dart';
 enum SettingsCategory {
   profile,
   model,
+  characters,
+  memory,
   localModels,
   usage,
   tts,
@@ -51,6 +53,18 @@ class SettingsCategorySpec {
         subtitle: l10n.settingsCategoryModelSubtitle,
         description: l10n.settingsCategoryModelDescription,
         icon: OperitIcons.psychology_outlined,
+      ),
+      SettingsCategory.characters => const SettingsCategorySpec(
+        title: '角色卡',
+        subtitle: 'AI 角色与群聊配置',
+        description: '创建和管理专属 AI 角色，或组织多个角色进行多人协同群聊。',
+        icon: OperitIcons.badge_outlined,
+      ),
+      SettingsCategory.memory => const SettingsCategorySpec(
+        title: '记忆',
+        subtitle: '共享与角色记忆库',
+        description: '管理全局记忆配置、角色独立记忆库以及跨角色共享记忆。',
+        icon: OperitIcons.hub_outlined,
       ),
       SettingsCategory.localModels => SettingsCategorySpec(
         title: l10n.settingsCategoryLocalModelsTitle,

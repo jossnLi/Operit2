@@ -54,16 +54,16 @@ abstract final class OperitIcons {
   static const IconData cancel_outlined = LucideIcons.circleX;
   static const IconData category_outlined = LucideIcons.shapes;
   static const IconData chat_bubble_outline_rounded = LucideIcons.messageCircle;
-  static const IconData check_circle_outline_rounded = LucideIcons.checkCircle;
-  static const IconData check_circle_rounded = LucideIcons.checkCircle;
-  static const IconData check_rounded = LucideIcons.check;
-  static const IconData checklist_rounded = LucideIcons.listChecks;
+  static const IconData check_circle_outline_rounded = LucideIcons.circleDot;
+  static const IconData check_circle_rounded = LucideIcons.circleDot;
+  static const IconData check_rounded = LucideIcons.circleDot;
+  static const IconData checklist_rounded = LucideIcons.list;
   static const IconData chevron_left_rounded = LucideIcons.chevronLeft;
   static const IconData chevron_right_rounded = LucideIcons.chevronRight;
   static const IconData circle_outlined = LucideIcons.circle;
   static const IconData cleaning_services_outlined = LucideIcons.sprayCan;
   static const IconData close_rounded = LucideIcons.x;
-  static const IconData cloud_done_outlined = LucideIcons.cloudCheck;
+  static const IconData cloud_done_outlined = LucideIcons.cloud;
   static const IconData cloud_download_outlined = LucideIcons.cloudDownload;
   static const IconData cloud_off_outlined = LucideIcons.cloudOff;
   static const IconData cloud_off_rounded = LucideIcons.cloudOff;
@@ -104,7 +104,7 @@ abstract final class OperitIcons {
   static const IconData devices_outlined = LucideIcons.monitorSmartphone;
   static const IconData devices_rounded = LucideIcons.monitorSmartphone;
   static const IconData dns_outlined = LucideIcons.server;
-  static const IconData done_all_rounded = LucideIcons.checkCheck;
+  static const IconData done_all_rounded = LucideIcons.circleDot;
   static const IconData download_for_offline_outlined = LucideIcons.circleArrowDown;
   static const IconData download_outlined = LucideIcons.download;
   static const IconData download_rounded = LucideIcons.download;
@@ -116,13 +116,13 @@ abstract final class OperitIcons {
   static const IconData edit_outlined = LucideIcons.squarePen;
   static const IconData error_outline_rounded = LucideIcons.circleAlert;
   static const IconData error_rounded = LucideIcons.circleAlert;
-  static const IconData event_available_outlined = LucideIcons.calendarCheck;
+  static const IconData event_available_outlined = LucideIcons.calendar;
   static const IconData expand_less_rounded = LucideIcons.chevronUp;
   static const IconData expand_more_rounded = LucideIcons.chevronDown;
   static const IconData extension_off_outlined = LucideIcons.puzzle;
   static const IconData extension_outlined = LucideIcons.puzzle;
   static const IconData extension_rounded = LucideIcons.puzzle;
-  static const IconData fact_check_outlined = LucideIcons.clipboardCheck;
+  static const IconData fact_check_outlined = LucideIcons.clipboardList;
   static const IconData favorite_border_rounded = LucideIcons.heart;
   static const IconData favorite_rounded = LucideIcons.heart;
   static const IconData file_download_outlined = LucideIcons.download;
@@ -613,20 +613,20 @@ const materialIconNamesToLucide = <String, IconData>{
   'chat_bubble_outlined': LucideIcons.messageCircle,
   'chat_bubble_rounded': LucideIcons.messageCircle,
   'chat_bubble_sharp': LucideIcons.messageCircle,
-  'check': LucideIcons.check,
-  'check_circle': LucideIcons.checkCircle,
-  'check_circle_outline': LucideIcons.checkCircle,
-  'check_circle_outline_rounded': LucideIcons.checkCircle,
-  'check_circle_outlined': LucideIcons.checkCircle,
-  'check_circle_rounded': LucideIcons.checkCircle,
-  'check_circle_sharp': LucideIcons.checkCircle,
-  'check_outlined': LucideIcons.check,
-  'check_rounded': LucideIcons.check,
-  'check_sharp': LucideIcons.check,
-  'checklist': LucideIcons.listChecks,
-  'checklist_outlined': LucideIcons.listChecks,
-  'checklist_rounded': LucideIcons.listChecks,
-  'checklist_sharp': LucideIcons.listChecks,
+  'check': LucideIcons.circleDot,
+  'check_circle': LucideIcons.circleDot,
+  'check_circle_outline': LucideIcons.circleDot,
+  'check_circle_outline_rounded': LucideIcons.circleDot,
+  'check_circle_outlined': LucideIcons.circleDot,
+  'check_circle_rounded': LucideIcons.circleDot,
+  'check_circle_sharp': LucideIcons.circleDot,
+  'check_outlined': LucideIcons.circleDot,
+  'check_rounded': LucideIcons.circleDot,
+  'check_sharp': LucideIcons.circleDot,
+  'checklist': LucideIcons.list,
+  'checklist_outlined': LucideIcons.list,
+  'checklist_rounded': LucideIcons.list,
+  'checklist_sharp': LucideIcons.list,
   'chevron_left': LucideIcons.chevronLeft,
   'chevron_left_outlined': LucideIcons.chevronLeft,
   'chevron_left_rounded': LucideIcons.chevronLeft,
@@ -656,10 +656,10 @@ const materialIconNamesToLucide = <String, IconData>{
   'closed_caption_rounded': LucideIcons.closedCaption,
   'closed_caption_sharp': LucideIcons.closedCaption,
   'cloud': LucideIcons.cloud,
-  'cloud_done': LucideIcons.cloudCheck,
-  'cloud_done_outlined': LucideIcons.cloudCheck,
-  'cloud_done_rounded': LucideIcons.cloudCheck,
-  'cloud_done_sharp': LucideIcons.cloudCheck,
+  'cloud_done': LucideIcons.cloud,
+  'cloud_done_outlined': LucideIcons.cloud,
+  'cloud_done_rounded': LucideIcons.cloud,
+  'cloud_done_sharp': LucideIcons.cloud,
   'cloud_download': LucideIcons.cloudDownload,
   'cloud_download_outlined': LucideIcons.cloudDownload,
   'cloud_download_rounded': LucideIcons.cloudDownload,
@@ -837,10 +837,10 @@ const materialIconNamesToLucide = <String, IconData>{
   'dock_outlined': LucideIcons.dock,
   'dock_rounded': LucideIcons.dock,
   'dock_sharp': LucideIcons.dock,
-  'done_all': LucideIcons.checkCheck,
-  'done_all_outlined': LucideIcons.checkCheck,
-  'done_all_rounded': LucideIcons.checkCheck,
-  'done_all_sharp': LucideIcons.checkCheck,
+  'done_all': LucideIcons.circleDot,
+  'done_all_outlined': LucideIcons.circleDot,
+  'done_all_rounded': LucideIcons.circleDot,
+  'done_all_sharp': LucideIcons.circleDot,
   'download': LucideIcons.download,
   'download_for_offline': LucideIcons.circleArrowDown,
   'download_for_offline_outlined': LucideIcons.circleArrowDown,
@@ -892,10 +892,10 @@ const materialIconNamesToLucide = <String, IconData>{
   'euro_outlined': LucideIcons.euro,
   'euro_rounded': LucideIcons.euro,
   'euro_sharp': LucideIcons.euro,
-  'event_available': LucideIcons.calendarCheck,
-  'event_available_outlined': LucideIcons.calendarCheck,
-  'event_available_rounded': LucideIcons.calendarCheck,
-  'event_available_sharp': LucideIcons.calendarCheck,
+  'event_available': LucideIcons.calendar,
+  'event_available_outlined': LucideIcons.calendar,
+  'event_available_rounded': LucideIcons.calendar,
+  'event_available_sharp': LucideIcons.calendar,
   'expand': LucideIcons.expand,
   'expand_less': LucideIcons.chevronUp,
   'expand_less_outlined': LucideIcons.chevronUp,
@@ -916,10 +916,10 @@ const materialIconNamesToLucide = <String, IconData>{
   'extension_outlined': LucideIcons.puzzle,
   'extension_rounded': LucideIcons.puzzle,
   'extension_sharp': LucideIcons.puzzle,
-  'fact_check': LucideIcons.clipboardCheck,
-  'fact_check_outlined': LucideIcons.clipboardCheck,
-  'fact_check_rounded': LucideIcons.clipboardCheck,
-  'fact_check_sharp': LucideIcons.clipboardCheck,
+  'fact_check': LucideIcons.clipboardList,
+  'fact_check_outlined': LucideIcons.clipboardList,
+  'fact_check_rounded': LucideIcons.clipboardList,
+  'fact_check_sharp': LucideIcons.clipboardList,
   'factory': LucideIcons.factory,
   'factory_outlined': LucideIcons.factory,
   'factory_rounded': LucideIcons.factory,

@@ -749,6 +749,21 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
         _endpointController.text = catalog.defaultEndpoint;
       }
     }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
+      if (_isCodexProvider) {
+        _refreshCodexStatus().then((_) {
+          if (mounted && _codexStatus?.signedIn == true) {
+            _fetchBalance();
+          }
+        });
+      } else if (_apiKeyController.text.trim().isNotEmpty) {
+        _fetchBalance();
+      }
+    });
   }
 
   Future<void> _fetchBalance() async {
@@ -874,6 +889,17 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
       }
       setState(() {
         _codexStatus = status;
+        if (status.signedIn) {
+          final account = status.email.isNotEmpty
+              ? status.email
+              : status.accountId;
+          _balanceInfo = ProviderBalanceInfo(
+            success: true,
+            balanceText: 'ChatGPT 订阅生效中',
+            usageText: account.isNotEmpty ? '已授权账号: $account' : '订阅权益就绪',
+            details: 'ChatGPT 订阅已授权，无需 API Key 即可直接调用',
+          );
+        }
       });
     } catch (_) {
       if (!mounted) {
@@ -891,6 +917,9 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
       return;
     }
     await _refreshCodexStatus();
+    if (mounted && _codexStatus?.signedIn == true) {
+      unawaited(_fetchBalance());
+    }
   }
 
   bool get _isAccountLoginSupported =>
@@ -913,6 +942,7 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('账号授权成功，凭证已自动填入！')),
       );
+      unawaited(_fetchBalance());
     }
   }
 
@@ -1081,22 +1111,6 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
               child: ListView(
                 padding: const EdgeInsets.fromLTRB(18, 8, 18, 32),
                 children: <Widget>[
-                  Text(
-                    editing ? '调整模型连接' : '连接一个模型服务',
-                    style: theme.textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: -0.4,
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    '选择供应商并填写连接信息。保存后即可在模型与 AI 中使用。',
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: colorScheme.onSurfaceVariant,
-                      height: 1.45,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
                   ProviderTypePickerField(
                     label: l10n.settingsModelProviderType,
                     entry: selectedCatalog,
