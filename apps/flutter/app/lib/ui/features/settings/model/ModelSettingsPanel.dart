@@ -744,7 +744,11 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
       }
       if (_apiKeyController.text.isNotEmpty ||
           provider.providerTypeId == 'OPENAI_CODEX') {
-        unawaited(_fetchBalance());
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) {
+            unawaited(_fetchBalance());
+          }
+        });
       }
     } else {
       _selectedProviderTypeId = _catalogDeepseek()?.providerTypeId;
@@ -757,7 +761,7 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
 
   Future<void> _fetchBalance() async {
     final typeId = _selectedProviderTypeId;
-    if (typeId == null) {
+    if (typeId == null || !mounted) {
       return;
     }
     setState(() {

@@ -1639,20 +1639,35 @@ class _AiSetupModernDotsIndicator extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(pageCount, (index) {
-        final isActive = index == currentPage;
-        return AnimatedContainer(
-          duration: const Duration(milliseconds: 250),
-          curve: Curves.easeOutCubic,
-          margin: const EdgeInsets.symmetric(horizontal: 3),
-          width: isActive ? 20 : 6,
-          height: 6,
-          decoration: BoxDecoration(
-            color: isActive ? color : inactiveColor,
-            borderRadius: BorderRadius.circular(99),
+      children: [
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: List.generate(pageCount, (index) {
+            final isActive = index == currentPage;
+            return AnimatedContainer(
+              duration: const Duration(milliseconds: 250),
+              curve: Curves.easeOutCubic,
+              margin: const EdgeInsets.symmetric(horizontal: 2.5),
+              width: isActive ? 16 : 5,
+              height: 5,
+              decoration: BoxDecoration(
+                color: isActive ? color : inactiveColor,
+                borderRadius: BorderRadius.circular(99),
+              ),
+            );
+          }),
+        ),
+        const SizedBox(width: 8),
+        Text(
+          '${currentPage + 1}/$pageCount',
+          style: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w700,
+            color: color.withValues(alpha: 0.8),
+            letterSpacing: 0,
           ),
-        );
-      }),
+        ),
+      ],
     );
   }
 }
