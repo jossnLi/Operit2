@@ -742,14 +742,6 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
             'https://chatgpt.com/backend-api/codex/responses';
         unawaited(_refreshCodexStatus());
       }
-      if (_apiKeyController.text.isNotEmpty ||
-          provider.providerTypeId == 'OPENAI_CODEX') {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (mounted) {
-            unawaited(_fetchBalance());
-          }
-        });
-      }
     } else {
       _selectedProviderTypeId = _catalogDeepseek()?.providerTypeId;
       final catalog = _selectedCatalog();
@@ -855,9 +847,6 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
     if (providerTypeId == 'OPENAI_CODEX') {
       unawaited(_refreshCodexStatus());
     }
-    if (_apiKeyController.text.isNotEmpty || providerTypeId == 'OPENAI_CODEX') {
-      unawaited(_fetchBalance());
-    }
   }
 
   Future<void> _pickProviderType() async {
@@ -886,7 +875,6 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
       setState(() {
         _codexStatus = status;
       });
-      unawaited(_fetchBalance());
     } catch (_) {
       if (!mounted) {
         return;
@@ -903,7 +891,6 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
       return;
     }
     await _refreshCodexStatus();
-    unawaited(_fetchBalance());
   }
 
   bool get _isAccountLoginSupported =>
@@ -926,7 +913,6 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('账号授权成功，凭证已自动填入！')),
       );
-      unawaited(_fetchBalance());
     }
   }
 
