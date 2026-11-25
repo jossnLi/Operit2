@@ -14,8 +14,8 @@ abstract final class OperitIcons {
   static const IconData add_outlined = LucideIcons.plus;
   static const IconData add_rounded = LucideIcons.plus;
   static const IconData add_to_home_screen_outlined = LucideIcons.monitorSmartphone;
-  static const IconData admin_panel_settings_outlined = LucideIcons.shieldCheck;
-  static const IconData admin_panel_settings_rounded = LucideIcons.shieldCheck;
+  static const IconData admin_panel_settings_outlined = LucideIcons.shield;
+  static const IconData admin_panel_settings_rounded = LucideIcons.shield;
   static const IconData ads_click_outlined = LucideIcons.mousePointerClick;
   static const IconData alt_route_rounded = LucideIcons.split;
   static const IconData analytics_outlined = LucideIcons.barChart;
@@ -319,7 +319,7 @@ abstract final class OperitIcons {
   static const IconData unfold_less_rounded = LucideIcons.chevronsUp;
   static const IconData unfold_more_rounded = LucideIcons.chevronsDown;
   static const IconData update_rounded = LucideIcons.history;
-  static const IconData verified_user_outlined = LucideIcons.shieldCheck;
+  static const IconData verified_user_outlined = LucideIcons.shield;
   static const IconData vertical_align_bottom_outlined = LucideIcons.arrowDownToLine;
   static const IconData vertical_align_top_rounded = LucideIcons.arrowUpToLine;
   static const IconData video_file_outlined = LucideIcons.fileVideo;
@@ -377,10 +377,10 @@ const materialIconNamesToLucide = <String, IconData>{
   'add_to_home_screen_outlined': LucideIcons.monitorSmartphone,
   'add_to_home_screen_rounded': LucideIcons.monitorSmartphone,
   'add_to_home_screen_sharp': LucideIcons.monitorSmartphone,
-  'admin_panel_settings': LucideIcons.shieldCheck,
-  'admin_panel_settings_outlined': LucideIcons.shieldCheck,
-  'admin_panel_settings_rounded': LucideIcons.shieldCheck,
-  'admin_panel_settings_sharp': LucideIcons.shieldCheck,
+  'admin_panel_settings': LucideIcons.shield,
+  'admin_panel_settings_outlined': LucideIcons.shield,
+  'admin_panel_settings_rounded': LucideIcons.shield,
+  'admin_panel_settings_sharp': LucideIcons.shield,
   'ads_click': LucideIcons.mousePointerClick,
   'ads_click_outlined': LucideIcons.mousePointerClick,
   'ads_click_rounded': LucideIcons.mousePointerClick,
@@ -1988,10 +1988,10 @@ const materialIconNamesToLucide = <String, IconData>{
   'verified_outlined': LucideIcons.verified,
   'verified_rounded': LucideIcons.verified,
   'verified_sharp': LucideIcons.verified,
-  'verified_user': LucideIcons.shieldCheck,
-  'verified_user_outlined': LucideIcons.shieldCheck,
-  'verified_user_rounded': LucideIcons.shieldCheck,
-  'verified_user_sharp': LucideIcons.shieldCheck,
+  'verified_user': LucideIcons.shield,
+  'verified_user_outlined': LucideIcons.shield,
+  'verified_user_rounded': LucideIcons.shield,
+  'verified_user_sharp': LucideIcons.shield,
   'vertical_align_bottom': LucideIcons.arrowDownToLine,
   'vertical_align_bottom_outlined': LucideIcons.arrowDownToLine,
   'vertical_align_bottom_rounded': LucideIcons.arrowDownToLine,
