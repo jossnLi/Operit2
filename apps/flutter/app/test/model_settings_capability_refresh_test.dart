@@ -250,9 +250,6 @@ void main() {
       final advanced = find.text(l10n.settingsAdvanced);
       final toggle = find.byKey(const ValueKey('api-key-pool-toggle'));
       expect(toggle, findsNothing);
-      await tester.ensureVisible(advanced);
-      await tester.tap(advanced);
-      await tester.pumpAndSettle();
       final editorScrollView = find
           .ancestor(
             of: find.byTooltip('返回').last,
@@ -274,6 +271,10 @@ void main() {
           isTrue,
         );
       }
+
+      await reveal(advanced);
+      await tester.tap(advanced);
+      await tester.pumpAndSettle();
 
       await reveal(toggle);
       await tester.tap(toggle);
