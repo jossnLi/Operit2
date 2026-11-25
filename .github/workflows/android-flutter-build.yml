@@ -228,15 +228,14 @@ jobs:
             plugins/packages/buildin/.sync_state.json
             plugins/packages/external/.sync_state.json
             plugins/packages/*/*/dist
-            plugins/packages/*/*/node_modules
             core/crates/runtime/application/assets/plugins/buildin
             core/crates/runtime/application/assets/plugins/external
             plugins/.out
             ~/.local/share/pnpm/store
             ~/AppData/Local/pnpm/store
-          key: ${{ runner.os }}-plugins-${{ hashFiles('plugins/packages/**', 'plugins/types/**', 'plugins/tools/**') }}
+          key: ${{ runner.os }}-plugins-v2-${{ hashFiles('plugins/packages/**', 'plugins/types/**', 'plugins/tools/**') }}
           restore-keys: |
-            ${{ runner.os }}-plugins-
+            ${{ runner.os }}-plugins-v2-
 
       - name: Prepare bundled models.dev catalog
         shell: pwsh
