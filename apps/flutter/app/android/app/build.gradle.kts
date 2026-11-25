@@ -462,8 +462,17 @@ androidComponents {
                 // Applies the source-built V8 library and bindings prepared by
                 // prepareOperitAndroidV8; upstream publishes no Android artifacts.
                 doFirst {
-                    parseOperitV8EnvFile(operitV8EnvFile(target.rustTarget)).forEach { (name, value) ->
+                    val v8Env = parseOperitV8EnvFile(operitV8EnvFile(target.rustTarget))
+                    v8Env.forEach { (name, value) ->
                         environment(name, value)
+                    }
+                    val v8Archive = v8Env["RUSTY_V8_ARCHIVE"]?.let { File(it) }
+                    if (v8Archive != null && v8Archive.isFile) {
+                        val v8Dir = v8Archive.parentFile.absolutePath.replace('\\', '/')
+                        val currentRustflags = (environment["RUSTFLAGS"] as? String) ?: "-Awarnings"
+                        val extraFlags = "-L native=$v8Dir -L $v8Dir"
+                        environment("RUSTFLAGS", "$currentRustflags $extraFlags")
+                        environment("CARGO_TARGET_${target.envTarget}_RUSTFLAGS", "$currentRustflags $extraFlags")
                     }
                 }
                 val cargoArguments = mutableListOf(

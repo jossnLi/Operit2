@@ -47,6 +47,15 @@ def cargo_build_environment(
                 rustflags = env.get(f"CARGO_TARGET_{target.upper().replace('-', '_')}_RUSTFLAGS")
         flags = (rustflags if rustflags is not None else "-Awarnings").split()
 
+    # If a pre-built V8 archive is provided, inject its directory into link search
+    # so rustc can locate `librusty_v8.a` when compiling dependent crates.
+    v8_archive = env.get("RUSTY_V8_ARCHIVE")
+    if v8_archive and os.path.isfile(v8_archive):
+        v8_dir = Path(v8_archive).parent.as_posix()
+        for link_flag in (f"-Lnative={v8_dir}", f"-L{v8_dir}"):
+            if link_flag not in flags:
+                flags.append(link_flag)
+
     home = Path.home()
     mappings = [
         (home, "/build-home"),
