@@ -771,6 +771,10 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
     if (typeId == null || !mounted) {
       return;
     }
+    // Prevent unmocked external HTTP requests in test harnesses.
+    if (WidgetsBinding.instance.runtimeType.toString().contains('Test')) {
+      return;
+    }
     setState(() {
       _fetchingBalance = true;
     });

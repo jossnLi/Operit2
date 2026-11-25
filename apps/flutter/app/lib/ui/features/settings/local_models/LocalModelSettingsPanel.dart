@@ -700,14 +700,10 @@ class _LocalModelSettingsPanelState extends State<LocalModelSettingsPanel>
       ],
     );
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Expanded(
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: actions,
-          ),
-        ),
-        const SizedBox(width: 8),
+        Expanded(child: actions),
+        const SizedBox(width: 4),
         PopupMenuButton<core_proxy.LocalModelSourceKind>(
           tooltip:
               '${l10n.localModelsDownloadSource}: ${_sourceKindTitle(l10n, source)}',
