@@ -320,58 +320,44 @@ class _TerminalProfilesSettingsState extends State<TerminalProfilesSettings> {
                 child: Column(
                   children: [
                     for (final profile in settings.profiles)
-                      ListTile(
-                        contentPadding: EdgeInsets.zero,
-                        leading: Radio<String>(
-                          value: profile.id,
-                          enabled: !_saving,
-                        ),
-                        title: Text(TerminalLabels.profileName(l10n, profile)),
-                        subtitle: Text(
-                          TerminalLabels.implementation(
-                            l10n,
-                            profile.terminal,
-                            profile.terminalType,
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: _TerminalProfileCard(
+                          profile: profile,
+                          selected: settings.defaultProfileId == profile.id,
+                          saving: _saving,
+                          onSelect: () => _save(
+                            TerminalProfileSettings(
+                              schemaVersion: settings.schemaVersion,
+                              revision: settings.revision,
+                              defaultProfileId: profile.id,
+                              profiles: settings.profiles,
+                            ),
                           ),
+                          onEdit: () => _edit(profile),
+                          onDelete: settings.defaultProfileId == profile.id
+                              ? null
+                              : () => _delete(profile),
                         ),
-                        trailing: Wrap(
-                          children: [
-                            IconButton(
-                              tooltip: l10n.edit,
-                              onPressed: _saving ? null : () => _edit(profile),
-                              icon: const Icon(OperitIcons.edit_outlined),
-                            ),
-                            IconButton(
-                              tooltip: l10n.delete,
-                              onPressed:
-                                  _saving ||
-                                      settings.defaultProfileId == profile.id
-                                  ? null
-                                  : () => _delete(profile),
-                              icon: const Icon(OperitIcons.delete_outline_rounded),
-                            ),
-                          ],
-                        ),
-                        onTap: _saving
-                            ? null
-                            : () => _save(
-                                TerminalProfileSettings(
-                                  schemaVersion: settings.schemaVersion,
-                                  revision: settings.revision,
-                                  defaultProfileId: profile.id,
-                                  profiles: settings.profiles,
-                                ),
-                              ),
                       ),
                   ],
                 ),
               ),
               if (_saving) const LinearProgressIndicator(),
               const SizedBox(height: 8),
-              OutlinedButton.icon(
-                onPressed: _saving || _support.isEmpty ? null : _edit,
-                icon: const Icon(OperitIcons.add_rounded),
-                label: Text(l10n.terminalProfileAdd),
+              SizedBox(
+                width: double.infinity,
+                child: FilledButton.tonalIcon(
+                  onPressed: _saving || _support.isEmpty ? null : _edit,
+                  icon: const Icon(OperitIcons.add_rounded, size: 18),
+                  label: Text(l10n.terminalProfileAdd),
+                  style: FilledButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
               ),
               if (_distributions.isNotEmpty) ...[
                 const Divider(height: 24),
@@ -432,6 +418,130 @@ class _TerminalProfilesSettingsState extends State<TerminalProfilesSettings> {
                 ),
             ],
           ],
+        ),
+      ),
+    );
+  }
+}
+
+/// One saved terminal profile as a selectable card with inline actions.
+class _TerminalProfileCard extends StatelessWidget {
+  const _TerminalProfileCard({
+    required this.profile,
+    required this.selected,
+    required this.saving,
+    required this.onSelect,
+    required this.onEdit,
+    required this.onDelete,
+  });
+
+  final TerminalProfile profile;
+  final bool selected;
+  final bool saving;
+  final VoidCallback onSelect;
+  final VoidCallback onEdit;
+  final VoidCallback? onDelete;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final radius = BorderRadius.circular(14);
+    return Material(
+      color: selected
+          ? scheme.primary.withValues(alpha: 0.10)
+          : scheme.surfaceContainerHighest.withValues(alpha: 0.26),
+      shape: RoundedRectangleBorder(
+        borderRadius: radius,
+        side: BorderSide(
+          color: selected
+              ? scheme.primary.withValues(alpha: 0.55)
+              : scheme.outlineVariant.withValues(alpha: 0.22),
+        ),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: saving || selected ? null : onSelect,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(12, 10, 4, 10),
+          child: Row(
+            children: [
+              Container(
+                width: 34,
+                height: 34,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: selected
+                      ? scheme.primary.withValues(alpha: 0.16)
+                      : scheme.surfaceContainerHighest.withValues(alpha: 0.55),
+                ),
+                child: Icon(
+                  OperitIcons.terminal_outlined,
+                  size: 18,
+                  color: selected ? scheme.primary : scheme.onSurfaceVariant,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      TerminalLabels.profileName(l10n, profile),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    const SizedBox(height: 3),
+                    Text(
+                      TerminalLabels.implementation(
+                        l10n,
+                        profile.terminal,
+                        profile.terminalType,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: scheme.onSurfaceVariant,
+                      ),
+                    ),
+                    if (selected) ...[
+                      const SizedBox(height: 4),
+                      Text(
+                        '默认配置',
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: scheme.primary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+              IconButton(
+                tooltip: l10n.edit,
+                visualDensity: VisualDensity.compact,
+                onPressed: saving ? null : onEdit,
+                icon: const Icon(OperitIcons.edit_outlined, size: 18),
+              ),
+              IconButton(
+                tooltip: l10n.delete,
+                visualDensity: VisualDensity.compact,
+                onPressed: saving || onDelete == null ? null : onDelete,
+                icon: Icon(
+                  OperitIcons.delete_outline_rounded,
+                  size: 18,
+                  color: onDelete == null
+                      ? scheme.onSurfaceVariant.withValues(alpha: 0.35)
+                      : scheme.onSurfaceVariant,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

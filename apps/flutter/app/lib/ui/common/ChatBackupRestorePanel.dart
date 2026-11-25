@@ -208,8 +208,8 @@ class _ChatBackupRestorePanelState extends State<ChatBackupRestorePanel> {
               onTap: () => setState(() => _selected = snapshot),
               leading: Icon(
                 _selected == snapshot
-                    ? OperitIcons.radio_button_checked_rounded
-                    : OperitIcons.radio_button_unchecked_rounded,
+                    ? OperitIcons.check_box_rounded
+                    : OperitIcons.check_box_outline_blank_rounded,
               ),
               title: Text(
                 '${material.formatMediumDate(DateTime.fromMillisecondsSinceEpoch(snapshot.createdAt))} 路 '

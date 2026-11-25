@@ -85,11 +85,10 @@ class ProviderBalanceService {
         return await _fetchMoonshotBalance(cleanKey);
       }
 
-      // 6. Generic OpenAI compatible / others
-      return ProviderBalanceInfo(
-        success: true,
-        balanceText: '凭据已生效',
-        details: '已连接并校验供应商凭证。',
+      // 6. Providers without a public balance endpoint.
+      return const ProviderBalanceInfo(
+        success: false,
+        error: '该供应商暂不支持自动查询余额与订阅用量',
       );
     } catch (e) {
       return ProviderBalanceInfo(

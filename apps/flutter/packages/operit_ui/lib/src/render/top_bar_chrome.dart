@@ -101,40 +101,63 @@ class ThemeTopBarChrome extends StatelessWidget {
     final navigationIconWidget = navIcon != null
         ? Icon(navIcon, size: 22, color: contentForeground)
         : null;
+    final leadingExtent = navIcon != null ? 52.0 : 8.0;
+    final trailingExtent = actions.length * 44.0 + 8.0;
+    // Without trailing actions, equal side margins keep the title exactly
+    // centered; pages with actions keep their title beside the leading icon.
+    final centered = actions.isEmpty;
     return ColoredBox(
       color: contentColor,
       child: SizedBox(
         height: topPadding + toolbarHeight,
         child: Padding(
           padding: EdgeInsets.only(top: topPadding),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
+          child: Stack(
             children: <Widget>[
-              if (navIcon != null && navigationIconWidget != null) ...<Widget>[
-                const SizedBox(width: 6),
-                SizedBox(
-                  width: 40,
-                  height: 40,
-                  child: IconButton(
-                    padding: EdgeInsets.zero,
-                    onPressed: onNavigationPressed,
-                    icon: flipNavigationIcon
-                        ? Transform(
-                            alignment: Alignment.center,
-                            transform: Matrix4.identity()
-                              ..scaleByDouble(-1.0, 1.0, 1.0, 1.0),
-                            child: navigationIconWidget,
-                          )
-                        : navigationIconWidget,
-                    tooltip: navigationTooltip,
+              Positioned.fill(
+                child: Padding(
+                  padding: EdgeInsetsDirectional.only(
+                    start: leadingExtent,
+                    end: centered ? leadingExtent : trailingExtent,
+                  ),
+                  child: Align(
+                    alignment: centered
+                        ? Alignment.center
+                        : Alignment.centerLeft,
+                    child: title,
                   ),
                 ),
-              ] else ...<Widget>[
-                SizedBox(width: actions.isNotEmpty ? 46 : 16),
-              ],
-              Expanded(child: title),
-              ...actions,
-              const SizedBox(width: 6),
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  if (navIcon != null && navigationIconWidget != null) ...<Widget>[
+                    const SizedBox(width: 6),
+                    SizedBox(
+                      width: 40,
+                      height: 40,
+                      child: IconButton(
+                        padding: EdgeInsets.zero,
+                        onPressed: onNavigationPressed,
+                        icon: flipNavigationIcon
+                            ? Transform(
+                                alignment: Alignment.center,
+                                transform: Matrix4.identity()
+                                  ..scaleByDouble(-1.0, 1.0, 1.0, 1.0),
+                                child: navigationIconWidget,
+                              )
+                            : navigationIconWidget,
+                        tooltip: navigationTooltip,
+                      ),
+                    ),
+                  ] else ...<Widget>[
+                    SizedBox(width: actions.isNotEmpty ? 46 : 16),
+                  ],
+                  const Spacer(),
+                  ...actions,
+                  const SizedBox(width: 6),
+                ],
+              ),
             ],
           ),
         ),

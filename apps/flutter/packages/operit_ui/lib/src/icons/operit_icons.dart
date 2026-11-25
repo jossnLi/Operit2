@@ -248,6 +248,8 @@ abstract final class OperitIcons {
   static const IconData query_stats_outlined = LucideIcons.chartLine;
   static const IconData radio_button_checked_rounded = LucideIcons.circleDot;
   static const IconData radio_button_unchecked_rounded = LucideIcons.circle;
+  static const IconData check_box_rounded = LucideIcons.squareCheck;
+  static const IconData check_box_outline_blank_rounded = LucideIcons.square;
   static const IconData record_voice_over_outlined = LucideIcons.micVocal;
   static const IconData redo_rounded = LucideIcons.redo;
   static const IconData refresh_outlined = LucideIcons.refreshCw;

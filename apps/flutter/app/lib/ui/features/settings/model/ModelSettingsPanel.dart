@@ -327,11 +327,33 @@ class ModelSettingsPanelState extends State<ModelSettingsPanel> {
       if (!mounted) {
         return;
       }
-      await _DeleteProviderBlockedDialog.show(
+      // Offer the only workable path: release the functions, then delete.
+      final detach = await _DeleteProviderBlockedDialog.show(
         context: context,
         functionTypes: boundFunctions,
+        canDetach: !boundFunctions.contains(core_proxy.FunctionType.chat),
       );
-      return;
+      if (detach != true || !mounted) {
+        return;
+      }
+      try {
+        for (final functionType in boundFunctions) {
+          if (functionType == core_proxy.FunctionType.chat) {
+            continue;
+          }
+          await widget.clients.preferencesFunctionalConfigManager
+              .setFunctionFollowChat(functionType: functionType);
+        }
+      } on CoreLinkError catch (error) {
+        if (!mounted) {
+          return;
+        }
+        await _showProviderConfigError(
+          title: AppLocalizations.of(context)!.delete,
+          error: error,
+        );
+        return;
+      }
     }
     if (!mounted) {
       return;
@@ -716,6 +738,7 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
   bool _keyTesting = false;
   ProviderBalanceInfo? _balanceInfo;
   bool _fetchingBalance = false;
+  String? _balanceError;
 
   @override
   void initState() {
@@ -760,7 +783,8 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
             _fetchBalance();
           }
         });
-      } else if (_apiKeyController.text.trim().isNotEmpty) {
+      } else if (_apiKeyController.text.trim().isNotEmpty ||
+          (_useKeyPool && _keyPool.isNotEmpty)) {
         _fetchBalance();
       }
     });
@@ -777,6 +801,7 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
     }
     setState(() {
       _fetchingBalance = true;
+      _balanceError = null;
     });
     try {
       final info = await ProviderBalanceService.instance.fetchBalance(
@@ -794,10 +819,12 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
           _fetchingBalance = false;
         });
       }
-    } catch (_) {
+    } catch (error) {
+      // Keep the failure visible instead of silently returning to the idle hint.
       if (mounted) {
         setState(() {
           _fetchingBalance = false;
+          _balanceError = _errorMessage(error);
         });
       }
     }
@@ -859,6 +886,7 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
     setState(() {
       _selectedProviderTypeId = providerTypeId;
       _balanceInfo = null;
+      _balanceError = null;
       if (catalog != null) {
         _endpointController.text = catalog.defaultEndpoint;
       }
@@ -976,9 +1004,11 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
                   final selected = option.endpoint == selectedEndpoint;
                   return ListTile(
                     selected: selected,
-                    leading: selected
-                        ? const Icon(OperitIcons.check_rounded)
-                        : const SizedBox(width: 24),
+                    leading: Icon(
+                      selected
+                          ? OperitIcons.check_box_rounded
+                          : OperitIcons.check_box_outline_blank_rounded,
+                    ),
                     title: Text(option.endpoint),
                     subtitle: option.label == option.endpoint
                         ? null
@@ -1205,6 +1235,7 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
                       if (_selectedProviderTypeId != null && !_isLocalProvider)
                         _ProviderBalanceCard(
                           info: _balanceInfo,
+                          error: _balanceError,
                           loading: _fetchingBalance,
                           onRefresh: _fetchBalance,
                           providerTypeId: _selectedProviderTypeId,
@@ -3541,6 +3572,12 @@ class _ProviderDetailScreenState extends State<_ProviderDetailScreen> {
                 case _ProviderDetailAction.edit:
                   unawaited(_run(() => widget.onEditProvider(provider)));
                   break;
+                case _ProviderDetailAction.testAll:
+                  unawaited(_testModels(provider, provider.models));
+                  break;
+                case _ProviderDetailAction.select:
+                  _startSelecting();
+                  break;
                 case _ProviderDetailAction.delete:
                   unawaited(_run(() => widget.onDeleteProvider(provider)));
                   break;
@@ -3554,6 +3591,31 @@ class _ProviderDetailScreenState extends State<_ProviderDetailScreen> {
                     const Icon(OperitIcons.edit_outlined, size: 18),
                     const SizedBox(width: 10),
                     Text(l10n.edit),
+                  ],
+                ),
+              ),
+              PopupMenuItem<_ProviderDetailAction>(
+                value: _ProviderDetailAction.testAll,
+                enabled:
+                    provider.models.isNotEmpty &&
+                    !_selecting &&
+                    !_batchRunning,
+                child: Row(
+                  children: <Widget>[
+                    const Icon(OperitIcons.speed_rounded, size: 18),
+                    const SizedBox(width: 10),
+                    Text(l10n.settingsModelTestAll),
+                  ],
+                ),
+              ),
+              PopupMenuItem<_ProviderDetailAction>(
+                value: _ProviderDetailAction.select,
+                enabled: provider.models.isNotEmpty && !_selecting,
+                child: Row(
+                  children: <Widget>[
+                    const Icon(OperitIcons.checklist_rounded, size: 18),
+                    const SizedBox(width: 10),
+                    Text(l10n.settingsModelSelect),
                   ],
                 ),
               ),
@@ -3678,7 +3740,7 @@ class _ProviderDetailScreenState extends State<_ProviderDetailScreen> {
   }
 }
 
-enum _ProviderDetailAction { edit, delete }
+enum _ProviderDetailAction { edit, testAll, select, delete }
 
 /// Whether two capability sets switch the same things on.
 bool _sameCapabilities(
@@ -3750,6 +3812,10 @@ class _ModelListToolbar extends StatelessWidget {
       fontSize: 12.5,
       color: colorScheme.onSurfaceVariant,
     );
+    // Idle actions live in the overflow menu, so nothing occupies the row.
+    if (!selecting && !batchRunning) {
+      return const SizedBox.shrink();
+    }
     final Widget content;
     if (selecting) {
       final anyChecked = checkedCount > 0;
@@ -3790,36 +3856,28 @@ class _ModelListToolbar extends StatelessWidget {
       );
     } else {
       content = Row(
-        key: const ValueKey<String>('browsing'),
+        key: const ValueKey<String>('testing'),
+        mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          if (batchRunning) ...<Widget>[
-            const SizedBox.square(
-              dimension: 14,
-              child: Center(child: M3LoadingIndicator(size: 14)),
+          const SizedBox.square(
+            dimension: 14,
+            child: Center(child: M3LoadingIndicator(size: 14)),
+          ),
+          const SizedBox(width: 8),
+          Flexible(
+            child: Text(
+              l10n.settingsModelTestProgress(batchDone, batchTotal),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: labelStyle,
             ),
-            const SizedBox(width: 8),
-            Flexible(
-              child: Text(
-                l10n.settingsModelTestProgress(batchDone, batchTotal),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: labelStyle,
-              ),
-            ),
-          ],
+          ),
           const Spacer(),
-          if (batchRunning)
-            _CapsuleActionButton(
-              label: l10n.stop,
-              icon: OperitIcons.stop_rounded,
-              onTap: batchStopping ? null : onStopTests,
-            )
-          else
-            _CapsuleActionButton(
-              label: l10n.settingsModelTestAll,
-              icon: OperitIcons.speed_rounded,
-              onTap: onTestAll,
-            ),
+          _CapsuleActionButton(
+            label: l10n.stop,
+            icon: OperitIcons.stop_rounded,
+            onTap: batchStopping ? null : onStopTests,
+          ),
           const SizedBox(width: 6),
           _CapsuleActionButton(
             label: l10n.settingsModelSelect,
@@ -3830,7 +3888,7 @@ class _ModelListToolbar extends StatelessWidget {
       );
     }
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 6),
+      padding: const EdgeInsets.fromLTRB(16, 8, 12, 6),
       child: SizedBox(
         height: 32,
         child: AnimatedSwitcher(
@@ -6581,8 +6639,8 @@ class _ThinkingKindOption extends StatelessWidget {
               duration: const Duration(milliseconds: 160),
               child: Icon(
                 selected
-                    ? OperitIcons.radio_button_checked_rounded
-                    : OperitIcons.radio_button_unchecked_rounded,
+                    ? OperitIcons.check_box_rounded
+                    : OperitIcons.check_box_outline_blank_rounded,
                 key: ValueKey<bool>(selected),
                 size: 20,
                 color: selected
@@ -7938,24 +7996,34 @@ class _DeleteModelBlockedDialog extends StatelessWidget {
 }
 
 class _DeleteProviderBlockedDialog extends StatelessWidget {
-  const _DeleteProviderBlockedDialog({required this.functionTypes});
+  const _DeleteProviderBlockedDialog({
+    required this.functionTypes,
+    required this.canDetach,
+  });
 
   final List<core_proxy.FunctionType> functionTypes;
 
-  static Future<void> show({
+  /// Whether every occupying function can fall back to the chat model.
+  final bool canDetach;
+
+  static Future<bool?> show({
     required BuildContext context,
     required List<core_proxy.FunctionType> functionTypes,
+    bool canDetach = true,
   }) {
-    return showDialog<void>(
+    return showDialog<bool>(
       context: context,
-      builder: (context) =>
-          _DeleteProviderBlockedDialog(functionTypes: functionTypes),
+      builder: (context) => _DeleteProviderBlockedDialog(
+        functionTypes: functionTypes,
+        canDetach: canDetach,
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final colorScheme = Theme.of(context).colorScheme;
     final names = functionTypes
         .map((functionType) => _functionTypeTitle(l10n, functionType))
         .join(' · ');
@@ -7963,9 +8031,17 @@ class _DeleteProviderBlockedDialog extends StatelessWidget {
       title: Text(l10n.delete),
       content: Text(l10n.settingsModelDeleteProviderBlocked(names)),
       actions: <Widget>[
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(false),
+          child: Text(l10n.cancel),
+        ),
         FilledButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: Text(l10n.ok),
+          onPressed: canDetach ? () => Navigator.of(context).pop(true) : null,
+          style: FilledButton.styleFrom(
+            backgroundColor: colorScheme.error,
+            foregroundColor: colorScheme.onError,
+          ),
+          child: Text(canDetach ? '解除占用并删除' : '先切换聊天模型'),
         ),
       ],
     );
@@ -8214,12 +8290,14 @@ class _ProviderBalanceCard extends StatelessWidget {
     required this.loading,
     required this.onRefresh,
     required this.providerTypeId,
+    this.error,
   });
 
   final ProviderBalanceInfo? info;
   final bool loading;
   final VoidCallback onRefresh;
   final String? providerTypeId;
+  final String? error;
 
   @override
   Widget build(BuildContext context) {
@@ -8279,16 +8357,23 @@ class _ProviderBalanceCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 6),
-          if (info == null && !loading)
+          if (loading)
             Text(
-              '点击刷新查询当前供应商的账户余额或订阅用量',
+              '正在查询供应商最新余额与订阅用量…',
               style: theme.textTheme.bodySmall?.copyWith(
                 color: colorScheme.onSurfaceVariant,
               ),
             )
-          else if (loading)
+          else if (info == null && error != null)
             Text(
-              '正在查询供应商最新余额与订阅用量…',
+              '余额查询失败：$error',
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: colorScheme.error,
+              ),
+            )
+          else if (info == null)
+            Text(
+              '点击刷新查询当前供应商的账户余额或订阅用量',
               style: theme.textTheme.bodySmall?.copyWith(
                 color: colorScheme.onSurfaceVariant,
               ),

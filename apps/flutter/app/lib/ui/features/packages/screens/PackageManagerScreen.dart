@@ -236,38 +236,26 @@ class _PackageManagerScreenState extends State<PackageManagerScreen>
         onSearchChanged: _onSearchChanged,
       ),
       actions: (context) {
-        // Phones keep the title wide enough for the section switcher.
-        final narrow = MediaQuery.sizeOf(context).width < 600;
         return <Widget>[
           ValueListenableBuilder<bool>(
             valueListenable: _searchOpen,
-            builder: (context, open, child) => IconButton(
+            builder: (context, open, child) => _TopBarIconAction(
               tooltip: open ? '关闭搜索' : '搜索（Ctrl+F）',
               onPressed: open ? _closeSearch : _openSearch,
-              icon: Icon(
-                open ? OperitIcons.close_rounded : OperitIcons.search_rounded,
-              ),
+              icon: open ? OperitIcons.close_rounded : OperitIcons.search_rounded,
             ),
           ),
-          if (!narrow)
-            IconButton(
-              tooltip: '添加扩展',
-              onPressed: _showAddSheet,
-              icon: const Icon(OperitIcons.add_rounded),
-            ),
+          _TopBarIconAction(
+            tooltip: '添加扩展',
+            onPressed: _showAddSheet,
+            icon: OperitIcons.add_rounded,
+            emphasized: true,
+          ),
           PopupMenuButton<_MoreAction>(
             tooltip: '更多',
             icon: const Icon(OperitIcons.more_horiz_rounded),
             onSelected: _onMoreSelected,
             itemBuilder: (context) => <PopupMenuEntry<_MoreAction>>[
-              if (narrow)
-                const PopupMenuItem<_MoreAction>(
-                  value: _MoreAction.add,
-                  child: ListTile(
-                    leading: Icon(OperitIcons.add_rounded),
-                    title: Text('添加扩展'),
-                  ),
-                ),
               const PopupMenuItem<_MoreAction>(
                 value: _MoreAction.checkUpdates,
                 child: ListTile(
@@ -692,11 +680,15 @@ class _PackageTabSwitcher extends StatelessWidget {
     final colors = theme.colorScheme;
     final motion = ExtensionMotion.of(context);
     return Container(
-      height: 38,
+      height: 40,
       padding: const EdgeInsets.all(3),
       decoration: BoxDecoration(
-        color: colors.surfaceContainerHigh.withValues(alpha: 0.62),
-        borderRadius: BorderRadius.circular(12),
+        color: colors.surfaceContainerHigh.withValues(alpha: 0.55),
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(
+          color: colors.outlineVariant.withValues(alpha: 0.28),
+          width: 0.8,
+        ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -709,9 +701,9 @@ class _PackageTabSwitcher extends StatelessWidget {
                 button: true,
                 child: Material(
                   color: Colors.transparent,
-                  borderRadius: BorderRadius.circular(9),
+                  borderRadius: BorderRadius.circular(999),
                   child: InkWell(
-                    borderRadius: BorderRadius.circular(9),
+                    borderRadius: BorderRadius.circular(999),
                     onTap: () => onSelected(index),
                     child: AnimatedContainer(
                       duration: motion.standard,
@@ -720,7 +712,7 @@ class _PackageTabSwitcher extends StatelessWidget {
                         color: index == selectedIndex
                             ? colors.surface
                             : Colors.transparent,
-                        borderRadius: BorderRadius.circular(9),
+                        borderRadius: BorderRadius.circular(999),
                         boxShadow: index == selectedIndex
                             ? <BoxShadow>[
                                 BoxShadow(
@@ -757,6 +749,55 @@ class _PackageTabSwitcher extends StatelessWidget {
               ),
             ),
         ],
+      ),
+    );
+  }
+}
+
+/// A circular tonal action that keeps the shared top bar visually even.
+class _TopBarIconAction extends StatelessWidget {
+  const _TopBarIconAction({
+    required this.tooltip,
+    required this.icon,
+    required this.onPressed,
+    this.emphasized = false,
+  });
+
+  final String tooltip;
+  final IconData icon;
+  final VoidCallback? onPressed;
+  final bool emphasized;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    final background = emphasized
+        ? colors.primary.withValues(alpha: 0.16)
+        : colors.surfaceContainerHigh.withValues(alpha: 0.55);
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 2),
+      child: Tooltip(
+        message: tooltip,
+        child: Material(
+          color: background,
+          shape: const CircleBorder(),
+          clipBehavior: Clip.antiAlias,
+          child: InkWell(
+            onTap: onPressed,
+            customBorder: const CircleBorder(),
+            child: SizedBox(
+              width: 36,
+              height: 36,
+              child: Center(
+                child: Icon(
+                  icon,
+                  size: 19,
+                  color: emphasized ? colors.primary : colors.onSurfaceVariant,
+                ),
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

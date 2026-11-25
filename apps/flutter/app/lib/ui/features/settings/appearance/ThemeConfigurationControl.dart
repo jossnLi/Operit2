@@ -120,45 +120,38 @@ class _ThemeConfigurationControlState extends State<ThemeConfigurationControl> {
                             child: createButton,
                           );
                         }
-                        final modeControls = _ThemeModeQuickControls(
-                          value: activeSnapshot.themeMode,
-                          onChanged: (mode) {
-                            if (!_busy && mode != activeSnapshot.themeMode) {
-                              _run(() async {
-                                await _manager.patchAppearance(
-                                  initialSnapshot: activeSnapshot.toJson(),
-                                  values: {'theme_mode': mode.name},
-                                  removeKeys: const [],
-                                );
-                                await widget.onAppearanceChanged?.call();
-                              });
-                            }
-                          },
-                        );
-                        if (constraints.maxWidth >= 640 &&
-                            MediaQuery.textScalerOf(context).scale(14) <= 20) {
-                          return Row(
-                            children: [
-                              Expanded(
-                                child: Align(
-                                  alignment: AlignmentDirectional.centerStart,
-                                  child: modeControls,
+                        // Theme modes and the create action share a single row.
+                        final dense =
+                            constraints.maxWidth < 560 ||
+                            MediaQuery.textScalerOf(context).scale(14) > 20;
+                        return Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Align(
+                                alignment: AlignmentDirectional.centerStart,
+                                child: _ThemeModeQuickControls(
+                                  value: activeSnapshot.themeMode,
+                                  dense: dense,
+                                  onChanged: (mode) {
+                                    if (!_busy &&
+                                        mode != activeSnapshot.themeMode) {
+                                      _run(() async {
+                                        await _manager.patchAppearance(
+                                          initialSnapshot:
+                                              activeSnapshot.toJson(),
+                                          values: {'theme_mode': mode.name},
+                                          removeKeys: const [],
+                                        );
+                                        await widget.onAppearanceChanged?.call();
+                                      });
+                                    }
+                                  },
                                 ),
                               ),
-                              const SizedBox(width: 16),
-                              createButton,
-                            ],
-                          );
-                        }
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            modeControls,
-                            const SizedBox(height: 12),
-                            Align(
-                              alignment: AlignmentDirectional.centerEnd,
-                              child: createButton,
                             ),
+                            const SizedBox(width: 12),
+                            createButton,
                           ],
                         );
                       },
@@ -648,9 +641,16 @@ class _ThemeCard extends StatelessWidget {
 
 /// Keeps every shortcut reachable when a sidebar, zoom or large text narrows the pane.
 class _ThemeModeQuickControls extends StatelessWidget {
-  const _ThemeModeQuickControls({required this.value, required this.onChanged});
+  const _ThemeModeQuickControls({
+    required this.value,
+    required this.onChanged,
+    this.dense = false,
+  });
   final ThemeMode value;
   final ValueChanged<ThemeMode> onChanged;
+
+  /// Drops icons and tightening so the row fits beside another action.
+  final bool dense;
 
   @override
   Widget build(BuildContext context) {
@@ -658,45 +658,27 @@ class _ThemeModeQuickControls extends StatelessWidget {
     final segments = [
       ButtonSegment(
         value: ThemeMode.system,
-        icon: const Icon(OperitIcons.brightness_auto_outlined, size: 18),
+        icon: dense
+            ? null
+            : const Icon(OperitIcons.brightness_auto_outlined, size: 18),
         label: Text(l10n.settingsAppearanceThemeSystem),
       ),
       ButtonSegment(
         value: ThemeMode.light,
-        icon: const Icon(OperitIcons.light_mode_outlined, size: 18),
+        icon: dense ? null : const Icon(OperitIcons.light_mode_outlined, size: 18),
         label: Text(l10n.settingsAppearanceThemeLight),
       ),
       ButtonSegment(
         value: ThemeMode.dark,
-        icon: const Icon(OperitIcons.dark_mode_outlined, size: 18),
+        icon: dense ? null : const Icon(OperitIcons.dark_mode_outlined, size: 18),
         label: Text(l10n.settingsAppearanceThemeDark),
       ),
     ];
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        if (constraints.maxWidth >= 420 &&
-            MediaQuery.textScalerOf(context).scale(14) <= 20) {
-          return SettingsSegmentedSelector<ThemeMode>(
-            value: value,
-            onChanged: onChanged,
-            segments: segments,
-          );
-        }
-        return Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: [
-            for (final segment in segments)
-              ChoiceChip(
-                selected: value == segment.value,
-                showCheckmark: false,
-                avatar: segment.icon,
-                label: segment.label!,
-                onSelected: (_) => onChanged(segment.value),
-              ),
-          ],
-        );
-      },
+    return SettingsSegmentedSelector<ThemeMode>(
+      value: value,
+      onChanged: onChanged,
+      dense: dense,
+      segments: segments,
     );
   }
 }

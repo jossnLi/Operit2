@@ -311,8 +311,8 @@ class _ThemeCreationDialogState extends State<ThemeCreationDialog> {
                     );
                     final selectedIcon = Icon(
                       selected
-                          ? OperitIcons.check_circle_outline_rounded
-                          : OperitIcons.radio_button_unchecked_rounded,
+                          ? OperitIcons.check_box_rounded
+                          : OperitIcons.check_box_outline_blank_rounded,
                       size: 18,
                       color: selected ? scheme.primary : scheme.outline,
                     );
