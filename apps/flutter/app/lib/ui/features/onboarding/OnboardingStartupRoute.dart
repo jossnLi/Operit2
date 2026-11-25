@@ -1618,81 +1618,41 @@ class _AiSetupGuidePageState extends State<_AiSetupGuidePage>
   }
 }
 
-class _AiSetupProgressPill extends StatelessWidget {
-  const _AiSetupProgressPill({
+class _AiSetupModernDotsIndicator extends StatelessWidget {
+  const _AiSetupModernDotsIndicator({
     required this.currentPage,
     required this.pageCount,
     required this.color,
-    required this.trackColor,
-    required this.textColor,
-    required this.label,
+    required this.inactiveColor,
   });
 
   final int currentPage;
   final int pageCount;
   final Color color;
-  final Color trackColor;
-  final Color textColor;
-  final String label;
+  final Color inactiveColor;
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    final progress = (currentPage + 1) / pageCount;
-    return Container(
-      height: 38,
-      padding: const EdgeInsets.symmetric(horizontal: 14),
-      decoration: BoxDecoration(
-        color: trackColor.withValues(alpha: 0.5),
-        borderRadius: BorderRadius.circular(999),
-        border: Border.all(
-          color: textColor.withValues(alpha: 0.08),
-          width: 0.8,
-        ),
-      ),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  label,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: textTheme.labelSmall?.copyWith(
-                    color: textColor,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 0,
-                    height: 1,
-                  ),
-                ),
-                const SizedBox(height: 5),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(99),
-                  child: LinearProgressIndicator(
-                    value: progress,
-                    minHeight: 2.5,
-                    color: color,
-                    backgroundColor: textColor.withValues(alpha: 0.12),
-                  ),
-                ),
-              ],
-            ),
+    if (pageCount <= 1) {
+      return const SizedBox.shrink();
+    }
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(pageCount, (index) {
+        final isActive = index == currentPage;
+        return AnimatedContainer(
+          duration: const Duration(milliseconds: 250),
+          curve: Curves.easeOutCubic,
+          margin: const EdgeInsets.symmetric(horizontal: 3),
+          width: isActive ? 20 : 6,
+          height: 6,
+          decoration: BoxDecoration(
+            color: isActive ? color : inactiveColor,
+            borderRadius: BorderRadius.circular(99),
           ),
-          const SizedBox(width: 12),
-          Text(
-            '${currentPage + 1}/$pageCount',
-            maxLines: 1,
-            style: textTheme.labelSmall?.copyWith(
-              color: textColor.withValues(alpha: 0.85),
-              fontWeight: FontWeight.w700,
-              letterSpacing: 0,
-            ),
-          ),
-        ],
-      ),
+        );
+      }),
     );
   }
 }
@@ -1775,12 +1735,6 @@ class _AiSetupSharedChrome extends StatelessWidget {
         final introBrandTop =
             (constraints.maxHeight - introBrandHeight) * 0.5 -
             introLiftDistance * introLift;
-        final introContentTop =
-            introBrandTop +
-            scaledIntroLogoSize +
-            18 +
-            scaledIntroTitleFontSize * 1.18 +
-            26;
         final logoSize = lerpDouble(scaledIntroLogoSize, 28, chromeProgress)!;
         final chromeLogoTop = (chromeBarHeight - 28) * 0.5;
         final logoTop = lerpDouble(
@@ -1927,93 +1881,104 @@ class _AiSetupSharedChrome extends StatelessWidget {
                 ),
               ),
             ),
-            Positioned(
-              left: 4,
-              bottom: 2,
-              child: IgnorePointer(
-                ignoring: chromeProgress == 0,
+            if (introActive && chromeProgress < 0.5)
+              Positioned(
+                left: buttonLeft,
+                top: buttonTop,
+                width: buttonWidth,
+                height: buttonHeight,
                 child: Opacity(
-                  opacity: progressOpacity,
-                  child: TextButton(
-                    onPressed: currentPage == 0 ? null : onBack,
-                    style: TextButton.styleFrom(
-                      minimumSize: const Size(0, 40),
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      foregroundColor: colorScheme.primary,
-                      disabledForegroundColor: colorScheme.onSurface.withValues(
-                        alpha: 0.3,
+                  opacity: bodyProgress,
+                  child: FilledButton(
+                    onPressed: canGoForward ? onPrimary : null,
+                    style: FilledButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(999),
                       ),
                     ),
                     child: const Text(
-                      '返回',
+                      '开始探索',
                       style: TextStyle(fontWeight: FontWeight.w600),
                     ),
                   ),
                 ),
-              ),
-            ),
-            Positioned(
-              left: 62,
-              right: buttonWidth + 8,
-              bottom: 5,
-              child: IgnorePointer(
-                ignoring: chromeProgress == 0,
-                child: Opacity(
-                  opacity: progressOpacity,
-                  child: _AiSetupProgressPill(
-                    currentPage: currentPage,
-                    pageCount: pageCount,
-                    color: colorScheme.primary,
-                    trackColor: colorScheme.surfaceContainerHighest,
-                    textColor: colorScheme.onSurfaceVariant,
-                    label: progressLabel,
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              left: buttonLeft,
-              top: buttonTop,
-              width: buttonWidth,
-              height: buttonHeight,
-              child: Opacity(
-                opacity: bodyProgress,
-                child: FilledButton(
-                  onPressed: canGoForward ? onPrimary : null,
-                  style: FilledButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(999),
-                    ),
-                  ),
-                  child: AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 180),
-                    child: Row(
-                      key: ValueKey<String>(
-                        introActive && chromeProgress < 0.5
-                            ? 'intro-action'
-                            : primaryActionLabel,
-                      ),
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Flexible(
-                          child: Text(
-                            introActive && chromeProgress < 0.5
-                                ? '开始探索'
-                                : primaryActionLabel,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(fontWeight: FontWeight.w600),
+              )
+            else
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 2,
+                height: 48,
+                child: IgnorePointer(
+                  ignoring: chromeProgress == 0,
+                  child: Opacity(
+                    opacity: progressOpacity,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          SizedBox(
+                            width: 72,
+                            child: currentPage > 0
+                                ? TextButton(
+                                    onPressed: onBack,
+                                    style: TextButton.styleFrom(
+                                      minimumSize: const Size(60, 40),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 12,
+                                      ),
+                                      tapTargetSize:
+                                          MaterialTapTargetSize.shrinkWrap,
+                                      foregroundColor:
+                                          colorScheme.onSurfaceVariant,
+                                    ),
+                                    child: const Text(
+                                      '返回',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  )
+                                : const SizedBox.shrink(),
                           ),
-                        ),
-                      ],
+                          Expanded(
+                            child: Center(
+                              child: _AiSetupModernDotsIndicator(
+                                currentPage: currentPage,
+                                pageCount: pageCount,
+                                color: colorScheme.primary,
+                                inactiveColor: colorScheme.outlineVariant
+                                    .withValues(alpha: 0.38),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 108,
+                            child: FilledButton(
+                              onPressed: canGoForward ? onPrimary : null,
+                              style: FilledButton.styleFrom(
+                                minimumSize: const Size(88, 42),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                ),
+                                shape: const StadiumBorder(),
+                              ),
+                              child: Text(
+                                primaryActionLabel,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
           ],
         );
       },

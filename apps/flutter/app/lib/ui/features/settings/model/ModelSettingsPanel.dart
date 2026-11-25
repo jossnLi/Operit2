@@ -19,6 +19,7 @@ import '../../../theme/OperitGlassSurface.dart';
 import '../components/ApiKeyTextField.dart';
 import '../components/SettingsControlStyles.dart';
 import 'CodexLoginDialog.dart';
+import 'ProviderAccountLoginDialog.dart';
 import 'ApiKeyPoolEditor.dart';
 import 'ModelConnectionTestCapabilities.dart';
 import 'ProviderLogo.dart';
@@ -855,6 +856,29 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
     await _refreshCodexStatus();
   }
 
+  bool get _isAccountLoginSupported =>
+      _selectedProviderTypeId != null &&
+      kAccountSupportedProviders.containsKey(_selectedProviderTypeId);
+
+  Future<void> _openAccountLogin() async {
+    final typeId = _selectedProviderTypeId;
+    if (typeId == null) {
+      return;
+    }
+    final key = await showProviderAccountLoginDialog(
+      context: context,
+      providerTypeId: typeId,
+    );
+    if (key != null && key.isNotEmpty && mounted) {
+      setState(() {
+        _apiKeyController.text = key;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('账号授权成功，凭证已自动填入！')),
+      );
+    }
+  }
+
   /// Opens the endpoint selector for providers with declared options.
   Future<void> _showEndpointOptionsDialog() async {
     final options = _selectedEndpointOptions;
@@ -981,6 +1005,8 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
     return Scaffold(
       backgroundColor: colorScheme.surface,
       appBar: AppBar(
+        leadingWidth: 44,
+        titleSpacing: 0,
         backgroundColor: colorScheme.surface,
         surfaceTintColor: Colors.transparent,
         scrolledUnderElevation: 0,
@@ -1079,45 +1105,48 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
                         inputFormatters: <TextInputFormatter>[
                           FilteringTextInputFormatter.deny(RegExp(r'\s')),
                         ],
-                        suffixIcon: _isCodexProvider
-                            ? const Icon(
-                                OperitIcons.lock_outline_rounded,
-                                size: 20,
-                              )
-                            : (endpointOptions.isEmpty
-                                  ? null
-                                  : IconButton(
-                                      tooltip: l10n.settingsModelApiEndpoint,
-                                      icon: const Icon(
-                                        OperitIcons.arrow_drop_down_rounded,
-                                      ),
-                                      onPressed: _showEndpointOptionsDialog,
-                                    )),
+                        suffixIcon: (endpointOptions.isEmpty || _isCodexProvider)
+                            ? null
+                            : IconButton(
+                                tooltip: l10n.settingsModelApiEndpoint,
+                                icon: const Icon(
+                                  OperitIcons.arrow_drop_down_rounded,
+                                ),
+                                onPressed: _showEndpointOptionsDialog,
+                              ),
                       ),
                       if (_isCodexProvider)
                         _CodexLoginField(
                           status: _codexStatus,
                           onLogin: _openCodexLogin,
                         )
-                      else if (!_useKeyPool || _isLocalProvider)
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 12),
-                          child: ApiKeyTextField(
-                            key: ValueKey<String?>(_selectedProviderTypeId),
-                            controller: _apiKeyController,
-                            labelText: l10n.settingsModelApiKey,
+                      else ...[
+                        if (_isAccountLoginSupported)
+                          _ProviderAccountLoginField(
+                            config: kAccountSupportedProviders[_selectedProviderTypeId]!,
+                            apiKey: _apiKeyController.text,
+                            onLogin: _openAccountLogin,
                           ),
-                        )
-                      else
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 12),
-                          child: Text(
-                            'API Key 池已启用，可在下方高级设置中管理多个密钥。',
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              color: colorScheme.onSurfaceVariant,
+                        if (!_useKeyPool || _isLocalProvider)
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 12),
+                            child: ApiKeyTextField(
+                              key: ValueKey<String?>(_selectedProviderTypeId),
+                              controller: _apiKeyController,
+                              labelText: l10n.settingsModelApiKey,
+                            ),
+                          )
+                        else
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 12),
+                            child: Text(
+                              'API Key 池已启用，可在下方高级设置中管理多个密钥。',
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: colorScheme.onSurfaceVariant,
+                              ),
                             ),
                           ),
-                        ),
+                      ],
                     ],
                   ),
                   const SizedBox(height: 14),
@@ -3402,6 +3431,8 @@ class _ProviderDetailScreenState extends State<_ProviderDetailScreen> {
       return Scaffold(
         backgroundColor: colorScheme.surface,
         appBar: AppBar(
+          leadingWidth: 44,
+          titleSpacing: 0,
           backgroundColor: colorScheme.surface,
           surfaceTintColor: Colors.transparent,
           scrolledUnderElevation: 0,
@@ -3418,6 +3449,8 @@ class _ProviderDetailScreenState extends State<_ProviderDetailScreen> {
     return Scaffold(
       backgroundColor: colorScheme.surface,
       appBar: AppBar(
+        leadingWidth: 44,
+        titleSpacing: 0,
         backgroundColor: colorScheme.surface,
         surfaceTintColor: Colors.transparent,
         scrolledUnderElevation: 0,
@@ -8026,6 +8059,88 @@ class _CodexLoginField extends StatelessWidget {
             ],
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _ProviderAccountLoginField extends StatelessWidget {
+  const _ProviderAccountLoginField({
+    required this.config,
+    required this.apiKey,
+    required this.onLogin,
+  });
+
+  final ProviderAccountConfig config;
+  final String apiKey;
+  final VoidCallback onLogin;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final isAuthorized = apiKey.trim().isNotEmpty;
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        decoration: BoxDecoration(
+          color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.35),
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(
+            color: isAuthorized
+                ? colorScheme.primary.withValues(alpha: 0.3)
+                : colorScheme.outlineVariant.withValues(alpha: 0.2),
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Row(
+              children: [
+                Icon(
+                  isAuthorized
+                      ? OperitIcons.verified_user_outlined
+                      : OperitIcons.person_outline_rounded,
+                  size: 20,
+                  color: isAuthorized
+                      ? colorScheme.primary
+                      : colorScheme.onSurfaceVariant,
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    '${config.providerName} 账号登录',
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                FilledButton.tonal(
+                  onPressed: onLogin,
+                  style: FilledButton.styleFrom(
+                    visualDensity: VisualDensity.compact,
+                    padding: const EdgeInsets.symmetric(horizontal: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(999),
+                    ),
+                  ),
+                  child: Text(isAuthorized ? '重新授权' : '账号登录'),
+                ),
+              ],
+            ),
+            const SizedBox(height: 6),
+            Text(
+              isAuthorized
+                  ? '已成功授权并获取调用密钥（若需切换账号可点击重新授权）。'
+                  : config.description,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
