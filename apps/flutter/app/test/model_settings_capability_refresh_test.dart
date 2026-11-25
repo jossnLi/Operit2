@@ -359,7 +359,7 @@ void main() {
         await tester.tap(find.text('Test Provider'));
         await tester.pumpAndSettle();
         expect(status, findsNothing);
-        await tester.tap(find.text(l10n.settingsModelTestAll));
+        await _tapProviderTestAll(tester, l10n);
         await tester.pumpAndSettle();
         expect(status, findsOneWidget);
         expect(bridge.connectionTestCalls, 1);
@@ -406,7 +406,7 @@ void main() {
         );
         await tester.tap(find.text('Test Provider'));
         await tester.pumpAndSettle();
-        await tester.tap(find.text(l10n.settingsModelTestAll));
+        await _tapProviderTestAll(tester, l10n);
         await tester.pumpAndSettle();
         expect(restricted, findsOneWidget);
         expect(
@@ -444,7 +444,7 @@ void main() {
     final l10n = AppLocalizations.of(panelKey.currentContext!)!;
     await tester.tap(find.text('Test Provider'));
     await tester.pumpAndSettle();
-    await tester.tap(find.text(l10n.settingsModelTestAll));
+    await _tapProviderTestAll(tester, l10n);
     await tester.pump();
     expect(bridge.connectionTestCalls, 1);
     await tester.tap(find.byTooltip('返回').last);
@@ -675,6 +675,25 @@ Future<void> _pumpModelSettings(
     ),
   );
   await tester.pumpAndSettle();
+}
+
+/// Opens the provider detail overflow menu and taps "Test all".
+///
+/// The bulk test entry moved from the header row into the overflow menu so the
+/// provider detail header keeps a single row; widget tests have to open the
+/// menu first. The final pump is left to the caller because some cases gate the
+/// connection tests with a pending completer.
+Future<void> _tapProviderTestAll(
+  WidgetTester tester,
+  AppLocalizations l10n,
+) async {
+  await tester.tap(find.byTooltip('更多'));
+  await tester.pumpAndSettle();
+  await tester.tap(find.text(l10n.settingsModelTestAll).last);
+  // Close the menu route without pumpAndSettle: some cases keep the
+  // connection test gated, and a running progress indicator never settles.
+  await tester.pump();
+  await tester.pump(const Duration(milliseconds: 300));
 }
 
 class _ModelSettingsBridge extends OperitRuntimeBridge {
