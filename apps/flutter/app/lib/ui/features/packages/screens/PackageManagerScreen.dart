@@ -773,30 +773,35 @@ class _TopBarIconAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
+    // One geometry for every header action: square tonal keys of the same
+    // size as the search field keep the row visually even.
     final background = emphasized
-        ? colors.primary.withValues(alpha: 0.16)
-        : colors.surfaceContainerHigh.withValues(alpha: 0.55);
+        ? colors.primary.withValues(alpha: 0.14)
+        : colors.surfaceContainerHigh.withValues(alpha: 0.50);
+    final foreground = emphasized ? colors.primary : colors.onSurfaceVariant;
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 3),
       child: Tooltip(
         message: tooltip,
         child: Material(
           color: background,
-          shape: const CircleBorder(),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+            side: BorderSide(
+              color: emphasized
+                  ? colors.primary.withValues(alpha: 0.28)
+                  : colors.outlineVariant.withValues(alpha: 0.22),
+              width: 0.8,
+            ),
+          ),
           clipBehavior: Clip.antiAlias,
           child: InkWell(
             onTap: onPressed,
-            customBorder: const CircleBorder(),
+            borderRadius: BorderRadius.circular(12),
             child: SizedBox(
               width: 36,
               height: 36,
-              child: Center(
-                child: Icon(
-                  icon,
-                  size: 19,
-                  color: emphasized ? colors.primary : colors.onSurfaceVariant,
-                ),
-              ),
+              child: Center(child: Icon(icon, size: 19, color: foreground)),
             ),
           ),
         ),
@@ -827,13 +832,13 @@ class _SearchField extends StatelessWidget {
       alpha: 0.50,
     );
     return Container(
-      height: 34,
-      padding: const EdgeInsets.symmetric(horizontal: 10),
+      height: 36,
+      padding: const EdgeInsetsDirectional.only(start: 12, end: 6),
       decoration: BoxDecoration(
         color: surface,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: theme.colorScheme.outlineVariant.withValues(alpha: 0.24),
+          color: theme.colorScheme.outlineVariant.withValues(alpha: 0.22),
           width: 0.8,
         ),
       ),
@@ -841,8 +846,8 @@ class _SearchField extends StatelessWidget {
         children: [
           Icon(
             OperitIcons.search_rounded,
-            size: 17,
-            color: contentColor.withValues(alpha: 0.75),
+            size: 18,
+            color: contentColor.withValues(alpha: 0.70),
           ),
           const SizedBox(width: 8),
           Expanded(
@@ -854,24 +859,76 @@ class _SearchField extends StatelessWidget {
               maxLines: 1,
               textInputAction: TextInputAction.search,
               cursorColor: contentColor,
-              style: theme.textTheme.bodySmall?.copyWith(
+              style: theme.textTheme.bodyMedium?.copyWith(
                 color: contentColor,
               ),
               decoration: InputDecoration(
                 hintText: hintText,
-                hintStyle: theme.textTheme.bodySmall?.copyWith(
-                  color: contentColor.withValues(alpha: 0.55),
+                hintStyle: theme.textTheme.bodyMedium?.copyWith(
+                  color: contentColor.withValues(alpha: 0.52),
                 ),
                 border: InputBorder.none,
                 focusedBorder: InputBorder.none,
                 enabledBorder: InputBorder.none,
                 isDense: true,
                 isCollapsed: true,
-                contentPadding: const EdgeInsets.symmetric(vertical: 8),
+                contentPadding: const EdgeInsets.symmetric(vertical: 9),
               ),
             ),
           ),
+          // Inline clear keeps destructive editing inside the field instead of
+          // adding another header button next to the field.
+          ValueListenableBuilder<TextEditingValue>(
+            valueListenable: controller,
+            builder: (context, value, child) {
+              if (value.text.isEmpty) {
+                return const SizedBox(width: 6);
+              }
+              return _SearchClearButton(
+                onTap: () {
+                  controller.clear();
+                  onChanged('');
+                  focusNode.requestFocus();
+                },
+              );
+            },
+          ),
         ],
+      ),
+    );
+  }
+}
+
+/// Small tonal clear affordance shown only while the query has text.
+class _SearchClearButton extends StatelessWidget {
+  const _SearchClearButton({required this.onTap});
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    return Tooltip(
+      message: '清空搜索',
+      child: Material(
+        color: colors.surfaceContainerHighest.withValues(alpha: 0.55),
+        shape: const CircleBorder(),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: onTap,
+          customBorder: const CircleBorder(),
+          child: SizedBox(
+            width: 28,
+            height: 28,
+            child: Center(
+              child: Icon(
+                OperitIcons.close_rounded,
+                size: 15,
+                color: colors.onSurfaceVariant,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
