@@ -12,6 +12,7 @@ import '../../../common/TerminalLabels.dart';
 import '../../../common/components/M3LoadingIndicator.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
+import 'WorkspaceSettingsPanel.dart';
 /// Edits device-owned profiles using fields registered by the active Core host.
 class TerminalProfilesSettings extends StatefulWidget {
   /// Creates a terminal settings section backed by the selected Core connection.
@@ -276,25 +277,29 @@ class _TerminalProfilesSettingsState extends State<TerminalProfilesSettings> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     final settings = _settings;
-    return Card(
-      margin: const EdgeInsets.only(bottom: 10),
-      child: Padding(
-        padding: const EdgeInsets.all(14),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        // 卡片区块 1：终端配置
+        WorkspaceSectionCard(
+          title: l10n.terminalProfilesTitle,
+          icon: OperitIcons.terminal_outlined,
           children: [
             Text(
-              l10n.terminalProfilesTitle,
-              style: Theme.of(context).textTheme.titleMedium,
+              l10n.terminalProfilesDescription,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+              ),
             ),
-            const SizedBox(height: 8),
-            Text(l10n.terminalProfilesDescription),
             if (_error != null) ...[
               const SizedBox(height: 8),
               SelectableText(
                 '$_error',
-                style: TextStyle(color: Theme.of(context).colorScheme.error),
+                style: TextStyle(color: colorScheme.error),
               ),
               TextButton(onPressed: _load, child: Text(l10n.retry)),
             ],
@@ -320,120 +325,260 @@ class _TerminalProfilesSettingsState extends State<TerminalProfilesSettings> {
                 child: Column(
                   children: [
                     for (final profile in settings.profiles)
-                      ListTile(
-                        contentPadding: EdgeInsets.zero,
-                        leading: Radio<String>(
-                          value: profile.id,
-                          enabled: !_saving,
-                        ),
-                        title: Text(TerminalLabels.profileName(l10n, profile)),
-                        subtitle: Text(
-                          TerminalLabels.implementation(
-                            l10n,
-                            profile.terminal,
-                            profile.terminalType,
-                          ),
-                        ),
-                        trailing: Wrap(
-                          children: [
-                            IconButton(
-                              tooltip: l10n.edit,
-                              onPressed: _saving ? null : () => _edit(profile),
-                              icon: const Icon(OperitIcons.edit_outlined),
+                      Builder(
+                        builder: (context) {
+                          final isDefault =
+                              settings.defaultProfileId == profile.id;
+                          return Container(
+                            margin: const EdgeInsets.only(bottom: 8),
+                            decoration: BoxDecoration(
+                              color: isDefault
+                                  ? colorScheme.primaryContainer.withValues(
+                                      alpha: 0.28,
+                                    )
+                                  : colorScheme.surface.withValues(alpha: 0.35),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: isDefault
+                                    ? colorScheme.primary.withValues(
+                                        alpha: 0.45,
+                                      )
+                                    : colorScheme.outlineVariant.withValues(
+                                        alpha: 0.25,
+                                      ),
+                                width: isDefault ? 1.0 : 0.8,
+                              ),
                             ),
-                            IconButton(
-                              tooltip: l10n.delete,
-                              onPressed:
-                                  _saving ||
-                                      settings.defaultProfileId == profile.id
-                                  ? null
-                                  : () => _delete(profile),
-                              icon: const Icon(OperitIcons.delete_outline_rounded),
-                            ),
-                          ],
-                        ),
-                        onTap: _saving
-                            ? null
-                            : () => _save(
-                                TerminalProfileSettings(
-                                  schemaVersion: settings.schemaVersion,
-                                  revision: settings.revision,
-                                  defaultProfileId: profile.id,
-                                  profiles: settings.profiles,
+                            child: ListTile(
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 2,
+                              ),
+                              leading: Radio<String>(
+                                value: profile.id,
+                                enabled: !_saving,
+                              ),
+                              title: Text(
+                                TerminalLabels.profileName(l10n, profile),
+                                style: theme.textTheme.titleSmall?.copyWith(
+                                  fontWeight: isDefault
+                                      ? FontWeight.w600
+                                      : FontWeight.w500,
                                 ),
                               ),
+                              subtitle: Text(
+                                TerminalLabels.implementation(
+                                  l10n,
+                                  profile.terminal,
+                                  profile.terminalType,
+                                ),
+                                style: theme.textTheme.bodySmall?.copyWith(
+                                  color: colorScheme.onSurfaceVariant,
+                                ),
+                              ),
+                              trailing: Wrap(
+                                crossAxisAlignment: WrapCrossAlignment.center,
+                                children: [
+                                  IconButton(
+                                    tooltip: l10n.edit,
+                                    onPressed: _saving
+                                        ? null
+                                        : () => _edit(profile),
+                                    icon: const Icon(
+                                      OperitIcons.edit_outlined,
+                                      size: 20,
+                                    ),
+                                  ),
+                                  IconButton(
+                                    tooltip: l10n.delete,
+                                    onPressed:
+                                        _saving ||
+                                            settings.defaultProfileId ==
+                                                profile.id
+                                        ? null
+                                        : () => _delete(profile),
+                                    icon: const Icon(
+                                      OperitIcons.delete_outline_rounded,
+                                      size: 20,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              onTap: _saving
+                                  ? null
+                                  : () => _save(
+                                      TerminalProfileSettings(
+                                        schemaVersion: settings.schemaVersion,
+                                        revision: settings.revision,
+                                        defaultProfileId: profile.id,
+                                        profiles: settings.profiles,
+                                      ),
+                                    ),
+                            ),
+                          );
+                        },
                       ),
                   ],
                 ),
               ),
-              if (_saving) const LinearProgressIndicator(),
-              const SizedBox(height: 8),
-              OutlinedButton.icon(
-                onPressed: _saving || _support.isEmpty ? null : _edit,
-                icon: const Icon(OperitIcons.add_rounded),
-                label: Text(l10n.terminalProfileAdd),
-              ),
-              if (_distributions.isNotEmpty) ...[
-                const Divider(height: 24),
-                Text(
-                  l10n.terminalDistributionsTitle,
-                  style: Theme.of(context).textTheme.titleSmall,
-                ),
-                const SizedBox(height: 8),
-                Text(l10n.terminalDistributionsDescription),
-                for (final distribution in _distributions)
-                  ListTile(
-                    contentPadding: EdgeInsets.zero,
-                    title: Text(distribution.name),
-                    subtitle: Text(
-                      [
-                        '${distribution.architecture} · '
-                            '${(distribution.downloadBytes / 1048576).toStringAsFixed(1)} MB',
-                        if (distribution.notice.isNotEmpty) distribution.notice,
-                      ].join('\n'),
-                    ),
-                    trailing: IconButton(
-                      tooltip: l10n.terminalDistributionDownload,
-                      onPressed: _saving ? null : () => _download(distribution),
-                      icon: const Icon(OperitIcons.download_outlined),
-                    ),
-                  ),
+              if (_saving) ...[
+                const SizedBox(height: 6),
+                const LinearProgressIndicator(),
               ],
-              for (final job in _installs)
-                ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  title: Text(job.name),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(_installState(l10n, job.state)),
-                      if (!_finished(job)) ...[
-                        const SizedBox(height: 6),
-                        LinearProgressIndicator(
-                          value:
-                              job.state == 'downloading' && job.totalBytes > 0
-                              ? (job.downloadedBytes / job.totalBytes).clamp(
-                                  0,
-                                  1,
-                                )
-                              : null,
-                        ),
-                      ],
-                      if (job.error != null) SelectableText(job.error!),
-                    ],
+              const SizedBox(height: 4),
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton.icon(
+                  onPressed: _saving || _support.isEmpty ? null : _edit,
+                  icon: const Icon(OperitIcons.add_rounded, size: 18),
+                  label: Text(l10n.terminalProfileAdd),
+                  style: OutlinedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
-                  trailing: _finished(job)
-                      ? null
-                      : IconButton(
-                          tooltip: l10n.cancel,
-                          onPressed: () => _cancelInstall(job),
-                          icon: const Icon(OperitIcons.close_rounded),
-                        ),
                 ),
+              ),
             ],
           ],
         ),
-      ),
+
+        // 卡片区块 2：下载 Linux 发行版
+        if (_distributions.isNotEmpty || _installs.isNotEmpty)
+          WorkspaceSectionCard(
+            title: l10n.terminalDistributionsTitle,
+            icon: OperitIcons.download_for_offline_outlined,
+            children: [
+              Text(
+                l10n.terminalDistributionsDescription,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                ),
+              ),
+              const SizedBox(height: 8),
+              for (final distribution in _distributions)
+                Container(
+                  margin: const EdgeInsets.only(bottom: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
+                  decoration: BoxDecoration(
+                    color: colorScheme.surface.withValues(alpha: 0.35),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: colorScheme.outlineVariant.withValues(alpha: 0.25),
+                      width: 0.8,
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              distribution.name,
+                              style: theme.textTheme.titleSmall?.copyWith(
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              [
+                                '${distribution.architecture} · '
+                                    '${(distribution.downloadBytes / 1048576).toStringAsFixed(1)} MB',
+                                if (distribution.notice.isNotEmpty)
+                                  distribution.notice,
+                              ].join('\n'),
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: colorScheme.onSurfaceVariant,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      IconButton(
+                        tooltip: l10n.terminalDistributionDownload,
+                        onPressed: _saving ? null : () => _download(distribution),
+                        icon: const Icon(
+                          OperitIcons.download_outlined,
+                          size: 20,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              for (final job in _installs)
+                Container(
+                  margin: const EdgeInsets.only(bottom: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
+                  decoration: BoxDecoration(
+                    color: colorScheme.surface.withValues(alpha: 0.35),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: colorScheme.outlineVariant.withValues(alpha: 0.25),
+                      width: 0.8,
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              job.name,
+                              style: theme.textTheme.titleSmall?.copyWith(
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              _installState(l10n, job.state),
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: colorScheme.onSurfaceVariant,
+                              ),
+                            ),
+                            if (!_finished(job)) ...[
+                              const SizedBox(height: 6),
+                              LinearProgressIndicator(
+                                value:
+                                    job.state == 'downloading' &&
+                                            job.totalBytes > 0
+                                        ? (job.downloadedBytes / job.totalBytes)
+                                            .clamp(0, 1)
+                                        : null,
+                              ),
+                            ],
+                            if (job.error != null) ...[
+                              const SizedBox(height: 4),
+                              SelectableText(
+                                job.error!,
+                                style: TextStyle(color: colorScheme.error),
+                              ),
+                            ],
+                          ],
+                        ),
+                      ),
+                      if (!_finished(job))
+                        IconButton(
+                          tooltip: l10n.cancel,
+                          onPressed: () => _cancelInstall(job),
+                          icon: const Icon(
+                            OperitIcons.close_rounded,
+                            size: 20,
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+            ],
+          ),
+      ],
     );
   }
 }

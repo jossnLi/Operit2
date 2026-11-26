@@ -400,10 +400,16 @@ class _UnboundWorkspaceRow extends StatelessWidget {
   }
 }
 
-class _SectionCard extends StatelessWidget {
-  const _SectionCard({required this.title, required this.children});
+class WorkspaceSectionCard extends StatelessWidget {
+  const WorkspaceSectionCard({
+    super.key,
+    required this.title,
+    this.icon,
+    required this.children,
+  });
 
   final String title;
+  final IconData? icon;
   final List<Widget> children;
 
   @override
@@ -425,9 +431,24 @@ class _SectionCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
-                title,
-                style: SettingsControlStyles.sectionTitleTextStyle(context),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  if (icon != null) ...[
+                    Icon(
+                      icon,
+                      size: 20,
+                      color: colorScheme.onSurface,
+                    ),
+                    const SizedBox(width: 8),
+                  ],
+                  Expanded(
+                    child: Text(
+                      title,
+                      style: SettingsControlStyles.sectionTitleTextStyle(context),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 6),
               ...children,
@@ -438,6 +459,8 @@ class _SectionCard extends StatelessWidget {
     );
   }
 }
+
+typedef _SectionCard = WorkspaceSectionCard;
 
 class _BodyText extends StatelessWidget {
   const _BodyText(this.text);
