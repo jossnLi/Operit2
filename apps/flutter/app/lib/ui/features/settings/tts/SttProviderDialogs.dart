@@ -206,7 +206,9 @@ class _SttConfigDialogState extends State<_SttConfigDialog> {
     final localModel = _isLocalSttProviderType(_providerType);
     final editing = widget.config != null;
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      // Pushed editor route: paint an opaque theme surface so the settings
+      // page underneath never bleeds through after the route transition.
+      backgroundColor: colorScheme.surface,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,

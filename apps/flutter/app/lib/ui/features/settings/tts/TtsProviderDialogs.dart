@@ -182,7 +182,9 @@ class _TtsProviderDialogState extends State<_TtsProviderDialog> {
     final isSystemTts = _isSystemProviderType(_providerType);
     final isLocalModelTts = _isLocalModelProviderType(_providerType);
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      // Pushed editor route: an opaque surface keeps the previous settings
+      // page from showing through (residual image) while switching pages.
+      backgroundColor: colorScheme.surface,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
@@ -1048,7 +1050,7 @@ class _TtsConfigDialogState extends State<_TtsConfigDialog> {
         isLocalModelTts ||
         (!isSystemTts && _ttsProviderCatalogUsesPlaceholder(catalog, 'voice'));
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: colorScheme.surface,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,

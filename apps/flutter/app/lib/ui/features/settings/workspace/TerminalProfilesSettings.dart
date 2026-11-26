@@ -1063,34 +1063,13 @@ class _TerminalProfileEditorPageState extends State<_TerminalProfileEditorPage> 
                           ? l10n.terminalProfileNameRequired
                           : null,
                     ),
-                    const SizedBox(height: 16),
-                    DropdownButtonFormField<String>(
-                      initialValue:
-                          '${_implementation.terminal}/${_implementation.terminalType}',
-                      isExpanded: true,
-                      decoration: InputDecoration(
-                        labelText: l10n.terminalProfileImplementation,
-                        border: const OutlineInputBorder(),
-                      ),
-                      items: [
-                        for (final entry in widget.support)
-                          DropdownMenuItem(
-                            value: '${entry.terminal}/${entry.terminalType}',
-                            child: Text(
-                              TerminalLabels.implementation(
-                                l10n,
-                                entry.terminal,
-                                entry.terminalType,
-                              ),
-                            ),
-                          ),
-                      ],
-                      onChanged: (value) => setState(() {
-                        _implementation = widget.support.firstWhere(
-                          (entry) =>
-                              '${entry.terminal}/${entry.terminalType}' == value,
-                        );
-                      }),
+                    const SizedBox(height: 18),
+                    _TerminalImplementationSelector(
+                      label: l10n.terminalProfileImplementation,
+                      options: widget.support,
+                      selected: _implementation,
+                      onSelected: (entry) =>
+                          setState(() => _implementation = entry),
                     ),
                     if (_implementation.fields.isEmpty)
                       Padding(
@@ -1129,6 +1108,168 @@ class _TerminalProfileEditorPageState extends State<_TerminalProfileEditorPage> 
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Implementation choice drawn as themed glass tiles instead of a dropdown
+/// menu, so the hierarchy (field → options → helper text) stays readable.
+class _TerminalImplementationSelector extends StatelessWidget {
+  const _TerminalImplementationSelector({
+    required this.label,
+    required this.options,
+    required this.selected,
+    required this.onSelected,
+  });
+
+  final String label;
+  final List<TerminalProfileSupport> options;
+  final TerminalProfileSupport selected;
+  final ValueChanged<TerminalProfileSupport> onSelected;
+
+  /// Compares protocol identity rather than object identity from Core reads.
+  bool _isSelected(TerminalProfileSupport entry) =>
+      entry.terminal == selected.terminal &&
+      entry.terminalType == selected.terminalType;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Padding(
+          padding: const EdgeInsetsDirectional.only(start: 4, bottom: 8),
+          child: Text(
+            label,
+            style: theme.textTheme.labelMedium?.copyWith(
+              color: scheme.onSurfaceVariant,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 0.2,
+            ),
+          ),
+        ),
+        for (final entry in options)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: _TerminalImplementationTile(
+              label: TerminalLabels.implementation(
+                l10n,
+                entry.terminal,
+                entry.terminalType,
+              ),
+              selected: _isSelected(entry),
+              onTap: () => onSelected(entry),
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+/// One selectable implementation row: icon, name, interpreter and a square
+/// check that mirrors the selection state used across settings pages.
+class _TerminalImplementationTile extends StatelessWidget {
+  const _TerminalImplementationTile({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final radius = BorderRadius.circular(12);
+    final parts = label.split(' / ');
+    final name = parts.first;
+    final interpreter = parts.length > 1 ? parts.sublist(1).join(' / ') : '';
+    return OperitGlassSurface(
+      color: selected
+          ? scheme.primary.withValues(alpha: 0.14)
+          : scheme.surfaceContainerHighest.withValues(alpha: 0.30),
+      borderRadius: radius,
+      border: Border.all(
+        color: selected
+            ? scheme.primary.withValues(alpha: 0.45)
+            : scheme.outlineVariant.withValues(alpha: 0.22),
+        width: selected ? 1.0 : 0.8,
+      ),
+      layer: OperitGlassSurfaceLayer.control,
+      material: true,
+      child: InkWell(
+        customBorder: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+        ),
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(12, 10, 14, 10),
+          child: Row(
+            children: [
+              Container(
+                width: 32,
+                height: 32,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: selected
+                      ? scheme.primary.withValues(alpha: 0.16)
+                      : scheme.surfaceContainerHighest.withValues(alpha: 0.55),
+                ),
+                child: Icon(
+                  OperitIcons.terminal_outlined,
+                  size: 17,
+                  color: selected ? scheme.primary : scheme.onSurfaceVariant,
+                ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      name,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    if (interpreter.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 2),
+                        child: Text(
+                          interpreter,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: scheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              Icon(
+                selected
+                    ? OperitIcons.check_box_rounded
+                    : OperitIcons.check_box_outline_blank_rounded,
+                size: 20,
+                color: selected
+                    ? scheme.primary
+                    : scheme.onSurfaceVariant.withValues(alpha: 0.42),
+              ),
+            ],
+          ),
         ),
       ),
     );
