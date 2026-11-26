@@ -37,7 +37,7 @@ from cargo_build import cargo_build_environment
 from models_dev_bundle import prepare_build_catalog
 from release_artifacts import release_asset_name, validate_release_assets
 DEFAULT_GITHUB_ENV = SECRETS_DIR / "github.env"
-DEFAULT_RELEASE_REPO = "AAswordman/Operit2"
+DEFAULT_RELEASE_REPO = "jossnLi/Operit2"
 SEMVER_RE = re.compile(
     r"(0|[1-9][0-9]*)\."
     r"(0|[1-9][0-9]*)\."

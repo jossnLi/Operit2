@@ -87,7 +87,7 @@ async fn discovery_selects_patch_only_newer_release_and_authenticates_its_manife
         .collect();
     for (repo, data) in [("Operit2", full_metadata), ("Operit2-nightly", metadata)] {
         bodies.insert(
-            format!("https://api.github.com/repos/AAswordman/{repo}/releases?page=1&per_page=30"),
+            format!("https://api.github.com/repos/jossnLi/{repo}/releases?page=1&per_page=30"),
             serde_json::to_vec(&data).unwrap(),
         );
     }
@@ -112,7 +112,7 @@ async fn discovery_selects_patch_only_newer_release_and_authenticates_its_manife
     assert_eq!(discovered.version, release.version);
     assert!(discovered.fullPackageAvailable);
     let patch_only = GithubReleaseUtil::fetchLatestReleaseInfo(
-        "AAswordman",
+        "jossnLi",
         "Operit2-nightly",
         FullUpdateTarget::app("android", "arm64-v8a").unwrap(),
         FullUpdateChannel::Preview,
@@ -766,7 +766,7 @@ impl Fixture {
         let manifestHash = format!("{:x}", sha2::Sha256::digest(&metadata));
         let asset = &self.manifest.assetName;
         let url = format!(
-            "https://github.com/AAswordman/Operit2/releases/download/v{}/{asset}",
+            "https://github.com/jossnLi/Operit2/releases/download/v{}/{asset}",
             self.manifest.version
         );
         let patchUrl = format!(

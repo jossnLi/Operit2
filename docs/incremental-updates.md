@@ -1,10 +1,10 @@
 # Release / Preview 跨平台增量更新
 
 源码和开发者明确发布的完整包使用
-[`AAswordman/Operit2`](https://github.com/AAswordman/Operit2)。
+[`jossnLi/Operit2`](https://github.com/jossnLi/Operit2)。
 增量补丁和更新清单发布到独立的
-[`AAswordman/Operit2-nightly`](https://github.com/AAswordman/Operit2-nightly)，该仓库不接受完整安装包。
-客户端同时检查两个仓库，按版本合并同一平台格式的完整包与补丁。
+[`jossnLi/Operit2-nightly`](https://github.com/jossnLi/Operit2-nightly)，该仓库不接受完整安装包。
+客户端同时检查两个仓库，按版本合并同一平台格式的完整包与补丁；补丁仓库尚未创建时只检查完整包。
 仓库名不代表新增 nightly 通道，仍只有 release 和 preview。
 完整包和补丁可以独立缺席：支持只发布完整包，也支持只发布清单和补丁。
 完全没有公开更新元数据的内测，仍由开发者直接分发安装包并使用系统安装器安装。

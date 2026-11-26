@@ -241,7 +241,7 @@ const MSI: &[u8] = b"\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1payload";
 
 /// Uses a valid project release URL while keeping networking under fixture control.
 fn packageUrl() -> String {
-    format!("https://github.com/AAswordman/Operit2/releases/download/v2.0.0/{NAME}")
+    format!("https://github.com/jossnLi/Operit2/releases/download/v2.0.0/{NAME}")
 }
 
 /// Commits only after complete, valid streamed bytes and returns a virtual storage path.
