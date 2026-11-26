@@ -10,6 +10,7 @@ import '../../../../core/proxy/generated/CoreProxyModels.g.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../common/TerminalLabels.dart';
 import '../../../common/components/M3LoadingIndicator.dart';
+import '../../../theme/OperitGlassSurface.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
 import 'WorkspaceSettingsPanel.dart';
@@ -523,19 +524,19 @@ class _TerminalAddTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
-    return Material(
+    return OperitGlassSurface(
       color: enabled
-          ? scheme.primary.withValues(alpha: 0.10)
-          : scheme.surfaceContainerHighest.withValues(alpha: 0.22),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(14),
-        side: BorderSide(
-          color: enabled
-              ? scheme.primary.withValues(alpha: 0.30)
-              : scheme.outlineVariant.withValues(alpha: 0.18),
-        ),
+          ? scheme.primary.withValues(alpha: 0.14)
+          : scheme.surfaceContainerHighest.withValues(alpha: 0.32),
+      borderRadius: BorderRadius.circular(14),
+      border: Border.all(
+        color: enabled
+            ? scheme.primary.withValues(alpha: 0.34)
+            : scheme.outlineVariant.withValues(alpha: 0.22),
+        width: 0.8,
       ),
-      clipBehavior: Clip.antiAlias,
+      layer: OperitGlassSurfaceLayer.control,
+      material: true,
       child: InkWell(
         onTap: enabled ? onTap : null,
         child: Padding(
@@ -590,52 +591,64 @@ class _TerminalDistributionTile extends StatelessWidget {
     final size = (distribution.downloadBytes / 1048576).toStringAsFixed(1);
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  distribution.name,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  '${distribution.architecture} · $size MB',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: scheme.onSurfaceVariant,
-                  ),
-                ),
-                if (distribution.notice.isNotEmpty) ...[
-                  const SizedBox(height: 4),
-                  Text(
-                    distribution.notice,
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: scheme.onSurfaceVariant.withValues(alpha: 0.8),
-                      fontSize: 11,
-                      height: 1.35,
+      child: OperitGlassSurface(
+        color: scheme.surfaceContainerHighest.withValues(alpha: 0.30),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: scheme.outlineVariant.withValues(alpha: 0.22),
+          width: 0.8,
+        ),
+        layer: OperitGlassSurfaceLayer.card,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(12, 10, 6, 10),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      distribution.name,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
-                ],
-              ],
-            ),
+                    const SizedBox(height: 2),
+                    Text(
+                      '${distribution.architecture} · $size MB',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: scheme.onSurfaceVariant,
+                      ),
+                    ),
+                    if (distribution.notice.isNotEmpty) ...[
+                      const SizedBox(height: 4),
+                      Text(
+                        distribution.notice,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: scheme.onSurfaceVariant.withValues(alpha: 0.8),
+                          fontSize: 11,
+                          height: 1.35,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              IconButton.filledTonal(
+                tooltip: '下载并安装',
+                onPressed: enabled ? onDownload : null,
+                icon: const Icon(OperitIcons.download_outlined, size: 18),
+                style: IconButton.styleFrom(
+                  minimumSize: const Size(36, 36),
+                  maximumSize: const Size(36, 36),
+                  padding: EdgeInsets.zero,
+                ),
+              ),
+            ],
           ),
-          const SizedBox(width: 8),
-          IconButton.filledTonal(
-            tooltip: '下载并安装',
-            onPressed: enabled ? onDownload : null,
-            icon: const Icon(OperitIcons.download_outlined, size: 18),
-            style: IconButton.styleFrom(
-              minimumSize: const Size(36, 36),
-              maximumSize: const Size(36, 36),
-              padding: EdgeInsets.zero,
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -662,61 +675,68 @@ class _TerminalInstallTile extends StatelessWidget {
     final progress = job.state == 'downloading' && job.totalBytes > 0
         ? (job.downloadedBytes / job.totalBytes).clamp(0.0, 1.0)
         : null;
-    return Container(
-      margin: const EdgeInsets.only(top: 8),
-      padding: const EdgeInsets.fromLTRB(12, 10, 6, 10),
-      decoration: BoxDecoration(
-        color: scheme.surfaceContainerHighest.withValues(alpha: 0.24),
+    return Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: OperitGlassSurface(
+        color: scheme.surfaceContainerHighest.withValues(alpha: 0.30),
         borderRadius: BorderRadius.circular(12),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  job.name,
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(height: 3),
-                Text(
-                  stateLabel,
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: scheme.onSurfaceVariant,
-                  ),
-                ),
-                if (!finished) ...[
-                  const SizedBox(height: 6),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(3),
-                    child: LinearProgressIndicator(
-                      value: progress,
-                      minHeight: 4,
+        border: Border.all(
+          color: scheme.outlineVariant.withValues(alpha: 0.22),
+          width: 0.8,
+        ),
+        layer: OperitGlassSurfaceLayer.control,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(12, 10, 6, 10),
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      job.name,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
-                ],
-                if (job.error != null) ...[
-                  const SizedBox(height: 4),
-                  SelectableText(
-                    job.error!,
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: scheme.error,
+                    const SizedBox(height: 3),
+                    Text(
+                      stateLabel,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: scheme.onSurfaceVariant,
+                      ),
                     ),
-                  ),
-                ],
-              ],
-            ),
+                    if (!finished) ...[
+                      const SizedBox(height: 6),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(3),
+                        child: LinearProgressIndicator(
+                          value: progress,
+                          minHeight: 4,
+                        ),
+                      ),
+                    ],
+                    if (job.error != null) ...[
+                      const SizedBox(height: 4),
+                      SelectableText(
+                        job.error!,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: scheme.error,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+              if (!finished)
+                IconButton(
+                  tooltip: '取消',
+                  onPressed: onCancel,
+                  icon: const Icon(OperitIcons.close_rounded, size: 18),
+                ),
+            ],
           ),
-          if (!finished)
-            IconButton(
-              tooltip: '取消',
-              onPressed: onCancel,
-              icon: const Icon(OperitIcons.close_rounded, size: 18),
-            ),
-        ],
+        ),
       ),
     );
   }
@@ -747,20 +767,23 @@ class _TerminalProfileCard extends StatelessWidget {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
     final radius = BorderRadius.circular(14);
-    return Material(
+    return OperitGlassSurface(
       color: selected
-          ? scheme.primary.withValues(alpha: 0.10)
-          : scheme.surfaceContainerHighest.withValues(alpha: 0.26),
-      shape: RoundedRectangleBorder(
-        borderRadius: radius,
-        side: BorderSide(
-          color: selected
-              ? scheme.primary.withValues(alpha: 0.55)
-              : scheme.outlineVariant.withValues(alpha: 0.22),
-        ),
+          ? scheme.primary.withValues(alpha: 0.16)
+          : scheme.surfaceContainerHighest.withValues(alpha: 0.32),
+      borderRadius: radius,
+      border: Border.all(
+        color: selected
+            ? scheme.primary.withValues(alpha: 0.50)
+            : scheme.outlineVariant.withValues(alpha: 0.24),
+        width: selected ? 1.0 : 0.8,
       ),
-      clipBehavior: Clip.antiAlias,
+      layer: OperitGlassSurfaceLayer.control,
+      material: true,
       child: InkWell(
+        customBorder: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(14)),
+        ),
         onTap: saving || selected ? null : onSelect,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(12, 10, 4, 10),
@@ -1011,18 +1034,18 @@ class _TerminalProfileEditorPageState extends State<_TerminalProfileEditorPage> 
         child: ListView(
           padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
           children: [
-            Container(
-              padding: const EdgeInsets.fromLTRB(14, 16, 14, 18),
-              decoration: BoxDecoration(
-                color: scheme.surfaceContainerHighest.withValues(alpha: 0.26),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: scheme.outlineVariant.withValues(alpha: 0.20),
-                ),
+            OperitGlassSurface(
+              borderRadius: BorderRadius.circular(16),
+              color: scheme.surfaceContainerHighest.withValues(alpha: 0.36),
+              border: Border.all(
+                color: scheme.outlineVariant.withValues(alpha: 0.25),
+                width: 0.8,
               ),
-              child: Form(
-                key: _form,
-                child: Column(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(14, 16, 14, 18),
+                child: Form(
+                  key: _form,
+                  child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     TextFormField(
@@ -1099,6 +1122,7 @@ class _TerminalProfileEditorPageState extends State<_TerminalProfileEditorPage> 
                       ),
                   ],
                 ),
+              ),
               ),
             ),
           ],
