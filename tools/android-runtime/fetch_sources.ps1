@@ -14,9 +14,11 @@ function Get-ArchiveSha256([string] $Path) {
 function Get-CurlExecutable {
     $candidates = if ($env:OS -eq "Windows_NT") { @("curl.exe") } else { @("curl", "curl.exe") }
     foreach ($candidate in $candidates) {
-        $command = Get-Command $candidate -CommandType Application -ErrorAction SilentlyContinue
-        if ($command) {
-            return $command.Source
+        # Linux images expose curl through more than one path, so take the first match.
+        $command = @(Get-Command $candidate -CommandType Application -ErrorAction SilentlyContinue) |
+            Select-Object -First 1
+        if ($command -and $command.Source) {
+            return [string] $command.Source
         }
     }
     throw "curl is required to download the Android runtime sources"
