@@ -126,8 +126,11 @@ extension _LazyWorkspaceContent on _DrawerContentState {
             onRename: () => unawaited(_renameWorkspaceGroup(section, group)),
             onTogglePinned: () =>
                 unawaited(_toggleDirectoryPinned(group.directory)),
-            onDissolve: () =>
-                unawaited(_dissolveWorkspaceGroup(section, group)),
+            onDissolve: () => unawaited(
+              group.name == null
+                  ? _deleteWorkspaceGroupChats(section, group)
+                  : _dissolveWorkspaceGroup(section, group),
+            ),
             canAcceptDrop: (chat) => _workspaceKey(chat) == section.key,
             onMoveToGroup: (chat) => unawaited(
               _runGroupMutation(() => _moveWorkspaceGroup(chat, group.name)),

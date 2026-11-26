@@ -187,8 +187,7 @@ extension _NativeWorkspaceGroups on _DrawerContentState {
     _NativeWorkspaceGroup group,
   ) async {
     final name = group.name;
-    if (name == null) return;
-    final renamed = await _groupNameDialog('重命名分组', name);
+    final renamed = await _groupNameDialog('重命名分组', name ?? '');
     if (renamed == null || renamed == name || !mounted) return;
     try {
       _checkGroupNameAvailable(section, renamed, replacing: name);
@@ -209,6 +208,59 @@ extension _NativeWorkspaceGroups on _DrawerContentState {
           groupName: renamed,
         ),
       );
+    });
+  }
+
+  /// Deletes every chat inside the implicit ungrouped bucket.
+  ///
+  /// The bucket cannot be dissolved like a named group, so deleting it is
+  /// offered as an explicit, confirmed action instead.
+  Future<void> _deleteWorkspaceGroupChats(
+    _WorkspaceSection section,
+    _NativeWorkspaceGroup group,
+  ) async {
+    final members = _groupMembers(section, group.name);
+    if (members.isEmpty) {
+      return;
+    }
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('删除分组'),
+        content: Text(
+          '将删除该分组下的 ${members.length} 个对话，删除后无法恢复。',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('取消'),
+          ),
+          FilledButton(
+            style: FilledButton.styleFrom(
+              backgroundColor: Theme.of(context).colorScheme.error,
+              foregroundColor: Theme.of(context).colorScheme.onError,
+            ),
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('删除'),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true || !mounted) {
+      return;
+    }
+    await _runGroupMutation(() async {
+      var failed = 0;
+      for (final chat in members) {
+        final deleted = await _chatCoreProxy.deleteChatHistory(chatId: chat.id);
+        if (!deleted) {
+          failed++;
+        }
+      }
+      await _directoryPreferences.setDirectoryPinned(group.directory, false);
+      if (failed > 0 && mounted) {
+        _showGroupError(StateError('$failed 个对话被锁定，未能删除'));
+      }
     });
   }
 
@@ -405,12 +457,11 @@ class _GroupSectionHeaderState extends State<_GroupSectionHeader> {
                                   label: '新建分组',
                                   enabled: widget.canCreate,
                                 ),
-                                if (widget.group.name != null)
-                                  const SidebarMenuAction(
-                                    value: _GroupQuickAction.rename,
-                                    icon: OperitIcons.edit_outlined,
-                                    label: '重命名',
-                                  ),
+                                const SidebarMenuAction(
+                                  value: _GroupQuickAction.rename,
+                                  icon: OperitIcons.edit_outlined,
+                                  label: '重命名',
+                                ),
                                 SidebarMenuAction(
                                   value: _GroupQuickAction.togglePinned,
                                   icon: widget.pinned
@@ -418,13 +469,16 @@ class _GroupSectionHeaderState extends State<_GroupSectionHeader> {
                                       : OperitIcons.push_pin_rounded,
                                   label: widget.pinned ? '取消置顶' : '置顶',
                                 ),
-                                if (widget.group.name != null)
-                                  const SidebarMenuAction(
-                                    value: _GroupQuickAction.dissolve,
-                                    icon: OperitIcons.folder_off_outlined,
-                                    label: '解散分组',
-                                    dividerBefore: true,
-                                  ),
+                                SidebarMenuAction(
+                                  value: _GroupQuickAction.dissolve,
+                                  icon: widget.group.name == null
+                                      ? OperitIcons.delete_outline_rounded
+                                      : OperitIcons.folder_off_outlined,
+                                  label: widget.group.name == null
+                                      ? '删除分组'
+                                      : '解散分组',
+                                  dividerBefore: true,
+                                ),
                               ],
                             ),
                           ),

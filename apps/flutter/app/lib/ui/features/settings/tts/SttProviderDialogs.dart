@@ -206,9 +206,9 @@ class _SttConfigDialogState extends State<_SttConfigDialog> {
     final localModel = _isLocalSttProviderType(_providerType);
     final editing = widget.config != null;
     return Scaffold(
-      backgroundColor: colorScheme.surface,
+      backgroundColor: Colors.transparent,
       appBar: AppBar(
-        backgroundColor: colorScheme.surface,
+        backgroundColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
         scrolledUnderElevation: 0,
         leading: IconButton(

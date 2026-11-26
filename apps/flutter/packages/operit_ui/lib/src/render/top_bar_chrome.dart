@@ -105,11 +105,11 @@ class ThemeTopBarChrome extends StatelessWidget {
     final navigationIconWidget = navIcon != null
         ? Icon(navIcon, size: 22, color: contentForeground)
         : null;
-    final leadingExtent = navIcon != null ? 52.0 : 8.0;
+    final leadingExtent = navIcon != null ? 44.0 : 8.0;
     final trailingExtent = actions.length * 44.0 + 8.0;
-    // Without trailing actions, equal side margins keep the title exactly
-    // centered; pages with actions keep their title beside the leading icon.
-    final centered = actions.isEmpty;
+    // Back-navigable pages keep the title next to the arrow; only bare pages
+    // without a navigation icon centre the title.
+    final centered = actions.isEmpty && navIcon == null;
     return ColoredBox(
       color: contentColor,
       child: SizedBox(
@@ -136,10 +136,10 @@ class ThemeTopBarChrome extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   if (navIcon != null && navigationIconWidget != null) ...<Widget>[
-                    const SizedBox(width: 6),
+                    const SizedBox(width: 5),
                     SizedBox(
-                      width: 40,
-                      height: 40,
+                      width: 34,
+                      height: 34,
                       child: IconButton(
                         padding: EdgeInsets.zero,
                         onPressed: onNavigationPressed,

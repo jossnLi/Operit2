@@ -19,6 +19,16 @@ ThemeData buildOperitThemeData(
       backgroundVisible || themePreferenceSnapshot.transparentSurfaceEnabled
       ? Colors.transparent
       : colorScheme.surface;
+  // Overlays follow the same rule as pages: translucent over wallpaper and
+  // transparent-skin themes, opaque only for solid themes.
+  final overlayBackground = backgroundVisible ||
+          themePreferenceSnapshot.transparentSurfaceEnabled
+      ? colorScheme.surfaceContainerHigh.withValues(alpha: 0.86)
+      : colorScheme.surfaceContainerHigh;
+  final sheetBackground = backgroundVisible ||
+          themePreferenceSnapshot.transparentSurfaceEnabled
+      ? colorScheme.surface.withValues(alpha: 0.90)
+      : colorScheme.surface;
   final baseTextTheme = typography.englishLike.merge(
     colorScheme.brightness == Brightness.dark
         ? typography.white
@@ -58,7 +68,22 @@ ThemeData buildOperitThemeData(
     menuButtonTheme: _menuButtonTheme(colorScheme, textTheme),
     popupMenuTheme: _popupMenuTheme(colorScheme, textTheme),
     buttonTheme: _buttonTheme(colorScheme),
-    dialogTheme: _dialogTheme(colorScheme, textTheme),
+    dialogTheme: _dialogTheme(
+      colorScheme,
+      textTheme,
+      overlayBackground: overlayBackground,
+    ),
+    bottomSheetTheme: BottomSheetThemeData(
+      backgroundColor: sheetBackground,
+      modalBackgroundColor: sheetBackground,
+      surfaceTintColor: Colors.transparent,
+      showDragHandle: true,
+      dragHandleColor: colorScheme.onSurfaceVariant.withValues(alpha: 0.45),
+      elevation: 0,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+    ),
     chipTheme: const ChipThemeData(
       showCheckmark: false,
     ),
@@ -209,9 +234,13 @@ ButtonThemeData _buttonTheme(ColorScheme colorScheme) {
   return ButtonThemeData(alignedDropdown: true, colorScheme: colorScheme);
 }
 
-DialogThemeData _dialogTheme(ColorScheme colorScheme, TextTheme textTheme) {
+DialogThemeData _dialogTheme(
+  ColorScheme colorScheme,
+  TextTheme textTheme, {
+  Color? overlayBackground,
+}) {
   return DialogThemeData(
-    backgroundColor: colorScheme.surfaceContainerHigh,
+    backgroundColor: overlayBackground ?? colorScheme.surfaceContainerHigh,
     surfaceTintColor: Colors.transparent,
     elevation: 6,
     shadowColor: colorScheme.shadow.withValues(alpha: 0.18),

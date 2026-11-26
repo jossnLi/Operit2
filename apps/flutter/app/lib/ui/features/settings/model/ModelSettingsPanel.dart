@@ -3570,11 +3570,11 @@ class _ProviderDetailScreenState extends State<_ProviderDetailScreen> {
     final provider = _provider;
     if (provider == null) {
       return Scaffold(
-        backgroundColor: colorScheme.surface,
+        backgroundColor: Colors.transparent,
         appBar: AppBar(
           leadingWidth: 44,
           titleSpacing: 0,
-          backgroundColor: colorScheme.surface,
+          backgroundColor: Colors.transparent,
           surfaceTintColor: Colors.transparent,
           scrolledUnderElevation: 0,
           leading: IconButton(
@@ -3588,11 +3588,11 @@ class _ProviderDetailScreenState extends State<_ProviderDetailScreen> {
       );
     }
     return Scaffold(
-      backgroundColor: colorScheme.surface,
+      backgroundColor: Colors.transparent,
       appBar: AppBar(
         leadingWidth: 44,
         titleSpacing: 0,
-        backgroundColor: colorScheme.surface,
+        backgroundColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
         scrolledUnderElevation: 0,
         leading: IconButton(

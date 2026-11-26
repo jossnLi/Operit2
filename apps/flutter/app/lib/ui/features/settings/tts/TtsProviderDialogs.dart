@@ -182,9 +182,9 @@ class _TtsProviderDialogState extends State<_TtsProviderDialog> {
     final isSystemTts = _isSystemProviderType(_providerType);
     final isLocalModelTts = _isLocalModelProviderType(_providerType);
     return Scaffold(
-      backgroundColor: colorScheme.surface,
+      backgroundColor: Colors.transparent,
       appBar: AppBar(
-        backgroundColor: colorScheme.surface,
+        backgroundColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
         scrolledUnderElevation: 0,
         leading: IconButton(
@@ -1048,9 +1048,9 @@ class _TtsConfigDialogState extends State<_TtsConfigDialog> {
         isLocalModelTts ||
         (!isSystemTts && _ttsProviderCatalogUsesPlaceholder(catalog, 'voice'));
     return Scaffold(
-      backgroundColor: colorScheme.surface,
+      backgroundColor: Colors.transparent,
       appBar: AppBar(
-        backgroundColor: colorScheme.surface,
+        backgroundColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
         scrolledUnderElevation: 0,
         leading: IconButton(
