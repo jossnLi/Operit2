@@ -169,7 +169,7 @@ class _ProviderAccountLoginDialogState extends State<_ProviderAccountLoginDialog
         children: [
           const Icon(OperitIcons.verified_user_outlined, size: 22),
           const SizedBox(width: 8),
-          Text('${widget.config.providerName} 账号登录'),
+          Text('${widget.config.providerName} 获取授权密钥'),
         ],
       ),
       content: SingleChildScrollView(

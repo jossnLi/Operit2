@@ -54,9 +54,9 @@ abstract final class OperitIcons {
   static const IconData cancel_outlined = LucideIcons.circleX;
   static const IconData category_outlined = LucideIcons.shapes;
   static const IconData chat_bubble_outline_rounded = LucideIcons.messageCircle;
-  static const IconData check_circle_outline_rounded = LucideIcons.circleDot;
-  static const IconData check_circle_rounded = LucideIcons.circleDot;
-  static const IconData check_rounded = LucideIcons.circleDot;
+  static const IconData check_circle_outline_rounded = LucideIcons.squareCheck;
+  static const IconData check_circle_rounded = LucideIcons.squareCheck;
+  static const IconData check_rounded = LucideIcons.check;
   static const IconData checklist_rounded = LucideIcons.list;
   static const IconData chevron_left_rounded = LucideIcons.chevronLeft;
   static const IconData chevron_right_rounded = LucideIcons.chevronRight;
@@ -246,8 +246,8 @@ abstract final class OperitIcons {
   static const IconData qr_code_rounded = LucideIcons.qrCode;
   static const IconData qr_code_scanner_rounded = LucideIcons.scanLine;
   static const IconData query_stats_outlined = LucideIcons.chartLine;
-  static const IconData radio_button_checked_rounded = LucideIcons.circleDot;
-  static const IconData radio_button_unchecked_rounded = LucideIcons.circle;
+  static const IconData radio_button_checked_rounded = LucideIcons.squareCheck;
+  static const IconData radio_button_unchecked_rounded = LucideIcons.square;
   static const IconData check_box_rounded = LucideIcons.squareCheck;
   static const IconData check_box_outline_blank_rounded = LucideIcons.square;
   static const IconData record_voice_over_outlined = LucideIcons.micVocal;
@@ -615,16 +615,16 @@ const materialIconNamesToLucide = <String, IconData>{
   'chat_bubble_outlined': LucideIcons.messageCircle,
   'chat_bubble_rounded': LucideIcons.messageCircle,
   'chat_bubble_sharp': LucideIcons.messageCircle,
-  'check': LucideIcons.circleDot,
-  'check_circle': LucideIcons.circleDot,
-  'check_circle_outline': LucideIcons.circleDot,
-  'check_circle_outline_rounded': LucideIcons.circleDot,
-  'check_circle_outlined': LucideIcons.circleDot,
-  'check_circle_rounded': LucideIcons.circleDot,
-  'check_circle_sharp': LucideIcons.circleDot,
-  'check_outlined': LucideIcons.circleDot,
-  'check_rounded': LucideIcons.circleDot,
-  'check_sharp': LucideIcons.circleDot,
+  'check': LucideIcons.check,
+  'check_circle': LucideIcons.squareCheck,
+  'check_circle_outline': LucideIcons.squareCheck,
+  'check_circle_outline_rounded': LucideIcons.squareCheck,
+  'check_circle_outlined': LucideIcons.squareCheck,
+  'check_circle_rounded': LucideIcons.squareCheck,
+  'check_circle_sharp': LucideIcons.squareCheck,
+  'check_outlined': LucideIcons.check,
+  'check_rounded': LucideIcons.check,
+  'check_sharp': LucideIcons.check,
   'checklist': LucideIcons.list,
   'checklist_outlined': LucideIcons.list,
   'checklist_rounded': LucideIcons.list,
@@ -1583,14 +1583,14 @@ const materialIconNamesToLucide = <String, IconData>{
   'radar_rounded': LucideIcons.radar,
   'radar_sharp': LucideIcons.radar,
   'radio': LucideIcons.radio,
-  'radio_button_checked': LucideIcons.circleDot,
-  'radio_button_checked_outlined': LucideIcons.circleDot,
-  'radio_button_checked_rounded': LucideIcons.circleDot,
-  'radio_button_checked_sharp': LucideIcons.circleDot,
-  'radio_button_unchecked': LucideIcons.circle,
-  'radio_button_unchecked_outlined': LucideIcons.circle,
-  'radio_button_unchecked_rounded': LucideIcons.circle,
-  'radio_button_unchecked_sharp': LucideIcons.circle,
+  'radio_button_checked': LucideIcons.squareCheck,
+  'radio_button_checked_outlined': LucideIcons.squareCheck,
+  'radio_button_checked_rounded': LucideIcons.squareCheck,
+  'radio_button_checked_sharp': LucideIcons.squareCheck,
+  'radio_button_unchecked': LucideIcons.square,
+  'radio_button_unchecked_outlined': LucideIcons.square,
+  'radio_button_unchecked_rounded': LucideIcons.square,
+  'radio_button_unchecked_sharp': LucideIcons.square,
   'radio_outlined': LucideIcons.radio,
   'radio_rounded': LucideIcons.radio,
   'radio_sharp': LucideIcons.radio,

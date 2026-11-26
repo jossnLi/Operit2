@@ -79,11 +79,15 @@ class ThemeTopBarChrome extends StatelessWidget {
     required this.contentForeground,
     this.topPadding = 0,
     this.flipNavigationIcon = false,
+    this.barHeight,
     this.actions = const <Widget>[],
   });
 
   /// Shared vertical geometry for the app bar and desktop sidebar headers.
   static const double toolbarHeight = 52;
+
+  /// Page-specific bar height, falling back to [toolbarHeight].
+  final double? barHeight;
 
   final Widget title;
   final IconData? navigationIcon;
@@ -109,7 +113,7 @@ class ThemeTopBarChrome extends StatelessWidget {
     return ColoredBox(
       color: contentColor,
       child: SizedBox(
-        height: topPadding + toolbarHeight,
+        height: topPadding + (barHeight ?? toolbarHeight),
         child: Padding(
           padding: EdgeInsets.only(top: topPadding),
           child: Stack(

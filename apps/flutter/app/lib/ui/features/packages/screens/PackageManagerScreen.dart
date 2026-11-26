@@ -226,6 +226,8 @@ class _PackageManagerScreenState extends State<PackageManagerScreen>
   Widget build(BuildContext context) {
     final motion = ExtensionMotion.of(context);
     return ExtensionTopBar(
+      // Dense page header: 44 keeps the search row compact on phones.
+      toolbarHeight: 44,
       title: (context) => _TopBarTitle(
         tab: _tab,
         searchOpen: _searchOpen,
@@ -680,11 +682,11 @@ class _PackageTabSwitcher extends StatelessWidget {
     final colors = theme.colorScheme;
     final motion = ExtensionMotion.of(context);
     return Container(
-      height: 40,
+      height: 36,
       padding: const EdgeInsets.all(3),
       decoration: BoxDecoration(
         color: colors.surfaceContainerHigh.withValues(alpha: 0.55),
-        borderRadius: BorderRadius.circular(999),
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: colors.outlineVariant.withValues(alpha: 0.28),
           width: 0.8,
@@ -701,9 +703,9 @@ class _PackageTabSwitcher extends StatelessWidget {
                 button: true,
                 child: Material(
                   color: Colors.transparent,
-                  borderRadius: BorderRadius.circular(999),
+                  borderRadius: BorderRadius.circular(9),
                   child: InkWell(
-                    borderRadius: BorderRadius.circular(999),
+                    borderRadius: BorderRadius.circular(9),
                     onTap: () => onSelected(index),
                     child: AnimatedContainer(
                       duration: motion.standard,
@@ -712,7 +714,7 @@ class _PackageTabSwitcher extends StatelessWidget {
                         color: index == selectedIndex
                             ? colors.surface
                             : Colors.transparent,
-                        borderRadius: BorderRadius.circular(999),
+                        borderRadius: BorderRadius.circular(9),
                         boxShadow: index == selectedIndex
                             ? <BoxShadow>[
                                 BoxShadow(
@@ -821,29 +823,55 @@ class _SearchField extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final contentColor = theme.colorScheme.onSurface;
-    return TextField(
-      controller: controller,
-      focusNode: focusNode,
-      autofocus: true,
-      onChanged: onChanged,
-      maxLines: 1,
-      textInputAction: TextInputAction.search,
-      cursorColor: contentColor,
-      style: theme.textTheme.bodyMedium?.copyWith(color: contentColor),
-      decoration: InputDecoration(
-        hintText: hintText,
-        hintStyle: theme.textTheme.bodyMedium?.copyWith(
-          color: contentColor.withValues(alpha: 0.6),
+    final surface = theme.colorScheme.surfaceContainerHigh.withValues(
+      alpha: 0.50,
+    );
+    return Container(
+      height: 34,
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      decoration: BoxDecoration(
+        color: surface,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: theme.colorScheme.outlineVariant.withValues(alpha: 0.24),
+          width: 0.8,
         ),
-        prefixIcon: Icon(
-          OperitIcons.search_rounded,
-          color: contentColor.withValues(alpha: 0.8),
-        ),
-        border: InputBorder.none,
-        focusedBorder: InputBorder.none,
-        enabledBorder: InputBorder.none,
-        isDense: true,
-        contentPadding: const EdgeInsets.symmetric(vertical: 12),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            OperitIcons.search_rounded,
+            size: 17,
+            color: contentColor.withValues(alpha: 0.75),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: TextField(
+              controller: controller,
+              focusNode: focusNode,
+              autofocus: true,
+              onChanged: onChanged,
+              maxLines: 1,
+              textInputAction: TextInputAction.search,
+              cursorColor: contentColor,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: contentColor,
+              ),
+              decoration: InputDecoration(
+                hintText: hintText,
+                hintStyle: theme.textTheme.bodySmall?.copyWith(
+                  color: contentColor.withValues(alpha: 0.55),
+                ),
+                border: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                isDense: true,
+                isCollapsed: true,
+                contentPadding: const EdgeInsets.symmetric(vertical: 8),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

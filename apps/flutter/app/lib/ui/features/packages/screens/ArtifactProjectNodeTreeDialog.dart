@@ -76,7 +76,7 @@ class ArtifactVersionListDialog extends StatelessWidget {
                       vertical: 4,
                     ),
                     leading: Icon(
-                      isLatest ? OperitIcons.check_circle_outline_rounded : OperitIcons.circle_outlined,
+                      isLatest ? OperitIcons.check_box_rounded : OperitIcons.check_box_outline_blank_rounded,
                       color: isLatest
                           ? colorScheme.primary
                           : colorScheme.outline,

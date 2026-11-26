@@ -16,6 +16,7 @@ import '../../../common/ApiErrorText.dart';
 import '../../../common/ThinkingLevelText.dart';
 import '../../../common/components/M3LoadingIndicator.dart';
 import '../../../theme/OperitGlassSurface.dart';
+import '../../../theme/OperitTheme.dart';
 import '../components/ApiKeyTextField.dart';
 import '../components/SettingsControlStyles.dart';
 import 'CodexLoginDialog.dart';
@@ -249,10 +250,6 @@ class ModelSettingsPanelState extends State<ModelSettingsPanel> {
       provider: provider,
     );
     if (result == null) {
-      return;
-    }
-    if (result is _ProviderEditDeleteResult) {
-      await _deleteProvider(provider);
       return;
     }
     final saveResult = result as _ProviderEditSaveResult;
@@ -681,10 +678,6 @@ class _ProviderEditSaveResult extends _ProviderEditResult {
   final int maxConcurrentRequests;
 }
 
-class _ProviderEditDeleteResult extends _ProviderEditResult {
-  const _ProviderEditDeleteResult();
-}
-
 class _ProviderEditorPage extends StatefulWidget {
   const _ProviderEditorPage({
     required this.catalogEntries,
@@ -803,6 +796,10 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
       _fetchingBalance = true;
       _balanceError = null;
     });
+    if (typeId == 'OPENAI_CODEX') {
+      await _fetchSubscriptionUsage();
+      return;
+    }
     try {
       final info = await ProviderBalanceService.instance.fetchBalance(
         providerTypeId: typeId,
@@ -821,6 +818,75 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
       }
     } catch (error) {
       // Keep the failure visible instead of silently returning to the idle hint.
+      if (mounted) {
+        setState(() {
+          _fetchingBalance = false;
+          _balanceError = _errorMessage(error);
+        });
+      }
+    }
+  }
+
+  /// Queries the signed-in ChatGPT subscription and renders real usage rows.
+  Future<void> _fetchSubscriptionUsage() async {
+    if (_codexStatus?.signedIn != true) {
+      if (mounted) {
+        setState(() {
+          _fetchingBalance = false;
+          _balanceInfo = const ProviderBalanceInfo(
+            success: false,
+            title: '订阅用量',
+            error: '尚未登录 ChatGPT Codex 账号，登录后可查询订阅用量',
+          );
+        });
+      }
+      return;
+    }
+    try {
+      final usage = await widget.clients.servicesCodexOAuthService
+          .subscriptionUsage();
+      if (!mounted) {
+        return;
+      }
+      final account = _codexStatus?.email.isNotEmpty == true
+          ? _codexStatus!.email
+          : _codexStatus?.accountId ?? '';
+      final windows = usage.windows
+          .map(
+            (window) => ProviderUsageWindow(
+              label: window.label,
+              usedPercent: window.usedPercent,
+              resetAt: window.resetAtEpochSeconds > 0
+                  ? DateTime.fromMillisecondsSinceEpoch(
+                      window.resetAtEpochSeconds * 1000,
+                    )
+                  : null,
+            ),
+          )
+          .toList(growable: false);
+      final plan = usage.planType.trim();
+      setState(() {
+        _fetchingBalance = false;
+        _balanceInfo = ProviderBalanceInfo(
+          success: true,
+          title: '订阅用量',
+          planLabel: plan.isEmpty ? null : plan,
+          usageText: account.isEmpty ? null : '已登录: $account',
+          windows: windows,
+          usageDetails: usage.details
+              .map(
+                (detail) => ProviderUsageDetail(
+                  label: detail.label,
+                  value: detail.value,
+                ),
+              )
+              .toList(growable: false),
+          details: windows.isEmpty && usage.details.isEmpty
+              ? '订阅已连接，暂无可展示的额度窗口'
+              : null,
+        );
+      });
+    } catch (error) {
       if (mounted) {
         setState(() {
           _fetchingBalance = false;
@@ -921,17 +987,6 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
       }
       setState(() {
         _codexStatus = status;
-        if (status.signedIn) {
-          final account = status.email.isNotEmpty
-              ? status.email
-              : status.accountId;
-          _balanceInfo = ProviderBalanceInfo(
-            success: true,
-            balanceText: 'ChatGPT 订阅生效中',
-            usageText: account.isNotEmpty ? '已授权账号: $account' : '订阅权益就绪',
-            details: 'ChatGPT 订阅已授权，无需 API Key 即可直接调用',
-          );
-        }
       });
     } catch (_) {
       if (!mounted) {
@@ -1103,12 +1158,20 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final selectedCatalog = _selectedCatalog();
+    // Follow the active theme surface so wallpaper and translucent skins stay visible.
+    final themeSnapshot = OperitTheme.of(context).themePreferenceSnapshot;
+    final wallpaperVisible =
+        themeSnapshot.useBackgroundImage &&
+        (themeSnapshot.backgroundImageUri?.isNotEmpty ?? false);
+    final pageBackground = wallpaperVisible || themeSnapshot.transparentSurfaceEnabled
+        ? Colors.transparent
+        : colorScheme.surface;
     return Scaffold(
-      backgroundColor: colorScheme.surface,
+      backgroundColor: pageBackground,
       appBar: AppBar(
         leadingWidth: 44,
         titleSpacing: 0,
-        backgroundColor: colorScheme.surface,
+        backgroundColor: pageBackground,
         surfaceTintColor: Colors.transparent,
         scrolledUnderElevation: 0,
         leading: IconButton(
@@ -1334,21 +1397,6 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
                       ),
                     ),
                   ),
-                  if (editing) ...<Widget>[
-                    const SizedBox(height: 18),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: TextButton.icon(
-                        style: TextButton.styleFrom(
-                          foregroundColor: colorScheme.error,
-                        ),
-                        onPressed: () => Navigator.of(
-                          context,
-                        ).pop(const _ProviderEditDeleteResult()),
-                        icon: const Icon(OperitIcons.delete_outline_rounded),
-                        label: Text(l10n.delete),
-                      ),
-                    ),
                   ],
                 ],
               ),
@@ -1375,35 +1423,36 @@ class _ProviderEditorSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    return Container(
-      padding: const EdgeInsets.fromLTRB(14, 14, 14, 2),
-      decoration: BoxDecoration(
-        color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.28),
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(
-          color: colorScheme.outlineVariant.withValues(alpha: 0.22),
-        ),
+    return OperitGlassSurface(
+      color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.28),
+      borderRadius: BorderRadius.circular(18),
+      border: Border.all(
+        color: colorScheme.outlineVariant.withValues(alpha: 0.22),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Text(
-            title,
-            style: theme.textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.w700,
+      clip: false,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(14, 14, 14, 2),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Text(
+              title,
+              style: theme.textTheme.titleSmall?.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
             ),
-          ),
-          const SizedBox(height: 3),
-          Text(
-            description,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: colorScheme.onSurfaceVariant,
-              height: 1.4,
+            const SizedBox(height: 3),
+            Text(
+              description,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+                height: 1.4,
+              ),
             ),
-          ),
-          const SizedBox(height: 14),
-          ...children,
-        ],
+            const SizedBox(height: 14),
+            ...children,
+          ],
+        ),
       ),
     );
   }
@@ -7776,8 +7825,8 @@ class _FunctionModelOptionTile extends StatelessWidget {
                   width: 24,
                   child: Icon(
                     selected
-                        ? OperitIcons.check_circle_outline_rounded
-                        : OperitIcons.circle_outlined,
+                        ? OperitIcons.check_box_rounded
+                        : OperitIcons.check_box_outline_blank_rounded,
                     size: 20,
                     color: selected
                         ? colorScheme.primary
@@ -8329,7 +8378,8 @@ class _ProviderBalanceCard extends StatelessWidget {
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  '账户余额与用量',
+                  info?.title ??
+                      (providerTypeId == 'OPENAI_CODEX' ? '订阅用量' : '账户余额与用量'),
                   style: theme.textTheme.labelMedium?.copyWith(
                     fontWeight: FontWeight.w700,
                     color: colorScheme.onSurface,
@@ -8379,6 +8429,17 @@ class _ProviderBalanceCard extends StatelessWidget {
               ),
             )
           else if (info!.success) ...[
+            if (info!.planLabel != null && info!.planLabel!.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 2),
+                child: Text(
+                  '订阅方案: ${_planLabel(info!.planLabel!)}',
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: colorScheme.onSurface,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
             if (info!.balanceText != null)
               Row(
                 children: [
@@ -8407,6 +8468,34 @@ class _ProviderBalanceCard extends StatelessWidget {
                   ),
                 ),
               ),
+            for (final window in info!.windows)
+              _ProviderUsageWindowRow(window: window),
+            if (info!.usageDetails.isNotEmpty) ...[
+              const SizedBox(height: 8),
+              for (final detail in info!.usageDetails)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 3),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          detail.label,
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        detail.value,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: colorScheme.onSurface,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+            ],
             if (info!.details != null)
               Padding(
                 padding: const EdgeInsets.only(top: 2),
@@ -8425,6 +8514,85 @@ class _ProviderBalanceCard extends StatelessWidget {
                 color: colorScheme.error,
               ),
             ),
+        ],
+      ),
+    );
+  }
+}
+
+String _planLabel(String planType) => switch (planType.toLowerCase()) {
+  'plus' => 'ChatGPT Plus',
+  'pro' => 'ChatGPT Pro',
+  'team' => 'ChatGPT Team',
+  'free' => 'ChatGPT Free',
+  _ => planType,
+};
+
+/// One subscription window with a labelled progress bar and reset time.
+class _ProviderUsageWindowRow extends StatelessWidget {
+  const _ProviderUsageWindowRow({required this.window});
+
+  final ProviderUsageWindow window;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final resetAt = window.resetAt;
+    final resetText = resetAt == null
+        ? null
+        : '${resetAt.month.toString().padLeft(2, '0')}-'
+              '${resetAt.day.toString().padLeft(2, '0')} '
+              '${resetAt.hour.toString().padLeft(2, '0')}:'
+              '${resetAt.minute.toString().padLeft(2, '0')}';
+    return Padding(
+      padding: const EdgeInsets.only(top: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(
+                '${window.label} 窗口',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: colorScheme.onSurface,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(width: 6),
+              Text(
+                '已用 ${window.usedPercent}%',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                ),
+              ),
+              const Spacer(),
+              if (resetText != null)
+                Text(
+                  '重置 $resetText',
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
+                    fontSize: 11,
+                  ),
+                ),
+            ],
+          ),
+          const SizedBox(height: 5),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: LinearProgressIndicator(
+              value: (window.usedPercent / 100).clamp(0, 1),
+              minHeight: 6,
+              backgroundColor: colorScheme.outlineVariant.withValues(
+                alpha: 0.28,
+              ),
+              valueColor: AlwaysStoppedAnimation<Color>(
+                window.usedPercent >= 90
+                    ? colorScheme.error
+                    : colorScheme.primary,
+              ),
+            ),
+          ),
         ],
       ),
     );

@@ -476,12 +476,18 @@ class _ProviderCatalogChoiceSheetState
                                           ],
                                         ),
                                       ),
-                                      if (selected)
-                                        Icon(
-                                          OperitIcons.check_rounded,
-                                          size: 20,
-                                          color: colorScheme.primary,
-                                        ),
+                                      Icon(
+                                        selected
+                                            ? OperitIcons.check_box_rounded
+                                            : OperitIcons
+                                                  .check_box_outline_blank_rounded,
+                                        size: 20,
+                                        color: selected
+                                            ? colorScheme.primary
+                                            : colorScheme.onSurfaceVariant.withValues(
+                                                alpha: 0.5,
+                                              ),
+                                      ),
                                     ],
                                   ),
                                 ),
