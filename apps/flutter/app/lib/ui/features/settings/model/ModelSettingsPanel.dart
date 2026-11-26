@@ -1397,7 +1397,6 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
                       ),
                     ),
                   ),
-                  ],
                 ],
               ),
             ),

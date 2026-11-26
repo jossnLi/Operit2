@@ -384,7 +384,7 @@ class _TerminalProfilesSettingsState extends State<TerminalProfilesSettings> {
             for (final job in _installs)
               _TerminalInstallTile(
                 job: job,
-                stateLabel: _installState(l10n, job),
+                stateLabel: _installState(l10n, job.state),
                 finished: _finished(job),
                 onCancel: () => _cancelInstall(job),
               ),
