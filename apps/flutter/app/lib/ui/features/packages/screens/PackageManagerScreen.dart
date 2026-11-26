@@ -867,6 +867,10 @@ class _SearchField extends StatelessWidget {
                 hintStyle: theme.textTheme.bodyMedium?.copyWith(
                   color: contentColor.withValues(alpha: 0.52),
                 ),
+                // The field already paints the shared tonal surface; the app
+                // wide decoration theme would add a second, square-cornered
+                // fill inside the rounded field and split it into two tones.
+                filled: false,
                 border: InputBorder.none,
                 focusedBorder: InputBorder.none,
                 enabledBorder: InputBorder.none,
