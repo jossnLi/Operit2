@@ -3186,8 +3186,8 @@ class _SetupModeTile extends StatelessWidget {
                 const SizedBox(width: 12),
                 Icon(
                   selected
-                      ? OperitIcons.check_circle_rounded
-                      : OperitIcons.radio_button_unchecked_rounded,
+                      ? OperitIcons.check_box_rounded
+                      : OperitIcons.check_box_outline_blank_rounded,
                   size: 22,
                   color: selected
                       ? colorScheme.primary
@@ -3648,8 +3648,8 @@ class _PermissionTile extends StatelessWidget {
       child: ListTile(
         leading: Icon(
           granted
-              ? OperitIcons.check_circle_rounded
-              : OperitIcons.radio_button_unchecked_rounded,
+              ? OperitIcons.check_box_rounded
+              : OperitIcons.check_box_outline_blank_rounded,
           color: granted ? colorScheme.primary : colorScheme.onSurfaceVariant,
         ),
         title: Row(

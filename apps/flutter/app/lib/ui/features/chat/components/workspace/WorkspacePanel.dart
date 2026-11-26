@@ -2214,8 +2214,8 @@ class _WorkspacePanelState extends State<WorkspacePanel> {
                   children: [
                     Icon(
                       current == opener?.identity
-                          ? OperitIcons.radio_button_checked_rounded
-                          : OperitIcons.radio_button_unchecked_rounded,
+                          ? OperitIcons.check_box_rounded
+                          : OperitIcons.check_box_outline_blank_rounded,
                     ),
                     const SizedBox(width: 12),
                     Expanded(

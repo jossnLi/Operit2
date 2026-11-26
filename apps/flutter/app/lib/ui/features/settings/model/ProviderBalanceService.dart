@@ -11,6 +11,10 @@ class ProviderBalanceInfo {
     this.usageText,
     this.details,
     this.error,
+    this.title,
+    this.planLabel,
+    this.windows = const <ProviderUsageWindow>[],
+    this.usageDetails = const <ProviderUsageDetail>[],
   });
 
   final bool success;
@@ -18,6 +22,37 @@ class ProviderBalanceInfo {
   final String? usageText;
   final String? details;
   final String? error;
+
+  /// Card heading; switching between subscription usage and account balance.
+  final String? title;
+  final String? planLabel;
+
+  /// Measured quota windows rendered as labelled progress bars.
+  final List<ProviderUsageWindow> windows;
+
+  /// Raw subscription values such as credits or reset coupons.
+  final List<ProviderUsageDetail> usageDetails;
+}
+
+/// One quota window of a subscription plan.
+class ProviderUsageWindow {
+  const ProviderUsageWindow({
+    required this.label,
+    required this.usedPercent,
+    this.resetAt,
+  });
+
+  final String label;
+  final int usedPercent;
+  final DateTime? resetAt;
+}
+
+/// One raw subscription value row.
+class ProviderUsageDetail {
+  const ProviderUsageDetail({required this.label, required this.value});
+
+  final String label;
+  final String value;
 }
 
 /// Service that queries live account balance, credits, or subscription quota
@@ -39,21 +74,13 @@ class ProviderBalanceService {
     final cleanType = providerTypeId.trim().toUpperCase();
     final cleanKey = apiKey.trim();
 
-    // 1. OpenAI Codex (ChatGPT Subscription)
+    // 1. OpenAI Codex reports live subscription usage from the signed-in
+    // ChatGPT session, which is queried through the core service instead of
+    // an API-key balance endpoint.
     if (cleanType == 'OPENAI_CODEX') {
-      if (isCodexSignedIn) {
-        final accountText = (codexAccount != null && codexAccount.isNotEmpty)
-            ? ' ($codexAccount)'
-            : '';
-        return ProviderBalanceInfo(
-          success: true,
-          balanceText: 'ChatGPT 订阅有效',
-          details: 'ChatGPT Codex 订阅已连接$accountText，无单次 Token 扣费限制。',
-        );
-      }
       return const ProviderBalanceInfo(
         success: false,
-        error: '尚未登录 ChatGPT Codex 订阅账号',
+        error: '订阅用量需登录 ChatGPT Codex 账号后查询',
       );
     }
 
@@ -85,11 +112,10 @@ class ProviderBalanceService {
         return await _fetchMoonshotBalance(cleanKey);
       }
 
-      // 6. Generic OpenAI compatible / others
-      return ProviderBalanceInfo(
-        success: true,
-        balanceText: '凭据已生效',
-        details: '已连接并校验供应商凭证。',
+      // 6. Providers without a public balance endpoint.
+      return const ProviderBalanceInfo(
+        success: false,
+        error: '该供应商暂不支持自动查询余额与订阅用量',
       );
     } catch (e) {
       return ProviderBalanceInfo(

@@ -19,6 +19,7 @@ class ExtensionTopBar extends StatefulWidget {
     required this.child,
     this.title,
     this.actions,
+    this.toolbarHeight,
   });
 
   final Widget child;
@@ -26,6 +27,9 @@ class ExtensionTopBar extends StatefulWidget {
   /// Replaces the route title; it is built in the shell's context.
   final WidgetBuilder? title;
   final List<Widget> Function(BuildContext context)? actions;
+
+  /// Compact bar height used by dense extension pages.
+  final double? toolbarHeight;
 
   @override
   State<ExtensionTopBar> createState() => _ExtensionTopBarState();
@@ -76,7 +80,10 @@ class _ExtensionTopBarState extends State<ExtensionTopBar> {
     if (title == null) {
       controller.clearTitleContent(owner: this);
     } else {
-      controller.setTitleContent(TopBarTitleContent(title), owner: this);
+      controller.setTitleContent(
+        TopBarTitleContent(title, toolbarHeight: widget.toolbarHeight),
+        owner: this,
+      );
     }
     controller.setActions(
       widget.actions ?? (context) => const <Widget>[],

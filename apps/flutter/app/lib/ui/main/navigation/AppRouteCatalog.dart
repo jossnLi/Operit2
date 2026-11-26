@@ -19,6 +19,20 @@ class AppRouteCatalog {
       'main_sidebar_plugins';
   static const String _toolPkgNavSurfaceAppBar = 'app_bar';
 
+  /// Builtin sidebar shortcuts that stay reachable from the toolbox only.
+  ///
+  /// The character-card and memory pages remain full pages; they are simply
+  /// no longer published as conversation-sidebar rows.
+  static const Map<String, Set<String>> _hiddenSidebarEntries =
+      <String, Set<String>>{
+        'com.operit.character_cards': <String>{'sidebar', 'memory-settings'},
+      };
+
+  static bool _isHiddenSidebarEntry(core_proxy.ToolPkgNavigationEntry entry) {
+    final hidden = _hiddenSidebarEntries[entry.containerPackageName];
+    return hidden != null && hidden.contains(entry.entryId);
+  }
+
   static AppNavigationModel build(
     BuildContext context, {
     List<core_proxy.ToolPkgUiRoute> toolPkgUiRoutes =
@@ -42,7 +56,8 @@ class AppRouteCatalog {
     ];
     final toolPkgNavigationEntrySpecs = <NavigationEntrySpec>[
       for (final entry in toolPkgNavigationEntries)
-        if (_navigationSurface(entry.surface) != null)
+        if (_navigationSurface(entry.surface) != null &&
+            !_isHiddenSidebarEntry(entry))
           NavigationEntrySpec(
             entryId: 'toolpkg:${entry.containerPackageName}:${entry.entryId}',
             routeId: entry.routeId,

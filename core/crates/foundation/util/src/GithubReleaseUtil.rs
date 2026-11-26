@@ -10,7 +10,7 @@ use serde::Deserialize;
 use sha2::{Digest, Sha256};
 use std::cmp::Ordering as CmpOrdering;
 
-const GITHUB_RELEASE_OWNER: &str = "AAswordman";
+const GITHUB_RELEASE_OWNER: &str = "jossnLi";
 const GITHUB_RELEASE_REPO: &str = "Operit2";
 const GITHUB_PATCH_REPO: &str = "Operit2-nightly";
 const GITHUB_RELEASE_PAGE_SIZE: usize = 30;
@@ -277,7 +277,7 @@ impl GithubReleaseUtil {
             }
             let bytes = Arc::new(Mutex::new(Vec::new()));
             let body = bytes.clone();
-            requestUpdateHttp(defaultHttpHost(), request, HttpDownloadControl::new(), move |event| {
+            let present = requestOptional(defaultHttpHost(), request, HttpDownloadControl::new(), move |event| {
                 if let UpdateHttpEvent::Bytes(chunk) = event {
                     let mut bytes = body.lock().map_err(|error| error.to_string())?;
                     if bytes.len().saturating_add(chunk.len()) > 16 * 1024 * 1024 {
@@ -287,6 +287,11 @@ impl GithubReleaseUtil {
                 }
                 Ok(())
             }).await?;
+            // A channel without its own patch repository must not fail the
+            // whole check: full packages still come from the release repository.
+            if !present {
+                return Ok(Vec::new());
+            }
             let releases: Vec<GitHubRelease> = serde_json::from_slice(
                 &bytes.lock().map_err(|error| error.to_string())?
             ).map_err(|error| error.to_string())?;
@@ -1333,12 +1338,12 @@ mod tests {
     fn shared_update_source_validation_rejects_foreign_or_traversing_assets() {
         let name = "operit2-app-linux-x86_64-2.0.0.tar.gz";
         assert!(super::validateUpdatePackageSource(
-            &format!("https://github.com/AAswordman/Operit2/releases/download/v2.0.0/{name}"),
+            &format!("https://github.com/jossnLi/Operit2/releases/download/v2.0.0/{name}"),
             name
         )
         .is_ok());
         assert!(super::validateUpdatePackageSource(
-            &format!("https://github.com/AAswordman/Operit2-nightly/releases/download/v2.0.0/{name}.update.json"),
+            &format!("https://github.com/jossnLi/Operit2-nightly/releases/download/v2.0.0/{name}.update.json"),
             &format!("{name}.update.json")
         ).is_ok());
         assert!(super::validateUpdatePackageSource(
@@ -1348,12 +1353,12 @@ mod tests {
         .is_err());
         assert!(super::validateUpdatePackageSource("https://evil.example/install", name).is_err());
         assert!(super::validateUpdatePackageSource(
-            "https://github.com/AAswordman/Operit2/releases/download/v2/a",
+            "https://github.com/jossnLi/Operit2/releases/download/v2/a",
             "../a"
         )
         .is_err());
         assert!(super::validateUpdatePackageSource(
-            "https://github.com/AAswordman/Operit2/releases/download/v2/wrong",
+            "https://github.com/jossnLi/Operit2/releases/download/v2/wrong",
             name
         )
         .is_err());
@@ -1678,7 +1683,7 @@ mod tests {
         let releases = vec![GitHubRelease {
             tag_name: "v2.0.0-preview.1".to_string(),
             body: Some("CLI preview".to_string()),
-            html_url: "https://github.com/AAswordman/Operit2/releases/tag/v2.0.0-preview.1"
+            html_url: "https://github.com/jossnLi/Operit2/releases/tag/v2.0.0-preview.1"
                 .to_string(),
             draft: false,
             prerelease: true,
@@ -1686,7 +1691,7 @@ mod tests {
                 digest: None,
                 name: "operit2-cli-windows-x86_64-2.0.0-preview.1.zip".to_string(),
                 browser_download_url:
-                    "https://github.com/AAswordman/Operit2/releases/download/v2.0.0-preview.1/operit2-cli-windows-x86_64-2.0.0-preview.1.zip"
+                    "https://github.com/jossnLi/Operit2/releases/download/v2.0.0-preview.1/operit2-cli-windows-x86_64-2.0.0-preview.1.zip"
                         .to_string(),
             }],
         }];

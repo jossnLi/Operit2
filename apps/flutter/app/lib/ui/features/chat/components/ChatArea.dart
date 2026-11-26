@@ -1679,8 +1679,8 @@ class _SelectableMessageFrame extends StatelessWidget {
           top: 6,
           child: Icon(
             selected
-                ? OperitIcons.check_circle_outline_rounded
-                : OperitIcons.radio_button_unchecked_rounded,
+                ? OperitIcons.check_box_rounded
+                : OperitIcons.check_box_outline_blank_rounded,
             size: 18,
             color: selected
                 ? colorScheme.primary

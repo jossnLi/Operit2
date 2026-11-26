@@ -563,12 +563,16 @@ class SettingsSegmentedSelector<T> extends StatelessWidget {
     required this.segments,
     required this.onChanged,
     this.hasSelection = true,
+    this.dense = false,
   });
 
   final T value;
   final List<ButtonSegment<T>> segments;
   final ValueChanged<T> onChanged;
   final bool hasSelection;
+
+  /// Tightens type and icon sizes so the control fits a crowded action row.
+  final bool dense;
 
   @override
   Widget build(BuildContext context) {
@@ -578,7 +582,9 @@ class SettingsSegmentedSelector<T> extends StatelessWidget {
     return SegmentedButton<T>(
       showSelectedIcon: false,
       style: SegmentedButton.styleFrom(
-        visualDensity: VisualDensity.compact,
+        visualDensity: dense
+            ? const VisualDensity(horizontal: -3, vertical: -3)
+            : VisualDensity.compact,
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         selectedBackgroundColor: isDark
             ? colorScheme.primary.withValues(alpha: 0.22)
@@ -601,7 +607,7 @@ class SettingsSegmentedSelector<T> extends StatelessWidget {
         ),
         textStyle: Theme.of(context).textTheme.labelSmall?.copyWith(
           fontWeight: FontWeight.w600,
-          fontSize: 12.5,
+          fontSize: dense ? 11.5 : 12.5,
         ),
       ),
       segments: segments,

@@ -154,8 +154,8 @@ class _UserProfileSettingsPanelState extends State<UserProfileSettingsPanel> {
                 selected: identity.id == activeIdentity.id,
                 leading: Icon(
                   identity.id == activeIdentity.id
-                      ? OperitIcons.radio_button_checked_rounded
-                      : OperitIcons.radio_button_unchecked_rounded,
+                      ? OperitIcons.check_box_rounded
+                      : OperitIcons.check_box_outline_blank_rounded,
                   size: 22,
                 ),
                 title: Text(

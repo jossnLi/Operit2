@@ -16,6 +16,7 @@ import '../../../common/ApiErrorText.dart';
 import '../../../common/ThinkingLevelText.dart';
 import '../../../common/components/M3LoadingIndicator.dart';
 import '../../../theme/OperitGlassSurface.dart';
+import '../../../theme/OperitTheme.dart';
 import '../components/ApiKeyTextField.dart';
 import '../components/SettingsControlStyles.dart';
 import 'CodexLoginDialog.dart';
@@ -251,10 +252,6 @@ class ModelSettingsPanelState extends State<ModelSettingsPanel> {
     if (result == null) {
       return;
     }
-    if (result is _ProviderEditDeleteResult) {
-      await _deleteProvider(provider);
-      return;
-    }
     final saveResult = result as _ProviderEditSaveResult;
     try {
       await widget.clients.preferencesModelConfigManager.updateProviderProfile(
@@ -327,11 +324,33 @@ class ModelSettingsPanelState extends State<ModelSettingsPanel> {
       if (!mounted) {
         return;
       }
-      await _DeleteProviderBlockedDialog.show(
+      // Offer the only workable path: release the functions, then delete.
+      final detach = await _DeleteProviderBlockedDialog.show(
         context: context,
         functionTypes: boundFunctions,
+        canDetach: !boundFunctions.contains(core_proxy.FunctionType.chat),
       );
-      return;
+      if (detach != true || !mounted) {
+        return;
+      }
+      try {
+        for (final functionType in boundFunctions) {
+          if (functionType == core_proxy.FunctionType.chat) {
+            continue;
+          }
+          await widget.clients.preferencesFunctionalConfigManager
+              .setFunctionFollowChat(functionType: functionType);
+        }
+      } on CoreLinkError catch (error) {
+        if (!mounted) {
+          return;
+        }
+        await _showProviderConfigError(
+          title: AppLocalizations.of(context)!.delete,
+          error: error,
+        );
+        return;
+      }
     }
     if (!mounted) {
       return;
@@ -659,10 +678,6 @@ class _ProviderEditSaveResult extends _ProviderEditResult {
   final int maxConcurrentRequests;
 }
 
-class _ProviderEditDeleteResult extends _ProviderEditResult {
-  const _ProviderEditDeleteResult();
-}
-
 class _ProviderEditorPage extends StatefulWidget {
   const _ProviderEditorPage({
     required this.catalogEntries,
@@ -716,6 +731,7 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
   bool _keyTesting = false;
   ProviderBalanceInfo? _balanceInfo;
   bool _fetchingBalance = false;
+  String? _balanceError;
 
   @override
   void initState() {
@@ -760,7 +776,8 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
             _fetchBalance();
           }
         });
-      } else if (_apiKeyController.text.trim().isNotEmpty) {
+      } else if (_apiKeyController.text.trim().isNotEmpty ||
+          (_useKeyPool && _keyPool.isNotEmpty)) {
         _fetchBalance();
       }
     });
@@ -777,7 +794,12 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
     }
     setState(() {
       _fetchingBalance = true;
+      _balanceError = null;
     });
+    if (typeId == 'OPENAI_CODEX') {
+      await _fetchSubscriptionUsage();
+      return;
+    }
     try {
       final info = await ProviderBalanceService.instance.fetchBalance(
         providerTypeId: typeId,
@@ -794,10 +816,81 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
           _fetchingBalance = false;
         });
       }
-    } catch (_) {
+    } catch (error) {
+      // Keep the failure visible instead of silently returning to the idle hint.
       if (mounted) {
         setState(() {
           _fetchingBalance = false;
+          _balanceError = _errorMessage(error);
+        });
+      }
+    }
+  }
+
+  /// Queries the signed-in ChatGPT subscription and renders real usage rows.
+  Future<void> _fetchSubscriptionUsage() async {
+    if (_codexStatus?.signedIn != true) {
+      if (mounted) {
+        setState(() {
+          _fetchingBalance = false;
+          _balanceInfo = const ProviderBalanceInfo(
+            success: false,
+            title: '订阅用量',
+            error: '尚未登录 ChatGPT Codex 账号，登录后可查询订阅用量',
+          );
+        });
+      }
+      return;
+    }
+    try {
+      final usage = await widget.clients.servicesCodexOAuthService
+          .subscriptionUsage();
+      if (!mounted) {
+        return;
+      }
+      final account = _codexStatus?.email.isNotEmpty == true
+          ? _codexStatus!.email
+          : _codexStatus?.accountId ?? '';
+      final windows = usage.windows
+          .map(
+            (window) => ProviderUsageWindow(
+              label: window.label,
+              usedPercent: window.usedPercent,
+              resetAt: window.resetAtEpochSeconds > 0
+                  ? DateTime.fromMillisecondsSinceEpoch(
+                      window.resetAtEpochSeconds * 1000,
+                    )
+                  : null,
+            ),
+          )
+          .toList(growable: false);
+      final plan = usage.planType.trim();
+      setState(() {
+        _fetchingBalance = false;
+        _balanceInfo = ProviderBalanceInfo(
+          success: true,
+          title: '订阅用量',
+          planLabel: plan.isEmpty ? null : plan,
+          usageText: account.isEmpty ? null : '已登录: $account',
+          windows: windows,
+          usageDetails: usage.details
+              .map(
+                (detail) => ProviderUsageDetail(
+                  label: detail.label,
+                  value: detail.value,
+                ),
+              )
+              .toList(growable: false),
+          details: windows.isEmpty && usage.details.isEmpty
+              ? '订阅已连接，暂无可展示的额度窗口'
+              : null,
+        );
+      });
+    } catch (error) {
+      if (mounted) {
+        setState(() {
+          _fetchingBalance = false;
+          _balanceError = _errorMessage(error);
         });
       }
     }
@@ -859,6 +952,7 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
     setState(() {
       _selectedProviderTypeId = providerTypeId;
       _balanceInfo = null;
+      _balanceError = null;
       if (catalog != null) {
         _endpointController.text = catalog.defaultEndpoint;
       }
@@ -893,17 +987,6 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
       }
       setState(() {
         _codexStatus = status;
-        if (status.signedIn) {
-          final account = status.email.isNotEmpty
-              ? status.email
-              : status.accountId;
-          _balanceInfo = ProviderBalanceInfo(
-            success: true,
-            balanceText: 'ChatGPT 订阅生效中',
-            usageText: account.isNotEmpty ? '已授权账号: $account' : '订阅权益就绪',
-            details: 'ChatGPT 订阅已授权，无需 API Key 即可直接调用',
-          );
-        }
       });
     } catch (_) {
       if (!mounted) {
@@ -976,9 +1059,11 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
                   final selected = option.endpoint == selectedEndpoint;
                   return ListTile(
                     selected: selected,
-                    leading: selected
-                        ? const Icon(OperitIcons.check_rounded)
-                        : const SizedBox(width: 24),
+                    leading: Icon(
+                      selected
+                          ? OperitIcons.check_box_rounded
+                          : OperitIcons.check_box_outline_blank_rounded,
+                    ),
                     title: Text(option.endpoint),
                     subtitle: option.label == option.endpoint
                         ? null
@@ -1073,12 +1158,20 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final selectedCatalog = _selectedCatalog();
+    // Follow the active theme surface so wallpaper and translucent skins stay visible.
+    final themeSnapshot = OperitTheme.of(context).themePreferenceSnapshot;
+    final wallpaperVisible =
+        themeSnapshot.useBackgroundImage &&
+        (themeSnapshot.backgroundImageUri?.isNotEmpty ?? false);
+    final pageBackground = wallpaperVisible || themeSnapshot.transparentSurfaceEnabled
+        ? Colors.transparent
+        : colorScheme.surface;
     return Scaffold(
-      backgroundColor: colorScheme.surface,
+      backgroundColor: pageBackground,
       appBar: AppBar(
         leadingWidth: 44,
         titleSpacing: 0,
-        backgroundColor: colorScheme.surface,
+        backgroundColor: pageBackground,
         surfaceTintColor: Colors.transparent,
         scrolledUnderElevation: 0,
         leading: IconButton(
@@ -1205,6 +1298,7 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
                       if (_selectedProviderTypeId != null && !_isLocalProvider)
                         _ProviderBalanceCard(
                           info: _balanceInfo,
+                          error: _balanceError,
                           loading: _fetchingBalance,
                           onRefresh: _fetchBalance,
                           providerTypeId: _selectedProviderTypeId,
@@ -1303,22 +1397,6 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
                       ),
                     ),
                   ),
-                  if (editing) ...<Widget>[
-                    const SizedBox(height: 18),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: TextButton.icon(
-                        style: TextButton.styleFrom(
-                          foregroundColor: colorScheme.error,
-                        ),
-                        onPressed: () => Navigator.of(
-                          context,
-                        ).pop(const _ProviderEditDeleteResult()),
-                        icon: const Icon(OperitIcons.delete_outline_rounded),
-                        label: Text(l10n.delete),
-                      ),
-                    ),
-                  ],
                 ],
               ),
             ),
@@ -1344,35 +1422,36 @@ class _ProviderEditorSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    return Container(
-      padding: const EdgeInsets.fromLTRB(14, 14, 14, 2),
-      decoration: BoxDecoration(
-        color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.28),
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(
-          color: colorScheme.outlineVariant.withValues(alpha: 0.22),
-        ),
+    return OperitGlassSurface(
+      color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.28),
+      borderRadius: BorderRadius.circular(18),
+      border: Border.all(
+        color: colorScheme.outlineVariant.withValues(alpha: 0.22),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Text(
-            title,
-            style: theme.textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.w700,
+      clip: false,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(14, 14, 14, 2),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Text(
+              title,
+              style: theme.textTheme.titleSmall?.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
             ),
-          ),
-          const SizedBox(height: 3),
-          Text(
-            description,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: colorScheme.onSurfaceVariant,
-              height: 1.4,
+            const SizedBox(height: 3),
+            Text(
+              description,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+                height: 1.4,
+              ),
             ),
-          ),
-          const SizedBox(height: 14),
-          ...children,
-        ],
+            const SizedBox(height: 14),
+            ...children,
+          ],
+        ),
       ),
     );
   }
@@ -3541,6 +3620,12 @@ class _ProviderDetailScreenState extends State<_ProviderDetailScreen> {
                 case _ProviderDetailAction.edit:
                   unawaited(_run(() => widget.onEditProvider(provider)));
                   break;
+                case _ProviderDetailAction.testAll:
+                  unawaited(_testModels(provider, provider.models));
+                  break;
+                case _ProviderDetailAction.select:
+                  _startSelecting();
+                  break;
                 case _ProviderDetailAction.delete:
                   unawaited(_run(() => widget.onDeleteProvider(provider)));
                   break;
@@ -3554,6 +3639,31 @@ class _ProviderDetailScreenState extends State<_ProviderDetailScreen> {
                     const Icon(OperitIcons.edit_outlined, size: 18),
                     const SizedBox(width: 10),
                     Text(l10n.edit),
+                  ],
+                ),
+              ),
+              PopupMenuItem<_ProviderDetailAction>(
+                value: _ProviderDetailAction.testAll,
+                enabled:
+                    provider.models.isNotEmpty &&
+                    !_selecting &&
+                    !_batchRunning,
+                child: Row(
+                  children: <Widget>[
+                    const Icon(OperitIcons.speed_rounded, size: 18),
+                    const SizedBox(width: 10),
+                    Text(l10n.settingsModelTestAll),
+                  ],
+                ),
+              ),
+              PopupMenuItem<_ProviderDetailAction>(
+                value: _ProviderDetailAction.select,
+                enabled: provider.models.isNotEmpty && !_selecting,
+                child: Row(
+                  children: <Widget>[
+                    const Icon(OperitIcons.checklist_rounded, size: 18),
+                    const SizedBox(width: 10),
+                    Text(l10n.settingsModelSelect),
                   ],
                 ),
               ),
@@ -3678,7 +3788,7 @@ class _ProviderDetailScreenState extends State<_ProviderDetailScreen> {
   }
 }
 
-enum _ProviderDetailAction { edit, delete }
+enum _ProviderDetailAction { edit, testAll, select, delete }
 
 /// Whether two capability sets switch the same things on.
 bool _sameCapabilities(
@@ -3750,6 +3860,10 @@ class _ModelListToolbar extends StatelessWidget {
       fontSize: 12.5,
       color: colorScheme.onSurfaceVariant,
     );
+    // Idle actions live in the overflow menu, so nothing occupies the row.
+    if (!selecting && !batchRunning) {
+      return const SizedBox.shrink();
+    }
     final Widget content;
     if (selecting) {
       final anyChecked = checkedCount > 0;
@@ -3790,36 +3904,28 @@ class _ModelListToolbar extends StatelessWidget {
       );
     } else {
       content = Row(
-        key: const ValueKey<String>('browsing'),
+        key: const ValueKey<String>('testing'),
+        mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          if (batchRunning) ...<Widget>[
-            const SizedBox.square(
-              dimension: 14,
-              child: Center(child: M3LoadingIndicator(size: 14)),
+          const SizedBox.square(
+            dimension: 14,
+            child: Center(child: M3LoadingIndicator(size: 14)),
+          ),
+          const SizedBox(width: 8),
+          Flexible(
+            child: Text(
+              l10n.settingsModelTestProgress(batchDone, batchTotal),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: labelStyle,
             ),
-            const SizedBox(width: 8),
-            Flexible(
-              child: Text(
-                l10n.settingsModelTestProgress(batchDone, batchTotal),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: labelStyle,
-              ),
-            ),
-          ],
+          ),
           const Spacer(),
-          if (batchRunning)
-            _CapsuleActionButton(
-              label: l10n.stop,
-              icon: OperitIcons.stop_rounded,
-              onTap: batchStopping ? null : onStopTests,
-            )
-          else
-            _CapsuleActionButton(
-              label: l10n.settingsModelTestAll,
-              icon: OperitIcons.speed_rounded,
-              onTap: onTestAll,
-            ),
+          _CapsuleActionButton(
+            label: l10n.stop,
+            icon: OperitIcons.stop_rounded,
+            onTap: batchStopping ? null : onStopTests,
+          ),
           const SizedBox(width: 6),
           _CapsuleActionButton(
             label: l10n.settingsModelSelect,
@@ -3830,7 +3936,7 @@ class _ModelListToolbar extends StatelessWidget {
       );
     }
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 6),
+      padding: const EdgeInsets.fromLTRB(16, 8, 12, 6),
       child: SizedBox(
         height: 32,
         child: AnimatedSwitcher(
@@ -6581,8 +6687,8 @@ class _ThinkingKindOption extends StatelessWidget {
               duration: const Duration(milliseconds: 160),
               child: Icon(
                 selected
-                    ? OperitIcons.radio_button_checked_rounded
-                    : OperitIcons.radio_button_unchecked_rounded,
+                    ? OperitIcons.check_box_rounded
+                    : OperitIcons.check_box_outline_blank_rounded,
                 key: ValueKey<bool>(selected),
                 size: 20,
                 color: selected
@@ -7718,8 +7824,8 @@ class _FunctionModelOptionTile extends StatelessWidget {
                   width: 24,
                   child: Icon(
                     selected
-                        ? OperitIcons.check_circle_outline_rounded
-                        : OperitIcons.circle_outlined,
+                        ? OperitIcons.check_box_rounded
+                        : OperitIcons.check_box_outline_blank_rounded,
                     size: 20,
                     color: selected
                         ? colorScheme.primary
@@ -7938,24 +8044,34 @@ class _DeleteModelBlockedDialog extends StatelessWidget {
 }
 
 class _DeleteProviderBlockedDialog extends StatelessWidget {
-  const _DeleteProviderBlockedDialog({required this.functionTypes});
+  const _DeleteProviderBlockedDialog({
+    required this.functionTypes,
+    required this.canDetach,
+  });
 
   final List<core_proxy.FunctionType> functionTypes;
 
-  static Future<void> show({
+  /// Whether every occupying function can fall back to the chat model.
+  final bool canDetach;
+
+  static Future<bool?> show({
     required BuildContext context,
     required List<core_proxy.FunctionType> functionTypes,
+    bool canDetach = true,
   }) {
-    return showDialog<void>(
+    return showDialog<bool>(
       context: context,
-      builder: (context) =>
-          _DeleteProviderBlockedDialog(functionTypes: functionTypes),
+      builder: (context) => _DeleteProviderBlockedDialog(
+        functionTypes: functionTypes,
+        canDetach: canDetach,
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final colorScheme = Theme.of(context).colorScheme;
     final names = functionTypes
         .map((functionType) => _functionTypeTitle(l10n, functionType))
         .join(' · ');
@@ -7963,9 +8079,17 @@ class _DeleteProviderBlockedDialog extends StatelessWidget {
       title: Text(l10n.delete),
       content: Text(l10n.settingsModelDeleteProviderBlocked(names)),
       actions: <Widget>[
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(false),
+          child: Text(l10n.cancel),
+        ),
         FilledButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: Text(l10n.ok),
+          onPressed: canDetach ? () => Navigator.of(context).pop(true) : null,
+          style: FilledButton.styleFrom(
+            backgroundColor: colorScheme.error,
+            foregroundColor: colorScheme.onError,
+          ),
+          child: Text(canDetach ? '解除占用并删除' : '先切换聊天模型'),
         ),
       ],
     );
@@ -8214,12 +8338,14 @@ class _ProviderBalanceCard extends StatelessWidget {
     required this.loading,
     required this.onRefresh,
     required this.providerTypeId,
+    this.error,
   });
 
   final ProviderBalanceInfo? info;
   final bool loading;
   final VoidCallback onRefresh;
   final String? providerTypeId;
+  final String? error;
 
   @override
   Widget build(BuildContext context) {
@@ -8251,7 +8377,8 @@ class _ProviderBalanceCard extends StatelessWidget {
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  '账户余额与用量',
+                  info?.title ??
+                      (providerTypeId == 'OPENAI_CODEX' ? '订阅用量' : '账户余额与用量'),
                   style: theme.textTheme.labelMedium?.copyWith(
                     fontWeight: FontWeight.w700,
                     color: colorScheme.onSurface,
@@ -8279,21 +8406,39 @@ class _ProviderBalanceCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 6),
-          if (info == null && !loading)
-            Text(
-              '点击刷新查询当前供应商的账户余额或订阅用量',
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: colorScheme.onSurfaceVariant,
-              ),
-            )
-          else if (loading)
+          if (loading)
             Text(
               '正在查询供应商最新余额与订阅用量…',
               style: theme.textTheme.bodySmall?.copyWith(
                 color: colorScheme.onSurfaceVariant,
               ),
             )
+          else if (info == null && error != null)
+            Text(
+              '余额查询失败：$error',
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: colorScheme.error,
+              ),
+            )
+          else if (info == null)
+            Text(
+              '点击刷新查询当前供应商的账户余额或订阅用量',
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+              ),
+            )
           else if (info!.success) ...[
+            if (info!.planLabel != null && info!.planLabel!.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 2),
+                child: Text(
+                  '订阅方案: ${_planLabel(info!.planLabel!)}',
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: colorScheme.onSurface,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
             if (info!.balanceText != null)
               Row(
                 children: [
@@ -8322,6 +8467,34 @@ class _ProviderBalanceCard extends StatelessWidget {
                   ),
                 ),
               ),
+            for (final window in info!.windows)
+              _ProviderUsageWindowRow(window: window),
+            if (info!.usageDetails.isNotEmpty) ...[
+              const SizedBox(height: 8),
+              for (final detail in info!.usageDetails)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 3),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          detail.label,
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        detail.value,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: colorScheme.onSurface,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+            ],
             if (info!.details != null)
               Padding(
                 padding: const EdgeInsets.only(top: 2),
@@ -8340,6 +8513,85 @@ class _ProviderBalanceCard extends StatelessWidget {
                 color: colorScheme.error,
               ),
             ),
+        ],
+      ),
+    );
+  }
+}
+
+String _planLabel(String planType) => switch (planType.toLowerCase()) {
+  'plus' => 'ChatGPT Plus',
+  'pro' => 'ChatGPT Pro',
+  'team' => 'ChatGPT Team',
+  'free' => 'ChatGPT Free',
+  _ => planType,
+};
+
+/// One subscription window with a labelled progress bar and reset time.
+class _ProviderUsageWindowRow extends StatelessWidget {
+  const _ProviderUsageWindowRow({required this.window});
+
+  final ProviderUsageWindow window;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final resetAt = window.resetAt;
+    final resetText = resetAt == null
+        ? null
+        : '${resetAt.month.toString().padLeft(2, '0')}-'
+              '${resetAt.day.toString().padLeft(2, '0')} '
+              '${resetAt.hour.toString().padLeft(2, '0')}:'
+              '${resetAt.minute.toString().padLeft(2, '0')}';
+    return Padding(
+      padding: const EdgeInsets.only(top: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(
+                '${window.label} 窗口',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: colorScheme.onSurface,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(width: 6),
+              Text(
+                '已用 ${window.usedPercent}%',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                ),
+              ),
+              const Spacer(),
+              if (resetText != null)
+                Text(
+                  '重置 $resetText',
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
+                    fontSize: 11,
+                  ),
+                ),
+            ],
+          ),
+          const SizedBox(height: 5),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: LinearProgressIndicator(
+              value: (window.usedPercent / 100).clamp(0, 1),
+              minHeight: 6,
+              backgroundColor: colorScheme.outlineVariant.withValues(
+                alpha: 0.28,
+              ),
+              valueColor: AlwaysStoppedAnimation<Color>(
+                window.usedPercent >= 90
+                    ? colorScheme.error
+                    : colorScheme.primary,
+              ),
+            ),
+          ),
         ],
       ),
     );

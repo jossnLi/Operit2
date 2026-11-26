@@ -295,6 +295,7 @@ class _AppContentState extends State<AppContent> {
                     : OperitIcons.view_sidebar_outlined;
                 final shouldFlipNavigationIcon = false;
                 return ThemeTopBarChrome(
+                  barHeight: titleContent?.toolbarHeight,
                   title:
                       titleContent?.content(context) ??
                       TopBarTitleText(

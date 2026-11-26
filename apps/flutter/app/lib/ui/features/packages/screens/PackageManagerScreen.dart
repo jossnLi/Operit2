@@ -226,6 +226,8 @@ class _PackageManagerScreenState extends State<PackageManagerScreen>
   Widget build(BuildContext context) {
     final motion = ExtensionMotion.of(context);
     return ExtensionTopBar(
+      // Dense page header: 44 keeps the search row compact on phones.
+      toolbarHeight: 44,
       title: (context) => _TopBarTitle(
         tab: _tab,
         searchOpen: _searchOpen,
@@ -236,38 +238,26 @@ class _PackageManagerScreenState extends State<PackageManagerScreen>
         onSearchChanged: _onSearchChanged,
       ),
       actions: (context) {
-        // Phones keep the title wide enough for the section switcher.
-        final narrow = MediaQuery.sizeOf(context).width < 600;
         return <Widget>[
           ValueListenableBuilder<bool>(
             valueListenable: _searchOpen,
-            builder: (context, open, child) => IconButton(
+            builder: (context, open, child) => _TopBarIconAction(
               tooltip: open ? '关闭搜索' : '搜索（Ctrl+F）',
               onPressed: open ? _closeSearch : _openSearch,
-              icon: Icon(
-                open ? OperitIcons.close_rounded : OperitIcons.search_rounded,
-              ),
+              icon: open ? OperitIcons.close_rounded : OperitIcons.search_rounded,
             ),
           ),
-          if (!narrow)
-            IconButton(
-              tooltip: '添加扩展',
-              onPressed: _showAddSheet,
-              icon: const Icon(OperitIcons.add_rounded),
-            ),
+          _TopBarIconAction(
+            tooltip: '添加扩展',
+            onPressed: _showAddSheet,
+            icon: OperitIcons.add_rounded,
+            emphasized: true,
+          ),
           PopupMenuButton<_MoreAction>(
             tooltip: '更多',
             icon: const Icon(OperitIcons.more_horiz_rounded),
             onSelected: _onMoreSelected,
             itemBuilder: (context) => <PopupMenuEntry<_MoreAction>>[
-              if (narrow)
-                const PopupMenuItem<_MoreAction>(
-                  value: _MoreAction.add,
-                  child: ListTile(
-                    leading: Icon(OperitIcons.add_rounded),
-                    title: Text('添加扩展'),
-                  ),
-                ),
               const PopupMenuItem<_MoreAction>(
                 value: _MoreAction.checkUpdates,
                 child: ListTile(
@@ -692,11 +682,15 @@ class _PackageTabSwitcher extends StatelessWidget {
     final colors = theme.colorScheme;
     final motion = ExtensionMotion.of(context);
     return Container(
-      height: 38,
+      height: 36,
       padding: const EdgeInsets.all(3),
       decoration: BoxDecoration(
-        color: colors.surfaceContainerHigh.withValues(alpha: 0.62),
+        color: colors.surfaceContainerHigh.withValues(alpha: 0.55),
         borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: colors.outlineVariant.withValues(alpha: 0.28),
+          width: 0.8,
+        ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -762,6 +756,55 @@ class _PackageTabSwitcher extends StatelessWidget {
   }
 }
 
+/// A circular tonal action that keeps the shared top bar visually even.
+class _TopBarIconAction extends StatelessWidget {
+  const _TopBarIconAction({
+    required this.tooltip,
+    required this.icon,
+    required this.onPressed,
+    this.emphasized = false,
+  });
+
+  final String tooltip;
+  final IconData icon;
+  final VoidCallback? onPressed;
+  final bool emphasized;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    final background = emphasized
+        ? colors.primary.withValues(alpha: 0.16)
+        : colors.surfaceContainerHigh.withValues(alpha: 0.55);
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 2),
+      child: Tooltip(
+        message: tooltip,
+        child: Material(
+          color: background,
+          shape: const CircleBorder(),
+          clipBehavior: Clip.antiAlias,
+          child: InkWell(
+            onTap: onPressed,
+            customBorder: const CircleBorder(),
+            child: SizedBox(
+              width: 36,
+              height: 36,
+              child: Center(
+                child: Icon(
+                  icon,
+                  size: 19,
+                  color: emphasized ? colors.primary : colors.onSurfaceVariant,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _SearchField extends StatelessWidget {
   const _SearchField({
     super.key,
@@ -780,29 +823,55 @@ class _SearchField extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final contentColor = theme.colorScheme.onSurface;
-    return TextField(
-      controller: controller,
-      focusNode: focusNode,
-      autofocus: true,
-      onChanged: onChanged,
-      maxLines: 1,
-      textInputAction: TextInputAction.search,
-      cursorColor: contentColor,
-      style: theme.textTheme.bodyMedium?.copyWith(color: contentColor),
-      decoration: InputDecoration(
-        hintText: hintText,
-        hintStyle: theme.textTheme.bodyMedium?.copyWith(
-          color: contentColor.withValues(alpha: 0.6),
+    final surface = theme.colorScheme.surfaceContainerHigh.withValues(
+      alpha: 0.50,
+    );
+    return Container(
+      height: 34,
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      decoration: BoxDecoration(
+        color: surface,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: theme.colorScheme.outlineVariant.withValues(alpha: 0.24),
+          width: 0.8,
         ),
-        prefixIcon: Icon(
-          OperitIcons.search_rounded,
-          color: contentColor.withValues(alpha: 0.8),
-        ),
-        border: InputBorder.none,
-        focusedBorder: InputBorder.none,
-        enabledBorder: InputBorder.none,
-        isDense: true,
-        contentPadding: const EdgeInsets.symmetric(vertical: 12),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            OperitIcons.search_rounded,
+            size: 17,
+            color: contentColor.withValues(alpha: 0.75),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: TextField(
+              controller: controller,
+              focusNode: focusNode,
+              autofocus: true,
+              onChanged: onChanged,
+              maxLines: 1,
+              textInputAction: TextInputAction.search,
+              cursorColor: contentColor,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: contentColor,
+              ),
+              decoration: InputDecoration(
+                hintText: hintText,
+                hintStyle: theme.textTheme.bodySmall?.copyWith(
+                  color: contentColor.withValues(alpha: 0.55),
+                ),
+                border: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                isDense: true,
+                isCollapsed: true,
+                contentPadding: const EdgeInsets.symmetric(vertical: 8),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

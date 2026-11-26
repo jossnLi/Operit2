@@ -7,9 +7,13 @@ typedef TopBarActionsBuilder = List<Widget> Function(BuildContext context);
 typedef TopBarTitleBuilder = Widget Function(BuildContext context);
 
 class TopBarTitleContent {
-  const TopBarTitleContent(this.content);
+  const TopBarTitleContent(this.content, {this.toolbarHeight});
 
   final TopBarTitleBuilder content;
+
+  /// Optional page-specific bar height; keeps compact pages from inheriting
+  /// the shared chrome height.
+  final double? toolbarHeight;
 }
 
 class TopBarController extends ChangeNotifier {

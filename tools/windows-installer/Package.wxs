@@ -16,7 +16,7 @@
 
     <Icon Id="OperitIcon" SourceFile="$(var.AppIcon)" />
     <Property Id="ARPPRODUCTICON" Value="OperitIcon" />
-    <Property Id="ARPHELPLINK" Value="https://github.com/AAswordman/Operit2" />
+    <Property Id="ARPHELPLINK" Value="https://github.com/jossnLi/Operit2" />
     <Property Id="ARPURLINFOABOUT" Value="https://operit.app" />
     <Property Id="ARPCOMMENTS" Value="Operit2 $(var.ReleaseVersion) · AI 工作空间" />
     <Property Id="ARPNOMODIFY" Value="1" />

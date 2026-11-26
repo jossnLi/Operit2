@@ -90,7 +90,7 @@ fn network(
         let name = format!("{}.from-{baseHash}.patch.gz", manifest.assetName);
         bodies.insert(
             format!(
-                "https://github.com/AAswordman/Operit2-nightly/releases/download/v{}/{name}",
+                "https://github.com/jossnLi/Operit2-nightly/releases/download/v{}/{name}",
                 manifest.version
             ),
             delta.clone(),
@@ -107,7 +107,7 @@ fn network(
     let mut selected = None;
     for (manifest, bytes) in hops {
         let root = format!(
-            "https://github.com/AAswordman/Operit2-nightly/releases/download/v{}",
+            "https://github.com/jossnLi/Operit2-nightly/releases/download/v{}",
             manifest.version
         );
         let metadata = serde_json::to_vec(&manifest).unwrap();
@@ -120,7 +120,7 @@ fn network(
             "name": patch.assetName, "browser_download_url": format!("{root}/{}", patch.assetName),
             "digest": format!("sha256:{}", patch.sha256),
         }))).collect::<Vec<_>>();
-        bodies.insert(format!("https://api.github.com/repos/AAswordman/Operit2-nightly/releases/tags/v{}", manifest.version),
+        bodies.insert(format!("https://api.github.com/repos/jossnLi/Operit2-nightly/releases/tags/v{}", manifest.version),
             serde_json::to_vec(&serde_json::json!({
                 "tag_name": format!("v{}", manifest.version), "body": "patches only", "html_url": root,
                 "draft": false, "prerelease": operit_util::GithubReleaseUtil::GithubReleaseUtil::fullUpdateChannelForVersion(&manifest.version).unwrap()
@@ -130,7 +130,7 @@ fn network(
         bodies.insert(format!("{root}/{}", manifest.patches[0].assetName), bytes);
         if manifest.version == finalVersion {
             let fullUrl = format!(
-                "https://github.com/AAswordman/Operit2/releases/download/v{}/{}",
+                "https://github.com/jossnLi/Operit2/releases/download/v{}/{}",
                 manifest.version, manifest.assetName
             );
             bodies.insert(fullUrl.clone(), fixture.target.clone());
@@ -342,7 +342,7 @@ async fn missing_or_mismatched_intermediate_stops_patch_only_update() {
         });
         if missing {
             http.statuses.lock().unwrap().insert(
-            "https://api.github.com/repos/AAswordman/Operit2-nightly/releases/tags/v2.0.0-preview.2".into(), 404);
+            "https://api.github.com/repos/jossnLi/Operit2-nightly/releases/tags/v2.0.0-preview.2".into(), 404);
         }
         let plan = planUpdate(
             release,

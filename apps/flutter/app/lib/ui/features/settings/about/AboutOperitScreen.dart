@@ -13,9 +13,9 @@ import '../../update/AppUpdateBadge.dart';
 import '../../update/AppUpdateDialog.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
-final Uri _projectUri = Uri.parse('https://github.com/AAswordman/Operit2');
+final Uri _projectUri = Uri.parse('https://github.com/jossnLi/Operit2');
 final Uri _documentationUri = Uri.parse(
-  'https://github.com/AAswordman/Operit2#readme',
+  'https://github.com/jossnLi/Operit2#readme',
 );
 final Uri _contactUri = Uri.parse('mailto:aaswordsman@foxmail.com');
 
@@ -216,7 +216,7 @@ class _ProjectLinksSection extends StatelessWidget {
           _AboutActionRow(
             icon: OperitIcons.code_outlined,
             title: '项目源码',
-            subtitle: 'github.com/AAswordman/Operit2',
+            subtitle: 'github.com/jossnLi/Operit2',
             onTap: () => _launchExternalUri(context, _projectUri),
           ),
           const Divider(height: 1),

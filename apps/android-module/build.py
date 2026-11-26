@@ -5,15 +5,18 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 import re
+import shutil
+import subprocess
 import sys
 import tempfile
 import zipfile
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT / "tools/build_scripts"))
-from common import FLUTTER_APP_DIR, flutter_command, flutter_pub_get, generate_dart_proxy_artifacts, require_command, run
+from common import ANDROID_DIR, FLUTTER_APP_DIR, flutter_command, flutter_pub_get, generate_dart_proxy_artifacts, require_command, run
 from build_flutter_android import configure_android_flutter_sdk, ensure_android_signing
 from release_artifacts import RELEASE_VERSION_PATTERN
 
@@ -46,6 +49,26 @@ def elf_arm64(data: bytes, label: str) -> None:
         raise ValueError(f"Not an ARM64 little-endian ELF: {label}")
 
 
+def stop_gradle_daemons() -> None:
+    """Release Windows file handles that a previous release build left behind."""
+    gradlew = ANDROID_DIR / "gradlew.bat"
+    if not gradlew.is_file():
+        gradlew = ANDROID_DIR / "gradlew"
+    if not gradlew.is_file():
+        return
+    command = [str(gradlew), "--stop"]
+    if os.name == "nt":
+        command = ["cmd", "/c", *command]
+    subprocess.run(command, cwd=ANDROID_DIR, check=False, capture_output=True)
+
+
+def clear_stale_dex_outputs() -> None:
+    """Drop R8 outputs so a retry cannot reuse a dex file another process still locks."""
+    for relative in ("build/app/intermediates/dex", "build/app/intermediates/dex_archive_input_jar_hashes",
+                     "build/app/intermediates/minifyReleaseWithR8"):
+        shutil.rmtree(FLUTTER_APP_DIR / relative, ignore_errors=True)
+
+
 def build_apk(build_name: str | None = None, build_number: str | None = None,
               enforce_lockfile: bool = False) -> Path:
     """Build the shared Dart UI and JNI library with the module application's Android entry point."""
@@ -61,7 +84,23 @@ def build_apk(build_name: str | None = None, build_number: str | None = None,
         command.extend(["--build-name", build_name])
     if build_number:
         command.extend(["--build-number", build_number])
-    run(command, cwd=FLUTTER_APP_DIR)
+    # The App release build already wrote into this project directory; release the
+    # daemons and stale R8 outputs it left behind before the module variant runs.
+    stop_gradle_daemons()
+    clear_stale_dex_outputs()
+    for attempt in range(2):
+        try:
+            run(command, cwd=FLUTTER_APP_DIR)
+            break
+        except Exception:
+            if attempt == 1:
+                raise
+            # The App build reuses this project directory, so a lingering Gradle
+            # worker can still hold minifyReleaseWithR8/classes.dex on Windows and
+            # R8 then fails with FileSystemException "used by another process".
+            print("Retrying module APK build after clearing locked R8 outputs", flush=True)
+            stop_gradle_daemons()
+            clear_stale_dex_outputs()
     result = FLUTTER_APP_DIR / "build/app/outputs/flutter-apk/app-arm64-v8a-release.apk"
     if not result.is_file():
         raise FileNotFoundError(result)

@@ -12,8 +12,8 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "tools/build_scripts"))
 from release_artifacts import file_sha256, release_version, validate_release_assets
 
-SOURCE_REPO = "AAswordman/Operit2"
-PATCH_REPO = "AAswordman/Operit2-nightly"
+SOURCE_REPO = "jossnLi/Operit2"
+PATCH_REPO = "jossnLi/Operit2-nightly"
 
 
 # Runs gh with its current authenticated session and retains structured output.
