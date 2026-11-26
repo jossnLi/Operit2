@@ -1005,6 +1005,9 @@ class _TerminalProfileEditorPageState extends State<_TerminalProfileEditorPage> 
     final scheme = theme.colorScheme;
     final isEditing = widget.profile != null;
     return Scaffold(
+      // The editor is a pushed route: paint an opaque theme surface so the
+      // previous settings page never shows through while switching pages.
+      backgroundColor: scheme.surface,
       appBar: AppBar(
         leadingWidth: 44,
         titleSpacing: 0,

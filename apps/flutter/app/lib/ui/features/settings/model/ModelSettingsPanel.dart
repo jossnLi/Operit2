@@ -16,7 +16,6 @@ import '../../../common/ApiErrorText.dart';
 import '../../../common/ThinkingLevelText.dart';
 import '../../../common/components/M3LoadingIndicator.dart';
 import '../../../theme/OperitGlassSurface.dart';
-import '../../../theme/OperitTheme.dart';
 import '../components/ApiKeyTextField.dart';
 import '../components/SettingsControlStyles.dart';
 import 'CodexLoginDialog.dart';
@@ -1158,14 +1157,10 @@ class _ProviderEditorPageState extends State<_ProviderEditorPage> {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final selectedCatalog = _selectedCatalog();
-    // Follow the active theme surface so wallpaper and translucent skins stay visible.
-    final themeSnapshot = OperitTheme.of(context).themePreferenceSnapshot;
-    final wallpaperVisible =
-        themeSnapshot.useBackgroundImage &&
-        (themeSnapshot.backgroundImageUri?.isNotEmpty ?? false);
-    final pageBackground = wallpaperVisible || themeSnapshot.transparentSurfaceEnabled
-        ? Colors.transparent
-        : colorScheme.surface;
+    // Pushed routes must paint their own opaque surface: a transparent page
+    // here would keep the previous screen visible behind the form (residual
+    // image) because the app draws its wallpaper below the route stack.
+    final pageBackground = colorScheme.surface;
     return Scaffold(
       backgroundColor: pageBackground,
       appBar: AppBar(
@@ -3570,7 +3565,7 @@ class _ProviderDetailScreenState extends State<_ProviderDetailScreen> {
     final provider = _provider;
     if (provider == null) {
       return Scaffold(
-        backgroundColor: Colors.transparent,
+        backgroundColor: colorScheme.surface,
         appBar: AppBar(
           leadingWidth: 44,
           titleSpacing: 0,
@@ -3588,7 +3583,7 @@ class _ProviderDetailScreenState extends State<_ProviderDetailScreen> {
       );
     }
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: colorScheme.surface,
       appBar: AppBar(
         leadingWidth: 44,
         titleSpacing: 0,

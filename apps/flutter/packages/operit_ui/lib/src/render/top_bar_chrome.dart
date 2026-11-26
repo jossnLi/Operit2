@@ -132,35 +132,39 @@ class ThemeTopBarChrome extends StatelessWidget {
                   ),
                 ),
               ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  if (navIcon != null && navigationIconWidget != null) ...<Widget>[
-                    const SizedBox(width: 5),
-                    SizedBox(
-                      width: 34,
-                      height: 34,
-                      child: IconButton(
-                        padding: EdgeInsets.zero,
-                        onPressed: onNavigationPressed,
-                        icon: flipNavigationIcon
-                            ? Transform(
-                                alignment: Alignment.center,
-                                transform: Matrix4.identity()
-                                  ..scaleByDouble(-1.0, 1.0, 1.0, 1.0),
-                                child: navigationIconWidget,
-                              )
-                            : navigationIconWidget,
-                        tooltip: navigationTooltip,
+              // Leading icons share the bar's full height so their optical
+              // centre matches the vertically centred title on every page.
+              Positioned.fill(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    if (navIcon != null && navigationIconWidget != null) ...<Widget>[
+                      const SizedBox(width: 5),
+                      SizedBox(
+                        width: 34,
+                        height: 34,
+                        child: IconButton(
+                          padding: EdgeInsets.zero,
+                          onPressed: onNavigationPressed,
+                          icon: flipNavigationIcon
+                              ? Transform(
+                                  alignment: Alignment.center,
+                                  transform: Matrix4.identity()
+                                    ..scaleByDouble(-1.0, 1.0, 1.0, 1.0),
+                                  child: navigationIconWidget,
+                                )
+                              : navigationIconWidget,
+                          tooltip: navigationTooltip,
+                        ),
                       ),
-                    ),
-                  ] else ...<Widget>[
-                    SizedBox(width: actions.isNotEmpty ? 46 : 16),
+                    ] else ...<Widget>[
+                      SizedBox(width: actions.isNotEmpty ? 46 : 16),
+                    ],
+                    const Spacer(),
+                    ...actions,
+                    const SizedBox(width: 6),
                   ],
-                  const Spacer(),
-                  ...actions,
-                  const SizedBox(width: 6),
-                ],
+                ),
               ),
             ],
           ),
