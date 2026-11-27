@@ -221,7 +221,7 @@ class ToolPresentation {
     return ToolPresentation(
       toolName: call.toolName,
       callId: callId,
-      icon: toolDisplayIcon(display?.icon),
+      icon: toolDisplayIcon(display?.icon, toolName: call.toolName),
       rawParams: call.params,
       result: result,
       isSuccess: isSuccess,
@@ -283,29 +283,88 @@ class ToolPresentation {
 }
 
 /// Selects a visual for a declared semantic icon, independently of tool names.
-IconData toolDisplayIcon(String? icon) => switch (icon) {
+///
+/// [toolName] is only consulted when the declaration is missing or carries an
+/// unknown semantic, so built-in tools without a display declaration still get
+/// an icon that matches what they actually do instead of the wrench fallback.
+IconData toolDisplayIcon(String? icon, {String? toolName}) {
+  final resolved = _declaredToolDisplayIcon(icon);
+  return resolved ?? _inferredToolDisplayIcon(toolName) ?? OperitIcons.build_outlined;
+}
+
+IconData? _declaredToolDisplayIcon(String? icon) => switch (icon) {
   'file' => OperitIcons.description_outlined,
   'folder' => OperitIcons.folder_outlined,
   'edit' => OperitIcons.edit_outlined,
   'delete' => OperitIcons.delete_outline_rounded,
   'search' => OperitIcons.search_rounded,
-  'terminal' => OperitIcons.terminal_rounded,
-  'web' => OperitIcons.language_rounded,
+  'terminal' || 'console' => OperitIcons.terminal_rounded,
+  'web' || 'navigate' || 'goto' => OperitIcons.language_rounded,
   'download' => OperitIcons.download_outlined,
+  'upload' => OperitIcons.file_upload_outlined,
   'package' => OperitIcons.extension_outlined,
-  'time' => OperitIcons.schedule_rounded,
+  'time' || 'wait' => OperitIcons.schedule_rounded,
   'notification' => OperitIcons.notifications_outlined,
   'clipboard' => OperitIcons.content_paste_outlined,
   'audio' => OperitIcons.volume_up_outlined,
   'info' => OperitIcons.info_outline_rounded,
   'screen' => OperitIcons.screenshot_outlined,
+  'snapshot' => OperitIcons.description_outlined,
   'tap' => OperitIcons.touch_app_outlined,
-  'double_tap' => OperitIcons.ads_click_outlined,
-  'long_press' => OperitIcons.pan_tool_outlined,
+  'double_tap' || 'cursor' => OperitIcons.ads_click_outlined,
+  'long_press' || 'drag' => OperitIcons.pan_tool_outlined,
   'swipe' => OperitIcons.swipe_outlined,
   'keyboard' => OperitIcons.keyboard_outlined,
-  _ => OperitIcons.build_outlined,
+  'code' => OperitIcons.code_rounded,
+  'dialog' => OperitIcons.chat_bubble_outline_rounded,
+  'back' => OperitIcons.undo_outlined,
+  'network' => OperitIcons.lan_outlined,
+  'resize' => OperitIcons.aspect_ratio_outlined,
+  'select' => OperitIcons.checklist_rounded,
+  'tabs' => OperitIcons.view_column_outlined,
+  'close' => OperitIcons.close_rounded,
+  'settings' => OperitIcons.settings_outlined,
+  'thinking' => OperitIcons.psychology_outlined,
+  _ => null,
 };
+
+IconData? _inferredToolDisplayIcon(String? toolName) {
+  final name = (toolName ?? '').toLowerCase();
+  if (name.isEmpty) {
+    return null;
+  }
+  for (final rule in _toolNameIconRules) {
+    if (name.contains(rule.$1)) {
+      return rule.$2;
+    }
+  }
+  return null;
+}
+
+const List<(String, IconData)> _toolNameIconRules = [
+  ('screenshot', OperitIcons.screenshot_outlined),
+  ('snapshot', OperitIcons.description_outlined),
+  ('console', OperitIcons.terminal_rounded),
+  ('dialog', OperitIcons.chat_bubble_outline_rounded),
+  ('hover', OperitIcons.ads_click_outlined),
+  ('click', OperitIcons.touch_app_outlined),
+  ('drag', OperitIcons.pan_tool_outlined),
+  ('type', OperitIcons.keyboard_outlined),
+  ('key', OperitIcons.keyboard_outlined),
+  ('select', OperitIcons.checklist_rounded),
+  ('evaluate', OperitIcons.code_rounded),
+  ('code', OperitIcons.code_rounded),
+  ('upload', OperitIcons.file_upload_outlined),
+  ('resize', OperitIcons.aspect_ratio_outlined),
+  ('tabs', OperitIcons.view_column_outlined),
+  ('tab', OperitIcons.view_column_outlined),
+  ('network', OperitIcons.lan_outlined),
+  ('wait', OperitIcons.schedule_rounded),
+  ('back', OperitIcons.undo_outlined),
+  ('close', OperitIcons.close_rounded),
+  ('navigate', OperitIcons.language_rounded),
+  ('goto', OperitIcons.language_rounded),
+];
 
 String formatToolParameters(String rawParams) {
   final parameters = extractToolParamMap(rawParams);

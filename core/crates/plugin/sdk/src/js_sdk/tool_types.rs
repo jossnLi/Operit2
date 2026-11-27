@@ -66,7 +66,7 @@ pub struct ToolResultMap {
     pub edit_file: FileApplyResultData,
     pub storage_request: StorageRequestResultData,
     pub web_socket: WebSocketResultData,
-    #[display(action = "request", icon = "web", target = "url")]
+    #[display(action = "request", icon = "network", target = "url")]
     pub http_request: HttpResponseData,
     #[display(action = "visit", icon = "web", target = "url")]
     pub visit_web: VisitWebResultData,
@@ -93,7 +93,7 @@ pub struct ToolResultMap {
     pub browser_take_screenshot: String,
     pub browser_type: String,
     pub browser_tabs: String,
-    #[display(action = "request", icon = "web", target = "url")]
+    #[display(action = "request", icon = "network", target = "url")]
     pub multipart_request: HttpResponseData,
     pub manage_cookies: HttpResponseData,
     #[display(action = "wait", icon = "time", target = "duration_ms")]
