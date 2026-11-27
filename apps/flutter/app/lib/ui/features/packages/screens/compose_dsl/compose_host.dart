@@ -16,6 +16,7 @@ class _ComposeHost extends StatefulWidget {
     required this.webViewHostContext,
     required this.splitMarkdownContent,
     this.dialogTitle,
+    this.onRetry,
   });
 
   final bool loading;
@@ -32,6 +33,9 @@ class _ComposeHost extends StatefulWidget {
   final Future<Object?> Function(String actionId, String text) onTextInput;
   final ComposeDslWebViewHostContext webViewHostContext;
   final MarkdownContentSplitter splitMarkdownContent;
+
+  /// Re-runs the route load after a runtime failure, when the host can retry.
+  final VoidCallback? onRetry;
 
   /// Creates persistent state for this DSL widget.
   @override
@@ -88,18 +92,7 @@ class _ComposeHostState extends State<_ComposeHost> {
     final error = widget.error;
     final errorView = error == null
         ? null
-        : Material(
-            color: Theme.of(context).colorScheme.errorContainer,
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Text(
-                error,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onErrorContainer,
-                ),
-              ),
-            ),
-          );
+        : _PluginRuntimeNotice(message: error, onRetry: widget.onRetry);
     if (tree == null) {
       return _presentBox(
         context,
@@ -193,7 +186,94 @@ class _ComposeHostState extends State<_ComposeHost> {
   }
 }
 
-/// Exposes error presentation with the production host lifecycle for widget regression tests.
+/// Presents a plugin runtime failure as a quiet inline notice instead of a
+/// full-bleed error container, so a transient runtime restart no longer
+/// dominates the page.
+class _PluginRuntimeNotice extends StatelessWidget {
+  const _PluginRuntimeNotice({required this.message, this.onRetry});
+
+  final String message;
+  final VoidCallback? onRetry;
+
+  /// Collapses engine-level failure strings into a readable one-liner.
+  static String _summary(String message) {
+    final lower = message.toLowerCase();
+    if (lower.contains('javascript runtime') ||
+        lower.contains('runtime was destroyed')) {
+      return '插件界面运行时已停止，重新加载即可恢复。';
+    }
+    if (lower.contains('session')) {
+      return '插件界面会话已中断，重新加载即可恢复。';
+    }
+    return message.split('\n').first;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: scheme.surfaceContainerHigh,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: scheme.outlineVariant.withValues(alpha: 0.6)),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(12, 10, 8, 10),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Icon(
+                OperitIcons.warning_amber_outlined,
+                size: 18,
+                color: scheme.onSurfaceVariant,
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Text(
+                      '界面加载中断',
+                      style: textTheme.titleSmall?.copyWith(
+                        color: scheme.onSurface,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      _summary(message),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: textTheme.bodySmall?.copyWith(
+                        color: scheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              if (onRetry != null)
+                TextButton(
+                  onPressed: onRetry,
+                  style: TextButton.styleFrom(
+                    foregroundColor: scheme.primary,
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    minimumSize: const Size(0, 36),
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
+                  child: const Text('重新加载'),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 @visibleForTesting
 Widget buildComposeDslHostForTest({
   required Map<String, Object?> node,

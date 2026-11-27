@@ -1276,6 +1276,7 @@ class _ToolPkgUiLauncherScreenState extends State<ToolPkgUiLauncherScreen> {
             onTextInput: (actionId, text) =>
                 _dispatchTextInput(routeGeneration, actionId, text),
             webViewHostContext: webViewHostContext,
+            onRetry: () => unawaited(_loadRoute()),
             splitMarkdownContent: (content) => widget
                 .clients
                 .chatRuntimeHolderMain

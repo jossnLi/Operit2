@@ -34,6 +34,7 @@ import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
 import SaveOutlinedIcon from "@mui/icons-material/SaveOutlined";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import AddIcon from "@mui/icons-material/Add";
+import WarningAmberOutlinedIcon from "@mui/icons-material/WarningAmberOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
 import AutoAwesomeOutlinedIcon from "@mui/icons-material/AutoAwesomeOutlined";
@@ -132,6 +133,79 @@ function useDialogContent<T>(empty: T) {
     );
   }
   return { value: state.value, open: state.open, setValue, onExited };
+}
+
+/** Turns engine-level failure text into a sentence a reader can act on. */
+function runtimeSummary(message: string): string {
+  const lower = message.toLowerCase();
+  if (lower.includes("javascript runtime") || lower.includes("destroyed"))
+    return "插件界面运行时已停止，重新加载即可恢复。";
+  if (lower.includes("session")) return "插件界面会话已中断，重新加载即可恢复。";
+  if (message.includes("宿主接口")) return "宿主接口未就绪，重新加载即可恢复。";
+  return message.split("\n")[0];
+}
+
+/** Presents a page-level failure as a quiet inline notice instead of a banner. */
+function RuntimeNotice({
+  message,
+  onRetry,
+}: {
+  message: string;
+  onRetry?: () => void;
+}) {
+  if (!message) return null;
+  return (
+    <Box
+      role="status"
+      sx={{
+        mx: 2,
+        my: 1,
+        px: 1.5,
+        py: 1,
+        display: "flex",
+        alignItems: "center",
+        gap: 1.25,
+        borderRadius: 3,
+        border: 1,
+        borderColor: "divider",
+        bgcolor: (theme) => theme.palette.action.hover,
+      }}
+    >
+      <WarningAmberOutlinedIcon
+        sx={{ fontSize: 18, color: "text.secondary", flexShrink: 0 }}
+      />
+      <Box sx={{ minWidth: 0, flex: 1 }}>
+        <Typography
+          variant="subtitle2"
+          sx={{ fontWeight: 600, lineHeight: 1.4 }}
+        >
+          界面加载中断
+        </Typography>
+        <Typography
+          variant="caption"
+          color="text.secondary"
+          sx={{
+            display: "-webkit-box",
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
+            lineHeight: 1.45,
+          }}
+        >
+          {runtimeSummary(message)}
+        </Typography>
+      </Box>
+      {onRetry && (
+        <Button
+          size="small"
+          onClick={onRetry}
+          sx={{ flexShrink: 0, minWidth: 0, px: 1, color: "primary.main" }}
+        >
+          重新加载
+        </Button>
+      )}
+    </Box>
+  );
 }
 
 /** Runs the Material list, graph editor and transactional dialogs inside the WebView. */
@@ -247,9 +321,13 @@ function App() {
       delete window.receiveWorkflowProgress;
     };
   }, []);
+  /** Re-runs the bridge handshake so a dead runtime can be recovered in place. */
+  const bootstrapRef = React.useRef<() => Promise<void>>(
+    async () => undefined,
+  );
   React.useEffect(() => {
-    void perform(async () => {
-      /** Waits for the host bridge to finish installing page interfaces. */
+    /** Connects the page to the host bridge once interfaces are installed. */
+    async function bootstrap(): Promise<void> {
       async function waitForWorkflowHost(): Promise<void> {
         if (typeof window.WorkflowHost?.request === "function") return;
         await new Promise<void>((resolve) => {
@@ -266,7 +344,9 @@ function App() {
       window.applyWorkflowTheme(await window.WorkflowHost.currentTheme());
       await request({ action: "tool_catalog" });
       setReady(true);
-    });
+    }
+    bootstrapRef.current = bootstrap;
+    void perform(bootstrap);
   }, []);
   /** Opens a saved graph at a readable initial scale. */
   function open(value: Workflow) {
@@ -392,18 +472,17 @@ function App() {
                 <span className="action-label">返回列表</span>
               </Button>
             )}
-            <Box className="title-block">
-              <Typography variant="h6" noWrap>
-                {workflow ? workflow.name : "我的工作流"}
-              </Typography>
-              <Typography variant="caption" color="text.secondary">
-                {workflow
-                  ? dirty
-                    ? "有未保存的修改"
-                    : "已保存"
-                  : "编排节点，让重复的工作自动完成"}
-              </Typography>
-            </Box>
+            {workflow && (
+              <Box className="title-block">
+                <Typography variant="h6" noWrap>
+                  {workflow.name}
+                </Typography>
+                <Typography variant="caption" color="text.secondary">
+                  {dirty ? "有未保存的修改" : "已保存"}
+                </Typography>
+              </Box>
+            )}
+            <Box sx={{ flex: 1, minWidth: 8 }} />
             {workflow ? (
               <Stack className="toolbar-actions" direction="row" spacing={0.5}>
                 {!compact && (
@@ -514,14 +593,22 @@ function App() {
                   <span className="action-label">模板</span>
                 </Button>
                 <Button
-                  className="new-action"
-                  variant="contained"
-                  startIcon={<AddIcon />}
+                  className="text-action"
+                  aria-label="新建工作流"
                   disabled={!ready}
                   onClick={() => {
                     setName("");
                     setDescription("");
                     setDialog("create");
+                  }}
+                  sx={{
+                    color: "primary.main",
+                    fontWeight: 600,
+                    px: 1.25,
+                    minWidth: 0,
+                    height: 36,
+                    borderRadius: "8px",
+                    "&:hover": { bgcolor: "transparent" },
                   }}
                 >
                   新建
@@ -532,9 +619,10 @@ function App() {
         </AppBar>
         <Divider />
         {error && (
-          <Alert severity="error" onClose={() => setError("")}>
-            {error}
-          </Alert>
+          <RuntimeNotice
+            message={error}
+            onRetry={() => void bootstrapRef.current()}
+          />
         )}
         {!ready ? (
           <Box sx={{ p: 4 }}>正在加载…</Box>
@@ -542,20 +630,89 @@ function App() {
           <Box className="list">
             {!snapshot.workflows.length && (
               <Box className="empty">
-                <Typography variant="h5">创建你的第一个工作流</Typography>
-                <Typography color="text.secondary">
-                  添加触发节点，然后连接工具与条件。
-                </Typography>
-                <Button
-                  variant="contained"
-                  onClick={() => {
-                    setName("");
-                    setDescription("");
-                    setDialog("create");
+                <Box
+                  aria-hidden
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
                   }}
                 >
-                  新建工作流
-                </Button>
+                  <Box
+                    sx={{
+                      width: 44,
+                      height: 44,
+                      borderRadius: "12px",
+                      border: 1,
+                      borderColor: "primary.main",
+                      color: "primary.main",
+                      display: "grid",
+                      placeItems: "center",
+                    }}
+                  >
+                    <BoltOutlinedIcon sx={{ fontSize: 20 }} />
+                  </Box>
+                  <Box
+                    sx={{
+                      position: "relative",
+                      width: 26,
+                      height: "1px",
+                      bgcolor: "divider",
+                      mx: 0.5,
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        right: -3,
+                        top: "-2.5px",
+                        width: 6,
+                        height: 6,
+                        borderRadius: "50%",
+                        bgcolor: "primary.main",
+                      }}
+                    />
+                  </Box>
+                  <Box
+                    sx={{
+                      width: 44,
+                      height: 44,
+                      borderRadius: "12px",
+                      border: 1,
+                      borderColor: "divider",
+                      color: "text.secondary",
+                      display: "grid",
+                      placeItems: "center",
+                    }}
+                  >
+                    <AccountTreeOutlinedIcon sx={{ fontSize: 20 }} />
+                  </Box>
+                </Box>
+                <Typography variant="h5" sx={{ fontWeight: 600 }}>
+                  创建你的第一个工作流
+                </Typography>
+                <Typography color="text.secondary" variant="body2">
+                  添加触发节点，然后连接工具与条件。
+                </Typography>
+                <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
+                  <Chip
+                    size="small"
+                    variant="outlined"
+                    icon={<BoltOutlinedIcon />}
+                    label="触发"
+                  />
+                  <Chip
+                    size="small"
+                    variant="outlined"
+                    icon={<BuildOutlinedIcon />}
+                    label="工具"
+                  />
+                  <Chip
+                    size="small"
+                    variant="outlined"
+                    icon={<CallSplitOutlinedIcon />}
+                    label="条件"
+                  />
+                </Stack>
               </Box>
             )}
             {snapshot.workflows.map((item) => (
