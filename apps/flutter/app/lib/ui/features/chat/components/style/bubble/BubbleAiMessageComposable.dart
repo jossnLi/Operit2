@@ -85,6 +85,7 @@ class _BubbleAiMessageComposableState extends State<BubbleAiMessageComposable> {
   late String _renderIdentity;
   bool _isMessageHovered = false;
   bool _isMessageTouched = false;
+  bool _liveContentStarted = false;
   Timer? _touchHoldTimer;
 
   /// Creates persistent Markdown renderer state for this message widget.
@@ -99,6 +100,16 @@ class _BubbleAiMessageComposableState extends State<BubbleAiMessageComposable> {
   void dispose() {
     _touchHoldTimer?.cancel();
     super.dispose();
+  }
+
+  /// Retires the first-token placeholder once real content paints.
+  void _handleLiveContentStarted() {
+    if (!mounted || _liveContentStarted) {
+      return;
+    }
+    setState(() {
+      _liveContentStarted = true;
+    });
   }
 
   void _handlePointerEnd() {
@@ -121,6 +132,7 @@ class _BubbleAiMessageComposableState extends State<BubbleAiMessageComposable> {
     if (renderIdentity != _renderIdentity) {
       _renderIdentity = renderIdentity;
       _rendererState = StreamMarkdownRendererState();
+      _liveContentStarted = false;
     }
   }
 
@@ -180,17 +192,10 @@ class _BubbleAiMessageComposableState extends State<BubbleAiMessageComposable> {
     final typingStyle = AiTypingStyle.fromStorageName(snapshot.aiTypingStyle);
     final awaitingFirstToken =
         typingStyle != AiTypingStyle.none &&
+        !_liveContentStarted &&
         _awaitingFirstToken(widget.message, widget.isStreaming);
 
-    final Widget messageBody = awaitingFirstToken
-        ? AiTypingIndicator(
-            style: typingStyle,
-            color: textColor,
-            label: l10n == null ? null : aiTypingLabelForStyle(typingStyle, l10n),
-            showLabel: snapshot.aiTypingShowText,
-            respectReduceMotion: snapshot.aiTypingRespectReduceMotion,
-          )
-        : Theme(
+    final Widget transcript = Theme(
       data: messageTheme,
       child: DefaultTextStyle.merge(
         style: TextStyle(
@@ -208,6 +213,7 @@ class _BubbleAiMessageComposableState extends State<BubbleAiMessageComposable> {
             mergeRender: const ToolCallResultMergeRender(),
             streamState: _rendererState,
             onLinkClick: widget.enableDialogs ? widget.onLinkClick : null,
+            onLiveContentStarted: _handleLiveContentStarted,
             rendererId: 'bubble-ai-$renderIdentity',
             showThinkingProcess: showThinkingProcess,
             initialThinkingExpanded: widget.initialThinkingExpanded,
@@ -218,6 +224,33 @@ class _BubbleAiMessageComposableState extends State<BubbleAiMessageComposable> {
         ),
       ),
     );
+
+    // The live stream is single-shot, so the transcript stays mounted from the
+    // first frame: the indicator is layered on top and retired as soon as the
+    // renderer paints its first visible content. Swapping the transcript out
+    // for a placeholder would drop the tokens that arrive while it is gone,
+    // which is why the bubble used to keep the placeholder until the stream
+    // completed and rebuilt the row.
+    final Widget messageBody = typingStyle == AiTypingStyle.none ||
+            !widget.isStreaming
+        ? transcript
+        : Stack(
+            fit: StackFit.passthrough,
+            alignment: AlignmentDirectional.topStart,
+            children: <Widget>[
+              transcript,
+              if (awaitingFirstToken)
+                AiTypingIndicator(
+                  style: typingStyle,
+                  color: textColor,
+                  label: l10n == null
+                      ? null
+                      : aiTypingLabelForStyle(typingStyle, l10n),
+                  showLabel: snapshot.aiTypingShowText,
+                  respectReduceMotion: snapshot.aiTypingRespectReduceMotion,
+                ),
+            ],
+          );
 
     final isInteracting = _isMessageHovered || _isMessageTouched;
     final layoutChild = snapshot.bubbleWideLayoutEnabled

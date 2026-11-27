@@ -57,6 +57,7 @@ class StreamMarkdownRenderer extends StatefulWidget {
     this.allowExpandedThinkingFullHeight = false,
     this.selectionRoot = true,
     this.onContentReady,
+    this.onLiveContentStarted,
     this.onStreamDone,
     this.onStreamError,
     this.scrollController,
@@ -80,6 +81,11 @@ class StreamMarkdownRenderer extends StatefulWidget {
   final bool allowExpandedThinkingFullHeight;
   final bool selectionRoot;
   final VoidCallback? onContentReady;
+
+  /// Fires once per live stream when its first visible nodes reach the frame.
+  /// Placeholders waiting for the first token can use this to retire exactly
+  /// when real content paints, never earlier and never after the stream ends.
+  final VoidCallback? onLiveContentStarted;
   final VoidCallback? onStreamDone;
   final VoidCallback? onStreamError;
 
@@ -105,6 +111,7 @@ class _StreamMarkdownRendererState extends State<StreamMarkdownRenderer> {
   final Set<String> _scheduledVisibleNodeKeys = <String>{};
   bool _streamDone = false;
   bool _streamDoneNotified = false;
+  bool _liveContentStartedNotified = false;
   int _startGeneration = 0;
 
   @override
@@ -161,6 +168,7 @@ class _StreamMarkdownRendererState extends State<StreamMarkdownRenderer> {
     _renderTimer = null;
     _scheduledVisibleNodeKeys.clear();
     _streamDoneNotified = false;
+    _liveContentStartedNotified = false;
 
     final stream = widget.contentStream;
     _streamDone = stream == null;
@@ -294,6 +302,8 @@ class _StreamMarkdownRendererState extends State<StreamMarkdownRenderer> {
     _renderTimer?.cancel();
     _renderTimer = null;
     _synchronizeRenderNodes(isStreaming: false);
+    // A stream shorter than one render interval never reaches the timer flush.
+    _notifyLiveContentStarted();
   }
 
   /// Reports that the live Markdown stream has reached its terminal event.
@@ -312,6 +322,36 @@ class _StreamMarkdownRendererState extends State<StreamMarkdownRenderer> {
       return;
     }
     setState(() => _synchronizeRenderNodes(isStreaming: !_streamDone));
+    _notifyLiveContentStarted();
+  }
+
+  /// Announces the first frame that actually paints streamed content.
+  void _notifyLiveContentStarted() {
+    final callback = widget.onLiveContentStarted;
+    if (callback == null || _liveContentStartedNotified) {
+      return;
+    }
+    if (!_hasVisibleContent()) {
+      return;
+    }
+    _liveContentStartedNotified = true;
+    callback();
+  }
+
+  /// Reports whether any parsed node already carries visible source text.
+  bool _hasVisibleContent() {
+    if (_rendererState.collectedContent.toString().trim().isNotEmpty) {
+      return true;
+    }
+    bool visit(MarkdownNodeStable node) {
+      if (node.content.trim().isNotEmpty ||
+          (node.xmlBody ?? '').trim().isNotEmpty) {
+        return true;
+      }
+      return node.children.any(visit);
+    }
+
+    return _rendererState.renderNodes.any(visit);
   }
 
   /// Rebuilds stable render nodes while preserving existing animation keys.
