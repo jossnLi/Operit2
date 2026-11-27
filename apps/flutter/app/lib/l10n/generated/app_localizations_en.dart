@@ -3665,6 +3665,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsAppearanceTypingShowLabel => 'Show label';
 
   @override
+  String get settingsAppearanceTypingLabelThinking => 'Thinking';
+
+  @override
+  String get settingsAppearanceTypingLabelSparkle => 'Thinking…';
+
+  @override
+  String get settingsAppearanceTypingLabelDrafting => 'Drafting reply';
+
+  @override
+  String get settingsAppearanceTypingLabelGenerating => 'Generating';
+
+  @override
+  String get settingsAppearanceTypingLabelReplying => 'Replying';
+
+  @override
+  String get settingsAppearanceTypingOffCaption => 'Keep the bubble empty';
+
+  @override
+  String get settingsAppearanceTypingReduceMotion => 'Turn static when motion is reduced';
+
+  @override
   String get settingsDataLogsSection => 'Diagnostic logs';
 
   @override

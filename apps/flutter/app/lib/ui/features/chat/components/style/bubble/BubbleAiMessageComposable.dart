@@ -186,8 +186,9 @@ class _BubbleAiMessageComposableState extends State<BubbleAiMessageComposable> {
         ? AiTypingIndicator(
             style: typingStyle,
             color: textColor,
-            label: l10n?.messageSenderThinking,
+            label: l10n == null ? null : aiTypingLabelForStyle(typingStyle, l10n),
             showLabel: snapshot.aiTypingShowText,
+            respectReduceMotion: snapshot.aiTypingRespectReduceMotion,
           )
         : Theme(
       data: messageTheme,

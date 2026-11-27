@@ -520,6 +520,7 @@ pub(crate) const EXTENDED_SNAPSHOT_FIELDS: &[SnapshotField] = &[
     // contract; older saved configurations simply do not declare them.
     SnapshotField { json_key: "aiTypingStyle", preference_key: "ai_typing_style", kind: FieldKind::Enum(&["dots", "sparkle", "skeleton", "textCursor", "waveform", "orbit", "none"]) },
     SnapshotField { json_key: "aiTypingShowText", preference_key: "ai_typing_show_text", kind: FieldKind::Boolean },
+    SnapshotField { json_key: "aiTypingRespectReduceMotion", preference_key: "ai_typing_respect_reduce_motion", kind: FieldKind::Boolean },
 ];
 
 /// Enumerates the declared ordinary appearance fields without inferring key names.

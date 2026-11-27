@@ -6631,6 +6631,48 @@ abstract class AppLocalizations {
   /// **'Show label'**
   String get settingsAppearanceTypingShowLabel;
 
+  /// No description provided for @settingsAppearanceTypingLabelThinking.
+  ///
+  /// In en, this message translates to:
+  /// **'Thinking'**
+  String get settingsAppearanceTypingLabelThinking;
+
+  /// No description provided for @settingsAppearanceTypingLabelSparkle.
+  ///
+  /// In en, this message translates to:
+  /// **'Thinking…'**
+  String get settingsAppearanceTypingLabelSparkle;
+
+  /// No description provided for @settingsAppearanceTypingLabelDrafting.
+  ///
+  /// In en, this message translates to:
+  /// **'Drafting reply'**
+  String get settingsAppearanceTypingLabelDrafting;
+
+  /// No description provided for @settingsAppearanceTypingLabelGenerating.
+  ///
+  /// In en, this message translates to:
+  /// **'Generating'**
+  String get settingsAppearanceTypingLabelGenerating;
+
+  /// No description provided for @settingsAppearanceTypingLabelReplying.
+  ///
+  /// In en, this message translates to:
+  /// **'Replying'**
+  String get settingsAppearanceTypingLabelReplying;
+
+  /// No description provided for @settingsAppearanceTypingOffCaption.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the bubble empty'**
+  String get settingsAppearanceTypingOffCaption;
+
+  /// No description provided for @settingsAppearanceTypingReduceMotion.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn static when motion is reduced'**
+  String get settingsAppearanceTypingReduceMotion;
+
   /// No description provided for @settingsDataLogsSection.
   ///
   /// In en, this message translates to:

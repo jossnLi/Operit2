@@ -875,6 +875,7 @@ class OperitThemeController {
     bool? showInputProcessingStatus,
     String? aiTypingStyle,
     bool? aiTypingShowText,
+    bool? aiTypingRespectReduceMotion,
     String? avatarShape,
     bool? bubbleUserUseCustomFont,
     String? bubbleUserFontType,
@@ -955,6 +956,7 @@ class OperitThemeController {
       showInputProcessingStatus: showInputProcessingStatus,
       aiTypingStyle: aiTypingStyle,
       aiTypingShowText: aiTypingShowText,
+      aiTypingRespectReduceMotion: aiTypingRespectReduceMotion,
       avatarShape: avatarShape,
       bubbleUserUseCustomFont: bubbleUserUseCustomFont,
       bubbleUserFontType: bubbleUserFontType,
@@ -1389,6 +1391,7 @@ ThemePreferenceSnapshot _themePreferenceSnapshotWith(
     showInputProcessingStatus: snapshot.showInputProcessingStatus,
     aiTypingStyle: snapshot.aiTypingStyle,
     aiTypingShowText: snapshot.aiTypingShowText,
+    aiTypingRespectReduceMotion: snapshot.aiTypingRespectReduceMotion,
   );
 }
 

@@ -109,6 +109,7 @@ class ThemePreferenceSnapshot {
     required this.showInputProcessingStatus,
     this.aiTypingStyle = 'dots',
     this.aiTypingShowText = true,
+    this.aiTypingRespectReduceMotion = true,
   });
 
   final ThemeMode themeMode;
@@ -225,6 +226,9 @@ class ThemePreferenceSnapshot {
   /// Appends a short label next to the animated placeholder when enabled.
   final bool aiTypingShowText;
 
+  /// Falls back to a static frame while the system reduces motion.
+  final bool aiTypingRespectReduceMotion;
+
   /// Encodes the complete effective theme state for another Flutter engine.
   Map<String, Object?> toJson() {
     return <String, Object?>{
@@ -334,6 +338,7 @@ class ThemePreferenceSnapshot {
       'showInputProcessingStatus': showInputProcessingStatus,
       'aiTypingStyle': aiTypingStyle,
       'aiTypingShowText': aiTypingShowText,
+      'aiTypingRespectReduceMotion': aiTypingRespectReduceMotion,
     };
   }
 
@@ -488,6 +493,8 @@ class ThemePreferenceSnapshot {
       showInputProcessingStatus: requiredBool('showInputProcessingStatus'),
       aiTypingStyle: (json['aiTypingStyle'] as String?) ?? 'dots',
       aiTypingShowText: (json['aiTypingShowText'] as bool?) ?? true,
+      aiTypingRespectReduceMotion:
+          (json['aiTypingRespectReduceMotion'] as bool?) ?? true,
     );
   }
 }

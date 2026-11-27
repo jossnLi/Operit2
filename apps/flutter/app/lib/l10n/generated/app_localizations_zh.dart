@@ -3519,6 +3519,27 @@ class AppLocalizationsZh extends AppLocalizations {
   @override
   String get settingsAppearanceTypingShowLabel => '叠加文案';
 
+  @override
+  String get settingsAppearanceTypingLabelThinking => '正在思考';
+
+  @override
+  String get settingsAppearanceTypingLabelSparkle => 'Thinking…';
+
+  @override
+  String get settingsAppearanceTypingLabelDrafting => '正在整理回复';
+
+  @override
+  String get settingsAppearanceTypingLabelGenerating => '生成中';
+
+  @override
+  String get settingsAppearanceTypingLabelReplying => '正在回复';
+
+  @override
+  String get settingsAppearanceTypingOffCaption => '保留空气泡，不加指示';
+
+  @override
+  String get settingsAppearanceTypingReduceMotion => '减少动态效果时降级为静态';
+
 
   @override
   String get settingsDataLogsSection => '诊断日志';

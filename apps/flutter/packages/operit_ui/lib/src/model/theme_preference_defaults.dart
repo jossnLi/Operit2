@@ -131,5 +131,6 @@ class ThemePreferenceDefaults {
     showInputProcessingStatus: true,
     aiTypingStyle: 'dots',
     aiTypingShowText: true,
+    aiTypingRespectReduceMotion: true,
   );
 }

@@ -182,6 +182,7 @@ class UserPreferencesManager {
     'showInputProcessingStatus': 'show_input_processing_status',
     'aiTypingStyle': 'ai_typing_style',
     'aiTypingShowText': 'ai_typing_show_text',
+    'aiTypingRespectReduceMotion': 'ai_typing_respect_reduce_motion',
   };
 
   static const ThemePreferenceSnapshot defaultThemePreferenceSnapshot =
@@ -471,6 +472,7 @@ class UserPreferencesManager {
     bool? showInputProcessingStatus,
     String? aiTypingStyle,
     bool? aiTypingShowText,
+    bool? aiTypingRespectReduceMotion,
     bool? useCustomFont,
     String? fontType,
     String? systemFontName,
@@ -601,6 +603,8 @@ class UserPreferencesManager {
         'showInputProcessingStatus': showInputProcessingStatus,
       if (aiTypingStyle != null) 'aiTypingStyle': aiTypingStyle,
       if (aiTypingShowText != null) 'aiTypingShowText': aiTypingShowText,
+      if (aiTypingRespectReduceMotion != null)
+        'aiTypingRespectReduceMotion': aiTypingRespectReduceMotion,
       if (useCustomFont != null) 'useCustomFont': useCustomFont,
       if (fontType != null) 'fontType': fontType,
       if (systemFontName != null) 'systemFontName': systemFontName,

@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:operit2/l10n/generated/app_localizations.dart';
 
 /// Animated placeholders shown inside the AI bubble before the first token.
 enum AiTypingStyle {
@@ -23,6 +24,26 @@ enum AiTypingStyle {
   }
 }
 
+/// Resolves the short caption shown beside one waiting style.
+String aiTypingLabelForStyle(AiTypingStyle style, AppLocalizations l10n) {
+  switch (style) {
+    case AiTypingStyle.dots:
+      return l10n.settingsAppearanceTypingLabelThinking;
+    case AiTypingStyle.sparkle:
+      return l10n.settingsAppearanceTypingLabelSparkle;
+    case AiTypingStyle.skeleton:
+      return '';
+    case AiTypingStyle.textCursor:
+      return l10n.settingsAppearanceTypingLabelDrafting;
+    case AiTypingStyle.waveform:
+      return l10n.settingsAppearanceTypingLabelGenerating;
+    case AiTypingStyle.orbit:
+      return l10n.settingsAppearanceTypingLabelReplying;
+    case AiTypingStyle.none:
+      return '';
+  }
+}
+
 /// Renders the waiting-for-reply placeholder selected in the appearance page.
 ///
 /// Every style derives its color from [color] so it follows the bubble text
@@ -35,6 +56,7 @@ class AiTypingIndicator extends StatefulWidget {
     required this.color,
     this.label,
     this.showLabel = true,
+    this.respectReduceMotion = true,
     this.scale = 1,
   });
 
@@ -42,6 +64,9 @@ class AiTypingIndicator extends StatefulWidget {
   final Color color;
   final String? label;
   final bool showLabel;
+
+  /// Honors the platform reduce-motion preference when enabled.
+  final bool respectReduceMotion;
   final double scale;
 
   @override
@@ -72,8 +97,8 @@ class _AiTypingIndicatorState extends State<AiTypingIndicator>
     if (widget.style == AiTypingStyle.none) {
       return const SizedBox.shrink();
     }
-    final reduceMotion =
-        MediaQuery.maybeOf(context)?.disableAnimations ?? false;
+    final reduceMotion = widget.respectReduceMotion &&
+        (MediaQuery.maybeOf(context)?.disableAnimations ?? false);
     final Widget motion = reduceMotion
         ? _motion(enter: false)
         : AnimatedBuilder(

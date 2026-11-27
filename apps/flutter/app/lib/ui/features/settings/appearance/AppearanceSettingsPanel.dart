@@ -1031,7 +1031,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
                 );
               },
             ),
-            const _SectionDivider(),
+            const SizedBox(height: 4),
             SettingsSwitchRow(
               icon: OperitIcons.text_fields_outlined,
               title: l10n.settingsAppearanceTypingShowLabel,
@@ -1039,6 +1039,19 @@ class _AppearanceThemeEditor extends StatelessWidget {
               onChanged: (value) {
                 unawaited(
                   themeController.saveThemeSettings(aiTypingShowText: value),
+                );
+              },
+            ),
+            const _SectionDivider(),
+            SettingsSwitchRow(
+              icon: OperitIcons.offline_bolt_outlined,
+              title: l10n.settingsAppearanceTypingReduceMotion,
+              value: snapshot.aiTypingRespectReduceMotion,
+              onChanged: (value) {
+                unawaited(
+                  themeController.saveThemeSettings(
+                    aiTypingRespectReduceMotion: value,
+                  ),
                 );
               },
             ),
@@ -4261,7 +4274,10 @@ class _TypingStyleGrid extends StatelessWidget {
     AiTypingStyle.none,
   ];
 
-  String _labelFor(AiTypingStyle style) {
+  static const List<String> _badges = <String>['A', 'B', 'C', 'D', 'E', 'F', ''];
+
+  /// Names the style exactly as the appearance catalogue lists it.
+  String _nameFor(AiTypingStyle style) {
     switch (style) {
       case AiTypingStyle.dots:
         return l10n.settingsAppearanceTypingStyleDots;
@@ -4280,6 +4296,14 @@ class _TypingStyleGrid extends StatelessWidget {
     }
   }
 
+  /// Supplies the small caption that sits beside the live preview.
+  String _captionFor(AiTypingStyle style) {
+    if (style == AiTypingStyle.none) {
+      return l10n.settingsAppearanceTypingOffCaption;
+    }
+    return aiTypingLabelForStyle(style, l10n);
+  }
+
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -4290,15 +4314,17 @@ class _TypingStyleGrid extends StatelessWidget {
           spacing: 8,
           runSpacing: 8,
           children: <Widget>[
-            for (final style in _styles)
+            for (var index = 0; index < _styles.length; index++)
               SizedBox(
                 width: tileWidth,
                 child: _TypingStyleTile(
-                  style: style,
-                  label: _labelFor(style),
-                  selected: style == value,
+                  style: _styles[index],
+                  name: _nameFor(_styles[index]),
+                  caption: _captionFor(_styles[index]),
+                  badge: _badges[index],
+                  selected: _styles[index] == value,
                   textColor: colorScheme.onSurface,
-                  onTap: () => onChanged(style),
+                  onTap: () => onChanged(_styles[index]),
                 ),
               ),
           ],
@@ -4308,18 +4334,22 @@ class _TypingStyleGrid extends StatelessWidget {
   }
 }
 
-/// One live mini preview of a waiting style plus its name.
+/// One selectable style: its name and letter, then a live preview with caption.
 class _TypingStyleTile extends StatelessWidget {
   const _TypingStyleTile({
     required this.style,
-    required this.label,
+    required this.name,
+    required this.caption,
+    required this.badge,
     required this.selected,
     required this.textColor,
     required this.onTap,
   });
 
   final AiTypingStyle style;
-  final String label;
+  final String name;
+  final String caption;
+  final String badge;
   final bool selected;
   final Color textColor;
   final VoidCallback onTap;
@@ -4327,66 +4357,106 @@ class _TypingStyleTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final BorderRadius radius = BorderRadius.circular(12);
-    return InkWell(
-      onTap: onTap,
-      borderRadius: radius,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 160),
-        padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
-        decoration: BoxDecoration(
-          color: selected
-              ? colorScheme.primary.withValues(alpha: 0.10)
-              : colorScheme.surfaceContainerHighest.withValues(alpha: 0.28),
-          borderRadius: radius,
-          border: Border.all(
+    final BorderRadius radius = BorderRadius.circular(13);
+    final Color markColor = selected
+        ? colorScheme.primary
+        : textColor.withValues(alpha: 0.72);
+    final bool captionInsideIndicator = style == AiTypingStyle.textCursor;
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: radius,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 160),
+          padding: const EdgeInsets.fromLTRB(10, 7, 8, 8),
+          decoration: BoxDecoration(
             color: selected
-                ? colorScheme.primary.withValues(alpha: 0.55)
-                : colorScheme.outlineVariant.withValues(alpha: 0.26),
-            width: selected ? 1.2 : 0.9,
+                ? colorScheme.primary.withValues(alpha: 0.12)
+                : colorScheme.surfaceContainerHighest.withValues(alpha: 0.24),
+            borderRadius: radius,
+            border: Border.all(
+              color: selected
+                  ? colorScheme.primary.withValues(alpha: 0.42)
+                  : colorScheme.outlineVariant.withValues(alpha: 0.22),
+              width: 0.9,
+            ),
           ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            SizedBox(
-              height: 26,
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: style == AiTypingStyle.none
-                    ? Text(
-                        '—',
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: textColor.withValues(alpha: 0.45),
-                        ),
-                      )
-                    : AiTypingIndicator(
-                        style: style,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Text(
+                      name,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 11.5,
+                        height: 1.2,
+                        fontWeight:
+                            selected ? FontWeight.w600 : FontWeight.w500,
                         color: selected
                             ? colorScheme.primary
-                            : textColor.withValues(alpha: 0.72),
-                        showLabel: false,
-                        scale: 0.9,
+                            : textColor.withValues(alpha: 0.86),
                       ),
+                    ),
+                  ),
+                  if (badge.isNotEmpty)
+                    Text(
+                      badge,
+                      style: TextStyle(
+                        fontSize: 9.5,
+                        height: 1.2,
+                        color: textColor.withValues(alpha: 0.34),
+                      ),
+                    ),
+                ],
               ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              label,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontSize: 12,
-                height: 1.2,
-                fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
-                color: selected
-                    ? colorScheme.primary
-                    : textColor.withValues(alpha: 0.82),
+              const SizedBox(height: 7),
+              Row(
+                children: <Widget>[
+                  if (style == AiTypingStyle.none)
+                    Text(
+                      '—',
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: textColor.withValues(alpha: 0.38),
+                      ),
+                    )
+                  else
+                    Flexible(
+                      child: AiTypingIndicator(
+                        style: style,
+                        color: markColor,
+                        label: captionInsideIndicator ? caption : null,
+                        showLabel: captionInsideIndicator,
+                        scale: 0.85,
+                      ),
+                    ),
+                  if (!captionInsideIndicator && caption.isNotEmpty) ...<Widget>[
+                    const SizedBox(width: 6),
+                    Expanded(
+                      child: Text(
+                        caption,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 9.5,
+                          height: 1.2,
+                          color: textColor.withValues(
+                            alpha: selected ? 0.72 : 0.50,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ],
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
