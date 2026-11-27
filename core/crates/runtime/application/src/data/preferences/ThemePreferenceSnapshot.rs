@@ -516,6 +516,10 @@ pub(crate) const EXTENDED_SNAPSHOT_FIELDS: &[SnapshotField] = &[
     SnapshotField { json_key: "chatStyle", preference_key: "chat_style", kind: FieldKind::Enum(&["cursor", "bubble"]) },
     SnapshotField { json_key: "userChatStyle", preference_key: "user_chat_style", kind: FieldKind::Enum(&["cursor", "bubble"]) },
     SnapshotField { json_key: "aiChatStyle", preference_key: "ai_chat_style", kind: FieldKind::Enum(&["cursor", "bubble"]) },
+    // Waiting-for-reply placeholder settings added after the released snapshot
+    // contract; older saved configurations simply do not declare them.
+    SnapshotField { json_key: "aiTypingStyle", preference_key: "ai_typing_style", kind: FieldKind::Enum(&["dots", "sparkle", "skeleton", "textCursor", "waveform", "orbit", "none"]) },
+    SnapshotField { json_key: "aiTypingShowText", preference_key: "ai_typing_show_text", kind: FieldKind::Boolean },
 ];
 
 /// Enumerates the declared ordinary appearance fields without inferring key names.
