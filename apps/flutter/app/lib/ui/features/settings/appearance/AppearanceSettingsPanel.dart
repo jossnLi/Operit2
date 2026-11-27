@@ -196,6 +196,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
     ThemePreferenceSnapshot snapshot,
   ) {
     final applicationZoom = ApplicationZoomScope.of(context);
+    final colorScheme = Theme.of(context).colorScheme;
     final hasCustomFont =
         snapshot.fontType == UserPreferencesManager.FONT_TYPE_FILE &&
         snapshot.customFontPath != null &&
@@ -213,7 +214,6 @@ class _AppearanceThemeEditor extends StatelessWidget {
           children: <Widget>[
             _AppearanceFieldBlock(
               label: l10n.settingsAppearanceThemeMode,
-              badge: _themeModeLabel(l10n, themeController.themeMode),
               child: _ThemeModeSelector(
                 value: themeController.themeMode,
                 onChanged: (themeMode) {
@@ -221,10 +221,9 @@ class _AppearanceThemeEditor extends StatelessWidget {
                 },
               ),
             ),
-            const SizedBox(height: 10),
+            const _SectionDivider(),
             _AppearanceFieldBlock(
               label: l10n.settingsAppearanceMessageSurface,
-              badge: _messageSurfaceLabel(l10n, _surfaceFromSnapshot(snapshot)),
               child: _MessageSurfaceSelector(
                 value: _surfaceFromSnapshot(snapshot),
                 onChanged: (value) {
@@ -264,85 +263,83 @@ class _AppearanceThemeEditor extends StatelessWidget {
           title: l10n.settingsAppearanceTextSection,
           icon: OperitIcons.text_fields_outlined,
           children: <Widget>[
-            ...<Widget>[
-              _AppearanceFieldBlock(
-                label: l10n.settingsAppearanceFontFamily,
-                badge: _fontFamilyLabel(l10n, snapshot),
-                child: _FontFamilySelector(
-                  value: _fontFamilyPresetFromSnapshot(snapshot),
-                  hasSelection:
-                      snapshot.fontType ==
-                      UserPreferencesManager.FONT_TYPE_SYSTEM,
-                  onChanged: (value) {
-                    unawaited(
-                      themeController.saveThemeSettings(
-                        fontType: UserPreferencesManager.FONT_TYPE_SYSTEM,
-                        systemFontName: _systemFontNameFromPreset(value),
-                        useCustomFont: false,
-                        customFontPath: '',
-                      ),
-                    );
+            _AppearanceFieldBlock(
+              label: l10n.settingsAppearanceFontFamily,
+              child: _FontFamilySelector(
+                value: _fontFamilyPresetFromSnapshot(snapshot),
+                hasSelection:
+                    snapshot.fontType ==
+                    UserPreferencesManager.FONT_TYPE_SYSTEM,
+                onChanged: (value) {
+                  unawaited(
+                    themeController.saveThemeSettings(
+                      fontType: UserPreferencesManager.FONT_TYPE_SYSTEM,
+                      systemFontName: _systemFontNameFromPreset(value),
+                      useCustomFont: false,
+                      customFontPath: '',
+                    ),
+                  );
+                },
+              ),
+            ),
+            const _SectionDivider(),
+            SettingsAssetTile(
+              icon: OperitIcons.phone_iphone_rounded,
+              title: l10n.settingsAppearanceDeviceFonts,
+              subtitle:
+                  snapshot.fontType == UserPreferencesManager.FONT_TYPE_DEVICE
+                  ? (snapshot.systemFontName ??
+                        l10n.settingsAppearanceChooseDeviceFont)
+                  : l10n.settingsAppearanceChooseDeviceFont,
+              actions: [
+                FilledButton.tonalIcon(
+                  style: SettingsControlStyles.sectionTextButton(),
+                  icon: const Icon(OperitIcons.text_fields_outlined, size: 16),
+                  label: Text(l10n.settingsAppearanceChooseDeviceFont),
+                  onPressed: () => _pickDeviceFont(
+                    context,
+                    themeController,
+                    snapshot.systemFontName,
+                  ),
+                ),
+              ],
+            ),
+            const _SectionDivider(),
+            SettingsAssetTile(
+              icon: OperitIcons.font_download_outlined,
+              title: l10n.settingsAppearanceCustomFont,
+              subtitle: _customFontLabel(
+                l10n,
+                hasCustomFont ? snapshot.customFontPath : null,
+              ),
+              actions: <Widget>[
+                FilledButton.tonalIcon(
+                  style: SettingsControlStyles.sectionTextButton(),
+                  onPressed: () {
+                    unawaited(_pickCustomFont(context, themeController));
                   },
+                  icon: const Icon(OperitIcons.folder_open_outlined, size: 16),
+                  label: Text(l10n.settingsAppearanceChooseCustomFont),
                 ),
-              ),
-              const SizedBox(height: 10),
-              SettingsAssetTile(
-                icon: OperitIcons.font_download_outlined,
-                title: l10n.settingsAppearanceDeviceFonts,
-                subtitle:
-                    snapshot.fontType == UserPreferencesManager.FONT_TYPE_DEVICE
-                    ? snapshot.systemFontName!
-                    : l10n.settingsAppearanceChooseDeviceFont,
-                actions: [
-                  FilledButton.tonalIcon(
-                    style: SettingsControlStyles.sectionTextButton(),
-                    icon: const Icon(OperitIcons.text_fields_outlined, size: 16),
-                    label: Text(l10n.settingsAppearanceChooseDeviceFont),
-                    onPressed: () => _pickDeviceFont(
-                      context,
-                      themeController,
-                      snapshot.systemFontName,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              SettingsAssetTile(
-                icon: OperitIcons.font_download_outlined,
-                title: l10n.settingsAppearanceCustomFont,
-                subtitle: _customFontLabel(
-                  l10n,
-                  hasCustomFont ? snapshot.customFontPath : null,
-                ),
-                actions: <Widget>[
-                  FilledButton.tonalIcon(
-                    style: SettingsControlStyles.sectionTextButton(),
+                if (hasCustomFont)
+                  SettingsEntityIconButton(
+                    tooltip: l10n.settingsAppearanceClearCustomFont,
+                    icon: OperitIcons.close_rounded,
                     onPressed: () {
-                      unawaited(_pickCustomFont(context, themeController));
+                      unawaited(
+                        themeController.saveThemeSettings(
+                          useCustomFont: false,
+                          fontType: UserPreferencesManager.FONT_TYPE_SYSTEM,
+                          systemFontName:
+                              UserPreferencesManager.SYSTEM_FONT_DEFAULT,
+                          customFontPath: '',
+                        ),
+                      );
                     },
-                    icon: const Icon(OperitIcons.folder_open_outlined, size: 16),
-                    label: Text(l10n.settingsAppearanceChooseCustomFont),
                   ),
-                  if (hasCustomFont)
-                    SettingsEntityIconButton(
-                      tooltip: l10n.settingsAppearanceClearCustomFont,
-                      icon: OperitIcons.close_rounded,
-                      onPressed: () {
-                        unawaited(
-                          themeController.saveThemeSettings(
-                            useCustomFont: false,
-                            fontType: UserPreferencesManager.FONT_TYPE_SYSTEM,
-                            systemFontName:
-                                UserPreferencesManager.SYSTEM_FONT_DEFAULT,
-                            customFontPath: '',
-                          ),
-                        );
-                      },
-                    ),
-                ],
-              ),
-              const SizedBox(height: 8),
-            ],
+              ],
+            ),
+            const _SectionDivider(),
             SettingsSliderRow(
               icon: OperitIcons.zoom_in_outlined,
               label: l10n.settingsAppearanceInterfaceScale,
@@ -359,7 +356,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
                 );
               },
             ),
-            const SizedBox(height: 8),
+            const _SectionDivider(),
             SettingsSliderRow(
               icon: OperitIcons.format_size_outlined,
               label: l10n.settingsAppearanceFontScale,
@@ -377,25 +374,25 @@ class _AppearanceThemeEditor extends StatelessWidget {
             ),
           ],
         ),
-        _SectionCard(
-          title: l10n.settingsAppearanceLanguageSection,
-          icon: OperitIcons.language_outlined,
-          action: SettingsInfoBadge(label: l10n.localeName),
-          children: <Widget>[
-            _BodyText(l10n.settingsAppearanceLanguageDescription),
-            const SizedBox(height: 8),
-            Align(
-              alignment: Alignment.centerRight,
-              child: OutlinedButton.icon(
-                style: SettingsControlStyles.sectionTextButton(),
-                onPressed: () {
-                  unawaited(themeController.resetThemeSettings());
-                },
-                icon: const Icon(OperitIcons.restart_alt_rounded, size: 16),
-                label: Text(l10n.settingsAppearanceResetTheme),
+        Padding(
+          padding: const EdgeInsets.only(top: 2, bottom: 8),
+          child: Center(
+            child: OutlinedButton.icon(
+              style: SettingsControlStyles.sectionTextButton().copyWith(
+                foregroundColor: WidgetStatePropertyAll<Color>(
+                  colorScheme.error,
+                ),
+                side: WidgetStatePropertyAll<BorderSide>(
+                  BorderSide(color: colorScheme.error.withValues(alpha: 0.35)),
+                ),
               ),
+              onPressed: () {
+                unawaited(themeController.resetThemeSettings());
+              },
+              icon: const Icon(OperitIcons.restart_alt_rounded, size: 16),
+              label: Text(l10n.settingsAppearanceResetTheme),
             ),
-          ],
+          ),
         ),
       ],
     );
@@ -424,7 +421,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
           icon: OperitIcons.wallpaper_outlined,
           children: <Widget>[
             _BodyText(l10n.settingsAppearanceBackgroundDescription),
-            const SizedBox(height: 4),
+            const SizedBox(height: 2),
             SettingsSwitchRow(
               icon: OperitIcons.visibility_outlined,
               title: l10n.settingsAppearanceBackgroundEnabled,
@@ -435,7 +432,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
                 );
               },
             ),
-            const SizedBox(height: 8),
+            const _SectionDivider(),
             SettingsAssetTile(
               icon: isVideo
                   ? OperitIcons.movie_creation_outlined
@@ -483,35 +480,30 @@ class _AppearanceThemeEditor extends StatelessWidget {
             title: l10n.settingsAppearanceBackgroundVideoSection,
             icon: OperitIcons.smart_display_outlined,
             children: <Widget>[
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: <Widget>[
-                  SettingsToggleChip(
-                    icon: OperitIcons.volume_off_outlined,
-                    label: l10n.settingsAppearanceBackgroundVideoMuted,
-                    selected: snapshot.videoBackgroundMuted,
-                    onSelected: (value) {
-                      unawaited(
-                        themeController.saveThemeSettings(
-                          videoBackgroundMuted: value,
-                        ),
-                      );
-                    },
-                  ),
-                  SettingsToggleChip(
-                    icon: OperitIcons.repeat_outlined,
-                    label: l10n.settingsAppearanceBackgroundVideoLoop,
-                    selected: snapshot.videoBackgroundLoop,
-                    onSelected: (value) {
-                      unawaited(
-                        themeController.saveThemeSettings(
-                          videoBackgroundLoop: value,
-                        ),
-                      );
-                    },
-                  ),
-                ],
+              SettingsSwitchRow(
+                icon: OperitIcons.volume_off_outlined,
+                title: l10n.settingsAppearanceBackgroundVideoMuted,
+                value: snapshot.videoBackgroundMuted,
+                onChanged: (value) {
+                  unawaited(
+                    themeController.saveThemeSettings(
+                      videoBackgroundMuted: value,
+                    ),
+                  );
+                },
+              ),
+              const _SectionDivider(),
+              SettingsSwitchRow(
+                icon: OperitIcons.repeat_outlined,
+                title: l10n.settingsAppearanceBackgroundVideoLoop,
+                value: snapshot.videoBackgroundLoop,
+                onChanged: (value) {
+                  unawaited(
+                    themeController.saveThemeSettings(
+                      videoBackgroundLoop: value,
+                    ),
+                  );
+                },
               ),
             ],
           ),
@@ -540,7 +532,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
                 );
               },
             ),
-            const Divider(height: 14),
+            const _SectionDivider(),
             SettingsSwitchRow(
               icon: OperitIcons.blur_on_outlined,
               title: l10n.settingsAppearanceBackgroundBlur,
@@ -552,7 +544,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
               },
             ),
             if (snapshot.useBackgroundBlur) ...<Widget>[
-              const SizedBox(height: 4),
+              const _SectionDivider(),
               SettingsSliderRow(
                 icon: OperitIcons.tune_outlined,
                 label: l10n.settingsAppearanceBackgroundBlurRadius,
@@ -618,7 +610,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
                 },
               ),
             ),
-            const SizedBox(height: 10),
+            const _SectionDivider(),
             _AppearanceFieldBlock(
               label: l10n.settingsAppearanceAiMessageStyle,
               child: _MessageStyleSelector(
@@ -630,7 +622,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
                 },
               ),
             ),
-            const SizedBox(height: 10),
+            const _SectionDivider(),
             _AppearanceFieldBlock(
               label: l10n.settingsAppearanceMessageDensity,
               child: _MessageDensitySelector(
@@ -648,7 +640,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
                 },
               ),
             ),
-            const SizedBox(height: 10),
+            const _SectionDivider(),
             Wrap(
               spacing: 8,
               runSpacing: 8,
@@ -712,15 +704,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
-                          Divider(
-                            height: 20,
-                            thickness: 1,
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.outlineVariant.withValues(
-                              alpha: 0.22,
-                            ),
-                          ),
+                          const _SectionDivider(),
                           _AppearanceFieldBlock(
                             label: l10n.settingsAppearanceAvatarShape,
                             child: _AvatarShapeSelector(
@@ -788,7 +772,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 8),
+            const _SectionDivider(),
             SettingsAssetTile(
               icon: OperitIcons.text_fields_outlined,
               title: l10n.settingsAppearanceAiBubbleFont,
@@ -879,7 +863,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
                     )
                   : null,
             ),
-            const SizedBox(height: 8),
+            const _SectionDivider(),
             SettingsAssetTile(
               icon: OperitIcons.image_outlined,
               title: l10n.settingsAppearanceAiBubbleImage,
@@ -967,7 +951,6 @@ class _AppearanceThemeEditor extends StatelessWidget {
           children: <Widget>[
             _AppearanceFieldBlock(
               label: l10n.settingsAppearanceInputStyle,
-              badge: _inputStyleLabel(l10n, snapshot.inputStyle),
               child: _InputStyleSelector(
                 value: _inputStyleValue(snapshot.inputStyle),
                 onChanged: (value) {
@@ -977,24 +960,16 @@ class _AppearanceThemeEditor extends StatelessWidget {
                 },
               ),
             ),
-            const SizedBox(height: 8),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: <Widget>[
-                SettingsToggleChip(
-                  icon: OperitIcons.vertical_align_bottom_outlined,
-                  label: l10n.settingsAppearanceInputFloating,
-                  selected: snapshot.chatInputFloating,
-                  onSelected: (value) {
-                    unawaited(
-                      themeController.saveThemeSettings(
-                        chatInputFloating: value,
-                      ),
-                    );
-                  },
-                ),
-              ],
+            const _SectionDivider(),
+            SettingsSwitchRow(
+              icon: OperitIcons.vertical_align_bottom_outlined,
+              title: l10n.settingsAppearanceInputFloating,
+              value: snapshot.chatInputFloating,
+              onChanged: (value) {
+                unawaited(
+                  themeController.saveThemeSettings(chatInputFloating: value),
+                );
+              },
             ),
           ],
         ),
@@ -1038,89 +1013,83 @@ class _AppearanceThemeEditor extends StatelessWidget {
           title: l10n.settingsAppearanceMessageDisplaySection,
           icon: OperitIcons.tune_outlined,
           children: <Widget>[
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: <Widget>[
-                SettingsToggleChip(
-                  icon: OperitIcons.badge_outlined,
-                  label: l10n.settingsAppearanceShowRoleName,
-                  selected: snapshot.showRoleName,
-                  onSelected: (value) {
-                    unawaited(
-                      themeController.saveThemeSettings(showRoleName: value),
-                    );
-                  },
-                ),
-                SettingsToggleChip(
-                  icon: OperitIcons.person_outline_rounded,
-                  label: l10n.settingsAppearanceShowUserName,
-                  selected: snapshot.showUserName,
-                  onSelected: (value) {
-                    unawaited(
-                      themeController.saveThemeSettings(showUserName: value),
-                    );
-                  },
-                ),
-                SettingsToggleChip(
-                  icon: OperitIcons.memory_outlined,
-                  label: l10n.settingsAppearanceShowModelName,
-                  selected: snapshot.showModelName,
-                  onSelected: (value) {
-                    unawaited(
-                      themeController.saveThemeSettings(showModelName: value),
-                    );
-                  },
-                ),
-                SettingsToggleChip(
-                  icon: OperitIcons.cloud_outlined,
-                  label: l10n.settingsAppearanceShowModelProvider,
-                  selected: snapshot.showModelProvider,
-                  onSelected: (value) {
-                    unawaited(
-                      themeController.saveThemeSettings(
-                        showModelProvider: value,
-                      ),
-                    );
-                  },
-                ),
-                SettingsToggleChip(
-                  icon: OperitIcons.data_usage_outlined,
-                  label: l10n.settingsAppearanceShowMessageTokenStats,
-                  selected: snapshot.showMessageTokenStats,
-                  onSelected: (value) {
-                    unawaited(
-                      themeController.saveThemeSettings(
-                        showMessageTokenStats: value,
-                      ),
-                    );
-                  },
-                ),
-                SettingsToggleChip(
-                  icon: OperitIcons.timer_outlined,
-                  label: l10n.settingsAppearanceShowMessageTimingStats,
-                  selected: snapshot.showMessageTimingStats,
-                  onSelected: (value) {
-                    unawaited(
-                      themeController.saveThemeSettings(
-                        showMessageTimingStats: value,
-                      ),
-                    );
-                  },
-                ),
-                SettingsToggleChip(
-                  icon: OperitIcons.schedule_outlined,
-                  label: l10n.settingsAppearanceShowMessageTimestamp,
-                  selected: snapshot.showMessageTimestamp,
-                  onSelected: (value) {
-                    unawaited(
-                      themeController.saveThemeSettings(
-                        showMessageTimestamp: value,
-                      ),
-                    );
-                  },
-                ),
-              ],
+            SettingsSwitchRow(
+              icon: OperitIcons.badge_outlined,
+              title: l10n.settingsAppearanceShowRoleName,
+              value: snapshot.showRoleName,
+              onChanged: (value) {
+                unawaited(
+                  themeController.saveThemeSettings(showRoleName: value),
+                );
+              },
+            ),
+            const _SectionDivider(),
+            SettingsSwitchRow(
+              icon: OperitIcons.person_outline_rounded,
+              title: l10n.settingsAppearanceShowUserName,
+              value: snapshot.showUserName,
+              onChanged: (value) {
+                unawaited(
+                  themeController.saveThemeSettings(showUserName: value),
+                );
+              },
+            ),
+            const _SectionDivider(),
+            SettingsSwitchRow(
+              icon: OperitIcons.memory_outlined,
+              title: l10n.settingsAppearanceShowModelName,
+              value: snapshot.showModelName,
+              onChanged: (value) {
+                unawaited(
+                  themeController.saveThemeSettings(showModelName: value),
+                );
+              },
+            ),
+            const _SectionDivider(),
+            SettingsSwitchRow(
+              icon: OperitIcons.cloud_outlined,
+              title: l10n.settingsAppearanceShowModelProvider,
+              value: snapshot.showModelProvider,
+              onChanged: (value) {
+                unawaited(
+                  themeController.saveThemeSettings(showModelProvider: value),
+                );
+              },
+            ),
+            const _SectionDivider(),
+            SettingsSwitchRow(
+              icon: OperitIcons.data_usage_outlined,
+              title: l10n.settingsAppearanceShowMessageTokenStats,
+              value: snapshot.showMessageTokenStats,
+              onChanged: (value) {
+                unawaited(
+                  themeController.saveThemeSettings(showMessageTokenStats: value),
+                );
+              },
+            ),
+            const _SectionDivider(),
+            SettingsSwitchRow(
+              icon: OperitIcons.timer_outlined,
+              title: l10n.settingsAppearanceShowMessageTimingStats,
+              value: snapshot.showMessageTimingStats,
+              onChanged: (value) {
+                unawaited(
+                  themeController.saveThemeSettings(
+                    showMessageTimingStats: value,
+                  ),
+                );
+              },
+            ),
+            const _SectionDivider(),
+            SettingsSwitchRow(
+              icon: OperitIcons.schedule_outlined,
+              title: l10n.settingsAppearanceShowMessageTimestamp,
+              value: snapshot.showMessageTimestamp,
+              onChanged: (value) {
+                unawaited(
+                  themeController.saveThemeSettings(showMessageTimestamp: value),
+                );
+              },
             ),
           ],
         ),
@@ -1159,64 +1128,183 @@ class _AppearanceHeaderBar extends StatelessWidget {
   /// Creates the independent appearance-category header.
   const _AppearanceHeaderBar();
 
-  /// Builds the responsive appearance tabs without plugin-owned target selection.
+  /// Builds the appearance tab rail, centered on wide layouts.
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final colorScheme = Theme.of(context).colorScheme;
+    final controller = DefaultTabController.of(context);
+    final labels = <String>[
+      for (final tab in _appearanceSettingsTabs)
+        _appearanceSettingsTabLabel(l10n, tab),
+    ];
     return LayoutBuilder(
       builder: (context, constraints) {
-        final useHorizontalHeader = constraints.maxWidth >= 680;
-        if (useHorizontalHeader) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16, 10, 16, 6),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Material(
-                        color: Colors.transparent,
-                        child: TabBar(
-                          isScrollable: true,
-                          tabAlignment: TabAlignment.start,
-                          dividerColor: Colors.transparent,
-                          tabs: <Widget>[
-                            for (final tab in _appearanceSettingsTabs)
-                              Tab(text: _appearanceSettingsTabLabel(l10n, tab)),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Divider(
-                height: 1,
-                color: colorScheme.outlineVariant.withValues(alpha: 0.22),
-              ),
-            ],
-          );
-        }
-
+        final centered = constraints.maxWidth >= 960;
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Material(
-              color: Colors.transparent,
-              child: TabBar(
-                isScrollable: true,
-                tabAlignment: TabAlignment.start,
-                tabs: <Widget>[
-                  for (final tab in _appearanceSettingsTabs)
-                    Tab(text: _appearanceSettingsTabLabel(l10n, tab)),
-                ],
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 10, 16, 9),
+              child: Align(
+                alignment: centered ? Alignment.center : Alignment.centerLeft,
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxWidth: centered ? 560 : double.infinity,
+                    minWidth: centered ? 520 : 0,
+                  ),
+                  child: _AppearanceTabStrip(
+                    controller: controller,
+                    labels: labels,
+                  ),
+                ),
               ),
+            ),
+            Divider(
+              height: 1,
+              thickness: 1,
+              color: colorScheme.outlineVariant.withValues(alpha: 0.2),
             ),
           ],
         );
       },
+    );
+  }
+}
+
+/// Draws the appearance categories as one track with a sliding indicator.
+class _AppearanceTabStrip extends StatelessWidget {
+  const _AppearanceTabStrip({required this.controller, required this.labels});
+
+  final TabController controller;
+  final List<String> labels;
+
+  static const double _height = 38;
+  static const double _inset = 3;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final segmentWidth =
+            (constraints.maxWidth - _inset * 2) / labels.length;
+        return AnimatedBuilder(
+          animation: controller,
+          builder: (context, _) {
+            final position =
+                controller.animation?.value ?? controller.index.toDouble();
+            return SizedBox(
+              height: _height,
+              child: DecoratedBox(
+                decoration: ShapeDecoration(
+                  color: isDark
+                      ? colorScheme.surfaceContainerHighest.withValues(
+                          alpha: 0.34,
+                        )
+                      : colorScheme.onSurface.withValues(alpha: 0.045),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(999),
+                    side: BorderSide(
+                      color: colorScheme.outlineVariant.withValues(alpha: 0.28),
+                    ),
+                  ),
+                ),
+                child: Stack(
+                  children: <Widget>[
+                    AnimatedPositioned(
+                      duration: const Duration(milliseconds: 180),
+                      curve: Curves.easeOutCubic,
+                      left: _inset + position * segmentWidth,
+                      top: _inset,
+                      width: segmentWidth,
+                      height: _height - _inset * 2,
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: colorScheme.primary.withValues(
+                            alpha: isDark ? 0.22 : 0.11,
+                          ),
+                          borderRadius: BorderRadius.circular(999),
+                          border: Border.all(
+                            color: colorScheme.primary.withValues(
+                              alpha: isDark ? 0.6 : 0.4,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Row(
+                      children: <Widget>[
+                        for (var index = 0; index < labels.length; index++)
+                          Expanded(
+                            child: _AppearanceTabButton(
+                              label: labels[index],
+                              selected: controller.index == index,
+                              onTap: () => controller.animateTo(index),
+                              theme: theme,
+                            ),
+                          ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+/// One tappable segment inside the appearance tab rail.
+class _AppearanceTabButton extends StatelessWidget {
+  const _AppearanceTabButton({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+    required this.theme,
+  });
+
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+  final ThemeData theme;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = theme.colorScheme;
+    return Semantics(
+      button: true,
+      selected: selected,
+      child: Material(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(999),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(999),
+          onTap: onTap,
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: Text(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  fontSize: 13,
+                  fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
+                  color: selected
+                      ? colorScheme.primary
+                      : colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -1246,6 +1334,7 @@ class _ResponsivePreviewSplitTabViewState
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return LayoutBuilder(
       builder: (context, constraints) {
         if (constraints.maxWidth >= 820) {
@@ -1265,15 +1354,20 @@ class _ResponsivePreviewSplitTabViewState
                       key: PageStorageKey<String>(
                         'appearance-settings-list:${widget.storageId}',
                       ),
-                      padding: const EdgeInsets.fromLTRB(16, 12, 8, 24),
+                      padding: const EdgeInsets.fromLTRB(16, 12, 12, 24),
                       children: widget.children,
                     ),
+                  ),
+                  Container(
+                    width: 1,
+                    margin: const EdgeInsets.only(top: 12, bottom: 24),
+                    color: colorScheme.outlineVariant.withValues(alpha: 0.14),
                   ),
                   SizedBox(
                     width: previewWidth,
                     child: SingleChildScrollView(
                       primary: false,
-                      padding: const EdgeInsets.fromLTRB(8, 12, 16, 24),
+                      padding: const EdgeInsets.fromLTRB(12, 12, 16, 24),
                       child: widget.previewCard,
                     ),
                   ),
@@ -1284,7 +1378,6 @@ class _ResponsivePreviewSplitTabViewState
         }
 
         final l10n = AppLocalizations.of(context)!;
-        final colorScheme = Theme.of(context).colorScheme;
         // Keep settings list clean and accessible without crowding the screen.
         final previewExpanded = _mobilePreviewExpanded ?? false;
         final Widget pinnedPreviewArea;
@@ -1341,10 +1434,6 @@ class _ResponsivePreviewSplitTabViewState
                             ?.copyWith(fontWeight: FontWeight.w600),
                       ),
                     ),
-                    SettingsInfoBadge(
-                      label: l10n.settingsAppearancePreviewExpand,
-                    ),
-                    const SizedBox(width: 4),
                     Icon(
                       OperitIcons.keyboard_arrow_down_rounded,
                       size: 18,
@@ -1368,7 +1457,7 @@ class _ResponsivePreviewSplitTabViewState
                 key: PageStorageKey<String>(
                   'appearance-settings-list:${widget.storageId}',
                 ),
-                padding: const EdgeInsets.fromLTRB(16, 4, 16, 20),
+                padding: const EdgeInsets.fromLTRB(16, 6, 16, 24),
                 children: widget.children,
               ),
             ),
@@ -1397,11 +1486,7 @@ class _ChatAppearanceLivePreviewCard extends StatelessWidget {
       title: l10n.settingsAppearanceLivePreviewTitle,
       icon: OperitIcons.preview_outlined,
       action: onCollapse == null
-          ? SettingsInfoBadge(
-              label:
-                  '${_messageStyleLabel(l10n, snapshot.userChatStyle)} / '
-                  '${_messageStyleLabel(l10n, snapshot.aiChatStyle)}',
-            )
+          ? null
           : IconButton(
               tooltip: l10n.settingsAppearancePreviewCollapse,
               onPressed: onCollapse,
@@ -3130,17 +3215,6 @@ String _inputStyleValue(String value) {
   };
 }
 
-/// Formats the input style label for the appearance settings panel.
-String _inputStyleLabel(AppLocalizations l10n, String value) {
-  return switch (_inputStyleValue(value)) {
-    UserPreferencesManager.INPUT_STYLE_CLASSIC =>
-      l10n.settingsAppearanceInputStyleClassic,
-    UserPreferencesManager.INPUT_STYLE_AGENT =>
-      l10n.settingsAppearanceInputStyleAgent,
-    _ => throw FormatException('invalid input style preference: $value'),
-  };
-}
-
 enum _MessageColorPreset { theme, sky, matcha, ink, custom }
 
 class _MessageColorPresetValues {
@@ -3932,14 +4006,6 @@ _MessageSurface _surfaceFromSnapshot(ThemePreferenceSnapshot snapshot) {
       : _MessageSurface.normal;
 }
 
-String _messageSurfaceLabel(AppLocalizations l10n, _MessageSurface surface) {
-  return switch (surface) {
-    _MessageSurface.normal => l10n.settingsAppearanceMessageSurfaceNormal,
-    _MessageSurface.transparent =>
-      l10n.settingsAppearanceMessageSurfaceTransparent,
-  };
-}
-
 Future<void> _applyMessageSurface(
   OperitThemeController themeController,
   _MessageSurface surface,
@@ -4055,25 +4121,6 @@ String _systemFontNameFromPreset(_FontFamilyPreset value) {
   };
 }
 
-String _fontFamilyLabel(
-  AppLocalizations l10n,
-  ThemePreferenceSnapshot snapshot,
-) {
-  if (snapshot.fontType == UserPreferencesManager.FONT_TYPE_DEVICE) {
-    return snapshot.systemFontName!;
-  }
-  if (snapshot.fontType == UserPreferencesManager.FONT_TYPE_FILE &&
-      snapshot.customFontPath != null &&
-      snapshot.customFontPath!.isNotEmpty) {
-    return l10n.settingsAppearanceFontCustom;
-  }
-  return switch (_fontFamilyPresetFromSnapshot(snapshot)) {
-    _FontFamilyPreset.defaultFont => l10n.settingsAppearanceFontDefault,
-    _FontFamilyPreset.serif => l10n.settingsAppearanceFontSerif,
-    _FontFamilyPreset.monospace => l10n.settingsAppearanceFontMonospace,
-  };
-}
-
 enum _MessageDensity { comfortable, compact }
 
 class _MessageDensitySelector extends StatelessWidget {
@@ -4113,14 +4160,6 @@ _MessageDensity _densityFromSnapshot(ThemePreferenceSnapshot snapshot) {
           snapshot.bubbleAiContentPaddingRight) /
       4;
   return average <= 10 ? _MessageDensity.compact : _MessageDensity.comfortable;
-}
-
-String _messageStyleLabel(AppLocalizations l10n, String value) {
-  return switch (value) {
-    UserPreferencesManager.CHAT_STYLE_BUBBLE =>
-      l10n.settingsAppearanceMessageStyleCard,
-    _ => l10n.settingsAppearanceMessageStyleClean,
-  };
 }
 
 String _messageDensityLabel(AppLocalizations l10n, _MessageDensity value) {
@@ -4165,14 +4204,6 @@ class _ThemeModeSelector extends StatelessWidget {
   }
 }
 
-String _themeModeLabel(AppLocalizations l10n, ThemeMode mode) {
-  return switch (mode) {
-    ThemeMode.system => l10n.settingsAppearanceThemeSystem,
-    ThemeMode.light => l10n.settingsAppearanceThemeLight,
-    ThemeMode.dark => l10n.settingsAppearanceThemeDark,
-  };
-}
-
 class _SectionCard extends StatelessWidget {
   const _SectionCard({
     required this.title,
@@ -4191,7 +4222,7 @@ class _SectionCard extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final radius = BorderRadius.circular(16);
     return Padding(
-      padding: const EdgeInsets.only(bottom: 9),
+      padding: const EdgeInsets.only(bottom: 10),
       child: OperitGlassSurface(
         color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.36),
         borderRadius: radius,
@@ -4227,7 +4258,7 @@ class _SectionCard extends StatelessWidget {
                   ],
                 ],
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 10),
               ...children,
             ],
           ),
@@ -4237,21 +4268,40 @@ class _SectionCard extends StatelessWidget {
   }
 }
 
+class _SectionDivider extends StatelessWidget {
+  const _SectionDivider();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Divider(
+        height: 1,
+        thickness: 1,
+        color: Theme.of(
+          context,
+        ).colorScheme.outlineVariant.withValues(alpha: 0.22),
+      ),
+    );
+  }
+}
+
 class _AppearanceFieldBlock extends StatelessWidget {
   const _AppearanceFieldBlock({
     required this.label,
-    this.badge,
+    this.valueText,
     required this.child,
   });
 
   final String label;
-  final String? badge;
+  final String? valueText;
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
+    final trailing = valueText;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -4268,8 +4318,15 @@ class _AppearanceFieldBlock extends StatelessWidget {
                 ),
               ),
             ),
-            if (badge != null && badge!.isNotEmpty)
-              SettingsInfoBadge(label: badge!),
+            if (trailing != null && trailing.isNotEmpty)
+              Text(
+                trailing,
+                style: textTheme.bodySmall?.copyWith(
+                  fontSize: 11.5,
+                  fontWeight: FontWeight.w500,
+                  color: colorScheme.onSurfaceVariant,
+                ),
+              ),
           ],
         ),
         const SizedBox(height: 8),

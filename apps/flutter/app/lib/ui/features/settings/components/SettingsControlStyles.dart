@@ -358,7 +358,8 @@ class SettingsSwitchRow extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     title,
-                    style: textTheme.bodyMedium?.copyWith(
+                    style: textTheme.bodySmall?.copyWith(
+                      fontSize: 13,
                       color: colorScheme.onSurface,
                       fontWeight: FontWeight.w600,
                     ),
@@ -439,10 +440,10 @@ class SettingsSliderRow extends StatelessWidget {
               Expanded(
                 child: Text(
                   label,
-                  style: textTheme.bodyMedium?.copyWith(
+                  style: textTheme.bodySmall?.copyWith(
                     color: colorScheme.onSurface,
-                    fontWeight: FontWeight.w500,
-                    fontSize: compact ? 13 : 14,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12.5,
                   ),
                 ),
               ),

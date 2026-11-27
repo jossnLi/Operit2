@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:operit_ui/operit_ui.dart';
 
-/// Displays an asset summary with bounded actions and optional controls.
+/// Displays an asset summary with bordered actions and optional controls.
 class SettingsAssetTile extends StatelessWidget {
   /// Creates a settings asset tile.
   const SettingsAssetTile({
@@ -27,16 +27,8 @@ class SettingsAssetTile extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
-    return Container(
-      decoration: BoxDecoration(
-        color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.25),
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(
-          color: colorScheme.outlineVariant.withValues(alpha: 0.24),
-          width: 0.8,
-        ),
-      ),
-      padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 2),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
@@ -48,7 +40,7 @@ class SettingsAssetTile extends StatelessWidget {
                 tone: OperitIconTone.accent,
                 size: OperitIconSizes.list,
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 10),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,18 +48,20 @@ class SettingsAssetTile extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       title,
-                      style: textTheme.bodyMedium?.copyWith(
+                      style: textTheme.bodySmall?.copyWith(
+                        fontSize: 12.5,
                         fontWeight: FontWeight.w600,
+                        color: colorScheme.onSurface,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 1),
+                    const SizedBox(height: 2),
                     Text(
                       subtitle,
                       style: textTheme.bodySmall?.copyWith(
                         color: colorScheme.onSurfaceVariant,
-                        fontSize: 11,
+                        fontSize: 11.5,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -77,14 +71,16 @@ class SettingsAssetTile extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 6),
-          Wrap(
-            spacing: 6,
-            runSpacing: 4,
-            alignment: WrapAlignment.end,
-            crossAxisAlignment: WrapCrossAlignment.center,
-            children: actions,
-          ),
+          if (actions.isNotEmpty) ...<Widget>[
+            const SizedBox(height: 4),
+            Wrap(
+              spacing: 6,
+              runSpacing: 4,
+              alignment: WrapAlignment.end,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: actions,
+            ),
+          ],
           if (bottom != null) ...<Widget>[const SizedBox(height: 6), bottom!],
         ],
       ),
