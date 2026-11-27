@@ -48,6 +48,7 @@ class BubbleAiMessageComposable extends StatefulWidget {
     this.onAvatarLongPressMention,
     this.onIdentityTap,
     this.splitMarkdownContent,
+    this.isStreaming = false,
   });
 
   final ChatUiMessage message;
@@ -69,6 +70,7 @@ class BubbleAiMessageComposable extends StatefulWidget {
   final void Function(String roleName)? onAvatarLongPressMention;
   final VoidCallback? onIdentityTap;
   final MarkdownContentSplitter? splitMarkdownContent;
+  final bool isStreaming;
 
   @override
   State<BubbleAiMessageComposable> createState() =>
@@ -171,7 +173,16 @@ class _BubbleAiMessageComposableState extends State<BubbleAiMessageComposable> {
     final imageMarkdown = _singleMarkdownImage(widget.message);
     final renderIdentity = _messageRenderIdentity(widget.message);
 
-    final messageBody = Theme(
+    // An AI reply that has not produced visible tokens yet keeps the empty
+    // bubble alive; a typing indicator explains why the bubble is blank.
+    final awaitingFirstToken = _awaitingFirstToken(
+      widget.message,
+      widget.isStreaming,
+    );
+
+    final Widget messageBody = awaitingFirstToken
+        ? _AiTypingIndicator(color: textColor)
+        : Theme(
       data: messageTheme,
       child: DefaultTextStyle.merge(
         style: TextStyle(
@@ -297,6 +308,105 @@ class _BubbleAiMessageComposableState extends State<BubbleAiMessageComposable> {
 /// Builds the renderer identity for one visible AI response variant.
 String _messageRenderIdentity(ChatUiMessage message) {
   return '${message.timestamp}-v${message.selectedVariantIndex}';
+}
+
+/// Reports an AI reply that is streaming but still has nothing visible to show.
+bool _awaitingFirstToken(ChatUiMessage message, bool isStreaming) {
+  if (!isStreaming) {
+    return false;
+  }
+  if (message.displayText.trim().isNotEmpty) {
+    return false;
+  }
+  // Thinking/tool parts own the bubble as soon as they arrive; only a plain
+  // empty markdown reply is still waiting for its first token.
+  return message.parts.every(
+    (part) =>
+        part.kind == MessagePartKind.markdown && part.content.trim().isEmpty,
+  );
+}
+
+/// Three breathing dots that fill the reply bubble until the first token.
+class _AiTypingIndicator extends StatefulWidget {
+  const _AiTypingIndicator({required this.color});
+
+  final Color color;
+
+  @override
+  State<_AiTypingIndicator> createState() => _AiTypingIndicatorState();
+}
+
+class _AiTypingIndicatorState extends State<_AiTypingIndicator>
+    with SingleTickerProviderStateMixin {
+  static const int _dotCount = 3;
+  static const double _dotSize = 6;
+
+  late final AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1150),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final reduceMotion =
+        MediaQuery.maybeOf(context)?.disableAnimations ?? false;
+    if (reduceMotion) {
+      return _dotRow(animate: false);
+    }
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, _) => _dotRow(animate: true),
+    );
+  }
+
+  /// Lays out the dot row for the current animation phase.
+  Widget _dotRow({required bool animate}) {
+    return SizedBox(
+      height: _dotSize + 6,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          for (var index = 0; index < _dotCount; index++)
+            Padding(
+              padding: EdgeInsetsDirectional.only(start: index == 0 ? 0 : 5),
+              child: _dot(index, animate: animate),
+            ),
+        ],
+      ),
+    );
+  }
+
+  /// One dot rides a staggered wave so the row reads as "typing".
+  Widget _dot(int index, {required bool animate}) {
+    final progress = animate
+        ? (_controller.value + index * 0.16) % 1.0
+        : ((index == 1) ? 0.5 : 0.2);
+    final wave = progress < 0.5 ? progress * 2 : (1 - progress) * 2;
+    return Transform.translate(
+      offset: Offset(0, -1.6 * wave),
+      child: Container(
+        width: _dotSize,
+        height: _dotSize,
+        decoration: BoxDecoration(
+          color: widget.color.withValues(alpha: 0.35 + 0.65 * wave),
+          shape: BoxShape.circle,
+        ),
+      ),
+    );
+  }
 }
 
 class _AnimatedAiBubbleVisibility extends StatelessWidget {

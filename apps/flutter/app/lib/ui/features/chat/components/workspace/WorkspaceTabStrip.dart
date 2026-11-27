@@ -298,6 +298,7 @@ class _TermuxWorkspaceTabStrip extends StatelessWidget {
               final selected = index == selectedIndex;
               final button = _TermuxWorkspaceTabButton(
                 title: tabTitle(tab),
+                icon: tab.icon,
                 selected: selected,
                 closable: tab.closable || tab.pluginEntryId != null,
                 backgroundColor: Colors.transparent,
@@ -358,6 +359,7 @@ Widget _buildTabDragSource(
 class _TermuxWorkspaceTabButton extends StatelessWidget {
   const _TermuxWorkspaceTabButton({
     required this.title,
+    required this.icon,
     required this.selected,
     required this.closable,
     required this.backgroundColor,
@@ -371,6 +373,7 @@ class _TermuxWorkspaceTabButton extends StatelessWidget {
   });
 
   final String title;
+  final IconData icon;
   final bool selected;
   final bool closable;
   final Color backgroundColor;
@@ -393,7 +396,7 @@ class _TermuxWorkspaceTabButton extends StatelessWidget {
         onTap: onTap,
         child: ConstrainedBox(
           constraints: const BoxConstraints(
-            minWidth: 74,
+            minWidth: 62,
             maxWidth: 156,
             minHeight: 34,
           ),
@@ -404,12 +407,14 @@ class _TermuxWorkspaceTabButton extends StatelessWidget {
             ),
             child: Padding(
               padding: EdgeInsetsDirectional.only(
-                start: 12,
+                start: 10,
                 end: closable || onOpenWith != null ? 4 : 12,
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
+                  Icon(icon, size: 15, color: textColor),
+                  const SizedBox(width: 6),
                   Flexible(
                     child: Text(
                       title,

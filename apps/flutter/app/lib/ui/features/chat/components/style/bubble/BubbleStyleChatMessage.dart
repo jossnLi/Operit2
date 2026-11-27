@@ -36,6 +36,7 @@ class BubbleStyleChatMessage extends StatelessWidget {
     this.forceShowThinkingProcess = false,
     this.isHidden = false,
     this.enableDialogs = true,
+    this.isStreaming = false,
     this.onRoleAvatarLongPress,
     this.splitMarkdownContent,
     this.onDeleteMessage,
@@ -66,6 +67,7 @@ class BubbleStyleChatMessage extends StatelessWidget {
   final bool forceShowThinkingProcess;
   final bool isHidden;
   final bool enableDialogs;
+  final bool isStreaming;
   final void Function(String roleName)? onRoleAvatarLongPress;
   final MarkdownContentSplitter? splitMarkdownContent;
   final Future<void> Function(int timestamp)? onDeleteMessage;
@@ -107,6 +109,7 @@ class BubbleStyleChatMessage extends StatelessWidget {
           enableDialogs: enableDialogs,
           onAvatarLongPressMention: onRoleAvatarLongPress,
           splitMarkdownContent: splitMarkdownContent,
+          isStreaming: isStreaming,
         );
       case 'summary':
         return SummaryMessageComposable(

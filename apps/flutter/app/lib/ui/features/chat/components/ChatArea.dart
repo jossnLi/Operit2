@@ -1205,6 +1205,7 @@ class _ChatAreaState extends State<ChatArea>
           onDeleteMessage: widget.onDeleteMessage,
           onEditSummary: widget.onSelectMessageToEdit,
           enableDialogs: !selectionMode,
+          isStreaming: isStreaming,
         );
     final currentChatId = widget.currentChatId;
     final chatMessage = currentChatId == null

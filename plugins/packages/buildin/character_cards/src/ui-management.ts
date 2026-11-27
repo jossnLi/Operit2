@@ -130,7 +130,6 @@ export function renderManagement(ctx: ComposeDslContext, view: "characters" | "m
   if (state.notice !== "") children.push(ui.text(state.notice));
   if (snapshot !== null) {
     if (view === "characters") {
-      children.push(ctx.UI.Row({ key: "management-actions", fillMaxWidth: true, paddingBottom: 8, horizontalArrangement: "end", verticalAlignment: "center" }, [ui.sectionAction("bind-chats", "绑定对话", "ChatBubbleOutline", () => bindings(""), snapshot.cards.length + snapshot.groups.length > 0)]));
       const cards = snapshot.cards.map(card => {
         const active = "CharacterCard" in snapshot.active && snapshot.active.CharacterCard.id === card.id;
         return ui.tile("card:" + card.id, card.name, card.description, [card.chatModelBindingMode === "FIXED_MODEL" ? "固定模型配置" : "跟随全局模型", card.memoryBindingMode === "SHARED" ? "共享记忆" : "角色记忆", ...snapshot.tags.filter(tag => card.attachedTagIds.includes(tag.id)).map(tag => tag.name)], [
@@ -140,7 +139,7 @@ export function renderManagement(ctx: ComposeDslContext, view: "characters" | "m
           active ? ui.activePill() : ui.sectionAction("card-activate:" + card.id, "使用", "", () => act(async () => update({ snapshot: await uiRequest({ action: "activate", type: "card", id: card.id }) }))),
         ], active, () => entity({ mode: "edit", entity: "card", id: card.id }), card.avatarUri ?? state.defaultAvatar);
       });
-      children.push(ui.section("character-section", "角色卡", "BadgeOutlined", [ui.menu("add-card", "添加", "Add", [{ key: "create-card", label: "新建角色卡", name: "Add", action: () => entity({ mode: "create", entity: "card", id: "" }) }, { key: "import-card", label: "导入角色卡", name: "Upload", action: () => update({ panel: { type: "import", entity: "card", format: "operit" } }) }])], cards.length === 0 ? [ui.text("还没有角色卡，点击创建添加角色。")] : cards));
+      children.push(ui.section("character-section", "角色卡", "BadgeOutlined", [ui.sectionAction("bind-chats", "绑定对话", "ChatBubbleOutline", () => bindings(""), snapshot.cards.length + snapshot.groups.length > 0), ui.menu("add-card", "添加", "Add", [{ key: "create-card", label: "新建角色卡", name: "Add", action: () => entity({ mode: "create", entity: "card", id: "" }) }, { key: "import-card", label: "导入角色卡", name: "Upload", action: () => update({ panel: { type: "import", entity: "card", format: "operit" } }) }])], cards.length === 0 ? [ui.text("还没有角色卡，点击创建添加角色。")] : cards));
       const groups = snapshot.groups.map(group => {
         const active = "CharacterGroup" in snapshot.active && snapshot.active.CharacterGroup.id === group.id;
         return ui.tile("group:" + group.id, group.name, group.members.map(member => snapshot.cards.find(card => card.id === member.characterCardId)?.name ?? "已删除角色").join("、"), [`${group.members.length} 个角色`], [ui.iconButton("group-bind:" + group.id, "绑定对话", "ChatBubbleOutline", () => bindings("group:" + group.id)), active ? ui.activePill() : ui.sectionAction("group-activate:" + group.id, "使用", "", () => act(async () => update({ snapshot: await uiRequest({ action: "activate", type: "group", id: group.id }) })))], active, () => entity({ mode: "edit", entity: "group", id: group.id }), null, "GroupsOutlined", renderGroupAvatar(ctx, groupPortrait(group, snapshot.cards), state.defaultAvatar, 32, "management-avatar:" + group.id));

@@ -27,6 +27,7 @@ Widget buildThemedChatMessage({
   Future<void> Function(int timestamp)? onDeleteMessage,
   ValueChanged<ChatUiMessage>? onEditSummary,
   bool enableDialogs = true,
+  bool isStreaming = false,
 }) {
   final presentation = readChatResponsePresentation(message);
   if (presentation != null) {
@@ -113,6 +114,7 @@ Widget buildThemedChatMessage({
     onDeleteMessage: onDeleteMessage,
     onEditSummary: onEditSummary,
     enableDialogs: enableDialogs,
+    isStreaming: isStreaming,
   );
 }
 
