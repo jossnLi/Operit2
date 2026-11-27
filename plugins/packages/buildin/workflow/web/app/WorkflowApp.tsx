@@ -139,8 +139,8 @@ function useDialogContent<T>(empty: T) {
 function runtimeSummary(message: string): string {
   const lower = message.toLowerCase();
   if (lower.includes("javascript runtime") || lower.includes("destroyed"))
-    return "插件界面运行时已停止，重新加载即可恢复。";
-  if (lower.includes("session")) return "插件界面会话已中断，重新加载即可恢复。";
+    return "界面运行时已停止，重新加载可恢复。";
+  if (lower.includes("session")) return "界面会话已中断，重新加载可恢复。";
   if (message.includes("宿主接口")) return "宿主接口未就绪，重新加载即可恢复。";
   return message.split("\n")[0];
 }
@@ -482,6 +482,16 @@ function App() {
                 </Typography>
               </Box>
             )}
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              noWrap
+              sx={{ ml: 1, minWidth: 0 }}
+            >
+              {snapshot.workflows.length
+                ? `共 ${snapshot.workflows.length} 个工作流`
+                : "还没有工作流"}
+            </Typography>
             <Box sx={{ flex: 1, minWidth: 8 }} />
             {workflow ? (
               <Stack className="toolbar-actions" direction="row" spacing={0.5}>

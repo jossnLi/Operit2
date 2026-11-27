@@ -200,10 +200,10 @@ class _PluginRuntimeNotice extends StatelessWidget {
     final lower = message.toLowerCase();
     if (lower.contains('javascript runtime') ||
         lower.contains('runtime was destroyed')) {
-      return '插件界面运行时已停止，重新加载即可恢复。';
+      return '界面运行时已停止，重新加载可恢复。';
     }
     if (lower.contains('session')) {
-      return '插件界面会话已中断，重新加载即可恢复。';
+      return '界面会话已中断，重新加载可恢复。';
     }
     return message.split('\n').first;
   }
