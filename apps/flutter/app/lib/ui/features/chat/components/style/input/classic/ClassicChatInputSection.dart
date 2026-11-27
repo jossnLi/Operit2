@@ -970,7 +970,7 @@ class _ClassicAttachmentPackageOptionTile extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
           child: Row(
             children: <Widget>[
-              Icon(OperitIcons.auto_awesome_rounded, size: 20, color: colorScheme.primary),
+              Icon(OperitIcons.extension_outlined, size: 20, color: colorScheme.primary),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(

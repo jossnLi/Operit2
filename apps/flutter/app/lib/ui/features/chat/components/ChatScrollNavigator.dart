@@ -851,7 +851,7 @@ class _CodexHoverTooltipCard extends StatelessWidget {
             Row(
               children: <Widget>[
                 Icon(
-                  isUser ? OperitIcons.person_rounded : OperitIcons.auto_awesome_rounded,
+                  isUser ? OperitIcons.person_rounded : OperitIcons.smart_toy_outlined,
                   size: 11,
                   color: isUser
                       ? theme.colorScheme.primary

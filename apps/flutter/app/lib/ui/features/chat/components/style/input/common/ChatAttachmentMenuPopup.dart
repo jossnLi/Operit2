@@ -275,7 +275,7 @@ class _ChatAttachmentMenuPopupState extends State<ChatAttachmentMenuPopup> {
               widget.onAttachLocation,
             ),
             _nativeItem(
-              OperitIcons.auto_awesome_rounded,
+              OperitIcons.extension_outlined,
               l10n.attachmentPackage,
               widget.onAttachPackage,
             ),

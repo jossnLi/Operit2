@@ -360,7 +360,7 @@ class _MentionSuggestionPackageRow extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Icon(
-                OperitIcons.auto_awesome_rounded,
+                _mentionPackageIcon(option.kind),
                 size: 14,
                 color: _mentionPackageColor(option.kind, colors),
               ),
@@ -470,6 +470,16 @@ class _MentionSuggestionFileRow extends StatelessWidget {
       ),
     );
   }
+}
+
+/// Resolves the glyph used for one package kind, so a mixed suggestion list
+/// can be scanned by shape alone instead of every row sharing one sparkle.
+IconData _mentionPackageIcon(MentionPackageKind kind) {
+  return switch (kind) {
+    MentionPackageKind.package => OperitIcons.extension_outlined,
+    MentionPackageKind.skill => OperitIcons.flash_on_rounded,
+    MentionPackageKind.mcp => OperitIcons.cable_rounded,
+  };
 }
 
 /// Resolves the color used for one package kind.

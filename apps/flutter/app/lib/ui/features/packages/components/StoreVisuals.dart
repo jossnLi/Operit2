@@ -38,7 +38,7 @@ class StoreKind {
   static const StoreKind skill = StoreKind._(
     id: 'skill',
     label: '技能',
-    icon: OperitIcons.auto_awesome_rounded,
+    icon: OperitIcons.flash_on_rounded,
   );
   static const StoreKind mcp = StoreKind._(
     id: 'mcp',

@@ -768,7 +768,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             SettingsAssetTile(
-              icon: OperitIcons.auto_awesome_rounded,
+              icon: OperitIcons.text_fields_outlined,
               title: l10n.settingsAppearanceAiBubbleFont,
               subtitle: _bubbleFontLabel(l10n, snapshot, isUser: false),
               actions: <Widget>[
@@ -859,7 +859,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             SettingsAssetTile(
-              icon: OperitIcons.auto_awesome_rounded,
+              icon: OperitIcons.image_outlined,
               title: l10n.settingsAppearanceAiBubbleImage,
               subtitle: _fileNameOrNoneLabel(
                 l10n,

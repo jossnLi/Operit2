@@ -1071,7 +1071,7 @@ class _AddExtensionSheet extends StatelessWidget {
               child: Row(
                 children: <Widget>[
                   StoreRowGlyph(
-                    icon: OperitIcons.auto_awesome_rounded,
+                    icon: OperitIcons.auto_fix_high_outlined,
                     color: theme.colorScheme.primary,
                   ),
                   const SizedBox(width: 12),

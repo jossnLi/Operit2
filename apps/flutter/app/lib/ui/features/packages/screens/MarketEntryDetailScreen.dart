@@ -499,7 +499,7 @@ class _MarketEntryDetailScreenState extends State<MarketEntryDetailScreen> {
           if (entry.featured)
             StoreBadge(
               label: '精选',
-              icon: OperitIcons.auto_awesome_rounded,
+              icon: OperitIcons.star_rounded,
               color: colorScheme.tertiaryContainer,
               foreground: colorScheme.onTertiaryContainer,
             ),
