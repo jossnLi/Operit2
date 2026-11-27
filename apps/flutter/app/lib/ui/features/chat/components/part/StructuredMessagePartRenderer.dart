@@ -23,6 +23,7 @@ class StreamingStructuredMessageRenderer extends StatefulWidget {
     this.rendererId,
     this.onLinkClick,
     this.onLiveContentStarted,
+    this.onLiveContentProgress,
     this.initialThinkingExpanded = false,
     this.allowExpandedThinkingFullHeight = false,
     this.splitMarkdownContent,
@@ -41,6 +42,9 @@ class StreamingStructuredMessageRenderer extends StatefulWidget {
 
   /// Reports the first frame that paints streamed content for this surface.
   final VoidCallback? onLiveContentStarted;
+
+  /// Reports every live flush that still paints content.
+  final VoidCallback? onLiveContentProgress;
   final bool initialThinkingExpanded;
   final bool allowExpandedThinkingFullHeight;
   final MarkdownContentSplitter? splitMarkdownContent;
@@ -102,6 +106,7 @@ class _StreamingStructuredMessageRendererState
         state: widget.streamState,
         onLinkClick: widget.onLinkClick,
         onLiveContentStarted: widget.onLiveContentStarted,
+        onLiveContentProgress: widget.onLiveContentProgress,
         onStreamDone: _markRetainedContentStreamDone,
         onStreamError: () =>
             _markRetainedContentStreamFailed(activeContentStream),

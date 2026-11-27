@@ -81,12 +81,20 @@ class BubbleAiMessageComposable extends StatefulWidget {
 class _BubbleAiMessageComposableState extends State<BubbleAiMessageComposable> {
   static const Duration _touchHoldDuration = Duration(milliseconds: 1500);
 
+  /// A live reply that produces nothing for this long reports a stall.
+  static const Duration _streamIdleAfter = Duration(milliseconds: 1500);
+  static const Duration _placeholderFadeOut = Duration(milliseconds: 140);
+
   late StreamMarkdownRendererState _rendererState;
   late String _renderIdentity;
   bool _isMessageHovered = false;
   bool _isMessageTouched = false;
   bool _liveContentStarted = false;
+  bool _placeholderDismissed = false;
+  bool _streamAppearsIdle = false;
   Timer? _touchHoldTimer;
+  Timer? _placeholderDismissTimer;
+  Timer? _streamIdleTimer;
 
   /// Creates persistent Markdown renderer state for this message widget.
   @override
@@ -99,16 +107,57 @@ class _BubbleAiMessageComposableState extends State<BubbleAiMessageComposable> {
   @override
   void dispose() {
     _touchHoldTimer?.cancel();
+    _placeholderDismissTimer?.cancel();
+    _streamIdleTimer?.cancel();
     super.dispose();
   }
 
-  /// Retires the first-token placeholder once real content paints.
+  /// Fades the first-token placeholder out the moment real content paints.
   void _handleLiveContentStarted() {
     if (!mounted || _liveContentStarted) {
       return;
     }
     setState(() {
       _liveContentStarted = true;
+    });
+    _placeholderDismissTimer?.cancel();
+    _placeholderDismissTimer = Timer(_placeholderFadeOut, () {
+      if (!mounted) {
+        return;
+      }
+      setState(() {
+        _placeholderDismissed = true;
+      });
+    });
+    _armStreamIdleTimer();
+  }
+
+  /// Keeps the stall hint away while the stream is still producing content.
+  void _handleLiveContentProgress() {
+    if (!mounted) {
+      return;
+    }
+    if (_streamAppearsIdle) {
+      setState(() {
+        _streamAppearsIdle = false;
+      });
+    }
+    _armStreamIdleTimer();
+  }
+
+  /// Reports "still working" only after a reply that already showed text stalls.
+  void _armStreamIdleTimer() {
+    _streamIdleTimer?.cancel();
+    if (!_liveContentStarted || !widget.isStreaming) {
+      return;
+    }
+    _streamIdleTimer = Timer(_streamIdleAfter, () {
+      if (!mounted || !widget.isStreaming || _streamAppearsIdle) {
+        return;
+      }
+      setState(() {
+        _streamAppearsIdle = true;
+      });
     });
   }
 
@@ -133,6 +182,15 @@ class _BubbleAiMessageComposableState extends State<BubbleAiMessageComposable> {
       _renderIdentity = renderIdentity;
       _rendererState = StreamMarkdownRendererState();
       _liveContentStarted = false;
+      _placeholderDismissed = false;
+      _streamAppearsIdle = false;
+      _placeholderDismissTimer?.cancel();
+      _streamIdleTimer?.cancel();
+    }
+    if (oldWidget.isStreaming && !widget.isStreaming) {
+      // The reply settled; no stall hint may survive it.
+      _streamIdleTimer?.cancel();
+      _streamAppearsIdle = false;
     }
   }
 
@@ -190,8 +248,9 @@ class _BubbleAiMessageComposableState extends State<BubbleAiMessageComposable> {
     // bubble alive; the indicator configured in the appearance page explains
     // why the bubble is blank.
     final typingStyle = AiTypingStyle.fromStorageName(snapshot.aiTypingStyle);
+    final typingActive = typingStyle != AiTypingStyle.none && widget.isStreaming;
     final awaitingFirstToken =
-        typingStyle != AiTypingStyle.none &&
+        typingActive &&
         !_liveContentStarted &&
         _awaitingFirstToken(widget.message, widget.isStreaming);
 
@@ -214,6 +273,7 @@ class _BubbleAiMessageComposableState extends State<BubbleAiMessageComposable> {
             streamState: _rendererState,
             onLinkClick: widget.enableDialogs ? widget.onLinkClick : null,
             onLiveContentStarted: _handleLiveContentStarted,
+            onLiveContentProgress: _handleLiveContentProgress,
             rendererId: 'bubble-ai-$renderIdentity',
             showThinkingProcess: showThinkingProcess,
             initialThinkingExpanded: widget.initialThinkingExpanded,
@@ -225,32 +285,67 @@ class _BubbleAiMessageComposableState extends State<BubbleAiMessageComposable> {
       ),
     );
 
+    final Widget typingIndicator = AiTypingIndicator(
+      style: typingStyle,
+      color: textColor,
+      label: l10n == null ? null : aiTypingLabelForStyle(typingStyle, l10n),
+      showLabel: snapshot.aiTypingShowText,
+      respectReduceMotion: snapshot.aiTypingRespectReduceMotion,
+    );
+
     // The live stream is single-shot, so the transcript stays mounted from the
-    // first frame: the indicator is layered on top and retired as soon as the
+    // first frame: the indicator is layered on top and faded out as soon as the
     // renderer paints its first visible content. Swapping the transcript out
     // for a placeholder would drop the tokens that arrive while it is gone,
     // which is why the bubble used to keep the placeholder until the stream
     // completed and rebuilt the row.
-    final Widget messageBody = typingStyle == AiTypingStyle.none ||
-            !widget.isStreaming
-        ? transcript
-        : Stack(
-            fit: StackFit.passthrough,
-            alignment: AlignmentDirectional.topStart,
-            children: <Widget>[
-              transcript,
-              if (awaitingFirstToken)
-                AiTypingIndicator(
-                  style: typingStyle,
-                  color: textColor,
-                  label: l10n == null
-                      ? null
-                      : aiTypingLabelForStyle(typingStyle, l10n),
-                  showLabel: snapshot.aiTypingShowText,
-                  respectReduceMotion: snapshot.aiTypingRespectReduceMotion,
-                ),
-            ],
-          );
+    //
+    // Below the transcript sits a thin "still working" strip. It only appears
+    // when the reply already showed text and then went quiet for a while
+    // (thinking or running a tool), so a stall never looks like a finished
+    // reply without bringing the full placeholder back.
+    final Widget streamingBody = Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Stack(
+          fit: StackFit.passthrough,
+          alignment: AlignmentDirectional.topStart,
+          children: <Widget>[
+            transcript,
+            if (!_placeholderDismissed)
+              AnimatedOpacity(
+                opacity: awaitingFirstToken ? 1.0 : 0.0,
+                duration: _placeholderFadeOut,
+                curve: Curves.easeOut,
+                child: typingIndicator,
+              ),
+          ],
+        ),
+        AnimatedSize(
+          duration: const Duration(milliseconds: 180),
+          curve: Curves.easeOut,
+          alignment: AlignmentDirectional.topStart,
+          child: _streamAppearsIdle
+              ? Padding(
+                  padding: const EdgeInsetsDirectional.only(top: 8),
+                  child: AiTypingIndicator(
+                    style: AiTypingStyle.dots,
+                    color: textColor,
+                    label: l10n == null
+                        ? null
+                        : l10n.settingsAppearanceTypingLabelGenerating,
+                    showLabel: snapshot.aiTypingShowText,
+                    respectReduceMotion: snapshot.aiTypingRespectReduceMotion,
+                    scale: 0.82,
+                  ),
+                )
+              : const SizedBox(height: 0, width: 0),
+        ),
+      ],
+    );
+
+    final Widget messageBody = typingActive ? streamingBody : transcript;
 
     final isInteracting = _isMessageHovered || _isMessageTouched;
     final layoutChild = snapshot.bubbleWideLayoutEnabled

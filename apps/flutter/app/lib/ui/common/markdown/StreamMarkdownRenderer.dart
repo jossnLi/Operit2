@@ -58,6 +58,7 @@ class StreamMarkdownRenderer extends StatefulWidget {
     this.selectionRoot = true,
     this.onContentReady,
     this.onLiveContentStarted,
+    this.onLiveContentProgress,
     this.onStreamDone,
     this.onStreamError,
     this.scrollController,
@@ -86,6 +87,10 @@ class StreamMarkdownRenderer extends StatefulWidget {
   /// Placeholders waiting for the first token can use this to retire exactly
   /// when real content paints, never earlier and never after the stream ends.
   final VoidCallback? onLiveContentStarted;
+
+  /// Fires on every live flush that still carries visible nodes, so owners can
+  /// distinguish "actively streaming" from "stream open but stalled".
+  final VoidCallback? onLiveContentProgress;
   final VoidCallback? onStreamDone;
   final VoidCallback? onStreamError;
 
@@ -303,7 +308,9 @@ class _StreamMarkdownRendererState extends State<StreamMarkdownRenderer> {
     _renderTimer = null;
     _synchronizeRenderNodes(isStreaming: false);
     // A stream shorter than one render interval never reaches the timer flush.
-    _notifyLiveContentStarted();
+    if (!_liveContentStartedNotified) {
+      _notifyLiveContentStarted();
+    }
   }
 
   /// Reports that the live Markdown stream has reached its terminal event.
@@ -327,15 +334,20 @@ class _StreamMarkdownRendererState extends State<StreamMarkdownRenderer> {
 
   /// Announces the first frame that actually paints streamed content.
   void _notifyLiveContentStarted() {
-    final callback = widget.onLiveContentStarted;
-    if (callback == null || _liveContentStartedNotified) {
+    final started = widget.onLiveContentStarted;
+    final progress = widget.onLiveContentProgress;
+    if (started == null && progress == null) {
       return;
     }
     if (!_hasVisibleContent()) {
       return;
     }
+    progress?.call();
+    if (_liveContentStartedNotified) {
+      return;
+    }
     _liveContentStartedNotified = true;
-    callback();
+    started?.call();
   }
 
   /// Reports whether any parsed node already carries visible source text.
