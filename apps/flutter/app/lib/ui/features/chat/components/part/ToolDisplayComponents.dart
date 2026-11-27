@@ -482,6 +482,11 @@ class _ToolCallRowState extends State<ToolCallRow> {
     final color = presentation.isSuccess == false
         ? theme.colorScheme.error
         : theme.colorScheme.onSurfaceVariant;
+    // 执行成功给一枚淡灰细对勾，失败给红色感叹号：状态只在需要人注意时才占视觉权重，
+    // 避免每行挂一个空心圆、看起来像未选中的单选按钮。
+    final statusIconColor = presentation.isSuccess == false
+        ? theme.colorScheme.error
+        : theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.55);
     final content = Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -524,9 +529,9 @@ class _ToolCallRowState extends State<ToolCallRow> {
                     child: Icon(
                       presentation.isSuccess == false
                           ? OperitIcons.error_outline_rounded
-                          : OperitIcons.circle_outlined,
-                      size: 12,
-                      color: color,
+                          : OperitIcons.check_rounded,
+                      size: presentation.isSuccess == false ? 12 : 14,
+                      color: statusIconColor,
                     ),
                   ),
                 if (presentation.hasDetails)
