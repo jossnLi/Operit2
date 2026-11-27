@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../util/ChatMarkupRegex.dart';
 import '../../../../common/markdown/MarkdownNodeGrouper.dart';
+import 'ToolCallTimingRegistry.dart';
 import 'ToolDisplayComponents.dart';
 
 /// Merges ordered tool calls with any results that have arrived so far.
@@ -89,36 +90,65 @@ class ToolCallResultMergeRender extends MarkdownNodeMergeRender {
           break;
       }
     }
+    final timing = ToolCallTimingRegistry.instance;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         for (var index = 0; index < calls.length; index += 1)
-          MergedToolCallResultRow(
-            key: ValueKey<String>(
-              '$renderInstanceKey-${calls[index].node.callId ?? calls[index].index}',
-            ),
-            toolName: calls[index].node.toolName,
-            callId: calls[index].node.callId,
-            display:
-                calls[index].node.display ??
-                (index < results.length ? results[index].node.display : null),
-            resultData: index < results.length
-                ? results[index].node.resultData
-                : null,
-            parameterMarkup: calls[index].node.parameterMarkup,
-            resultText: index < results.length
-                ? results[index].node.resultText
-                : '',
-            isSuccess: index < results.length
-                ? results[index].node.isSuccess
-                : null,
+          _buildMergedRow(
+            calls: calls,
+            results: results,
+            index: index,
+            nodes: nodes,
+            renderInstanceKey: renderInstanceKey,
             textColor: textColor,
-            isStreaming:
-                index >= results.length ||
-                (nodes[results[index].index].isStreaming &&
-                    nodes[results[index].index].xmlIsClosed != true),
+            timing: timing,
           ),
       ],
+    );
+  }
+
+  Widget _buildMergedRow({
+    required List<_IndexedToolMergeNode> calls,
+    required List<_IndexedToolMergeNode> results,
+    required int index,
+    required List<MarkdownNodeStable> nodes,
+    required String renderInstanceKey,
+    required Color textColor,
+    required ToolCallTimingRegistry timing,
+  }) {
+    final call = calls[index];
+    final result = index < results.length ? results[index] : null;
+    final isStreaming =
+        result == null ||
+        (nodes[result.index].isStreaming &&
+            nodes[result.index].xmlIsClosed != true);
+    final timingKey = ToolCallTimingRegistry.keyFor(
+      callId: call.node.callId,
+      nodeKey: nodes[call.index].stableKey,
+      renderInstanceKey: renderInstanceKey,
+      index: index,
+      toolName: call.node.toolName,
+    );
+    timing.noteCall(timingKey);
+    if (result != null) {
+      timing.noteResult(timingKey);
+    }
+    return MergedToolCallResultRow(
+      key: ValueKey<String>(
+        '$renderInstanceKey-${call.node.callId ?? call.index}',
+      ),
+      toolName: call.node.toolName,
+      callId: call.node.callId,
+      display: call.node.display ?? result?.node.display,
+      resultData: result?.node.resultData,
+      parameterMarkup: call.node.parameterMarkup,
+      resultText: result?.node.resultText ?? '',
+      isSuccess: result?.node.isSuccess,
+      textColor: textColor,
+      isStreaming: isStreaming,
+      elapsed: timing.elapsedFor(timingKey),
+      startedAt: timing.startedAt(timingKey),
     );
   }
 }
@@ -169,6 +199,8 @@ class MergedToolCallResultRow extends StatelessWidget {
     this.callId,
     this.display,
     this.resultData,
+    this.elapsed,
+    this.startedAt,
   });
 
   final String toolName;
@@ -180,6 +212,8 @@ class MergedToolCallResultRow extends StatelessWidget {
   final bool? isSuccess;
   final Color textColor;
   final bool isStreaming;
+  final Duration? elapsed;
+  final DateTime? startedAt;
 
   @override
   Widget build(BuildContext context) {
@@ -192,6 +226,8 @@ class MergedToolCallResultRow extends StatelessWidget {
         isSuccess: isSuccess,
         display: display,
         resultData: resultData,
+        elapsed: elapsed,
+        startedAt: startedAt,
       ),
       isStreaming: isStreaming,
     );

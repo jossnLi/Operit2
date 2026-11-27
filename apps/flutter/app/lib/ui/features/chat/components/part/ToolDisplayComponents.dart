@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ import '../../../../common/markdown/StreamMarkdownRenderer.dart';
 import 'ChatActivityDisclosure.dart';
 import 'ChatActivityRowStyle.dart';
 import 'FileDiffDisplay.dart';
+import 'ToolCallTimingRegistry.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
 class CompactToolDisplay extends StatelessWidget {
@@ -206,6 +208,8 @@ class ToolPresentation {
     this.callId,
     this.display,
     this.resultData,
+    this.elapsed,
+    this.startedAt,
   }) : _parameterSummary = parameterSummary;
 
   factory ToolPresentation.fromCall(
@@ -216,6 +220,8 @@ class ToolPresentation {
     bool? isSuccess,
     ToolDisplayDeclaration? display,
     Map<String, dynamic>? resultData,
+    Duration? elapsed,
+    DateTime? startedAt,
   }) {
     final call = normalizeToolDisplayForStrictProxy(toolName, params);
     return ToolPresentation(
@@ -227,6 +233,8 @@ class ToolPresentation {
       isSuccess: isSuccess,
       display: display,
       resultData: resultData,
+      elapsed: elapsed,
+      startedAt: startedAt,
       fileDiffs: fileDiffsForResult(result, resultData, display: display),
     );
   }
@@ -256,6 +264,12 @@ class ToolPresentation {
   final ToolDisplayDeclaration? display;
   final Map<String, dynamic>? resultData;
   final List<FileDiff> fileDiffs;
+
+  /// 已完成调用的实测耗时；历史回放或未测到时为 null，行尾留空。
+  final Duration? elapsed;
+
+  /// 调用上屏时刻，运行中的行用它每秒刷新已走秒数。
+  final DateTime? startedAt;
 
   /// Formats the full parameter payload only when its details are requested.
   String get parameterSummary =>
@@ -444,11 +458,13 @@ class ToolCallRow extends StatefulWidget {
 class _ToolCallRowState extends State<ToolCallRow> {
   bool _expanded = false;
   bool _userToggled = false;
+  Timer? _elapsedTicker;
 
   @override
   void initState() {
     super.initState();
     _expanded = widget.presentation.fileDiffs.isNotEmpty;
+    _syncElapsedTicker();
   }
 
   @override
@@ -459,6 +475,44 @@ class _ToolCallRowState extends State<ToolCallRow> {
         widget.presentation.fileDiffs.isNotEmpty) {
       _expanded = true;
     }
+    _syncElapsedTicker();
+  }
+
+  @override
+  void dispose() {
+    _elapsedTicker?.cancel();
+    _elapsedTicker = null;
+    super.dispose();
+  }
+
+  /// 只有「运行中且有起点」的行才需要每秒重绘，其它行一次也不起定时器。
+  void _syncElapsedTicker() {
+    final needsTicker =
+        widget.isStreaming && widget.presentation.startedAt != null;
+    if (!needsTicker) {
+      _elapsedTicker?.cancel();
+      _elapsedTicker = null;
+      return;
+    }
+    _elapsedTicker ??= Timer.periodic(const Duration(seconds: 1), (_) {
+      if (mounted) {
+        setState(() {});
+      }
+    });
+  }
+
+  /// 行尾耗时文案：运行中按已走时间每秒递增，已完成用实测值，测不到留空。
+  String? _resolveDurationLabel() {
+    final startedAt = widget.presentation.startedAt;
+    if (widget.isStreaming) {
+      if (startedAt == null) {
+        return null;
+      }
+      final elapsed = DateTime.now().difference(startedAt);
+      return '${(elapsed.inMilliseconds / 1000).toStringAsFixed(1)}s';
+    }
+    final elapsed = widget.presentation.elapsed;
+    return elapsed == null ? null : formatToolCallDuration(elapsed);
   }
 
   @override
@@ -482,11 +536,16 @@ class _ToolCallRowState extends State<ToolCallRow> {
     final color = presentation.isSuccess == false
         ? theme.colorScheme.error
         : theme.colorScheme.onSurfaceVariant;
-    // 执行成功给一枚淡灰细对勾，失败给红色感叹号：状态只在需要人注意时才占视觉权重，
-    // 避免每行挂一个空心圆、看起来像未选中的单选按钮。
-    final statusIconColor = presentation.isSuccess == false
+    // 行尾不再挂状态勾，改为这一步实际花了多久：成功淡灰，失败转红并加感叹号，
+    // 状态本身退到 tooltip 里，避免每行都有符号抢注意力。
+    final durationLabel = _resolveDurationLabel();
+    final durationColor = presentation.isSuccess == false
         ? theme.colorScheme.error
-        : theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.55);
+        : theme.colorScheme.onSurfaceVariant.withValues(
+            alpha: widget.isStreaming ? 0.6 : 0.55,
+          );
+    final showsFailureMark =
+        !widget.isStreaming && presentation.isSuccess == false;
     final content = Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -521,26 +580,53 @@ class _ToolCallRowState extends State<ToolCallRow> {
                   ),
                 ] else
                   const Spacer(),
-                if (widget.isStreaming)
-                  const StreamingCursor()
-                else
-                  Tooltip(
-                    message: status,
-                    child: Icon(
-                      presentation.isSuccess == false
-                          ? OperitIcons.error_outline_rounded
-                          : OperitIcons.check_rounded,
-                      size: presentation.isSuccess == false ? 12 : 14,
-                      color: statusIconColor,
+                if (widget.isStreaming) const StreamingCursor(),
+                if (durationLabel != null)
+                  SizedBox(
+                    width: 44,
+                    child: Tooltip(
+                      message: '$status · $durationLabel',
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (showsFailureMark) ...[
+                            Icon(
+                              OperitIcons.error_outline_rounded,
+                              size: 10,
+                              color: durationColor,
+                            ),
+                            const SizedBox(width: 3),
+                          ],
+                          Flexible(
+                            child: Text(
+                              durationLabel,
+                              maxLines: 1,
+                              softWrap: false,
+                              textAlign: TextAlign.end,
+                              style: TextStyle(
+                                fontSize: 11,
+                                height: 1.2,
+                                color: durationColor,
+                                fontFeatures: const [
+                                  FontFeature.tabularFigures(),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                if (presentation.hasDetails)
+                if (presentation.hasDetails) ...[
+                  const SizedBox(width: 4),
                   AnimatedRotation(
                     turns: _expanded ? 0.25 : 0,
                     duration: ChatActivityDisclosure.duration,
                     curve: ChatActivityDisclosure.curve,
                     child: const Icon(OperitIcons.chevron_right_rounded, size: 16),
                   ),
+                ],
               ],
             ),
           ),
