@@ -605,11 +605,10 @@ class _AppearanceThemeEditor extends StatelessWidget {
       children: <Widget>[
         _SectionCard(
           title: l10n.settingsAppearanceBubbleStyleSection,
-          icon: OperitIcons.chat_bubble_outline_rounded,
+          icon: OperitIcons.dashboard_customize_outlined,
           children: <Widget>[
             _AppearanceFieldBlock(
               label: l10n.settingsAppearanceUserMessageStyle,
-              badge: _messageStyleLabel(l10n, snapshot.userChatStyle),
               child: _MessageStyleSelector(
                 value: snapshot.userChatStyle,
                 onChanged: (value) {
@@ -622,7 +621,6 @@ class _AppearanceThemeEditor extends StatelessWidget {
             const SizedBox(height: 10),
             _AppearanceFieldBlock(
               label: l10n.settingsAppearanceAiMessageStyle,
-              badge: _messageStyleLabel(l10n, snapshot.aiChatStyle),
               child: _MessageStyleSelector(
                 value: snapshot.aiChatStyle,
                 onChanged: (value) {
@@ -635,7 +633,6 @@ class _AppearanceThemeEditor extends StatelessWidget {
             const SizedBox(height: 10),
             _AppearanceFieldBlock(
               label: l10n.settingsAppearanceMessageDensity,
-              badge: _messageDensityLabel(l10n, _densityFromSnapshot(snapshot)),
               child: _MessageDensitySelector(
                 value: _densityFromSnapshot(snapshot),
                 onChanged: (value) {
@@ -657,7 +654,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
               runSpacing: 8,
               children: <Widget>[
                 SettingsToggleChip(
-                  icon: OperitIcons.aspect_ratio_outlined,
+                  icon: OperitIcons.open_in_full_rounded,
                   label: l10n.settingsAppearanceWideLayout,
                   selected: snapshot.bubbleWideLayoutEnabled,
                   onSelected: (value) {
@@ -669,7 +666,7 @@ class _AppearanceThemeEditor extends StatelessWidget {
                   },
                 ),
                 SettingsToggleChip(
-                  icon: OperitIcons.rounded_corner_outlined,
+                  icon: OperitIcons.squircle_outlined,
                   label: l10n.settingsAppearanceRoundedMessages,
                   selected:
                       snapshot.bubbleUserRoundedCornersEnabled &&
@@ -701,31 +698,56 @@ class _AppearanceThemeEditor extends StatelessWidget {
                 );
               },
             ),
-            if (snapshot.bubbleShowAvatar) ...<Widget>[
-              const SizedBox(height: 8),
-              _AppearanceFieldBlock(
-                label: l10n.settingsAppearanceAvatarShape,
-                badge: _avatarShapeLabel(l10n, snapshot.avatarShape),
-                child: _AvatarShapeSelector(
-                  value: _avatarShapeFromSnapshot(snapshot.avatarShape),
-                  onChanged: (value) {
-                    unawaited(
-                      themeController.saveThemeSettings(
-                        avatarShape: _avatarShapeValue(value),
+            AnimatedSize(
+              duration: const Duration(milliseconds: 200),
+              curve: Curves.easeOutCubic,
+              alignment: Alignment.topCenter,
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 200),
+                switchInCurve: Curves.easeOutCubic,
+                switchOutCurve: Curves.easeInCubic,
+                child: snapshot.bubbleShowAvatar
+                    ? Column(
+                        key: const ValueKey<String>('avatar-shape'),
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Divider(
+                            height: 20,
+                            thickness: 1,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.outlineVariant.withValues(
+                              alpha: 0.22,
+                            ),
+                          ),
+                          _AppearanceFieldBlock(
+                            label: l10n.settingsAppearanceAvatarShape,
+                            child: _AvatarShapeSelector(
+                              value: _avatarShapeFromSnapshot(
+                                snapshot.avatarShape,
+                              ),
+                              onChanged: (value) {
+                                unawaited(
+                                  themeController.saveThemeSettings(
+                                    avatarShape: _avatarShapeValue(value),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      )
+                    : const SizedBox(
+                        key: ValueKey<String>('avatar-shape-hidden'),
                       ),
-                    );
-                  },
-                ),
               ),
-            ],
+            ),
           ],
         ),
         _SectionCard(
           title: l10n.settingsAppearanceMessageColors,
-          icon: OperitIcons.format_color_fill_outlined,
-          action: SettingsInfoBadge(
-            label: _messageColorPresetLabel(l10n, snapshot),
-          ),
+          icon: OperitIcons.palette_outlined,
           children: <Widget>[
             _MessageColorPresetSelector(
               value: _messageColorPresetFromSnapshot(snapshot),
@@ -1307,7 +1329,7 @@ class _ResponsivePreviewSplitTabViewState
                 child: Row(
                   children: <Widget>[
                     Icon(
-                      OperitIcons.visibility_outlined,
+                      OperitIcons.phone_iphone_rounded,
                       size: 18,
                       color: colorScheme.primary,
                     ),
@@ -2839,23 +2861,16 @@ class _ColorPresetTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
     return SizedBox(
-      width: 82,
+      width: 64,
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(14),
           onTap: onTap,
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 180),
-            curve: Curves.easeOutCubic,
-            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
-            decoration: BoxDecoration(
-              color: selected
-                  ? colorScheme.primaryContainer.withValues(alpha: 0.28)
-                  : Colors.transparent,
-              borderRadius: BorderRadius.circular(18),
-            ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 6),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
@@ -2864,16 +2879,17 @@ class _ColorPresetTile extends StatelessWidget {
                   primaryColor: primaryColor,
                   secondaryColor: secondaryColor,
                 ),
-                const SizedBox(height: 6),
+                const SizedBox(height: 7),
                 DefaultTextStyle.merge(
                   textAlign: TextAlign.center,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                  style: textTheme.labelSmall?.copyWith(
+                    fontSize: 10.5,
                     color: selected
-                        ? colorScheme.onPrimaryContainer
+                        ? colorScheme.primary
                         : colorScheme.onSurfaceVariant,
-                    fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+                    fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
                   ),
                   child: label,
                 ),
@@ -2900,26 +2916,37 @@ class _SplitColorCircle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final fillBrightness = ThemeData.estimateBrightnessForColor(primaryColor);
+    final checkColor = fillBrightness == Brightness.dark
+        ? Colors.white
+        : (isDark ? Colors.white : colorScheme.primary);
+    final checkHalo = checkColor == Colors.white
+        ? Colors.black.withValues(alpha: 0.32)
+        : Colors.white.withValues(alpha: 0.55);
+
     return AnimatedContainer(
       duration: const Duration(milliseconds: 180),
       curve: Curves.easeOutCubic,
-      width: 48,
-      height: 48,
-      padding: const EdgeInsets.all(3),
+      width: 44,
+      height: 44,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: Border.all(
-          width: selected ? 2 : 1,
+          width: 1,
           color: selected
               ? colorScheme.primary
-              : colorScheme.outlineVariant.withValues(alpha: 0.68),
+              : colorScheme.outlineVariant.withValues(
+                  alpha: isDark ? 0.42 : 0.55,
+                ),
         ),
         boxShadow: selected
             ? <BoxShadow>[
                 BoxShadow(
-                  blurRadius: 14,
-                  offset: const Offset(0, 4),
-                  color: colorScheme.primary.withValues(alpha: 0.16),
+                  color: colorScheme.primary.withValues(
+                    alpha: isDark ? 0.22 : 0.16,
+                  ),
+                  spreadRadius: 3,
                 ),
               ]
             : const <BoxShadow>[],
@@ -2939,7 +2966,7 @@ class _SplitColorCircle extends StatelessWidget {
                     secondaryColor,
                     secondaryColor,
                   ],
-                  stops: const <double>[0, 0.5, 0.5, 1],
+                  stops: const <double>[0, 0.62, 0.62, 1],
                 ),
               ),
               child: const SizedBox.expand(),
@@ -2947,19 +2974,20 @@ class _SplitColorCircle extends StatelessWidget {
           ),
           if (selected)
             Center(
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  color: colorScheme.surface.withValues(alpha: 0.84),
-                  shape: BoxShape.circle,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(3),
-                  child: Icon(
+              child: Stack(
+                alignment: Alignment.center,
+                children: <Widget>[
+                  Icon(
                     OperitIcons.check_rounded,
-                    size: 16,
-                    color: colorScheme.primary,
+                    size: 17,
+                    color: checkHalo,
                   ),
-                ),
+                  Icon(
+                    OperitIcons.check_rounded,
+                    size: 15,
+                    color: checkColor,
+                  ),
+                ],
               ),
             ),
         ],
@@ -2994,6 +3022,7 @@ class _AvatarShapeSelector extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     return SettingsSegmentedSelector<_AvatarShapePreset>(
       value: value,
+      expand: true,
       onChanged: onChanged,
       segments: <ButtonSegment<_AvatarShapePreset>>[
         ButtonSegment<_AvatarShapePreset>(
@@ -3042,6 +3071,7 @@ class _MessageStyleSelector extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     return SettingsSegmentedSelector<String>(
       value: value,
+      expand: true,
       onChanged: onChanged,
       segments: <ButtonSegment<String>>[
         ButtonSegment<String>(
@@ -3071,6 +3101,7 @@ class _InputStyleSelector extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     return SettingsSegmentedSelector<String>(
       value: value,
+      expand: true,
       onChanged: onChanged,
       segments: <ButtonSegment<String>>[
         ButtonSegment<String>(
@@ -3177,26 +3208,28 @@ class _MessageColorPresetSelector extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Wrap(
-        spacing: 10,
-        runSpacing: 10,
+      child: Row(
         children: <Widget>[
           for (final preset in _messageColorPresetChoices)
-            _ColorPresetTile(
-              selected: value == preset,
-              label: Text(_messageColorPresetName(l10n, preset)),
-              primaryColor: _messagePresetPrimaryColor(context, preset),
-              secondaryColor: _messagePresetSecondaryColor(context, preset),
-              onTap: () => onChanged(preset),
+            Expanded(
+              child: _ColorPresetTile(
+                selected: value == preset,
+                label: Text(_messageColorPresetName(l10n, preset)),
+                primaryColor: _messagePresetPrimaryColor(context, preset),
+                secondaryColor: _messagePresetSecondaryColor(context, preset),
+                onTap: () => onChanged(preset),
+              ),
             ),
-          _ColorPresetTile(
-            selected: value == _MessageColorPreset.custom,
-            label: Text(
-              _messageColorPresetName(l10n, _MessageColorPreset.custom),
+          Expanded(
+            child: _ColorPresetTile(
+              selected: value == _MessageColorPreset.custom,
+              label: Text(
+                _messageColorPresetName(l10n, _MessageColorPreset.custom),
+              ),
+              primaryColor: _customPresetPrimaryPreviewColor,
+              secondaryColor: _customPresetSecondaryPreviewColor,
+              onTap: onCustomTap,
             ),
-            primaryColor: _customPresetPrimaryPreviewColor,
-            secondaryColor: _customPresetSecondaryPreviewColor,
-            onTap: onCustomTap,
           ),
         ],
       ),
@@ -3875,6 +3908,7 @@ class _MessageSurfaceSelector extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     return SettingsSegmentedSelector<_MessageSurface>(
       value: value,
+      expand: true,
       onChanged: onChanged,
       segments: <ButtonSegment<_MessageSurface>>[
         ButtonSegment<_MessageSurface>(
@@ -4053,11 +4087,12 @@ class _MessageDensitySelector extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     return SettingsSegmentedSelector<_MessageDensity>(
       value: value,
+      expand: true,
       onChanged: onChanged,
       segments: <ButtonSegment<_MessageDensity>>[
         ButtonSegment<_MessageDensity>(
           value: _MessageDensity.comfortable,
-          icon: const Icon(OperitIcons.view_agenda_outlined, size: 16),
+          icon: const Icon(OperitIcons.density_comfortable_outlined, size: 16),
           label: Text(l10n.settingsAppearanceMessageDensityComfortable),
         ),
         ButtonSegment<_MessageDensity>(
@@ -4107,6 +4142,7 @@ class _ThemeModeSelector extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     return SettingsSegmentedSelector<ThemeMode>(
       value: value,
+      expand: true,
       onChanged: onChanged,
       segments: <ButtonSegment<ThemeMode>>[
         ButtonSegment<ThemeMode>(
@@ -4155,7 +4191,7 @@ class _SectionCard extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final radius = BorderRadius.circular(16);
     return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.only(bottom: 9),
       child: OperitGlassSurface(
         color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.36),
         borderRadius: radius,
@@ -4165,7 +4201,7 @@ class _SectionCard extends StatelessWidget {
         ),
         material: true,
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
+          padding: const EdgeInsets.fromLTRB(14, 13, 14, 13),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -4179,8 +4215,9 @@ class _SectionCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       title,
-                      style: SettingsControlStyles.sectionTitleTextStyle(
-                        context,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: -0.2,
                       ),
                     ),
                   ),
@@ -4224,7 +4261,8 @@ class _AppearanceFieldBlock extends StatelessWidget {
             Expanded(
               child: Text(
                 label,
-                style: textTheme.bodyMedium?.copyWith(
+                style: textTheme.bodySmall?.copyWith(
+                  fontSize: 12.5,
                   fontWeight: FontWeight.w600,
                   color: colorScheme.onSurface,
                 ),
@@ -4234,7 +4272,7 @@ class _AppearanceFieldBlock extends StatelessWidget {
               SettingsInfoBadge(label: badge!),
           ],
         ),
-        const SizedBox(height: 6),
+        const SizedBox(height: 8),
         child,
       ],
     );

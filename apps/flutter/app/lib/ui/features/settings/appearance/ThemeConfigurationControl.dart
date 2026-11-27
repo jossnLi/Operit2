@@ -676,6 +676,7 @@ class _ThemeModeQuickControls extends StatelessWidget {
     ];
     return SettingsSegmentedSelector<ThemeMode>(
       value: value,
+      expand: true,
       onChanged: onChanged,
       dense: dense,
       segments: segments,

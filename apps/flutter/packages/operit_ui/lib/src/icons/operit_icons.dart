@@ -94,6 +94,7 @@ abstract final class OperitIcons {
   static const IconData date_range_outlined = LucideIcons.calendarDays;
   static const IconData delete_outline_rounded = LucideIcons.trash2;
   static const IconData delete_sweep_outlined = LucideIcons.trash2;
+  static const IconData density_comfortable_outlined = LucideIcons.rows2;
   static const IconData density_small_outlined = LucideIcons.rows3;
   static const IconData description_outlined = LucideIcons.fileText;
   static const IconData deselect_rounded = LucideIcons.squareDashed;
@@ -263,6 +264,7 @@ abstract final class OperitIcons {
   static const IconData restore_outlined = LucideIcons.history;
   static const IconData restore_rounded = LucideIcons.history;
   static const IconData rounded_corner_outlined = LucideIcons.scan;
+  static const IconData squircle_outlined = LucideIcons.squircle;
   static const IconData route_outlined = LucideIcons.route;
   static const IconData route_rounded = LucideIcons.route;
   static const IconData rule_outlined = LucideIcons.listChecks;
@@ -796,6 +798,7 @@ const materialIconNamesToLucide = <String, IconData>{
   'delete_sweep_rounded': LucideIcons.trash2,
   'delete_sweep_sharp': LucideIcons.trash2,
   'density_small': LucideIcons.rows3,
+  'density_comfortable_outlined': LucideIcons.rows2,
   'density_small_outlined': LucideIcons.rows3,
   'density_small_rounded': LucideIcons.rows3,
   'density_small_sharp': LucideIcons.rows3,
@@ -1650,6 +1653,7 @@ const materialIconNamesToLucide = <String, IconData>{
   'rocket_sharp': LucideIcons.rocket,
   'rounded_corner': LucideIcons.scan,
   'rounded_corner_outlined': LucideIcons.scan,
+  'squircle_outlined': LucideIcons.squircle,
   'rounded_corner_rounded': LucideIcons.scan,
   'rounded_corner_sharp': LucideIcons.scan,
   'route': LucideIcons.route,

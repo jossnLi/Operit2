@@ -495,50 +495,40 @@ class SettingsToggleChip extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    final child = Material(
-      color: selected
-          ? (isDark
-              ? colorScheme.primary.withValues(alpha: 0.22)
-              : colorScheme.primaryContainer.withValues(alpha: 0.7))
-          : (isDark
+    final chipColor = selected
+        ? colorScheme.primary.withValues(alpha: isDark ? 0.20 : 0.10)
+        : (isDark
               ? colorScheme.surfaceContainerHighest.withValues(alpha: 0.45)
-              : colorScheme.surfaceContainerHigh.withValues(alpha: 0.55)),
+              : colorScheme.surfaceContainerHigh.withValues(alpha: 0.55));
+    final chipBorderColor = selected
+        ? colorScheme.primary.withValues(alpha: isDark ? 0.60 : 0.40)
+        : colorScheme.outlineVariant.withValues(alpha: isDark ? 0.28 : 0.36);
+    final chipForeground = selected
+        ? colorScheme.primary
+        : colorScheme.onSurfaceVariant;
+
+    final child = Material(
+      color: chipColor,
       shape: StadiumBorder(
-        side: BorderSide(
-          color: selected
-              ? colorScheme.primary.withValues(alpha: isDark ? 0.6 : 0.7)
-              : colorScheme.outlineVariant.withValues(alpha: isDark ? 0.3 : 0.4),
-          width: selected ? 1.2 : 0.8,
-        ),
+        side: BorderSide(color: chipBorderColor, width: 1),
       ),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: () => onSelected(!selected),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              if (selected)
-                Icon(
-                  OperitIcons.check_rounded,
-                  size: 14,
-                  color: isDark ? colorScheme.primary : colorScheme.onPrimaryContainer,
-                )
-              else if (icon != null)
-                Icon(
-                  icon,
-                  size: 14,
-                  color: colorScheme.onSurfaceVariant,
-                ),
-              if (selected || icon != null) const SizedBox(width: 5),
+              if (icon != null) ...<Widget>[
+                Icon(icon, size: 14, color: chipForeground),
+                const SizedBox(width: 6),
+              ],
               Text(
                 label,
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: selected
-                      ? (isDark ? colorScheme.onSurface : colorScheme.onPrimaryContainer)
-                      : colorScheme.onSurfaceVariant,
-                  fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+                  color: chipForeground,
+                  fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
                   fontSize: 12,
                 ),
               ),
@@ -564,6 +554,7 @@ class SettingsSegmentedSelector<T> extends StatelessWidget {
     required this.onChanged,
     this.hasSelection = true,
     this.dense = false,
+    this.expand = false,
   });
 
   final T value;
@@ -574,46 +565,219 @@ class SettingsSegmentedSelector<T> extends StatelessWidget {
   /// Tightens type and icon sizes so the control fits a crowded action row.
   final bool dense;
 
+  /// Stretches the track to the full available width so the thumb can slide.
+  /// Leave it false inside toolbars and aligned rows, where the control keeps
+  /// its intrinsic width and animates the fill colour instead.
+  final bool expand;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (!expand ||
+            !constraints.hasBoundedWidth ||
+            constraints.maxWidth < _minTrackWidth) {
+          return _SettingsSegmentedFallback<T>(
+            value: value,
+            segments: segments,
+            onChanged: onChanged,
+            hasSelection: hasSelection,
+            dense: dense,
+          );
+        }
+        final colorScheme = Theme.of(context).colorScheme;
+        final isDark = Theme.of(context).brightness == Brightness.dark;
+        final trackHeight = dense ? 32.0 : 36.0;
+        final padding = dense ? 2.5 : 3.0;
+        final count = segments.length;
+        final selectedIndex = hasSelection
+            ? segments.indexWhere((segment) => segment.value == value)
+            : -1;
+        final segmentWidth = (constraints.maxWidth - padding * 2) / count;
+
+        return Container(
+          height: trackHeight,
+          decoration: BoxDecoration(
+            color: isDark
+                ? colorScheme.surfaceContainerHighest.withValues(alpha: 0.34)
+                : colorScheme.onSurface.withValues(alpha: 0.045),
+            borderRadius: BorderRadius.circular(999),
+            border: Border.all(
+              color: colorScheme.outlineVariant.withValues(
+                alpha: isDark ? 0.24 : 0.34,
+              ),
+              width: 1,
+            ),
+          ),
+          child: Stack(
+            children: <Widget>[
+              if (selectedIndex >= 0)
+                AnimatedPositioned(
+                  duration: const Duration(milliseconds: 180),
+                  curve: Curves.easeOutCubic,
+                  left: padding + segmentWidth * selectedIndex,
+                  top: padding,
+                  width: segmentWidth,
+                  height: trackHeight - padding * 2,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: colorScheme.primary.withValues(
+                        alpha: isDark ? 0.22 : 0.11,
+                      ),
+                      borderRadius: BorderRadius.circular(999),
+                      border: Border.all(
+                        color: colorScheme.primary.withValues(
+                          alpha: isDark ? 0.42 : 0.24,
+                        ),
+                        width: 1,
+                      ),
+                    ),
+                  ),
+                ),
+              Padding(
+                padding: EdgeInsets.all(padding),
+                child: Row(
+                  children: <Widget>[
+                    for (int i = 0; i < count; i++)
+                      Expanded(
+                        child: _SettingsSegmentButton<T>(
+                          segment: segments[i],
+                          selected: i == selectedIndex,
+                          dense: dense,
+                          onTap: () => onChanged(segments[i].value),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+const double _minTrackWidth = 120;
+
+/// One tap target of [SettingsSegmentedSelector], rendered on top of the
+/// sliding thumb so the thumb never intercepts pointer events.
+class _SettingsSegmentButton<T> extends StatelessWidget {
+  const _SettingsSegmentButton({
+    required this.segment,
+    required this.selected,
+    required this.dense,
+    required this.onTap,
+  });
+
+  final ButtonSegment<T> segment;
+  final bool selected;
+  final bool dense;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+    final foreground = selected
+        ? colorScheme.primary
+        : colorScheme.onSurfaceVariant;
+    final label = segment.label ?? Text(segment.value.toString());
+    final icon = segment.icon;
+
+    return Semantics(
+      button: true,
+      selected: selected,
+      child: InkWell(
+        onTap: segment.enabled ? onTap : null,
+        borderRadius: BorderRadius.circular(999),
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: dense ? 6 : 8),
+            child: IconTheme.merge(
+              data: IconThemeData(color: foreground, size: dense ? 13 : 14),
+              child: DefaultTextStyle.merge(
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                softWrap: false,
+                textAlign: TextAlign.center,
+                style: textTheme.labelSmall!.copyWith(
+                  color: foreground,
+                  fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
+                  fontSize: dense ? 11.5 : 12,
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    if (icon != null) ...<Widget>[
+                      ExcludeSemantics(child: icon),
+                      SizedBox(width: dense ? 4 : 6),
+                    ],
+                    Flexible(child: label),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Intrinsic-width variant used where the parent gives no measurable width
+/// (toolbars, [Wrap] rows), where a sliding thumb cannot be positioned.
+class _SettingsSegmentedFallback<T> extends StatelessWidget {
+  const _SettingsSegmentedFallback({
+    required this.value,
+    required this.segments,
+    required this.onChanged,
+    required this.hasSelection,
+    required this.dense,
+  });
+
+  final T value;
+  final List<ButtonSegment<T>> segments;
+  final ValueChanged<T> onChanged;
+  final bool hasSelection;
+  final bool dense;
+
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final isDark = Theme.of(context).brightness == Brightness.dark;
-
-    return SegmentedButton<T>(
-      showSelectedIcon: false,
-      style: SegmentedButton.styleFrom(
-        visualDensity: dense
-            ? const VisualDensity(horizontal: -3, vertical: -3)
-            : VisualDensity.compact,
-        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        selectedBackgroundColor: isDark
-            ? colorScheme.primary.withValues(alpha: 0.22)
-            : colorScheme.primaryContainer.withValues(alpha: 0.70),
-        selectedForegroundColor: isDark
-            ? colorScheme.primary
-            : colorScheme.onPrimaryContainer,
-        foregroundColor: colorScheme.onSurfaceVariant,
-        backgroundColor: isDark
-            ? colorScheme.surfaceContainerHighest.withValues(alpha: 0.40)
-            : colorScheme.surfaceContainerHigh.withValues(alpha: 0.50),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(999),
-        ),
-        side: BorderSide(
-          color: colorScheme.outlineVariant.withValues(
-            alpha: isDark ? 0.30 : 0.45,
+    final lastIndex = segments.length - 1;
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        for (int i = 0; i < segments.length; i++)
+          Padding(
+            padding: EdgeInsets.only(right: i == lastIndex ? 0 : 6),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 180),
+              curve: Curves.easeOutCubic,
+              decoration: BoxDecoration(
+                color: hasSelection && segments[i].value == value
+                    ? colorScheme.primary.withValues(
+                        alpha: isDark ? 0.22 : 0.11,
+                      )
+                    : Colors.transparent,
+                borderRadius: BorderRadius.circular(999),
+                border: Border.all(
+                  color: hasSelection && segments[i].value == value
+                      ? colorScheme.primary.withValues(alpha: 0.24)
+                      : Colors.transparent,
+                ),
+              ),
+              child: _SettingsSegmentButton<T>(
+                segment: segments[i],
+                selected: hasSelection && segments[i].value == value,
+                dense: dense,
+                onTap: () => onChanged(segments[i].value),
+              ),
+            ),
           ),
-          width: 0.8,
-        ),
-        textStyle: Theme.of(context).textTheme.labelSmall?.copyWith(
-          fontWeight: FontWeight.w600,
-          fontSize: dense ? 11.5 : 12.5,
-        ),
-      ),
-      segments: segments,
-      selected: hasSelection ? <T>{value} : <T>{},
-      emptySelectionAllowed: !hasSelection,
-      onSelectionChanged: (selection) => onChanged(selection.single),
+      ],
     );
   }
 }
