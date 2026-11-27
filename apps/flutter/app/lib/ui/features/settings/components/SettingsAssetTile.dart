@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:operit_ui/operit_ui.dart';
 
 /// Displays an asset summary with bounded actions and optional controls.
 class SettingsAssetTile extends StatelessWidget {
@@ -42,7 +43,11 @@ class SettingsAssetTile extends StatelessWidget {
         children: <Widget>[
           Row(
             children: <Widget>[
-              Icon(icon, size: 20, color: colorScheme.primary),
+              OperitSemanticIcon(
+                icon,
+                tone: OperitIconTone.accent,
+                size: OperitIconSizes.list,
+              ),
               const SizedBox(width: 8),
               Expanded(
                 child: Column(

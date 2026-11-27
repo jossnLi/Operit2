@@ -27,7 +27,6 @@ import '../common/ChatPastedImageHandler.dart';
 import '../common/InputProcessingStatusLane.dart';
 import '../common/PendingQueueMessageItem.dart';
 
-import 'package:operit2/ui/common/icons/operit_icons.dart';
 class ClassicChatInputSection extends StatefulWidget {
   const ClassicChatInputSection({
     super.key,
@@ -970,7 +969,11 @@ class _ClassicAttachmentPackageOptionTile extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
           child: Row(
             children: <Widget>[
-              Icon(OperitIcons.extension_outlined, size: 20, color: colorScheme.primary),
+              OperitSemanticIcon(
+                OperitIcons.extension_outlined,
+                tone: OperitIconTone.accent,
+                size: OperitIconSizes.list,
+              ),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(

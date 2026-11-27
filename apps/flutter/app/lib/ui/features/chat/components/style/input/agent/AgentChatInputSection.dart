@@ -1264,7 +1264,11 @@ class _AttachmentPackageOptionTile extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
           child: Row(
             children: <Widget>[
-              Icon(OperitIcons.extension_outlined, size: 20, color: colorScheme.primary),
+              OperitSemanticIcon(
+                OperitIcons.extension_outlined,
+                tone: OperitIconTone.accent,
+                size: OperitIconSizes.list,
+              ),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(

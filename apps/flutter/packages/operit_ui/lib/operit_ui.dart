@@ -28,6 +28,7 @@ export 'src/render/desktop_sidebar_surface.dart';
 export 'src/render/drawer_chrome.dart';
 export 'src/render/history_chrome.dart';
 export 'src/render/top_bar_chrome.dart';
+export 'src/render/semantic_icon.dart';
 export 'src/render/composer_chrome.dart';
 export 'src/render/composer_surface.dart';
 export 'src/render/prepared_theme_visual.dart';

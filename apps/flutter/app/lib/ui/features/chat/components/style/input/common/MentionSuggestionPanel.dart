@@ -1,14 +1,13 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:operit_ui/operit_ui.dart';
 
 import '../../../../../../../l10n/generated/app_localizations.dart';
 import '../../../../../../theme/OperitGlassSurface.dart';
 import '../../../../viewmodel/ChatViewModel.dart';
 import '../../../../viewmodel/WorkspaceFileModels.dart';
 import 'MentionPackageOptions.dart';
-
-import 'package:operit2/ui/common/icons/operit_icons.dart';
 
 /// Renders package and workspace suggestions for @ and / input mentions.
 class MentionSuggestionPanel extends StatefulWidget {
@@ -359,10 +358,10 @@ class _MentionSuggestionPackageRow extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Icon(
+              OperitSemanticIcon(
                 _mentionPackageIcon(option.kind),
-                size: 14,
-                color: _mentionPackageColor(option.kind, colors),
+                tone: _mentionPackageTone(option.kind),
+                size: OperitIconSizes.inline,
               ),
               const SizedBox(width: 6),
               Expanded(
@@ -482,12 +481,13 @@ IconData _mentionPackageIcon(MentionPackageKind kind) {
   };
 }
 
-/// Resolves the color used for one package kind.
-Color _mentionPackageColor(MentionPackageKind kind, ColorScheme colors) {
+/// Resolves the semantic tone used for one package kind, so the tone keeps
+/// following the active color scheme instead of carrying a fixed color.
+OperitIconTone _mentionPackageTone(MentionPackageKind kind) {
   return switch (kind) {
-    MentionPackageKind.package => colors.primary,
-    MentionPackageKind.skill => colors.secondary,
-    MentionPackageKind.mcp => colors.tertiary,
+    MentionPackageKind.package => OperitIconTone.accent,
+    MentionPackageKind.skill => OperitIconTone.secondary,
+    MentionPackageKind.mcp => OperitIconTone.tertiary,
   };
 }
 

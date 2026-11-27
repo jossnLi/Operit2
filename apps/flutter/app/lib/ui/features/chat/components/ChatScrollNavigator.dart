@@ -11,7 +11,7 @@ import '../viewmodel/ChatViewModel.dart';
 import 'ChatScrollRailGeometry.dart';
 import 'ChatMessageLocatorContent.dart';
 
-import 'package:operit2/ui/common/icons/operit_icons.dart';
+import 'package:operit_ui/operit_ui.dart';
 export 'ChatMessageLocatorContent.dart';
 
 typedef LoadMessageLocatorEntries =
@@ -850,12 +850,14 @@ class _CodexHoverTooltipCard extends StatelessWidget {
           children: <Widget>[
             Row(
               children: <Widget>[
-                Icon(
-                  isUser ? OperitIcons.person_rounded : OperitIcons.smart_toy_outlined,
-                  size: 11,
-                  color: isUser
-                      ? theme.colorScheme.primary
-                      : theme.colorScheme.tertiary,
+                OperitSemanticIcon(
+                  isUser
+                      ? OperitIcons.person_rounded
+                      : OperitIcons.smart_toy_outlined,
+                  tone: isUser
+                      ? OperitIconTone.accent
+                      : OperitIconTone.tertiary,
+                  size: OperitIconSizes.marker,
                 ),
                 const SizedBox(width: 4),
                 Expanded(
