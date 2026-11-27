@@ -687,7 +687,7 @@ function App() {
                     <AccountTreeOutlinedIcon sx={{ fontSize: 20 }} />
                   </Box>
                 </Box>
-                <Typography variant="h5" sx={{ fontWeight: 600 }}>
+                <Typography variant="h5" sx={{ fontWeight: 600, fontSize: 20, lineHeight: 1.4 }}>
                   创建你的第一个工作流
                 </Typography>
                 <Typography color="text.secondary" variant="body2">
