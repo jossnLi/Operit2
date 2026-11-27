@@ -81,6 +81,7 @@ class ThemeTopBarChrome extends StatelessWidget {
     this.flipNavigationIcon = false,
     this.barHeight,
     this.actions = const <Widget>[],
+    this.centerTitle = false,
   });
 
   /// Shared vertical geometry for the app bar and desktop sidebar headers.
@@ -99,6 +100,16 @@ class ThemeTopBarChrome extends StatelessWidget {
   final bool flipNavigationIcon;
   final List<Widget> actions;
 
+  /// Centers the title on the bar's optical centre instead of the space left
+  /// between the leading icon and the actions.
+  ///
+  /// Root pages (opened from the sidebar) pass true: their title should sit on
+  /// the screen's midline. Back-navigable pages keep false so the title stays
+  /// beside the arrow. Centering uses symmetric insets on both sides, so the
+  /// title's centre is exactly the bar's centre regardless of how wide the
+  /// leading icon or the actions are.
+  final bool centerTitle;
+
   @override
   Widget build(BuildContext context) {
     final navIcon = navigationIcon;
@@ -107,9 +118,20 @@ class ThemeTopBarChrome extends StatelessWidget {
         : null;
     final leadingExtent = navIcon != null ? 44.0 : 8.0;
     final trailingExtent = actions.length * 44.0 + 8.0;
-    // Back-navigable pages keep the title next to the arrow; only bare pages
-    // without a navigation icon centre the title.
-    final centered = actions.isEmpty && navIcon == null;
+    // 根页面（侧边栏进入）按屏幕中线居中；可返回页面贴箭头；无导航图标也居中。
+    // 居中时左右留白取两侧较宽的一侧，标题几何中心才等于整条栏的中心。
+    final centered = centerTitle || (actions.isEmpty && navIcon == null);
+    final symmetricExtent = leadingExtent > trailingExtent
+        ? leadingExtent
+        : trailingExtent;
+    final titleInset = centered
+        ? EdgeInsetsDirectional.symmetric(
+            horizontal: symmetricExtent,
+          )
+        : EdgeInsetsDirectional.only(
+            start: leadingExtent,
+            end: trailingExtent,
+          );
     return ColoredBox(
       color: contentColor,
       child: SizedBox(
@@ -120,10 +142,7 @@ class ThemeTopBarChrome extends StatelessWidget {
             children: <Widget>[
               Positioned.fill(
                 child: Padding(
-                  padding: EdgeInsetsDirectional.only(
-                    start: leadingExtent,
-                    end: centered ? leadingExtent : trailingExtent,
-                  ),
+                  padding: titleInset,
                   child: Align(
                     alignment: centered
                         ? Alignment.center

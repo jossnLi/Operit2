@@ -311,6 +311,9 @@ class _AppContentState extends State<AppContent> {
                   contentForeground: appBarContentColor,
                   topPadding: topPadding,
                   flipNavigationIcon: shouldFlipNavigationIcon,
+                  // 根页面（侧边栏进入、没有返回箭头）标题居中到屏幕中线；
+                  // 可返回的页面仍贴箭头，保持“标题与返回同排”的层级感。
+                  centerTitle: !widget.canGoBack,
                   actions: <Widget>[
                     if (actions != null) ...actions(context),
                     for (final entry in widget.appBarEntries)
