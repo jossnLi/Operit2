@@ -2146,7 +2146,7 @@ Future<void> _showBubbleFontDialog(
                 const SizedBox(height: 8),
                 _AppearanceFieldBlock(
                   label: l10n.settingsAppearanceFontFamily,
-                  badge: fontType == UserPreferencesManager.FONT_TYPE_DEVICE
+                  valueText: fontType == UserPreferencesManager.FONT_TYPE_DEVICE
                       ? systemFontName!
                       : fontType == UserPreferencesManager.FONT_TYPE_FILE
                       ? l10n.settingsAppearanceFontCustom
