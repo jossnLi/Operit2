@@ -24,6 +24,7 @@ import '../../../../core/logging/ClientLogger.dart';
 import '../../../../core/proxy/generated/CoreProxyClients.g.dart';
 import '../../../../data/preferences/UserPreferencesManager.dart';
 import '../../../../l10n/generated/app_localizations.dart';
+import '../../chat/components/style/bubble/AiTypingIndicator.dart';
 import '../../chat/components/style/bubble/BubbleSurface.dart';
 import '../../../common/components/OperitDialog.dart';
 import '../../../common/layout/ApplicationZoom.dart';
@@ -1006,6 +1007,40 @@ class _AppearanceThemeEditor extends StatelessWidget {
                   },
                 ),
               ],
+            ),
+          ],
+        ),
+        _SectionCard(
+          title: l10n.settingsAppearanceTypingIndicatorSection,
+          icon: OperitIcons.hourglass_top_outlined,
+          children: <Widget>[
+            Text(
+              l10n.settingsAppearanceTypingIndicatorDescription,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                height: 1.35,
+              ),
+            ),
+            const SizedBox(height: 10),
+            _TypingStyleGrid(
+              l10n: l10n,
+              value: AiTypingStyle.fromStorageName(snapshot.aiTypingStyle),
+              onChanged: (style) {
+                unawaited(
+                  themeController.saveThemeSettings(aiTypingStyle: style.name),
+                );
+              },
+            ),
+            const _SectionDivider(),
+            SettingsSwitchRow(
+              icon: OperitIcons.text_fields_outlined,
+              title: l10n.settingsAppearanceTypingShowLabel,
+              value: snapshot.aiTypingShowText,
+              onChanged: (value) {
+                unawaited(
+                  themeController.saveThemeSettings(aiTypingShowText: value),
+                );
+              },
             ),
           ],
         ),
@@ -4200,6 +4235,160 @@ class _ThemeModeSelector extends StatelessWidget {
           label: Text(l10n.settingsAppearanceThemeDark),
         ),
       ],
+    );
+  }
+}
+
+/// Two-column picker for the reply-waiting indicator styles.
+class _TypingStyleGrid extends StatelessWidget {
+  const _TypingStyleGrid({
+    required this.l10n,
+    required this.value,
+    required this.onChanged,
+  });
+
+  final AppLocalizations l10n;
+  final AiTypingStyle value;
+  final ValueChanged<AiTypingStyle> onChanged;
+
+  static const List<AiTypingStyle> _styles = <AiTypingStyle>[
+    AiTypingStyle.dots,
+    AiTypingStyle.sparkle,
+    AiTypingStyle.skeleton,
+    AiTypingStyle.textCursor,
+    AiTypingStyle.waveform,
+    AiTypingStyle.orbit,
+    AiTypingStyle.none,
+  ];
+
+  String _labelFor(AiTypingStyle style) {
+    switch (style) {
+      case AiTypingStyle.dots:
+        return l10n.settingsAppearanceTypingStyleDots;
+      case AiTypingStyle.sparkle:
+        return l10n.settingsAppearanceTypingStyleSparkle;
+      case AiTypingStyle.skeleton:
+        return l10n.settingsAppearanceTypingStyleSkeleton;
+      case AiTypingStyle.textCursor:
+        return l10n.settingsAppearanceTypingStyleTextCursor;
+      case AiTypingStyle.waveform:
+        return l10n.settingsAppearanceTypingStyleWaveform;
+      case AiTypingStyle.orbit:
+        return l10n.settingsAppearanceTypingStyleOrbit;
+      case AiTypingStyle.none:
+        return l10n.settingsAppearanceTypingStyleOff;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final double tileWidth = (constraints.maxWidth - 8) / 2;
+        return Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: <Widget>[
+            for (final style in _styles)
+              SizedBox(
+                width: tileWidth,
+                child: _TypingStyleTile(
+                  style: style,
+                  label: _labelFor(style),
+                  selected: style == value,
+                  textColor: colorScheme.onSurface,
+                  onTap: () => onChanged(style),
+                ),
+              ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+/// One live mini preview of a waiting style plus its name.
+class _TypingStyleTile extends StatelessWidget {
+  const _TypingStyleTile({
+    required this.style,
+    required this.label,
+    required this.selected,
+    required this.textColor,
+    required this.onTap,
+  });
+
+  final AiTypingStyle style;
+  final String label;
+  final bool selected;
+  final Color textColor;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final BorderRadius radius = BorderRadius.circular(12);
+    return InkWell(
+      onTap: onTap,
+      borderRadius: radius,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 160),
+        padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
+        decoration: BoxDecoration(
+          color: selected
+              ? colorScheme.primary.withValues(alpha: 0.10)
+              : colorScheme.surfaceContainerHighest.withValues(alpha: 0.28),
+          borderRadius: radius,
+          border: Border.all(
+            color: selected
+                ? colorScheme.primary.withValues(alpha: 0.55)
+                : colorScheme.outlineVariant.withValues(alpha: 0.26),
+            width: selected ? 1.2 : 0.9,
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            SizedBox(
+              height: 26,
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: style == AiTypingStyle.none
+                    ? Text(
+                        '—',
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: textColor.withValues(alpha: 0.45),
+                        ),
+                      )
+                    : AiTypingIndicator(
+                        style: style,
+                        color: selected
+                            ? colorScheme.primary
+                            : textColor.withValues(alpha: 0.72),
+                        showLabel: false,
+                        scale: 0.9,
+                      ),
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 12,
+                height: 1.2,
+                fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
+                color: selected
+                    ? colorScheme.primary
+                    : textColor.withValues(alpha: 0.82),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

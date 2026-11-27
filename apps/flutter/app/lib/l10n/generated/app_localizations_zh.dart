@@ -3489,6 +3489,38 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsAppearanceLivePreviewThinkingSample => '正在分析上下文与日程优先级...';
 
   @override
+  String get settingsAppearanceTypingIndicatorSection => '等待回复指示';
+
+  @override
+  String get settingsAppearanceTypingIndicatorDescription =>
+      'AI 回复的首个字符到达前，气泡里显示什么。选中后立即生效，正在等待的消息也会同步换样式；系统开启「减弱动态效果」时自动转为静态。';
+
+  @override
+  String get settingsAppearanceTypingStyleDots => '点阵呼吸';
+
+  @override
+  String get settingsAppearanceTypingStyleSparkle => '星芒流光';
+
+  @override
+  String get settingsAppearanceTypingStyleSkeleton => '骨架流光';
+
+  @override
+  String get settingsAppearanceTypingStyleTextCursor => '文字光标';
+
+  @override
+  String get settingsAppearanceTypingStyleWaveform => '小波形';
+
+  @override
+  String get settingsAppearanceTypingStyleOrbit => '光点轨道';
+
+  @override
+  String get settingsAppearanceTypingStyleOff => '关闭';
+
+  @override
+  String get settingsAppearanceTypingShowLabel => '叠加文案';
+
+
+  @override
   String get settingsDataLogsSection => '诊断日志';
 
   @override

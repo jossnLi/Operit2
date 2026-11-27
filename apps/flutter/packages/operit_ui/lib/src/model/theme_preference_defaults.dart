@@ -129,5 +129,7 @@ class ThemePreferenceDefaults {
     showMessageTimingStats: false,
     showMessageTimestamp: false,
     showInputProcessingStatus: true,
+    aiTypingStyle: 'dots',
+    aiTypingShowText: true,
   );
 }

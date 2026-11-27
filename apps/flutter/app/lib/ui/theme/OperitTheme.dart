@@ -1383,6 +1383,8 @@ ThemePreferenceSnapshot _themePreferenceSnapshotWith(
     showMessageTimingStats: snapshot.showMessageTimingStats,
     showMessageTimestamp: snapshot.showMessageTimestamp,
     showInputProcessingStatus: snapshot.showInputProcessingStatus,
+    aiTypingStyle: snapshot.aiTypingStyle,
+    aiTypingShowText: snapshot.aiTypingShowText,
   );
 }
 

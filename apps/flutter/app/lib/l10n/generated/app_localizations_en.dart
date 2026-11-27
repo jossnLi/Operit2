@@ -3633,6 +3633,38 @@ class AppLocalizationsEn extends AppLocalizations {
       'Analyzing context and schedule priorities...';
 
   @override
+  String get settingsAppearanceTypingIndicatorSection =>
+      'Reply waiting indicator';
+
+  @override
+  String get settingsAppearanceTypingIndicatorDescription =>
+      'What the reply bubble shows before the first token arrives. Applies immediately and also updates replies that are already waiting. Turns static when the system reduces motion.';
+
+  @override
+  String get settingsAppearanceTypingStyleDots => 'Breathing dots';
+
+  @override
+  String get settingsAppearanceTypingStyleSparkle => 'Sparkle shimmer';
+
+  @override
+  String get settingsAppearanceTypingStyleSkeleton => 'Skeleton shimmer';
+
+  @override
+  String get settingsAppearanceTypingStyleTextCursor => 'Text cursor';
+
+  @override
+  String get settingsAppearanceTypingStyleWaveform => 'Mini waveform';
+
+  @override
+  String get settingsAppearanceTypingStyleOrbit => 'Orbit dot';
+
+  @override
+  String get settingsAppearanceTypingStyleOff => 'Off';
+
+  @override
+  String get settingsAppearanceTypingShowLabel => 'Show label';
+
+  @override
   String get settingsDataLogsSection => 'Diagnostic logs';
 
   @override

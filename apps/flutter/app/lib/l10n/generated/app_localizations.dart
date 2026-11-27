@@ -6570,6 +6570,67 @@ abstract class AppLocalizations {
   /// **'Analyzing context and schedule priorities...'**
   String get settingsAppearanceLivePreviewThinkingSample;
 
+  /// No description provided for @settingsAppearanceTypingIndicatorSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Reply waiting indicator'**
+  String get settingsAppearanceTypingIndicatorSection;
+
+  /// No description provided for
+  /// @settingsAppearanceTypingIndicatorDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'What the reply bubble shows before the first token arrives. Applies immediately and also updates replies that are already waiting. Turns static when the system reduces motion.'**
+  String get settingsAppearanceTypingIndicatorDescription;
+
+  /// No description provided for @settingsAppearanceTypingStyleDots.
+  ///
+  /// In en, this message translates to:
+  /// **'Breathing dots'**
+  String get settingsAppearanceTypingStyleDots;
+
+  /// No description provided for @settingsAppearanceTypingStyleSparkle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sparkle shimmer'**
+  String get settingsAppearanceTypingStyleSparkle;
+
+  /// No description provided for @settingsAppearanceTypingStyleSkeleton.
+  ///
+  /// In en, this message translates to:
+  /// **'Skeleton shimmer'**
+  String get settingsAppearanceTypingStyleSkeleton;
+
+  /// No description provided for @settingsAppearanceTypingStyleTextCursor.
+  ///
+  /// In en, this message translates to:
+  /// **'Text cursor'**
+  String get settingsAppearanceTypingStyleTextCursor;
+
+  /// No description provided for @settingsAppearanceTypingStyleWaveform.
+  ///
+  /// In en, this message translates to:
+  /// **'Mini waveform'**
+  String get settingsAppearanceTypingStyleWaveform;
+
+  /// No description provided for @settingsAppearanceTypingStyleOrbit.
+  ///
+  /// In en, this message translates to:
+  /// **'Orbit dot'**
+  String get settingsAppearanceTypingStyleOrbit;
+
+  /// No description provided for @settingsAppearanceTypingStyleOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get settingsAppearanceTypingStyleOff;
+
+  /// No description provided for @settingsAppearanceTypingShowLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Show label'**
+  String get settingsAppearanceTypingShowLabel;
+
   /// No description provided for @settingsDataLogsSection.
   ///
   /// In en, this message translates to:

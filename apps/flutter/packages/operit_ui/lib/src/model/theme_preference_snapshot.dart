@@ -107,6 +107,8 @@ class ThemePreferenceSnapshot {
     required this.showMessageTimingStats,
     required this.showMessageTimestamp,
     required this.showInputProcessingStatus,
+    this.aiTypingStyle = 'dots',
+    this.aiTypingShowText = true,
   });
 
   final ThemeMode themeMode;
@@ -213,6 +215,15 @@ class ThemePreferenceSnapshot {
   final bool showMessageTimingStats;
   final bool showMessageTimestamp;
   final bool showInputProcessingStatus;
+
+  /// Selects the animated placeholder shown while the first token is pending.
+  ///
+  /// One of `dots`, `sparkle`, `skeleton`, `textCursor`, `waveform`, `orbit`
+  /// or `none`.
+  final String aiTypingStyle;
+
+  /// Appends a short label next to the animated placeholder when enabled.
+  final bool aiTypingShowText;
 
   /// Encodes the complete effective theme state for another Flutter engine.
   Map<String, Object?> toJson() {
@@ -321,6 +332,8 @@ class ThemePreferenceSnapshot {
       'showMessageTimingStats': showMessageTimingStats,
       'showMessageTimestamp': showMessageTimestamp,
       'showInputProcessingStatus': showInputProcessingStatus,
+      'aiTypingStyle': aiTypingStyle,
+      'aiTypingShowText': aiTypingShowText,
     };
   }
 
@@ -473,6 +486,8 @@ class ThemePreferenceSnapshot {
       showMessageTimingStats: requiredBool('showMessageTimingStats'),
       showMessageTimestamp: requiredBool('showMessageTimestamp'),
       showInputProcessingStatus: requiredBool('showInputProcessingStatus'),
+      aiTypingStyle: (json['aiTypingStyle'] as String?) ?? 'dots',
+      aiTypingShowText: (json['aiTypingShowText'] as bool?) ?? true,
     );
   }
 }

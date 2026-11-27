@@ -180,6 +180,8 @@ class UserPreferencesManager {
     'showMessageTimingStats': 'show_message_timing_stats',
     'showMessageTimestamp': 'show_message_timestamp',
     'showInputProcessingStatus': 'show_input_processing_status',
+    'aiTypingStyle': 'ai_typing_style',
+    'aiTypingShowText': 'ai_typing_show_text',
   };
 
   static const ThemePreferenceSnapshot defaultThemePreferenceSnapshot =
@@ -467,6 +469,8 @@ class UserPreferencesManager {
     String? avatarShape,
     double? avatarCornerRadius,
     bool? showInputProcessingStatus,
+    String? aiTypingStyle,
+    bool? aiTypingShowText,
     bool? useCustomFont,
     String? fontType,
     String? systemFontName,
@@ -595,6 +599,8 @@ class UserPreferencesManager {
       if (avatarCornerRadius != null) 'avatarCornerRadius': avatarCornerRadius,
       if (showInputProcessingStatus != null)
         'showInputProcessingStatus': showInputProcessingStatus,
+      if (aiTypingStyle != null) 'aiTypingStyle': aiTypingStyle,
+      if (aiTypingShowText != null) 'aiTypingShowText': aiTypingShowText,
       if (useCustomFont != null) 'useCustomFont': useCustomFont,
       if (fontType != null) 'fontType': fontType,
       if (systemFontName != null) 'systemFontName': systemFontName,
