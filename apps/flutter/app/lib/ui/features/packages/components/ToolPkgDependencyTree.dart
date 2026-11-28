@@ -11,6 +11,7 @@ import 'ExtensionNavigation.dart';
 import 'StoreDetailKit.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
+
 /// A compact, bounded-width tree. Shared prerequisites become links after their
 /// first appearance; totals count unique plugins, rather than tree rows.
 class ToolPkgDependencyTree extends StatelessWidget {
@@ -221,7 +222,6 @@ class _DependencyTreeRow extends StatelessWidget {
   void _showInfo(BuildContext context) {
     showModalBottomSheet<void>(
       context: context,
-      showDragHandle: true,
       builder: (context) => SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
@@ -268,8 +268,10 @@ class _DependencyTreeRow extends StatelessWidget {
     final satisfied = node.state == ToolPkgDependencyState.satisfied;
     final statusIcon = switch (node.state) {
       ToolPkgDependencyState.satisfied => OperitIcons.check_circle_rounded,
-      ToolPkgDependencyState.disabled => OperitIcons.pause_circle_outline_rounded,
-      ToolPkgDependencyState.missing => OperitIcons.download_for_offline_outlined,
+      ToolPkgDependencyState.disabled =>
+        OperitIcons.pause_circle_outline_rounded,
+      ToolPkgDependencyState.missing =>
+        OperitIcons.download_for_offline_outlined,
       ToolPkgDependencyState.cycle => OperitIcons.loop_rounded,
       _ => OperitIcons.error_outline_rounded,
     };

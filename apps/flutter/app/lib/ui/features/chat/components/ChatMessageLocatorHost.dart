@@ -128,7 +128,6 @@ class _ChatMessageLocatorHostState extends State<ChatMessageLocatorHost> {
           useRootNavigator: true,
           isScrollControlled: true,
           useSafeArea: true,
-          showDragHandle: true,
           builder: (context) {
             _route = ModalRoute.of<int>(context);
             final media = MediaQuery.of(context);

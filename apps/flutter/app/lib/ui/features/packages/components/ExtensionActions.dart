@@ -10,6 +10,7 @@ import '../model/ExtensionCatalogController.dart';
 import 'ExtensionNavigation.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
+
 enum _QuickAction { open, toggle, update, copyId }
 
 /// Quick actions for one extension: a menu at the pointer for right-clicks,
@@ -32,10 +33,10 @@ Future<void> showExtensionQuickActions(
     (_QuickAction.open, OperitIcons.open_in_new_rounded, '打开详情'),
     (
       _QuickAction.toggle,
-      enabled ? OperitIcons.toggle_off_outlined : OperitIcons.toggle_on_outlined,
-      skill
-          ? (enabled ? '对 AI 隐藏' : '让 AI 可见')
-          : (enabled ? '停用' : '启用'),
+      enabled
+          ? OperitIcons.toggle_off_outlined
+          : OperitIcons.toggle_on_outlined,
+      skill ? (enabled ? '对 AI 隐藏' : '让 AI 可见') : (enabled ? '停用' : '启用'),
     ),
     if (controller.hasUpdate(entry))
       (_QuickAction.update, OperitIcons.arrow_circle_up_rounded, '更新'),
@@ -69,7 +70,6 @@ Future<void> showExtensionQuickActions(
     unawaited(HapticFeedback.selectionClick());
     action = await showModalBottomSheet<_QuickAction>(
       context: context,
-      showDragHandle: true,
       constraints: const BoxConstraints(maxWidth: 560),
       builder: (context) => SafeArea(
         child: Column(
@@ -81,9 +81,9 @@ Future<void> showExtensionQuickActions(
                 entry.displayName,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
               ),
             ),
             for (final (value, icon, label) in items)

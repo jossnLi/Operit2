@@ -405,7 +405,6 @@ class _PackageManagerScreenState extends State<PackageManagerScreen>
   Future<void> _showAddSheet() async {
     final action = await showModalBottomSheet<_AddAction>(
       context: context,
-      showDragHandle: true,
       isScrollControlled: true,
       constraints: const BoxConstraints(maxWidth: 680),
       builder: (context) => const _AddExtensionSheet(),

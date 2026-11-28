@@ -77,7 +77,7 @@ ThemeData buildOperitThemeData(
       backgroundColor: sheetBackground,
       modalBackgroundColor: sheetBackground,
       surfaceTintColor: Colors.transparent,
-      showDragHandle: true,
+      showDragHandle: false,
       dragHandleColor: colorScheme.onSurfaceVariant.withValues(alpha: 0.45),
       elevation: 0,
       shape: const RoundedRectangleBorder(

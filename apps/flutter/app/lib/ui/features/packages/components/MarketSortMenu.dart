@@ -8,6 +8,7 @@ import '../market/ArtifactMarketSupport.dart';
 import '../market/MarketFilters.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
+
 /// One entry point for sorting, publication period and category selection.
 class MarketSortMenu extends StatelessWidget {
   const MarketSortMenu({
@@ -32,7 +33,6 @@ class MarketSortMenu extends StatelessWidget {
         context: context,
         isScrollControlled: true,
         useSafeArea: true,
-        showDragHandle: true,
         constraints: const BoxConstraints(maxWidth: 640),
         builder: (context) => MarketFilterPanel(
           initialFilters: filters,
@@ -171,7 +171,11 @@ class _MarketFilterPanelState extends State<MarketFilterPanel> {
               padding: const EdgeInsets.fromLTRB(24, 0, 12, 16),
               child: Row(
                 children: [
-                  Icon(OperitIcons.tune_rounded, color: colors.primary, size: 22),
+                  Icon(
+                    OperitIcons.tune_rounded,
+                    color: colors.primary,
+                    size: 22,
+                  ),
                   const SizedBox(width: 10),
                   Expanded(
                     child: Text(
@@ -272,7 +276,10 @@ class _MarketFilterPanelState extends State<MarketFilterPanel> {
                       if (_categoryError)
                         TextButton.icon(
                           onPressed: _loadCategories,
-                          icon: const Icon(OperitIcons.refresh_rounded, size: 18),
+                          icon: const Icon(
+                            OperitIcons.refresh_rounded,
+                            size: 18,
+                          ),
                           label: const Text('分类加载失败，重试'),
                         )
                       else if (categories == null)

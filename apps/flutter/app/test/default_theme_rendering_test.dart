@@ -25,6 +25,7 @@ void main() {
             fontFamilyFallback: const <String>['sans-serif'],
           );
           final typography = Typography.material2021();
+          expect(current.bottomSheetTheme.showDragHandle, isFalse);
           final baseline = ThemeData(
             colorScheme: scheme,
             textTheme:
