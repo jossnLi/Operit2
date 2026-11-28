@@ -74,12 +74,12 @@ class AppearanceSettingsPanel extends StatelessWidget {
               ),
               title: Text(
                 name,
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.w600,
                   letterSpacing: -0.3,
                 ),
               ),
-              centerTitle: true,
+              centerTitle: false,
               actions: <Widget>[
                 IconButton(
                   tooltip: '实时预览',
@@ -114,12 +114,12 @@ class _StandaloneAppearancePreviewScreen extends StatelessWidget {
         ),
         title: Text(
           l10n.settingsAppearanceLivePreviewTitle,
-          style: Theme.of(context).textTheme.titleSmall?.copyWith(
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.w600,
             letterSpacing: -0.3,
           ),
         ),
-        centerTitle: true,
+        centerTitle: false,
       ),
       body: const SafeArea(
         child: Padding(

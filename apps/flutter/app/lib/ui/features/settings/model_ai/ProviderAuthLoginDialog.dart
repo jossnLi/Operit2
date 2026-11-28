@@ -395,15 +395,15 @@ class _ProviderAuthLoginDialogState extends State<_ProviderAuthLoginDialog> {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     return Scaffold(
-      backgroundColor: scheme.surface,
+      backgroundColor: Colors.transparent,
       appBar: AppBar(
-        backgroundColor: scheme.surface,
+        backgroundColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
         scrolledUnderElevation: 0,
         leading: IconButton(
           onPressed: () => Navigator.of(context).pop(),
-          tooltip: '取消授权',
-          icon: const Icon(ModelAiIcons.close),
+          tooltip: '返回',
+          icon: const Icon(ModelAiIcons.back),
         ),
         title: const Text('账号授权'),
       ),

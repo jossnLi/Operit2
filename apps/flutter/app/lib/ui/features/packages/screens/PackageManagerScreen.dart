@@ -226,8 +226,8 @@ class _PackageManagerScreenState extends State<PackageManagerScreen>
   Widget build(BuildContext context) {
     final motion = ExtensionMotion.of(context);
     return ExtensionTopBar(
-      // Dense page header: 44 keeps the search row compact on phones.
-      toolbarHeight: 44,
+      // Keep the shared 52px top bar; the tab/search row is designed to fit it.
+      toolbarHeight: 52,
       title: (context) => _TopBarTitle(
         tab: _tab,
         searchOpen: _searchOpen,
@@ -244,7 +244,9 @@ class _PackageManagerScreenState extends State<PackageManagerScreen>
             builder: (context, open, child) => _TopBarIconAction(
               tooltip: open ? '关闭搜索' : '搜索（Ctrl+F）',
               onPressed: open ? _closeSearch : _openSearch,
-              icon: open ? OperitIcons.close_rounded : OperitIcons.search_rounded,
+              icon: open
+                  ? OperitIcons.close_rounded
+                  : OperitIcons.search_rounded,
             ),
           ),
           _TopBarIconAction(
@@ -859,9 +861,7 @@ class _SearchField extends StatelessWidget {
               maxLines: 1,
               textInputAction: TextInputAction.search,
               cursorColor: contentColor,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: contentColor,
-              ),
+              style: theme.textTheme.bodyMedium?.copyWith(color: contentColor),
               decoration: InputDecoration(
                 hintText: hintText,
                 hintStyle: theme.textTheme.bodyMedium?.copyWith(
