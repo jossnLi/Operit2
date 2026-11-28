@@ -88,8 +88,8 @@ class _DetachedChatWindowAppState extends State<DetachedChatWindowApp> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           leading: const SizedBox.shrink(),
-          leadingWidth: 48,
-          titleSpacing: 8,
+          leadingWidth: 16,
+          titleSpacing: 0,
           title: Text(widget.arguments.title),
         ),
         body: SizedBox.expand(child: _body()),
