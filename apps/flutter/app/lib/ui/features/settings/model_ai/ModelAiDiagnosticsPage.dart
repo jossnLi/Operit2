@@ -3,8 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:operit2/core/proxy/generated/CoreProxyClients.g.dart';
 import 'package:operit2/core/proxy/generated/CoreProxyModels.g.dart' as core;
-import 'package:operit2/ui/common/icons/operit_icons.dart';
+import 'package:operit2/ui/components/model_ai/ModelAiIcons.dart';
 import 'package:operit2/ui/components/model_ai/ModelAiSurfaces.dart';
+import 'package:operit2/ui/features/settings/model/ProviderLogo.dart';
 import 'package:operit2/ui/features/settings/model_ai/ModelAiHomeData.dart';
 
 /// Diagnostics for the active model binding and provider accounts.
@@ -67,7 +68,7 @@ class _ModelAiDiagnosticsPageState extends State<ModelAiDiagnosticsPage> {
       appBar: AppBar(
         title: const Text('连接诊断'),
         leading: IconButton(
-          icon: const Icon(OperitIcons.arrow_back_rounded),
+          icon: const Icon(ModelAiIcons.back),
           onPressed: () => Navigator.of(context).pop(),
         ),
         actions: <Widget>[
@@ -75,11 +76,18 @@ class _ModelAiDiagnosticsPageState extends State<ModelAiDiagnosticsPage> {
         ],
       ),
       body: ListView(
-        padding: const EdgeInsets.fromLTRB(24, 12, 24, 32),
+        padding: const EdgeInsets.fromLTRB(
+          ModelAiMetrics.pagePadding,
+          10,
+          ModelAiMetrics.pagePadding,
+          32,
+        ),
         children: <Widget>[
           Center(
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 840),
+              constraints: const BoxConstraints(
+                maxWidth: ModelAiMetrics.maxContentWidth,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
@@ -88,19 +96,25 @@ class _ModelAiDiagnosticsPageState extends State<ModelAiDiagnosticsPage> {
                     padding: EdgeInsets.zero,
                     child: Column(
                       children: <Widget>[
-                        _infoRow(
-                          context,
-                          '供应商',
-                          config?.providerName ??
+                        ModelAiRow(
+                          icon: ModelAiIcons.model,
+                          leading: ProviderLogo(
+                            providerTypeId: config?.apiProviderTypeId ?? '',
+                            fallbackName: config?.providerName ?? '未设置',
+                            size: 40,
+                            preserveBrandColor: true,
+                          ),
+                          title:
+                              config?.modelId ??
+                              (widget.data.chatBinding.modelId.isEmpty
+                                  ? '尚未设置模型'
+                                  : widget.data.chatBinding.modelId),
+                          subtitle:
+                              config?.providerName ??
                               (widget.data.chatBinding.providerId.isEmpty
-                                  ? '未设置'
+                                  ? '未设置供应商'
                                   : widget.data.chatBinding.providerId),
-                        ),
-                        _line(context),
-                        _infoRow(
-                          context,
-                          '模型',
-                          config?.modelId ?? widget.data.chatBinding.modelId,
+                          showChevron: false,
                         ),
                         _line(context),
                         _infoRow(context, '端点', config?.apiEndpoint ?? '未提供'),
@@ -113,7 +127,7 @@ class _ModelAiDiagnosticsPageState extends State<ModelAiDiagnosticsPage> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 22),
+                  const SizedBox(height: ModelAiMetrics.sectionGap),
                   Row(
                     children: <Widget>[
                       Expanded(
@@ -122,7 +136,7 @@ class _ModelAiDiagnosticsPageState extends State<ModelAiDiagnosticsPage> {
                           style: Theme.of(context).textTheme.titleSmall
                               ?.copyWith(
                                 color: palette.textSecondary,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.w700,
                               ),
                         ),
                       ),
@@ -136,15 +150,12 @@ class _ModelAiDiagnosticsPageState extends State<ModelAiDiagnosticsPage> {
                                   strokeWidth: 2,
                                 ),
                               )
-                            : const Icon(
-                                OperitIcons.play_arrow_rounded,
-                                size: 16,
-                              ),
+                            : const Icon(ModelAiIcons.runTest, size: 16),
                         label: Text(_testing ? '测试中' : '运行测试'),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 10),
                   if (_error != null)
                     ModelAiInlineError(message: _error!, onRetry: _test),
                   if (_report != null) _reportCard(context, _report!),
@@ -159,20 +170,27 @@ class _ModelAiDiagnosticsPageState extends State<ModelAiDiagnosticsPage> {
                         ),
                       ),
                     ),
-                  const SizedBox(height: 22),
+                  const SizedBox(height: ModelAiMetrics.sectionGap),
                   ModelAiSection(
                     title: '账号',
                     padding: EdgeInsets.zero,
                     child: Column(
                       children: <Widget>[
-                        for (final provider
-                            in widget.data.authProviders) ...<Widget>[
-                          _accountLine(context, provider),
-                          _line(context),
+                        for (
+                          var index = 0;
+                          index < widget.data.authProviders.length;
+                          index++
+                        ) ...<Widget>[
+                          if (index > 0) _line(context),
+                          _accountLine(
+                            context,
+                            widget.data.authProviders[index],
+                          ),
                         ],
+                        _line(context),
                         ModelAiNavRow(
                           label: '管理供应商与凭据',
-                          icon: OperitIcons.settings_outlined,
+                          icon: ModelAiIcons.settings,
                           onTap: widget.onOpenLegacy,
                         ),
                       ],
@@ -201,9 +219,7 @@ class _ModelAiDiagnosticsPageState extends State<ModelAiDiagnosticsPage> {
             child: Row(
               children: <Widget>[
                 Icon(
-                  report.success
-                      ? OperitIcons.check_circle_outline_rounded
-                      : OperitIcons.error_outline_rounded,
+                  report.success ? ModelAiIcons.success : ModelAiIcons.error,
                   color: report.success ? palette.success : palette.danger,
                   size: 18,
                 ),
@@ -224,9 +240,7 @@ class _ModelAiDiagnosticsPageState extends State<ModelAiDiagnosticsPage> {
             ListTile(
               dense: true,
               leading: Icon(
-                item.success
-                    ? OperitIcons.check_rounded
-                    : OperitIcons.close_rounded,
+                item.success ? ModelAiIcons.check : ModelAiIcons.close,
                 size: 16,
                 color: item.success ? palette.success : palette.danger,
               ),
@@ -246,9 +260,16 @@ class _ModelAiDiagnosticsPageState extends State<ModelAiDiagnosticsPage> {
     final account = widget.data.accounts[provider.providerTypeId.toUpperCase()];
     final signedIn = account?.signedIn ?? false;
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
       child: Row(
         children: <Widget>[
+          ProviderLogo(
+            providerTypeId: provider.providerTypeId,
+            fallbackName: provider.displayName,
+            size: 32,
+            preserveBrandColor: true,
+          ),
+          const SizedBox(width: 10),
           Expanded(
             child: Text(
               provider.displayName,

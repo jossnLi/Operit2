@@ -1,8 +1,8 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
-import 'package:operit2/ui/common/icons/operit_icons.dart';
 
+import 'ModelAiIcons.dart';
 import 'ModelAiSurfaces.dart';
 
 /// A masked credential field with the model-AI key treatment: key prefix,
@@ -113,7 +113,7 @@ class _ModelAiKeyFieldState extends State<ModelAiKeyField> {
           child: Row(
             children: <Widget>[
               Icon(
-                OperitIcons.key_outlined,
+                ModelAiIcons.apiKey,
                 size: 16,
                 color: _focused ? palette.accent : palette.textTertiary,
               ),
@@ -166,7 +166,7 @@ class _ModelAiKeyFieldState extends State<ModelAiKeyField> {
                     ? () => setState(() => _obscured = !_obscured)
                     : null,
                 icon: Icon(
-                  OperitIcons.visibility_outlined,
+                  ModelAiIcons.visibility,
                   size: 17,
                   color: _obscured ? palette.textTertiary : palette.accent,
                 ),

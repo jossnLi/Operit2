@@ -2,8 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:operit2/core/proxy/generated/CoreProxyClients.g.dart';
-import 'package:operit2/ui/common/icons/operit_icons.dart';
+import 'package:operit2/ui/components/model_ai/ModelAiIcons.dart';
 import 'package:operit2/ui/components/model_ai/ModelAiSurfaces.dart';
+import 'package:operit2/ui/features/settings/model/ProviderLogo.dart';
 import 'package:operit2/ui/features/settings/model_ai/ModelAiHomeData.dart';
 
 /// Model-independent generation and history preferences.
@@ -92,35 +93,49 @@ class _ModelAiPreferencesPageState extends State<ModelAiPreferencesPage> {
       appBar: AppBar(
         title: const Text('AI 参数'),
         leading: IconButton(
-          icon: const Icon(OperitIcons.arrow_back_rounded),
+          icon: const Icon(ModelAiIcons.back),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
       body: ListView(
-        padding: const EdgeInsets.fromLTRB(24, 12, 24, 32),
+        padding: const EdgeInsets.fromLTRB(
+          ModelAiMetrics.pagePadding,
+          10,
+          ModelAiMetrics.pagePadding,
+          32,
+        ),
         children: <Widget>[
           Center(
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 840),
+              constraints: const BoxConstraints(
+                maxWidth: ModelAiMetrics.maxContentWidth,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   ModelAiSection(
                     title: '对话模型',
+                    subtitle: '参数按模型保存',
                     padding: EdgeInsets.zero,
                     child: ModelAiRow(
-                      icon: OperitIcons.psychology_outlined,
+                      icon: ModelAiIcons.model,
+                      leading: ProviderLogo(
+                        providerTypeId: config?.apiProviderTypeId ?? '',
+                        fallbackName: config?.providerName ?? '未设置',
+                        size: 40,
+                        preserveBrandColor: true,
+                      ),
                       title: config?.modelId ?? widget.data.chatBinding.modelId,
                       subtitle: config?.providerName ?? '尚未设置',
                       tone: ModelAiIconTone.blue,
                       onTap: widget.onOpenLegacy,
                     ),
                   ),
-                  const SizedBox(height: 22),
+                  const SizedBox(height: ModelAiMetrics.sectionGap),
                   ModelAiSection(
                     title: '历史上下文',
                     subtitle: '限制图片和多模态消息回放到当前对话中的轮数',
-                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 10),
+                    padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
                     child: Column(
                       children: <Widget>[
                         _historySlider(
@@ -131,6 +146,7 @@ class _ModelAiPreferencesPageState extends State<ModelAiPreferencesPage> {
                           max: 20,
                           onChanged: (value) => _saveHistory(image: value),
                         ),
+                        const SizedBox(height: 6),
                         _historySlider(
                           context,
                           label: '媒体历史',
@@ -142,21 +158,25 @@ class _ModelAiPreferencesPageState extends State<ModelAiPreferencesPage> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 22),
+                  const SizedBox(height: ModelAiMetrics.sectionGap),
                   ModelAiSection(
                     title: '模型行为',
                     padding: EdgeInsets.zero,
                     child: Column(
                       children: <Widget>[
                         ModelAiRow(
-                          icon: OperitIcons.tune_outlined,
+                          icon: ModelAiIcons.preferences,
                           title: '采样参数',
                           subtitle: '温度、Top P 与最大输出',
                           onTap: widget.onOpenLegacy,
                         ),
-                        Divider(height: 1, indent: 50, color: palette.border),
+                        Divider(
+                          height: 1,
+                          indent: 64,
+                          color: palette.border.withValues(alpha: 0.5),
+                        ),
                         ModelAiRow(
-                          icon: OperitIcons.route_outlined,
+                          icon: ModelAiIcons.functionMapping,
                           title: '功能映射',
                           subtitle: '为标题、翻译、压缩等任务指定模型',
                           tone: ModelAiIconTone.amber,

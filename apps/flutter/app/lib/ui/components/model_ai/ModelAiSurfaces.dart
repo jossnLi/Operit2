@@ -1,13 +1,30 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
-import 'package:operit2/ui/common/icons/operit_icons.dart';
+
+import '../../theme/OperitGlassSurface.dart';
+import 'ModelAiIcons.dart';
+
+/// Shared rhythm for every model and AI surface.
+///
+/// Keeping these numbers here makes the module read as one product instead of
+/// six pages that each picked their own card inset.
+abstract final class ModelAiMetrics {
+  static const double pagePadding = 20;
+  static const double maxContentWidth = 880;
+  static const double sectionGap = 24;
+  static const double cardRadius = 20;
+  static const double cardPadding = 16;
+  static const double rowHorizontal = 14;
+  static const double rowVertical = 14;
+  static const double iconSize = 36;
+  static const double iconRadius = 11;
+}
 
 /// Resolved colors for the model and AI surfaces.
 ///
-/// The page uses the app's color scheme rather than hard-coded design tokens so
-/// custom themes keep working, while grouping, insets and status colors stay
-/// consistent with the high-fidelity specification.
+/// Surfaces intentionally come from the live [ColorScheme] so the module
+/// follows custom palettes, transparent-surface settings and both brightnesses.
 class ModelAiPalette {
   const ModelAiPalette({
     required this.background,
@@ -29,19 +46,21 @@ class ModelAiPalette {
     final dark = Theme.of(context).brightness == Brightness.dark;
     return ModelAiPalette(
       background: scheme.surface,
-      // Structural tones come from the live scheme so custom palettes win.
-      group: scheme.surfaceContainer,
-      inset: scheme.surfaceContainerHigh,
+      // One step above the page, so grouped cards have a readable edge in both
+      // themes without falling back to a hard-coded grey.
+      group: scheme.surfaceContainerHigh,
+      inset: scheme.surfaceContainerHighest,
       border: scheme.outlineVariant,
       text: scheme.onSurface,
       textSecondary: scheme.onSurfaceVariant,
-      textTertiary: scheme.onSurfaceVariant.withValues(alpha: 0.72),
+      textTertiary: scheme.onSurfaceVariant.withValues(alpha: 0.68),
       accent: scheme.primary,
       accentTint: scheme.primaryContainer,
-      // Material has no semantic success/warning role; keep those tokens here.
-      success: dark ? const Color(0xFF5CC98A) : const Color(0xFF11845B),
-      warning: dark ? const Color(0xFFE0A544) : const Color(0xFF9A6700),
-      danger: dark ? const Color(0xFFF0808E) : const Color(0xFFC0392B),
+      // Material has no semantic success/warning role; these stay functional
+      // colors while everything structural follows the configured scheme.
+      success: dark ? const Color(0xFF6ED79A) : const Color(0xFF11845B),
+      warning: dark ? const Color(0xFFE6B45B) : const Color(0xFF9A6700),
+      danger: scheme.error,
     );
   }
 
@@ -57,9 +76,15 @@ class ModelAiPalette {
   final Color success;
   final Color warning;
   final Color danger;
+
+  double get cardRadius => ModelAiMetrics.cardRadius;
 }
 
 /// A grouped settings card with an optional title and trailing action.
+///
+/// The card is rendered through [OperitGlassSurface] so the wallpaper and the
+/// "transparent surface" preference keep working instead of being covered by
+/// an opaque panel.
 class ModelAiSection extends StatelessWidget {
   const ModelAiSection({
     super.key,
@@ -67,7 +92,7 @@ class ModelAiSection extends StatelessWidget {
     this.subtitle,
     this.action,
     required this.child,
-    this.padding = const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+    this.padding = const EdgeInsets.all(ModelAiMetrics.cardPadding),
   });
 
   final String? title;
@@ -84,8 +109,9 @@ class ModelAiSection extends StatelessWidget {
       children: <Widget>[
         if (title != null)
           Padding(
-            padding: const EdgeInsets.fromLTRB(4, 0, 4, 8),
+            padding: const EdgeInsets.fromLTRB(2, 0, 2, 10),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Expanded(
                   child: Column(
@@ -95,30 +121,36 @@ class ModelAiSection extends StatelessWidget {
                         title!,
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
                           color: palette.textSecondary,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 0.1,
                         ),
                       ),
                       if (subtitle != null) ...<Widget>[
-                        const SizedBox(height: 2),
+                        const SizedBox(height: 3),
                         Text(
                           subtitle!,
                           style: Theme.of(context).textTheme.bodySmall
-                              ?.copyWith(color: palette.textTertiary),
+                              ?.copyWith(
+                                color: palette.textTertiary,
+                                height: 1.4,
+                              ),
                         ),
                       ],
                     ],
                   ),
                 ),
-                ?action,
+                if (action != null) ...<Widget>[
+                  const SizedBox(width: 8),
+                  action!,
+                ],
               ],
             ),
           ),
-        DecoratedBox(
-          decoration: BoxDecoration(
-            color: palette.group,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: palette.border.withValues(alpha: 0.7)),
-          ),
+        OperitGlassSurface(
+          color: palette.group,
+          borderRadius: BorderRadius.circular(ModelAiMetrics.cardRadius),
+          border: Border.all(color: palette.border.withValues(alpha: 0.52)),
+          layer: OperitGlassSurfaceLayer.card,
           child: Padding(padding: padding, child: child),
         ),
       ],
@@ -126,7 +158,7 @@ class ModelAiSection extends StatelessWidget {
   }
 }
 
-/// A single settings row with semantic icon tile, subtitle and trailing widget.
+/// A single settings row with an optional semantic icon tile or custom leading.
 class ModelAiRow extends StatelessWidget {
   const ModelAiRow({
     super.key,
@@ -139,6 +171,8 @@ class ModelAiRow extends StatelessWidget {
     this.tone = ModelAiIconTone.neutral,
     this.enabled = true,
     this.dense = false,
+    this.leading,
+    this.titleTrailing,
   });
 
   final IconData icon;
@@ -151,35 +185,56 @@ class ModelAiRow extends StatelessWidget {
   final bool enabled;
   final bool dense;
 
+  /// Replaces the icon tile with an official provider logo or another leading.
+  final Widget? leading;
+
+  /// Small widget kept on the title line, such as a "默认" badge.
+  final Widget? titleTrailing;
+
   @override
   Widget build(BuildContext context) {
     final palette = ModelAiPalette.of(context);
     final content = Padding(
-      padding: EdgeInsets.symmetric(horizontal: 4, vertical: dense ? 10 : 13),
+      padding: EdgeInsets.symmetric(
+        horizontal: ModelAiMetrics.rowHorizontal,
+        vertical: dense ? 10 : ModelAiMetrics.rowVertical,
+      ),
       child: Row(
         children: <Widget>[
-          ModelAiIconTile(icon: icon, tone: tone),
+          leading ?? ModelAiIconTile(icon: icon, tone: tone),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
-                  title,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: enabled ? palette.text : palette.textTertiary,
-                    fontWeight: FontWeight.w500,
-                  ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: enabled ? palette.text : palette.textTertiary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    if (titleTrailing != null) ...<Widget>[
+                      const SizedBox(width: 6),
+                      titleTrailing!,
+                    ],
+                  ],
                 ),
                 if (subtitle != null) ...<Widget>[
-                  const SizedBox(height: 2),
+                  const SizedBox(height: 3),
                   Text(
                     subtitle!,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: palette.textTertiary,
-                      height: 1.35,
+                      height: 1.38,
                     ),
                   ),
                 ],
@@ -192,11 +247,7 @@ class ModelAiRow extends StatelessWidget {
           ],
           if (showChevron && onTap != null) ...<Widget>[
             const SizedBox(width: 4),
-            Icon(
-              OperitIcons.chevron_right_rounded,
-              size: 18,
-              color: palette.textTertiary,
-            ),
+            Icon(ModelAiIcons.chevron, size: 18, color: palette.textTertiary),
           ],
         ],
       ),
@@ -205,7 +256,7 @@ class ModelAiRow extends StatelessWidget {
       return content;
     }
     return InkWell(
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(14),
       onTap: onTap,
       child: content,
     );
@@ -220,7 +271,7 @@ class ModelAiIconTile extends StatelessWidget {
     super.key,
     required this.icon,
     this.tone = ModelAiIconTone.neutral,
-    this.size = 34,
+    this.size = ModelAiMetrics.iconSize,
   });
 
   final IconData icon;
@@ -230,31 +281,23 @@ class ModelAiIconTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette = ModelAiPalette.of(context);
-    final (background, foreground) = switch (tone) {
-      ModelAiIconTone.blue => (palette.accentTint, palette.accent),
-      ModelAiIconTone.green => (
-        palette.success.withValues(alpha: 0.14),
-        palette.success,
-      ),
-      ModelAiIconTone.amber => (
-        palette.warning.withValues(alpha: 0.14),
-        palette.warning,
-      ),
-      ModelAiIconTone.red => (
-        palette.danger.withValues(alpha: 0.14),
-        palette.danger,
-      ),
-      ModelAiIconTone.neutral => (palette.inset, palette.textSecondary),
+    final foreground = switch (tone) {
+      ModelAiIconTone.blue => palette.accent,
+      ModelAiIconTone.green => palette.success,
+      ModelAiIconTone.amber => palette.warning,
+      ModelAiIconTone.red => palette.danger,
+      ModelAiIconTone.neutral => palette.textSecondary,
     };
     return Container(
       width: size,
       height: size,
       decoration: BoxDecoration(
-        color: background,
-        borderRadius: BorderRadius.circular(9),
+        color: palette.inset.withValues(alpha: 0.72),
+        borderRadius: BorderRadius.circular(ModelAiMetrics.iconRadius),
+        border: Border.all(color: palette.border.withValues(alpha: 0.42)),
       ),
       alignment: Alignment.center,
-      child: Icon(icon, size: size * 0.53, color: foreground),
+      child: Icon(icon, size: size * 0.5, color: foreground),
     );
   }
 }
@@ -279,19 +322,22 @@ class ModelAiStatusPill extends StatelessWidget {
     final palette = ModelAiPalette.of(context);
     final (background, foreground) = switch (tone) {
       ModelAiStatusTone.success => (
-        palette.success.withValues(alpha: 0.14),
+        palette.success.withValues(alpha: 0.13),
         palette.success,
       ),
       ModelAiStatusTone.warning => (
-        palette.warning.withValues(alpha: 0.14),
+        palette.warning.withValues(alpha: 0.13),
         palette.warning,
       ),
       ModelAiStatusTone.danger => (
-        palette.danger.withValues(alpha: 0.14),
+        palette.danger.withValues(alpha: 0.12),
         palette.danger,
       ),
       ModelAiStatusTone.accent => (palette.accentTint, palette.accent),
-      ModelAiStatusTone.neutral => (palette.inset, palette.textSecondary),
+      ModelAiStatusTone.neutral => (
+        palette.inset.withValues(alpha: 0.72),
+        palette.textSecondary,
+      ),
     };
     return Container(
       padding: EdgeInsets.symmetric(
@@ -337,17 +383,13 @@ class ModelAiInlineError extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: palette.danger.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: palette.danger.withValues(alpha: 0.25)),
+        color: palette.danger.withValues(alpha: 0.09),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: palette.danger.withValues(alpha: 0.22)),
       ),
       child: Row(
         children: <Widget>[
-          Icon(
-            OperitIcons.error_outline_rounded,
-            color: palette.danger,
-            size: 18,
-          ),
+          Icon(ModelAiIcons.error, color: palette.danger, size: 18),
           const SizedBox(width: 10),
           Expanded(
             child: Text(
@@ -360,6 +402,81 @@ class ModelAiInlineError extends StatelessWidget {
           ),
           if (onRetry != null)
             TextButton(onPressed: onRetry, child: const Text('重试')),
+        ],
+      ),
+    );
+  }
+}
+
+/// In-page destructive confirmation; keeps destructive actions out of dialogs.
+class ModelAiInlineConfirm extends StatelessWidget {
+  const ModelAiInlineConfirm({
+    super.key,
+    required this.title,
+    required this.message,
+    required this.onCancel,
+    required this.onConfirm,
+    this.confirmLabel = '确认',
+  });
+
+  final String title;
+  final String message;
+  final VoidCallback onCancel;
+  final VoidCallback onConfirm;
+  final String confirmLabel;
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = ModelAiPalette.of(context);
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: palette.danger.withValues(alpha: 0.07),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: palette.danger.withValues(alpha: 0.22)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Icon(ModelAiIcons.warning, size: 18, color: palette.danger),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  title,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: palette.danger,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          Text(
+            message,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: palette.textSecondary,
+              height: 1.45,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              TextButton(onPressed: onCancel, child: const Text('取消')),
+              const SizedBox(width: 6),
+              FilledButton.tonal(
+                onPressed: onConfirm,
+                style: FilledButton.styleFrom(
+                  backgroundColor: palette.danger.withValues(alpha: 0.14),
+                  foregroundColor: palette.danger,
+                ),
+                child: Text(confirmLabel),
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -386,31 +503,149 @@ class ModelAiNavRow extends StatelessWidget {
     final palette = ModelAiPalette.of(context);
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(10),
+      borderRadius: BorderRadius.circular(12),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
         child: Row(
           children: <Widget>[
             if (icon != null) ...<Widget>[
-              ModelAiIconTile(icon: icon!, tone: tone, size: 30),
+              ModelAiIconTile(icon: icon!, tone: tone, size: 32),
               const SizedBox(width: 12),
             ],
             Expanded(
               child: Text(
                 label,
-                style: Theme.of(
-                  context,
-                ).textTheme.bodySmall?.copyWith(color: palette.textTertiary),
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: palette.textTertiary,
+                  height: 1.4,
+                ),
               ),
             ),
-            Icon(
-              OperitIcons.chevron_right_rounded,
-              color: palette.textTertiary,
-              size: 16,
-            ),
+            Icon(ModelAiIcons.chevron, color: palette.textTertiary, size: 16),
           ],
         ),
       ),
+    );
+  }
+}
+
+/// A compact quick-action tile used by the overview grid.
+class ModelAiToolTile extends StatelessWidget {
+  const ModelAiToolTile({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    this.onTap,
+    this.tone = ModelAiIconTone.neutral,
+  });
+
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final VoidCallback? onTap;
+  final ModelAiIconTone tone;
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = ModelAiPalette.of(context);
+    return OperitGlassSurface(
+      color: palette.group,
+      borderRadius: BorderRadius.circular(18),
+      border: Border.all(color: palette.border.withValues(alpha: 0.48)),
+      layer: OperitGlassSurfaceLayer.card,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(18),
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(14, 14, 12, 12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  ModelAiIconTile(icon: icon, tone: tone, size: 34),
+                  const Spacer(),
+                  Icon(
+                    ModelAiIcons.chevron,
+                    size: 16,
+                    color: palette.textTertiary,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              Text(
+                title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: palette.text,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 3),
+              Text(
+                subtitle,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: palette.textTertiary,
+                  height: 1.35,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Small label + value block for metadata inside a page.
+class ModelAiMeta extends StatelessWidget {
+  const ModelAiMeta({
+    super.key,
+    required this.label,
+    required this.value,
+    this.icon,
+  });
+
+  final String label;
+  final String value;
+  final IconData? icon;
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = ModelAiPalette.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Row(
+          children: <Widget>[
+            if (icon != null) ...<Widget>[
+              Icon(icon, size: 13, color: palette.textTertiary),
+              const SizedBox(width: 4),
+            ],
+            Text(
+              label,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: palette.textTertiary,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 4),
+        Text(
+          value,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          style: Theme.of(
+            context,
+          ).textTheme.bodySmall?.copyWith(color: palette.text, height: 1.4),
+        ),
+      ],
     );
   }
 }

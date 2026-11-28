@@ -1,8 +1,8 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
-import 'package:operit2/ui/common/icons/operit_icons.dart';
 
+import 'ModelAiIcons.dart';
 import 'ModelAiSurfaces.dart';
 
 /// Three-or-more stage progress strip used by account authorization pages.
@@ -108,9 +108,9 @@ class ModelAiSteps extends StatelessWidget {
       ),
       alignment: Alignment.center,
       child: failed
-          ? Icon(OperitIcons.close_rounded, size: 12, color: foreground)
+          ? Icon(ModelAiIcons.close, size: 12, color: foreground)
           : done
-          ? Icon(OperitIcons.check_rounded, size: 12, color: foreground)
+          ? Icon(ModelAiIcons.check, size: 12, color: foreground)
           : Text(
               '${index + 1}',
               style: TextStyle(

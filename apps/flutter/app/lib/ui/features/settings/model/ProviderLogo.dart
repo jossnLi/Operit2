@@ -49,6 +49,38 @@ const Set<String> _coloredLogoProviderTypeIds = <String>{
   'INFINIAI',
 };
 
+/// Official primary colors for monochrome provider marks.
+///
+/// The bundled SVGs are single-path files without fills. Model and AI surfaces
+/// opt into these brand colors so DeepSeek stays blue and Claude stays orange
+/// instead of every logo inheriting `onSurface`.
+const Map<String, Color> providerLogoBrandColors = <String, Color>{
+  'ALIYUN': Color(0xFFFF6A00),
+  'ANTHROPIC': Color(0xFFD97757),
+  'ANTHROPIC_CLAUDE': Color(0xFFD97757),
+  'ANTHROPIC_GENERIC': Color(0xFFD97757),
+  'BAICHUAN': Color(0xFF1F6BFF),
+  'BAIDU': Color(0xFF2932E1),
+  'DEEPSEEK': Color(0xFF4D6BFE),
+  'DOUBAO': Color(0xFF2F6BFF),
+  'GEMINI_GENERIC': Color(0xFF4285F4),
+  'GOOGLE': Color(0xFF4285F4),
+  'MINIMAX': Color(0xFFE7355C),
+  'MISTRAL': Color(0xFFFF7000),
+  'MOONSHOT': Color(0xFF111111),
+  'OPENAI': Color(0xFF10A37F),
+  'OPENAI_CODEX': Color(0xFF10A37F),
+  'OPENAI_GENERIC': Color(0xFF10A37F),
+  'OPENAI_LOCAL': Color(0xFF10A37F),
+  'OPENAI_RESPONSES': Color(0xFF10A37F),
+  'OPENAI_RESPONSES_GENERIC': Color(0xFF10A37F),
+  'OPENROUTER': Color(0xFF6C5CE7),
+  'SILICONFLOW': Color(0xFF6C5CE7),
+  'XAI': Color(0xFF111111),
+  'XUNFEI': Color(0xFF1A6EFF),
+  'ZHIPU': Color(0xFF3859FF),
+};
+
 /// Renders a provider logo with an optional circular container and initial fallback.
 class ProviderLogo extends StatelessWidget {
   const ProviderLogo({
@@ -58,6 +90,7 @@ class ProviderLogo extends StatelessWidget {
     this.size = 42,
     this.contentScale = 0.62,
     this.showBackdrop = true,
+    this.preserveBrandColor = false,
   });
 
   final String providerTypeId;
@@ -66,17 +99,27 @@ class ProviderLogo extends StatelessWidget {
   final double contentScale;
   final bool showBackdrop;
 
+  /// Uses the official brand tint when one is declared.
+  ///
+  /// Off by default so dense lists that rely on a monochrome glyph language
+  /// keep their existing appearance.
+  final bool preserveBrandColor;
+
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final asset = providerLogoAssets[providerTypeId];
     final glyphSize = showBackdrop ? size * contentScale : size;
+    final brandColor = preserveBrandColor
+        ? _resolvedBrandColor(context, providerTypeId)
+        : null;
     final child = asset == null
         ? _ProviderLogoInitial(name: fallbackName, size: glyphSize)
         : _ProviderLogoAsset(
             asset: asset,
             providerTypeId: providerTypeId,
             size: glyphSize,
+            brandColor: brandColor,
           );
     if (!showBackdrop) {
       return SizedBox(
@@ -135,16 +178,20 @@ class _ProviderLogoAsset extends StatelessWidget {
     required this.asset,
     required this.providerTypeId,
     required this.size,
+    this.brandColor,
   });
 
   final String asset;
   final String providerTypeId;
   final double size;
+  final Color? brandColor;
 
   @override
   Widget build(BuildContext context) {
     final monochromeTint = _coloredLogoProviderTypeIds.contains(providerTypeId)
         ? null
+        : brandColor != null
+        ? ColorFilter.mode(brandColor!, BlendMode.srcIn)
         : ColorFilter.mode(
             Theme.of(context).colorScheme.onSurface,
             BlendMode.srcIn,
@@ -170,6 +217,20 @@ class _ProviderLogoAsset extends StatelessWidget {
         ? image
         : ColorFiltered(colorFilter: monochromeTint, child: image);
   }
+}
+
+/// Keeps dark brand marks readable in the dark theme without tinting them white
+/// for every surface that has not opted into brand colors.
+Color? _resolvedBrandColor(BuildContext context, String providerTypeId) {
+  final brand = providerLogoBrandColors[providerTypeId];
+  if (brand == null) {
+    return null;
+  }
+  final dark = Theme.of(context).brightness == Brightness.dark;
+  if (dark && brand.computeLuminance() < 0.2) {
+    return Theme.of(context).colorScheme.onSurface;
+  }
+  return brand;
 }
 
 class _ProviderLogoInitial extends StatelessWidget {

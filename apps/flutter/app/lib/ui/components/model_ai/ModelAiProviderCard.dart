@@ -1,9 +1,9 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
-import 'package:operit2/ui/common/icons/operit_icons.dart';
 import 'package:operit2/ui/features/settings/model/ProviderLogo.dart';
 
+import 'ModelAiIcons.dart';
 import 'ModelAiSurfaces.dart';
 
 /// Summary row for one configured provider.
@@ -37,7 +37,7 @@ class ModelAiProviderCard extends StatelessWidget {
         ? const ModelAiStatusPill(
             label: '需重新登录',
             tone: ModelAiStatusTone.danger,
-            icon: OperitIcons.error_outline_rounded,
+            icon: ModelAiIcons.error,
             compact: true,
           )
         : hasAccount
@@ -46,13 +46,13 @@ class ModelAiProviderCard extends StatelessWidget {
             tone: planEnabled
                 ? ModelAiStatusTone.success
                 : ModelAiStatusTone.accent,
-            icon: OperitIcons.check_rounded,
+            icon: ModelAiIcons.check,
             compact: true,
           )
         : const ModelAiStatusPill(
             label: 'API Key',
             tone: ModelAiStatusTone.neutral,
-            icon: OperitIcons.key_outlined,
+            icon: ModelAiIcons.apiKey,
             compact: true,
           );
 
@@ -60,14 +60,15 @@ class ModelAiProviderCard extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(14),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
         child: Row(
           children: <Widget>[
             ProviderLogo(
               providerTypeId: providerTypeId,
               fallbackName: name,
-              size: 40,
+              size: 42,
               showBackdrop: true,
+              preserveBrandColor: true,
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -121,11 +122,7 @@ class ModelAiProviderCard extends StatelessWidget {
                 ],
               ),
             ),
-            Icon(
-              OperitIcons.chevron_right_rounded,
-              size: 18,
-              color: palette.textTertiary,
-            ),
+            Icon(ModelAiIcons.chevron, size: 18, color: palette.textTertiary),
           ],
         ),
       ),

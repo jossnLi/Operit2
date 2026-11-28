@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:operit2/core/bridge/ProxyCoreRuntimeBridge.dart';
 import 'package:operit2/core/proxy/generated/CoreProxyClients.g.dart';
 import 'package:operit2/data/preferences/UserPreferencesManager.dart';
-import 'package:operit2/ui/common/icons/operit_icons.dart';
+import 'package:operit2/ui/components/model_ai/ModelAiIcons.dart';
 import 'package:operit2/ui/components/model_ai/ModelAiSurfaces.dart';
 import 'package:operit2/ui/features/settings/model/ModelSettingsPanel.dart';
 import 'package:operit2/ui/features/settings/model_ai/ModelAiHomePanel.dart';
@@ -64,7 +64,7 @@ class _ModelAiSettingsEntryState extends State<ModelAiSettingsEntry> {
           appBar: AppBar(
             title: const Text('高级设置（旧版）'),
             leading: IconButton(
-              icon: const Icon(OperitIcons.arrow_back_rounded),
+              icon: const Icon(ModelAiIcons.back),
               onPressed: () => Navigator.of(context).pop(),
             ),
           ),
@@ -112,11 +112,7 @@ class _LegacyPanelHost extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(20, 10, 12, 10),
             child: Row(
               children: <Widget>[
-                Icon(
-                  OperitIcons.info_outline_rounded,
-                  size: 17,
-                  color: palette.accent,
-                ),
+                Icon(ModelAiIcons.info, size: 17, color: palette.accent),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(

@@ -4,20 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:operit2/core/bridge/ProxyCoreRuntimeBridge.dart';
 import 'package:operit2/core/proxy/generated/CoreProxyClients.g.dart';
 import 'package:operit2/core/proxy/generated/CoreProxyModels.g.dart' as core;
-import 'package:operit2/ui/common/icons/operit_icons.dart';
+import 'package:operit2/ui/components/model_ai/ModelAiIcons.dart';
 import 'package:operit2/ui/components/model_ai/ModelAiProviderCard.dart';
 import 'package:operit2/ui/components/model_ai/ModelAiSurfaces.dart';
 import 'package:operit2/ui/features/settings/model/ProviderLogo.dart';
-import 'package:operit2/ui/features/settings/model/CodexLoginDialog.dart';
+import 'package:operit2/ui/features/settings/model_ai/ModelAiAccountsPage.dart';
 import 'package:operit2/ui/features/settings/model_ai/ModelAiDiagnosticsPage.dart';
 import 'package:operit2/ui/features/settings/model_ai/ModelAiFunctionMappingPage.dart';
 import 'package:operit2/ui/features/settings/model_ai/ModelAiHomeData.dart';
 import 'package:operit2/ui/features/settings/model_ai/ModelAiModelLibraryPage.dart';
 import 'package:operit2/ui/features/settings/model_ai/ModelAiPreferencesPage.dart';
 import 'package:operit2/ui/features/settings/model_ai/ModelAiProviderDetailPage.dart';
-import 'package:operit2/ui/features/settings/model_ai/ProviderAuthLoginDialog.dart';
+import 'package:operit2/ui/features/settings/model_ai/ModelAiProviderEditorPage.dart';
 
-/// High-fidelity home for the model and AI settings module.
+/// High-fidelity overview for the model and AI settings module.
 class ModelAiHomePanel extends StatefulWidget {
   const ModelAiHomePanel({
     super.key,
@@ -50,27 +50,6 @@ class _ModelAiHomePanelState extends State<ModelAiHomePanel> {
     setState(() {
       _future = loadModelAiHomeData(widget.clients);
     });
-  }
-
-  Future<void> _openAccountLogin(core.ProviderAuthProviderView provider) async {
-    if (provider.providerTypeId == 'OPENAI_CODEX') {
-      final result = await showCodexLoginDialog(
-        context: context,
-        clients: widget.clients,
-      );
-      if (result != null && mounted) {
-        _reload();
-      }
-      return;
-    }
-    final result = await showProviderAuthLoginDialog(
-      context: context,
-      clients: widget.clients,
-      provider: provider,
-    );
-    if (result != null && mounted) {
-      _reload();
-    }
   }
 
   Future<void> _openModelLibrary(ModelAiHomeData data) async {
@@ -126,6 +105,18 @@ class _ModelAiHomePanelState extends State<ModelAiHomePanel> {
     );
   }
 
+  Future<void> _openAccounts(ModelAiHomeData data) async {
+    await Navigator.of(context).push<void>(
+      MaterialPageRoute<void>(
+        builder: (context) =>
+            ModelAiAccountsPage(data: data, clients: widget.clients),
+      ),
+    );
+    if (mounted) {
+      _reload();
+    }
+  }
+
   Future<void> _openProvider(core.ProviderProfile provider) async {
     await Navigator.of(context).push<void>(
       MaterialPageRoute<void>(
@@ -138,6 +129,60 @@ class _ModelAiHomePanelState extends State<ModelAiHomePanel> {
     );
     if (mounted) {
       _reload();
+    }
+  }
+
+  Future<void> _createProvider(ModelAiHomeData data) async {
+    final catalog = await widget.clients.preferencesModelConfigManager
+        .getProviderCatalogEntries();
+    if (!mounted) {
+      return;
+    }
+    final result = await ModelAiProviderEditorPage.show(
+      context: context,
+      catalogEntries: catalog,
+      occupiedProviderNames: <String>{
+        for (final provider in data.providers) provider.name,
+      },
+      clients: widget.clients,
+    );
+    if (result == null || !mounted) {
+      return;
+    }
+    try {
+      final providerId = await widget.clients.preferencesModelConfigManager
+          .createProvider(
+            name: result.name,
+            providerTypeId: result.providerTypeId,
+            endpoint: result.endpoint,
+          );
+      final provider = await widget.clients.preferencesModelConfigManager
+          .getProviderProfile(providerId: providerId);
+      await widget.clients.preferencesModelConfigManager.updateProviderProfile(
+        provider: core.ProviderProfile(
+          id: provider.id,
+          name: result.name,
+          providerTypeId: result.providerTypeId,
+          providerType: core.ApiProviderType.fromJson(result.providerTypeId),
+          endpoint: result.endpoint,
+          apiKey: result.apiKey,
+          useMultipleApiKeys: result.useMultipleApiKeys,
+          apiKeyPool: result.apiKeyPool,
+          currentKeyIndex: 0,
+          keyRotationMode: provider.keyRotationMode,
+          customHeaders: result.customHeaders,
+          requestLimitPerMinute: result.requestLimitPerMinute,
+          maxConcurrentRequests: result.maxConcurrentRequests,
+          models: provider.models,
+        ),
+      );
+      _reload();
+    } catch (error) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('添加供应商失败：$error')));
+      }
     }
   }
 
@@ -164,147 +209,31 @@ class _ModelAiHomePanelState extends State<ModelAiHomePanel> {
   }
 
   Widget _buildContent(BuildContext context, ModelAiHomeData data) {
-    final palette = ModelAiPalette.of(context);
     return ListView(
-      padding: const EdgeInsets.fromLTRB(28, 8, 28, 32),
+      padding: const EdgeInsets.fromLTRB(
+        ModelAiMetrics.pagePadding,
+        10,
+        ModelAiMetrics.pagePadding,
+        32,
+      ),
       children: <Widget>[
         Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 920),
+            constraints: const BoxConstraints(
+              maxWidth: ModelAiMetrics.maxContentWidth,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Text(
-                      '总览',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: palette.textTertiary,
-                      ),
-                    ),
-                    const Spacer(),
-                    TextButton.icon(
-                      onPressed: widget.onOpenLegacy,
-                      icon: const Icon(OperitIcons.tune_outlined, size: 16),
-                      label: const Text('高级设置'),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 14),
-                _CurrentModelSection(
-                  data: data,
-                  onOpenLegacy: widget.onOpenLegacy,
-                ),
-                const SizedBox(height: 22),
-                ModelAiSection(
-                  title: '供应商',
-                  subtitle: '已配置的模型来源与账号状态',
-                  action: TextButton(
-                    onPressed: widget.onOpenLegacy,
-                    child: const Text('管理'),
-                  ),
-                  padding: EdgeInsets.zero,
-                  child: _buildProviderList(context, data),
-                ),
-                const SizedBox(height: 22),
-                if (data.authProviders.isNotEmpty) ...<Widget>[
-                  ModelAiSection(
-                    title: '账号授权',
-                    subtitle: '使用订阅账号登录，无需手动填写 API Key',
-                    padding: EdgeInsets.zero,
-                    child: Column(
-                      children: <Widget>[
-                        for (
-                          var index = 0;
-                          index < data.authProviders.length;
-                          index++
-                        ) ...<Widget>[
-                          if (index > 0) _divider(context),
-                          _buildAccountRow(
-                            context,
-                            data.authProviders[index],
-                            data.accounts[data
-                                .authProviders[index]
-                                .providerTypeId
-                                .toUpperCase()],
-                          ),
-                        ],
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 22),
-                ],
-                ModelAiSection(
-                  title: '模型工具',
-                  padding: EdgeInsets.zero,
-                  child: Column(
-                    children: <Widget>[
-                      ModelAiRow(
-                        icon: OperitIcons.inventory_2_outlined,
-                        title: '模型库',
-                        subtitle: '浏览可用模型、能力与价格',
-                        tone: ModelAiIconTone.blue,
-                        onTap: () => _openModelLibrary(data),
-                      ),
-                      _divider(context),
-                      ModelAiRow(
-                        icon: OperitIcons.tune_outlined,
-                        title: 'AI 参数',
-                        subtitle: '温度、思考等级与历史轮数',
-                        onTap: () => _openPreferences(data),
-                      ),
-                      _divider(context),
-                      ModelAiRow(
-                        icon: OperitIcons.route_outlined,
-                        title: '功能映射',
-                        subtitle: '为每个功能指定独立模型',
-                        tone: ModelAiIconTone.amber,
-                        onTap: () => _openFunctionMapping(data),
-                      ),
-                      _divider(context),
-                      ModelAiRow(
-                        icon: OperitIcons.build_outlined,
-                        title: '连接诊断',
-                        subtitle: '检查端点、凭据与最近错误',
-                        tone: ModelAiIconTone.green,
-                        onTap: () => _openDiagnostics(data),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 22),
-                ModelAiSection(
-                  padding: EdgeInsets.zero,
-                  child: Column(
-                    children: <Widget>[
-                      SwitchListTile.adaptive(
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 14,
-                          vertical: 2,
-                        ),
-                        title: Text(
-                          '使用新版界面',
-                          style: Theme.of(
-                            context,
-                          ).textTheme.bodyMedium?.copyWith(color: palette.text),
-                        ),
-                        subtitle: Text(
-                          '关闭后回到原有模型设置页',
-                          style: Theme.of(context).textTheme.bodySmall
-                              ?.copyWith(color: palette.textTertiary),
-                        ),
-                        value: widget.useV2,
-                        onChanged: widget.onUseV2Changed,
-                      ),
-                      _divider(context),
-                      ModelAiNavRow(
-                        label: '高级设置（旧版）：逐项编辑供应商、Key 与参数',
-                        icon: OperitIcons.settings_outlined,
-                        onTap: widget.onOpenLegacy,
-                      ),
-                    ],
-                  ),
-                ),
+                _currentModelCard(context, data),
+                const SizedBox(height: ModelAiMetrics.sectionGap),
+                _toolsGrid(context, data),
+                const SizedBox(height: ModelAiMetrics.sectionGap),
+                _providersSection(context, data),
+                const SizedBox(height: ModelAiMetrics.sectionGap),
+                _accountsSection(context, data),
+                const SizedBox(height: ModelAiMetrics.sectionGap),
+                _interfaceSection(context),
               ],
             ),
           ),
@@ -313,32 +242,194 @@ class _ModelAiHomePanelState extends State<ModelAiHomePanel> {
     );
   }
 
-  Widget _buildProviderList(BuildContext context, ModelAiHomeData data) {
-    if (data.providers.isEmpty) {
-      return ModelAiRow(
-        icon: OperitIcons.add_rounded,
-        title: '添加第一个供应商',
-        subtitle: '连接 OpenAI、Claude、Gemini 或兼容端点',
+  Widget _currentModelCard(BuildContext context, ModelAiHomeData data) {
+    final palette = ModelAiPalette.of(context);
+    final config = data.currentConfig;
+    final summary = data.currentSummary;
+    final modelName = config?.modelId ?? data.chatBinding.modelId;
+    final providerName = config?.providerName ?? '未选择供应商';
+    final providerTypeId = config?.apiProviderTypeId ?? '';
+    final configured = modelName.isNotEmpty;
+    return ModelAiSection(
+      title: '当前使用',
+      subtitle: '对话默认模型',
+      action: TextButton(
+        onPressed: widget.onOpenLegacy,
+        child: Text(configured ? '更换' : '设置'),
+      ),
+      padding: const EdgeInsets.all(18),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          ProviderLogo(
+            providerTypeId: providerTypeId,
+            fallbackName: providerName,
+            size: 56,
+            preserveBrandColor: true,
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  configured ? modelName : '尚未设置对话模型',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: palette.text,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: -0.2,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  configured ? providerName : '选择一个供应商和模型开始使用',
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodySmall?.copyWith(color: palette.textTertiary),
+                ),
+                const SizedBox(height: 11),
+                Wrap(
+                  spacing: 6,
+                  runSpacing: 6,
+                  children: <Widget>[
+                    if (summary != null) ...<Widget>[
+                      if (summary.capabilities.directImage)
+                        const ModelAiStatusPill(
+                          label: '视觉',
+                          tone: ModelAiStatusTone.accent,
+                          compact: true,
+                        ),
+                      if (summary.capabilities.toolCall)
+                        const ModelAiStatusPill(label: '工具', compact: true),
+                      if (summary.capabilities.directAudio)
+                        const ModelAiStatusPill(label: '语音', compact: true),
+                    ] else
+                      const ModelAiStatusPill(
+                        label: '需要配置',
+                        tone: ModelAiStatusTone.warning,
+                        compact: true,
+                      ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _toolsGrid(BuildContext context, ModelAiHomeData data) {
+    final tools = <Widget>[
+      ModelAiToolTile(
+        icon: ModelAiIcons.modelLibrary,
+        title: '模型库',
+        subtitle: '浏览模型、能力与上下文',
         tone: ModelAiIconTone.blue,
-        onTap: widget.onOpenLegacy,
+        onTap: () => _openModelLibrary(data),
+      ),
+      ModelAiToolTile(
+        icon: ModelAiIcons.preferences,
+        title: 'AI 参数',
+        subtitle: '历史轮数与模型行为',
+        onTap: () => _openPreferences(data),
+      ),
+      ModelAiToolTile(
+        icon: ModelAiIcons.functionMapping,
+        title: '功能映射',
+        subtitle: '为每个功能指定模型',
+        tone: ModelAiIconTone.amber,
+        onTap: () => _openFunctionMapping(data),
+      ),
+      ModelAiToolTile(
+        icon: ModelAiIcons.diagnostics,
+        title: '连接诊断',
+        subtitle: '端点、凭据与最近错误',
+        tone: ModelAiIconTone.green,
+        onTap: () => _openDiagnostics(data),
+      ),
+    ];
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.fromLTRB(2, 0, 2, 10),
+          child: Text(
+            '模型工具',
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+              color: ModelAiPalette.of(context).textSecondary,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ),
+        LayoutBuilder(
+          builder: (context, constraints) {
+            final columns = constraints.maxWidth >= 680 ? 4 : 2;
+            const gap = 12.0;
+            final itemWidth =
+                (constraints.maxWidth - gap * (columns - 1)) / columns;
+            return Wrap(
+              spacing: gap,
+              runSpacing: gap,
+              children: <Widget>[
+                for (final tool in tools)
+                  SizedBox(
+                    width: itemWidth,
+                    height: columns == 4 ? 116 : 118,
+                    child: tool,
+                  ),
+              ],
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _providersSection(BuildContext context, ModelAiHomeData data) {
+    final palette = ModelAiPalette.of(context);
+    if (data.providers.isEmpty) {
+      return ModelAiSection(
+        title: '供应商',
+        subtitle: '还没有配置模型来源',
+        child: ModelAiRow(
+          icon: ModelAiIcons.add,
+          title: '添加第一个供应商',
+          subtitle: '连接 OpenAI、Claude、Gemini 或兼容端点',
+          tone: ModelAiIconTone.blue,
+          onTap: () => _createProvider(data),
+        ),
       );
     }
     final chatProviderId = data.chatBinding.providerId;
-    return Column(
-      children: <Widget>[
-        for (var index = 0; index < data.providers.length; index++) ...<Widget>[
-          if (index > 0) _divider(context),
-          _providerCard(context, data, data.providers[index], chatProviderId),
+    return ModelAiSection(
+      title: '供应商',
+      subtitle: '${data.providers.length} 个来源 · ${data.summaries.length} 个模型',
+      action: TextButton(
+        onPressed: () => _createProvider(data),
+        child: const Text('添加'),
+      ),
+      padding: EdgeInsets.zero,
+      child: Column(
+        children: <Widget>[
+          for (
+            var index = 0;
+            index < data.providers.length;
+            index++
+          ) ...<Widget>[
+            if (index > 0)
+              Divider(
+                height: 1,
+                indent: 66,
+                endIndent: 16,
+                color: palette.border.withValues(alpha: 0.5),
+              ),
+            _providerCard(context, data, data.providers[index], chatProviderId),
+          ],
         ],
-        _divider(context),
-        ModelAiRow(
-          icon: OperitIcons.add_rounded,
-          title: '添加供应商',
-          subtitle: '账号授权或 API Key 接入',
-          tone: ModelAiIconTone.blue,
-          onTap: widget.onOpenLegacy,
-        ),
-      ],
+      ),
     );
   }
 
@@ -361,139 +452,100 @@ class _ModelAiHomePanelState extends State<ModelAiHomePanel> {
     );
   }
 
-  Widget _buildAccountRow(
-    BuildContext context,
-    core.ProviderAuthProviderView provider,
-    core.ProviderAuthStatus? status,
-  ) {
-    final signedIn = status?.signedIn ?? false;
-    final name = provider.displayName;
-    final detail = signedIn
-        ? (status!.email.isNotEmpty ? status.email : '账号已连接')
-        : provider.loginStyle == 'device_code'
-        ? '设备码登录'
-        : provider.loginStyle == 'manual_code'
-        ? '手动授权码'
-        : '浏览器授权';
-    return ModelAiRow(
-      icon: OperitIcons.key_outlined,
-      title: name,
-      subtitle: detail,
-      tone: signedIn ? ModelAiIconTone.green : ModelAiIconTone.blue,
-      showChevron: false,
-      trailing: signedIn
-          ? ModelAiStatusPill(
-              label: status!.planEnabled ? '订阅已启用' : '已连接',
-              tone: status.planEnabled
-                  ? ModelAiStatusTone.success
-                  : ModelAiStatusTone.neutral,
-              compact: true,
-            )
-          : TextButton(
-              onPressed: () => _openAccountLogin(provider),
-              child: const Text('登录'),
-            ),
-      onTap: signedIn ? null : () => _openAccountLogin(provider),
-    );
-  }
-
-  Widget _divider(BuildContext context) {
-    final palette = ModelAiPalette.of(context);
-    return Divider(
-      height: 1,
-      indent: 50,
-      endIndent: 16,
-      color: palette.border.withValues(alpha: 0.6),
-    );
-  }
-}
-
-class _CurrentModelSection extends StatelessWidget {
-  const _CurrentModelSection({required this.data, required this.onOpenLegacy});
-
-  final ModelAiHomeData data;
-  final VoidCallback onOpenLegacy;
-
-  @override
-  Widget build(BuildContext context) {
-    final palette = ModelAiPalette.of(context);
-    final config = data.currentConfig;
-    final summary = data.currentSummary;
-    final modelName = config?.modelId ?? data.chatBinding.modelId;
-    final providerName = config?.providerName ?? '未选择供应商';
-    final providerTypeId = config?.apiProviderTypeId ?? '';
+  Widget _accountsSection(BuildContext context, ModelAiHomeData data) {
+    final total = data.authProviders.length;
+    final connected = data.authProviders
+        .where(
+          (provider) =>
+              data.accounts[provider.providerTypeId.toUpperCase()]?.signedIn ==
+              true,
+        )
+        .length;
     return ModelAiSection(
-      title: '当前使用',
+      title: '账号授权',
+      subtitle: total == 0 ? '使用订阅账号登录' : '$connected / $total 已连接',
+      action: TextButton(
+        onPressed: () => _openAccounts(data),
+        child: const Text('管理'),
+      ),
       padding: EdgeInsets.zero,
-      child: InkWell(
-        onTap: onOpenLegacy,
-        borderRadius: BorderRadius.circular(16),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              ProviderLogo(
-                providerTypeId: providerTypeId,
-                fallbackName: providerName,
-                size: 46,
-              ),
-              const SizedBox(width: 14),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      modelName.isEmpty ? '尚未设置对话模型' : modelName,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: palette.text,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      providerName,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: palette.textTertiary,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Wrap(
-                      spacing: 6,
-                      runSpacing: 6,
-                      children: <Widget>[
-                        if (summary != null) ...<Widget>[
-                          if (summary.capabilities.directImage)
-                            const ModelAiStatusPill(
-                              label: '视觉',
-                              tone: ModelAiStatusTone.accent,
-                              compact: true,
-                            ),
-                          if (summary.capabilities.toolCall)
-                            const ModelAiStatusPill(label: '工具', compact: true),
-                          if (summary.capabilities.directAudio)
-                            const ModelAiStatusPill(label: '语音', compact: true),
-                        ] else
-                          const ModelAiStatusPill(
-                            label: '需要配置',
-                            tone: ModelAiStatusTone.warning,
-                            compact: true,
-                          ),
-                      ],
-                    ),
-                  ],
+      child: ModelAiRow(
+        icon: ModelAiIcons.account,
+        leading: _accountStack(context, data),
+        title: '订阅账号',
+        subtitle: total == 0 ? '暂无可授权供应商' : '凭据只保存在本机',
+        onTap: () => _openAccounts(data),
+      ),
+    );
+  }
+
+  Widget _accountStack(BuildContext context, ModelAiHomeData data) {
+    final providers = data.authProviders.take(3).toList(growable: false);
+    if (providers.isEmpty) {
+      return const ModelAiIconTile(
+        icon: ModelAiIcons.account,
+        tone: ModelAiIconTone.blue,
+      );
+    }
+    final palette = ModelAiPalette.of(context);
+    return SizedBox(
+      width: 34 + (providers.length - 1) * 16,
+      height: 36,
+      child: Stack(
+        children: <Widget>[
+          for (var index = 0; index < providers.length; index++)
+            Positioned(
+              left: index * 16,
+              child: Container(
+                width: 34,
+                height: 34,
+                decoration: BoxDecoration(
+                  color: palette.background,
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: palette.border.withValues(alpha: 0.6),
+                  ),
+                ),
+                alignment: Alignment.center,
+                child: ProviderLogo(
+                  providerTypeId: providers[index].providerTypeId,
+                  fallbackName: providers[index].displayName,
+                  size: 28,
+                  preserveBrandColor: true,
                 ),
               ),
-              const SizedBox(width: 10),
-              TextButton(
-                onPressed: onOpenLegacy,
-                child: Text(modelName.isEmpty ? '设置' : '更换'),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _interfaceSection(BuildContext context) {
+    final palette = ModelAiPalette.of(context);
+    return ModelAiSection(
+      title: '界面与高级',
+      padding: EdgeInsets.zero,
+      child: Column(
+        children: <Widget>[
+          SwitchListTile.adaptive(
+            contentPadding: const EdgeInsets.fromLTRB(14, 2, 8, 2),
+            title: Text(
+              '使用新版界面',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: palette.text,
+                fontWeight: FontWeight.w600,
               ),
-            ],
+            ),
+            subtitle: Text(
+              '关闭后回到原始模型设置页',
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(color: palette.textTertiary),
+            ),
+            value: widget.useV2,
+            onChanged: widget.onUseV2Changed,
           ),
-        ),
+        ],
       ),
     );
   }
