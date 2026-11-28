@@ -450,7 +450,11 @@ class _TtsProviderSectionState extends State<TtsProviderSection> {
           return const Center(child: M3LoadingIndicator());
         }
         if (snapshot.hasError) {
-          return Center(child: Text('语音配置加载失败：${snapshot.error}'));
+          return _VoiceSectionError(
+            title: '语音合成配置加载失败',
+            message: '${snapshot.error}',
+            onRetry: _reload,
+          );
         }
         final data = snapshot.data!;
         final currentConfigId = _currentTtsConfigId;
@@ -658,7 +662,11 @@ class _SttProviderSectionState extends State<SttProviderSection> {
           return const Center(child: M3LoadingIndicator());
         }
         if (snapshot.hasError) {
-          return Center(child: Text('语音配置加载失败：${snapshot.error}'));
+          return _VoiceSectionError(
+            title: '语音识别配置加载失败',
+            message: '${snapshot.error}',
+            onRetry: _reload,
+          );
         }
         final data = snapshot.data!;
         return _SectionCard(

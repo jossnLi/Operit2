@@ -739,3 +739,66 @@ class _VoiceCapability extends StatelessWidget {
     );
   }
 }
+
+class _VoiceSectionError extends StatelessWidget {
+  const _VoiceSectionError({
+    required this.title,
+    required this.message,
+    required this.onRetry,
+  });
+
+  final String title;
+  final String message;
+  final VoidCallback onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 24),
+      child: OperitGlassSurface(
+        color: scheme.error.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: scheme.error.withValues(alpha: 0.18)),
+        layer: OperitGlassSurfaceLayer.card,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 14),
+          child: Column(
+            children: <Widget>[
+              Icon(
+                OperitIcons.error_outline_rounded,
+                size: 24,
+                color: scheme.error,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                title,
+                textAlign: TextAlign.center,
+                style: Theme.of(
+                  context,
+                ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                message,
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: scheme.onSurfaceVariant,
+                  height: 1.4,
+                ),
+              ),
+              const SizedBox(height: 10),
+              TextButton.icon(
+                onPressed: onRetry,
+                icon: const Icon(OperitIcons.refresh_rounded, size: 17),
+                label: const Text('重新加载'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

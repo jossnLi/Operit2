@@ -1027,6 +1027,9 @@ class _ModelAiProviderEditorPageState extends State<ModelAiProviderEditorPage> {
           color: palette.textTertiary,
           height: 1.4,
         ),
+        errorStyle: Theme.of(
+          context,
+        ).textTheme.labelSmall?.copyWith(color: palette.danger, height: 1.4),
         filled: true,
         fillColor: palette.inset.withValues(alpha: 0.55),
         contentPadding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
