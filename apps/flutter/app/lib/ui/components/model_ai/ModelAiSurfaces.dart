@@ -29,14 +29,16 @@ class ModelAiPalette {
     final dark = Theme.of(context).brightness == Brightness.dark;
     return ModelAiPalette(
       background: scheme.surface,
-      group: dark ? const Color(0xFF18181A) : scheme.surfaceContainerLow,
-      inset: dark ? const Color(0xFF202023) : scheme.surfaceContainerHighest,
-      border: dark ? const Color(0xFF2A2B2E) : scheme.outlineVariant,
+      // Structural tones come from the live scheme so custom palettes win.
+      group: scheme.surfaceContainer,
+      inset: scheme.surfaceContainerHigh,
+      border: scheme.outlineVariant,
       text: scheme.onSurface,
-      textSecondary: dark ? const Color(0xFFA0A1A7) : scheme.onSurfaceVariant,
-      textTertiary: dark ? const Color(0xFF87888F) : scheme.onSurfaceVariant,
+      textSecondary: scheme.onSurfaceVariant,
+      textTertiary: scheme.onSurfaceVariant.withValues(alpha: 0.72),
       accent: scheme.primary,
-      accentTint: dark ? const Color(0xFF182339) : scheme.primaryContainer,
+      accentTint: scheme.primaryContainer,
+      // Material has no semantic success/warning role; keep those tokens here.
       success: dark ? const Color(0xFF5CC98A) : const Color(0xFF11845B),
       warning: dark ? const Color(0xFFE0A544) : const Color(0xFF9A6700),
       danger: dark ? const Color(0xFFF0808E) : const Color(0xFFC0392B),
