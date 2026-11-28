@@ -16,6 +16,7 @@ import '../screens/OperitScreens.dart';
 import 'TopBarTitleText.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
+
 class AppContent extends StatefulWidget {
   /// Creates a page host whose cached screens retain their transition state.
   const AppContent({
@@ -311,9 +312,8 @@ class _AppContentState extends State<AppContent> {
                   contentForeground: appBarContentColor,
                   topPadding: topPadding,
                   flipNavigationIcon: shouldFlipNavigationIcon,
-                  // 根页面（侧边栏进入、没有返回箭头）标题居中到屏幕中线；
-                  // 可返回的页面仍贴箭头，保持“标题与返回同排”的层级感。
-                  centerTitle: !widget.canGoBack,
+                  // 所有页面共用同一顶栏骨架：导航图标在左，标题紧随其后左对齐。
+                  centerTitle: false,
                   actions: <Widget>[
                     if (actions != null) ...actions(context),
                     for (final entry in widget.appBarEntries)
