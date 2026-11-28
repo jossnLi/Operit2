@@ -1,5 +1,7 @@
 // ignore_for_file: file_names
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:operit2/core/proxy/generated/CoreProxyClients.g.dart';
@@ -96,6 +98,7 @@ class _ModelAiProviderEditorPageState extends State<ModelAiProviderEditorPage> {
   late bool _useKeyPool;
   late List<core.ApiKeyInfo> _keyPool;
   bool _advancedOpen = false;
+  bool _showValidation = false;
   bool _balanceLoading = false;
   ProviderBalanceInfo? _balanceInfo;
   bool _authLoading = false;
@@ -284,11 +287,13 @@ class _ModelAiProviderEditorPageState extends State<ModelAiProviderEditorPage> {
 
   void _save() {
     if (_providerTypeId == null) {
+      setState(() => _showValidation = true);
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(const SnackBar(content: Text('请先选择供应商类型')));
       return;
     }
+    setState(() => _showValidation = true);
     final formValid = _formKey.currentState?.validate() ?? false;
     if (!formValid) {
       return;
@@ -323,11 +328,6 @@ class _ModelAiProviderEditorPageState extends State<ModelAiProviderEditorPage> {
     final editing = widget.provider != null;
     return ModelAiPageScaffold(
       title: editing ? '编辑供应商' : '添加供应商',
-      leading: IconButton(
-        tooltip: '关闭',
-        onPressed: () => Navigator.of(context).pop(),
-        icon: const Icon(ModelAiIcons.close),
-      ),
       actions: <Widget>[TextButton(onPressed: _save, child: const Text('保存'))],
       bottomNavigationBar: ModelAiBottomBar(
         hint: editing ? '保存后会立即应用新的连接参数；模型配置不会丢失。' : '凭据只保存在本机，添加后可继续管理模型。',
@@ -344,7 +344,9 @@ class _ModelAiProviderEditorPageState extends State<ModelAiProviderEditorPage> {
             constraints: const BoxConstraints(maxWidth: 760),
             child: Form(
               key: _formKey,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
+              autovalidateMode: _showValidation
+                  ? AutovalidateMode.onUserInteraction
+                  : AutovalidateMode.disabled,
               child: ListView(
                 keyboardDismissBehavior:
                     ScrollViewKeyboardDismissBehavior.onDrag,
@@ -700,48 +702,52 @@ class _ModelAiProviderEditorPageState extends State<ModelAiProviderEditorPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: <Widget>[
+                            _advancedLabel(
+                              context,
+                              title: '自定义请求头',
+                              subtitle: '可选 · JSON 对象',
+                            ),
+                            const SizedBox(height: 8),
                             _field(
                               context,
                               controller: _headersController,
-                              label: '自定义请求头',
+                              label: '请求头',
                               hint: '{"X-Org": "operit"}',
-                              maxLines: 4,
+                              maxLines: 3,
+                              helperText: '留空表示不添加；格式错误会在保存时提示。',
+                              monospace: true,
                               validator: _jsonValidator,
                             ),
-                            const SizedBox(height: 14),
-                            Row(
-                              children: <Widget>[
-                                Expanded(
-                                  child: _field(
-                                    context,
-                                    controller: _requestLimitController,
-                                    label: '每分钟请求上限',
-                                    hint: '0',
-                                    keyboardType: TextInputType.number,
-                                    validator: _nonNegativeIntValidator,
-                                    inputFormatters: <TextInputFormatter>[
-                                      FilteringTextInputFormatter.digitsOnly,
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: _field(
-                                    context,
-                                    controller: _concurrencyController,
-                                    label: '最大并发',
-                                    hint: '1',
-                                    keyboardType: TextInputType.number,
-                                    validator: _positiveIntValidator,
-                                    inputFormatters: <TextInputFormatter>[
-                                      FilteringTextInputFormatter.digitsOnly,
-                                    ],
-                                  ),
-                                ),
-                              ],
+                            const SizedBox(height: 18),
+                            _advancedLabel(
+                              context,
+                              title: '请求限制',
+                              subtitle: '避免触发供应商的频率限制',
+                            ),
+                            const SizedBox(height: 10),
+                            _limitRow(
+                              context,
+                              label: '每分钟请求上限',
+                              description: '0 表示不限制',
+                              controller: _requestLimitController,
+                              min: 0,
+                              max: 600,
+                              step: 10,
+                              suffix: '次/分',
+                            ),
+                            const SizedBox(height: 10),
+                            _limitRow(
+                              context,
+                              label: '最大并发',
+                              description: '同时进行的请求数',
+                              controller: _concurrencyController,
+                              min: 1,
+                              max: 16,
+                              step: 1,
+                              suffix: '个',
                             ),
                             if (!_isCodex && !_isLocal) ...<Widget>[
-                              const SizedBox(height: 14),
+                              const SizedBox(height: 18),
                               ApiKeyPoolEditor(
                                 singleKey: _apiKeyController.text,
                                 onResetHealth: widget.provider == null
@@ -854,6 +860,139 @@ class _ModelAiProviderEditorPageState extends State<ModelAiProviderEditorPage> {
     );
   }
 
+  Widget _advancedLabel(
+    BuildContext context, {
+    required String title,
+    required String subtitle,
+  }) {
+    final palette = ModelAiPalette.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          title,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            color: palette.text,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: 2),
+        Text(
+          subtitle,
+          style: Theme.of(context).textTheme.labelSmall?.copyWith(
+            color: palette.textTertiary,
+            height: 1.4,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _limitRow(
+    BuildContext context, {
+    required String label,
+    required String description,
+    required TextEditingController controller,
+    required int min,
+    required int max,
+    required int step,
+    required String suffix,
+  }) {
+    final palette = ModelAiPalette.of(context);
+    final value = int.tryParse(controller.text.trim()) ?? min;
+    final isUnlimited = min == 0 && value == 0;
+    void apply(int next) {
+      controller.text = next.clamp(min, max).toString();
+      setState(() {});
+    }
+
+    Widget stepButton(IconData icon, VoidCallback? onPressed) {
+      return IconButton(
+        onPressed: onPressed,
+        icon: Icon(icon, size: 17),
+        color: palette.textSecondary,
+        disabledColor: palette.textTertiary.withValues(alpha: 0.35),
+        padding: EdgeInsets.zero,
+        visualDensity: VisualDensity.compact,
+        constraints: const BoxConstraints.tightFor(width: 34, height: 36),
+      );
+    }
+
+    return Container(
+      padding: const EdgeInsets.fromLTRB(12, 9, 8, 9),
+      decoration: BoxDecoration(
+        color: palette.inset.withValues(alpha: 0.38),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: palette.border.withValues(alpha: 0.45)),
+      ),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  label,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: palette.text,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  description,
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: palette.textTertiary,
+                    height: 1.35,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 8),
+          Container(
+            height: 36,
+            decoration: BoxDecoration(
+              color: palette.group.withValues(alpha: 0.5),
+              borderRadius: BorderRadius.circular(9),
+              border: Border.all(color: palette.border.withValues(alpha: 0.45)),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                stepButton(
+                  Icons.remove_rounded,
+                  isUnlimited || value <= min
+                      ? null
+                      : () => apply(value - step),
+                ),
+                SizedBox(
+                  width: 58,
+                  child: Text(
+                    isUnlimited ? '不限' : '$value$suffix',
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                      color: palette.text,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+                stepButton(
+                  ModelAiIcons.add,
+                  value >= max
+                      ? null
+                      : () => apply(isUnlimited ? step : value + step),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _field(
     BuildContext context, {
     required TextEditingController controller,
@@ -864,6 +1003,8 @@ class _ModelAiProviderEditorPageState extends State<ModelAiProviderEditorPage> {
     TextInputType? keyboardType,
     String? Function(String?)? validator,
     List<TextInputFormatter>? inputFormatters,
+    String? helperText,
+    bool monospace = false,
   }) {
     final palette = ModelAiPalette.of(context);
     return TextFormField(
@@ -873,12 +1014,19 @@ class _ModelAiProviderEditorPageState extends State<ModelAiProviderEditorPage> {
       maxLines: maxLines,
       inputFormatters: inputFormatters,
       validator: validator,
-      style: Theme.of(
-        context,
-      ).textTheme.bodySmall?.copyWith(color: palette.text, height: 1.4),
+      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+        color: palette.text,
+        height: 1.4,
+        fontFamily: monospace ? 'monospace' : null,
+      ),
       decoration: InputDecoration(
         labelText: label,
         hintText: hint,
+        helperText: helperText,
+        helperStyle: Theme.of(context).textTheme.labelSmall?.copyWith(
+          color: palette.textTertiary,
+          height: 1.4,
+        ),
         filled: true,
         fillColor: palette.inset.withValues(alpha: 0.55),
         contentPadding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
@@ -932,29 +1080,13 @@ class _ModelAiProviderEditorPageState extends State<ModelAiProviderEditorPage> {
       return null;
     }
     try {
-      final decoded = text.startsWith('{') ? text : '{$text}';
-      if (decoded.contains(':')) {
-        return null;
+      final decoded = jsonDecode(text.startsWith('{') ? text : '{$text}');
+      if (decoded is! Map) {
+        return '请求头需要是 JSON 对象';
       }
+      return null;
     } catch (_) {
       return '请求头格式不正确';
     }
-    return '请求头格式不正确';
-  }
-
-  String? _nonNegativeIntValidator(String? value) {
-    final parsed = int.tryParse(value?.trim() ?? '');
-    if (parsed == null || parsed < 0) {
-      return '请输入 0 或正整数';
-    }
-    return null;
-  }
-
-  String? _positiveIntValidator(String? value) {
-    final parsed = int.tryParse(value?.trim() ?? '');
-    if (parsed == null || parsed < 1) {
-      return '请输入大于 0 的整数';
-    }
-    return null;
   }
 }

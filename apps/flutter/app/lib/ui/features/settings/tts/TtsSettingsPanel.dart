@@ -13,7 +13,6 @@ import '../../../theme/OperitFormStyles.dart';
 import '../../../theme/OperitGlassSurface.dart';
 import '../../chat/tts/TtsPlaybackController.dart';
 import '../components/ApiKeyTextField.dart';
-import '../components/SettingsControlStyles.dart';
 import '../model/ProviderTypePicker.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
@@ -459,11 +458,12 @@ class _TtsProviderSectionState extends State<TtsProviderSection> {
         _initializeProviderExpansion(groups, currentConfigId);
         return _SectionCard(
           title: 'TTS 供应商',
+          subtitle: '${groups.length} 个供应商 · ${data.configs.length} 个音色',
           icon: OperitIcons.record_voice_over_outlined,
-          initiallyExpanded: widget.initiallyExpanded,
-          action: SettingsSectionAddButton(
-            tooltip: '添加 TTS 供应商',
+          action: TextButton.icon(
             onPressed: () => _createProviderConfig(data.providerCatalogEntries),
+            icon: const Icon(OperitIcons.add_rounded, size: 18),
+            label: const Text('添加'),
           ),
           children: <Widget>[
             _TtsProviderManager(
@@ -663,12 +663,13 @@ class _SttProviderSectionState extends State<SttProviderSection> {
         final data = snapshot.data!;
         return _SectionCard(
           title: 'STT 供应商',
+          subtitle: '${data.sttConfigs.length} 个识别配置 · 用于语音输入与转写',
           icon: OperitIcons.mic_none_rounded,
-          initiallyExpanded: widget.initiallyExpanded,
-          action: SettingsSectionAddButton(
-            tooltip: '添加 STT 供应商',
+          action: TextButton.icon(
             onPressed: () =>
                 _createSttProviderConfig(data.sttProviderCatalogEntries),
+            icon: const Icon(OperitIcons.add_rounded, size: 18),
+            label: const Text('添加'),
           ),
           children: <Widget>[
             _SttProviderManager(
@@ -700,8 +701,9 @@ class TtsSettingsPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: const EdgeInsets.fromLTRB(16, 12, 16, 20),
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 28),
       children: <Widget>[
+        const _VoiceHero(),
         TtsProviderSection(clients: clients, initiallyExpanded: true),
         SttProviderSection(clients: clients, initiallyExpanded: true),
       ],

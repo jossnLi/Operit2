@@ -112,7 +112,15 @@ class ModelAiPageScaffold extends StatelessWidget {
         surfaceTintColor: Colors.transparent,
         elevation: 0,
         scrolledUnderElevation: 0,
+        toolbarHeight: 52,
         titleSpacing: 0,
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(0.5),
+          child: Container(
+            height: 0.5,
+            color: palette.border.withValues(alpha: 0.32),
+          ),
+        ),
         leading:
             leading ??
             IconButton(

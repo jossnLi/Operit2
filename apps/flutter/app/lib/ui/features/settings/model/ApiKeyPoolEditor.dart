@@ -7,6 +7,7 @@ import '../../../../l10n/generated/app_localizations.dart';
 import '../components/ApiKeyTextField.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
+
 /// Edits a provider's draft key pool without writing application preferences.
 class ApiKeyPoolEditor extends StatefulWidget {
   /// Creates the pool controls and an optional explicit credential probe.
@@ -240,60 +241,119 @@ class _ApiKeyPoolEditorState extends State<ApiKeyPoolEditor> {
       l10n.settingsModelPoolUnavailable,
   };
 
-  /// Builds compact controls that also fit the mobile provider dialog.
+  /// Builds the pool controls with a centered empty state and a compact key list.
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final isEmpty = widget.entries.isEmpty;
+
+    final actions = <Widget>[
+      if (widget.singleKey.trim().isNotEmpty &&
+          !widget.entries.any(
+            (entry) => entry.key.trim() == widget.singleKey.trim(),
+          ))
+        TextButton(
+          onPressed: _testing
+              ? null
+              : () => widget.onChanged([
+                  ...widget.entries,
+                  core.ApiKeyInfo(
+                    id: _newId(),
+                    key: widget.singleKey.trim(),
+                    name: l10n.settingsModelApiKey,
+                    isEnabled: true,
+                    availabilityStatus: core.ApiKeyAvailabilityStatus.untested,
+                    usageCount: 0,
+                    lastUsed: 0,
+                    errorCount: 0,
+                  ),
+                ]),
+          child: Text(l10n.settingsModelPoolAddSingle),
+        ),
+      FilledButton.tonalIcon(
+        onPressed: _testing ? null : _edit,
+        icon: const Icon(OperitIcons.add_rounded, size: 18),
+        label: Text(l10n.settingsModelAddApiKey),
+      ),
+      if (!isEmpty)
+        TextButton(
+          onPressed: _testing ? null : _resetHealth,
+          child: Text(l10n.settingsModelPoolClearMarks),
+        ),
+      if (!isEmpty && widget.onTestEntry != null)
+        TextButton(
+          onPressed: _testing ? () => setState(() => _pause = true) : _test,
+          child: Text(_testing ? l10n.pause : l10n.settingsModelPoolTest),
+        ),
+    ];
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
-      child: InputDecorator(
-        decoration: const InputDecoration(
-          contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
+        decoration: BoxDecoration(
+          color: scheme.surfaceContainerHighest.withValues(alpha: 0.18),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: scheme.outlineVariant.withValues(alpha: 0.22),
+          ),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SwitchListTile(
-              key: const ValueKey('api-key-pool-toggle'),
-              contentPadding: EdgeInsets.zero,
-              title: Text(
-                l10n.settingsModelApiKeyPool,
-                style: theme.textTheme.bodyMedium,
-              ),
-              subtitle: Text(
-                l10n.settingsModelApiKeyPoolDescription,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
+          children: <Widget>[
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  width: 34,
+                  height: 34,
+                  decoration: BoxDecoration(
+                    color: scheme.primary.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Icon(
+                    OperitIcons.playlist_add_rounded,
+                    size: 18,
+                    color: scheme.primary,
+                  ),
                 ),
-              ),
-              value: widget.enabled,
-              onChanged: _testing ? null : widget.onEnabledChanged,
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        l10n.settingsModelApiKeyPool,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        l10n.settingsModelApiKeyPoolDescription,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: scheme.onSurfaceVariant,
+                          height: 1.35,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Transform.scale(
+                  scale: 0.88,
+                  child: Switch(
+                    key: const ValueKey('api-key-pool-toggle'),
+                    value: widget.enabled,
+                    onChanged: _testing ? null : widget.onEnabledChanged,
+                  ),
+                ),
+              ],
             ),
-            if (widget.enabled) ...[
-              if (widget.singleKey.trim().isNotEmpty &&
-                  !widget.entries.any(
-                    (entry) => entry.key.trim() == widget.singleKey.trim(),
-                  ))
-                TextButton(
-                  onPressed: _testing
-                      ? null
-                      : () => widget.onChanged([
-                          ...widget.entries,
-                          core.ApiKeyInfo(
-                            id: _newId(),
-                            key: widget.singleKey.trim(),
-                            name: l10n.settingsModelApiKey,
-                            isEnabled: true,
-                            availabilityStatus:
-                                core.ApiKeyAvailabilityStatus.untested,
-                            usageCount: 0,
-                            lastUsed: 0,
-                            errorCount: 0,
-                          ),
-                        ]),
-                  child: Text(l10n.settingsModelPoolAddSingle),
-                ),
+            if (widget.enabled) ...<Widget>[
+              const SizedBox(height: 12),
               FormField<bool>(
                 validator: (_) {
                   final enabled = widget.entries.where(
@@ -309,117 +369,179 @@ class _ApiKeyPoolEditorState extends State<ApiKeyPoolEditor> {
                 },
                 builder: (field) => Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    if (widget.entries.isEmpty)
-                      Text(l10n.settingsModelApiKeyPoolEmpty),
-                    for (final entry in widget.entries)
+                  children: <Widget>[
+                    if (isEmpty)
                       Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 4),
-                        child: Row(
-                          children: [
-                            Switch(
-                              value: entry.isEnabled,
-                              onChanged: _testing
-                                  ? null
-                                  : (value) => _replace(
-                                      _copy(entry, {'isEnabled': value}),
-                                    ),
-                            ),
-                            Expanded(
-                              child: InkWell(
-                                onTap: _testing ? null : () => _edit(entry),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 8,
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        entry.name.isEmpty
-                                            ? l10n.settingsModelApiKey
-                                            : entry.name,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                      Text(
-                                        '•••••••• · ${_status(l10n, entry.availabilityStatus)} · ${entry.usageCount} / ${entry.errorCount}',
-                                        style: Theme.of(
-                                          context,
-                                        ).textTheme.bodySmall,
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                        padding: const EdgeInsets.fromLTRB(4, 8, 4, 2),
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              width: 46,
+                              height: 46,
+                              decoration: BoxDecoration(
+                                color: scheme.primary.withValues(alpha: 0.1),
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(
+                                OperitIcons.playlist_add_rounded,
+                                size: 22,
+                                color: scheme.primary,
                               ),
                             ),
-                            IconButton(
-                              tooltip: l10n.settingsModelEditApiKey,
-                              onPressed: _testing ? null : () => _edit(entry),
-                              icon: const Icon(OperitIcons.edit_outlined),
+                            const SizedBox(height: 10),
+                            Text(
+                              '还没有备用 Key',
+                              textAlign: TextAlign.center,
+                              style: theme.textTheme.titleSmall?.copyWith(
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
-                            IconButton(
-                              tooltip: l10n.delete,
-                              onPressed: _testing
-                                  ? null
-                                  : () => widget.onChanged(
-                                      widget.entries
-                                          .where((item) => item.id != entry.id)
-                                          .toList(),
-                                    ),
-                              icon: const Icon(OperitIcons.delete_outline_rounded),
+                            const SizedBox(height: 4),
+                            Text(
+                              '添加多个 Key 后，失败时自动切换，单个 Key 出错不会影响整体。',
+                              textAlign: TextAlign.center,
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: scheme.onSurfaceVariant,
+                                height: 1.45,
+                              ),
                             ),
                           ],
                         ),
-                      ),
+                      )
+                    else
+                      for (final entry in widget.entries)
+                        _keyPoolRow(context, entry, l10n),
                     if (field.hasError)
-                      Text(
-                        field.errorText!,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.error,
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8),
+                        child: Text(
+                          field.errorText!,
+                          textAlign: TextAlign.center,
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: scheme.error,
+                          ),
                         ),
                       ),
+                    const SizedBox(height: 10),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      alignment: WrapAlignment.center,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: actions,
+                    ),
                   ],
                 ),
               ),
-              Wrap(
-                spacing: 8,
-                children: [
-                  TextButton.icon(
-                    onPressed: _testing ? null : _edit,
-                    icon: const Icon(OperitIcons.add_rounded),
-                    label: Text(l10n.settingsModelAddApiKey),
+              if (_testing) ...<Widget>[
+                const SizedBox(height: 10),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: const LinearProgressIndicator(minHeight: 3),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  l10n.settingsModelTestProgress(_tested, _total),
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: scheme.onSurfaceVariant,
                   ),
-                  TextButton(
-                    onPressed: _testing || widget.entries.isEmpty
-                        ? null
-                        : _resetHealth,
-                    child: Text(l10n.settingsModelPoolClearMarks),
-                  ),
-                  if (widget.onTestEntry != null)
-                    TextButton(
-                      onPressed: _testing
-                          ? () => setState(() => _pause = true)
-                          : _test,
-                      child: Text(
-                        _testing ? l10n.pause : l10n.settingsModelPoolTest,
-                      ),
-                    ),
-                ],
-              ),
-              if (_testing) ...[
-                const LinearProgressIndicator(),
-                Text(l10n.settingsModelTestProgress(_tested, _total)),
+                ),
               ],
-              if (widget.onTestEntry == null)
+              if (widget.onTestEntry == null && !isEmpty) ...<Widget>[
+                const SizedBox(height: 6),
                 Text(
                   l10n.settingsModelPoolNeedsModel,
-                  style: Theme.of(context).textTheme.bodySmall,
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: scheme.onSurfaceVariant,
+                  ),
                 ),
+              ],
             ],
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _keyPoolRow(
+    BuildContext context,
+    core.ApiKeyInfo entry,
+    AppLocalizations l10n,
+  ) {
+    final scheme = Theme.of(context).colorScheme;
+    return Container(
+      margin: const EdgeInsets.only(bottom: 6),
+      padding: const EdgeInsets.fromLTRB(4, 4, 4, 4),
+      decoration: BoxDecoration(
+        color: scheme.surface.withValues(alpha: 0.22),
+        borderRadius: BorderRadius.circular(11),
+        border: Border.all(color: scheme.outlineVariant.withValues(alpha: 0.2)),
+      ),
+      child: Row(
+        children: <Widget>[
+          Transform.scale(
+            scale: 0.82,
+            child: Switch(
+              value: entry.isEnabled,
+              onChanged: _testing
+                  ? null
+                  : (value) => _replace(_copy(entry, {'isEnabled': value})),
+            ),
+          ),
+          Expanded(
+            child: InkWell(
+              borderRadius: BorderRadius.circular(8),
+              onTap: _testing ? null : () => _edit(entry),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 6),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      entry.name.isEmpty
+                          ? l10n.settingsModelApiKey
+                          : entry.name,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      '•••••••• · ${_status(l10n, entry.availabilityStatus)} · ${entry.usageCount} 次使用',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: scheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          IconButton(
+            tooltip: l10n.settingsModelEditApiKey,
+            onPressed: _testing ? null : () => _edit(entry),
+            visualDensity: VisualDensity.compact,
+            icon: const Icon(OperitIcons.edit_outlined, size: 18),
+          ),
+          IconButton(
+            tooltip: l10n.delete,
+            onPressed: _testing
+                ? null
+                : () => widget.onChanged(
+                    widget.entries
+                        .where((item) => item.id != entry.id)
+                        .toList(),
+                  ),
+            visualDensity: VisualDensity.compact,
+            icon: const Icon(OperitIcons.delete_outline_rounded, size: 18),
+          ),
+        ],
       ),
     );
   }

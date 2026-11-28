@@ -3,70 +3,94 @@
 part of 'TtsSettingsPanel.dart';
 
 class _SectionCard extends StatelessWidget {
-  /// Creates one expandable settings section card.
+  /// Creates one titled settings section with a glass content surface.
   const _SectionCard({
     required this.title,
+    required this.subtitle,
     required this.children,
     this.icon,
     this.action,
-    this.initiallyExpanded = true,
   });
 
   final String title;
+  final String subtitle;
   final List<Widget> children;
   final IconData? icon;
   final Widget? action;
-  final bool initiallyExpanded;
 
-  /// Builds the section card with its content expanded by default.
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final radius = BorderRadius.circular(16);
+    final scheme = Theme.of(context).colorScheme;
+    final radius = BorderRadius.circular(18);
     return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
-      child: Material(
-        color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.36),
-        shape: RoundedRectangleBorder(
-          borderRadius: radius,
-          side: BorderSide(
-            color: colorScheme.outlineVariant.withValues(alpha: 0.25),
-            width: 0.8,
-          ),
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: OperitGlassSurface(
-          color: Colors.transparent,
-          borderRadius: radius,
-          material: true,
-          clip: false,
-          child: ExpansionTile(
-            initiallyExpanded: initiallyExpanded,
-            tilePadding: const EdgeInsets.symmetric(horizontal: 14),
-            childrenPadding: const EdgeInsets.fromLTRB(14, 0, 14, 12),
-            shape: RoundedRectangleBorder(borderRadius: radius),
-            collapsedShape: RoundedRectangleBorder(borderRadius: radius),
-            title: Row(
-              children: <Widget>[
-                if (icon != null) ...<Widget>[
-                  Icon(icon, size: 18, color: colorScheme.onSurfaceVariant),
-                  const SizedBox(width: 8),
-                ],
-                Expanded(
-                  child: Text(
-                    title,
-                    style: SettingsControlStyles.sectionTitleTextStyle(context),
+      padding: const EdgeInsets.only(bottom: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              if (icon != null) ...<Widget>[
+                Container(
+                  width: 38,
+                  height: 38,
+                  decoration: BoxDecoration(
+                    color: scheme.primary.withValues(alpha: 0.11),
+                    borderRadius: BorderRadius.circular(11),
+                    border: Border.all(
+                      color: scheme.primary.withValues(alpha: 0.16),
+                    ),
                   ),
+                  child: Icon(icon, size: 19, color: scheme.primary),
                 ),
-                if (action != null) ...<Widget>[
-                  action!,
-                  const SizedBox(width: 4),
-                ],
+                const SizedBox(width: 12),
               ],
-            ),
-            children: children,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      title,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: -0.2,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      subtitle,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: scheme.onSurfaceVariant,
+                        height: 1.35,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              if (action != null) ...<Widget>[
+                const SizedBox(width: 8),
+                action!,
+              ],
+            ],
           ),
-        ),
+          const SizedBox(height: 12),
+          OperitGlassSurface(
+            color: scheme.surfaceContainerHighest.withValues(alpha: 0.22),
+            borderRadius: radius,
+            border: Border.all(
+              color: scheme.outlineVariant.withValues(alpha: 0.22),
+            ),
+            layer: OperitGlassSurfaceLayer.card,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: children,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -93,14 +117,22 @@ class _TtsProviderManager extends StatelessWidget {
   final ValueChanged<String> onToggleProviderExpanded;
   final void Function(_TtsProviderGroup group) onAddVoice;
   final void Function(_TtsProviderGroup group) onEditProvider;
-  final void Function(core_proxy.CoreOperitModelTtsConfigTtsConfig config) onEditConfig;
-  final Future<void> Function(core_proxy.CoreOperitModelTtsConfigTtsConfig config) onTestConfig;
+  final void Function(core_proxy.CoreOperitModelTtsConfigTtsConfig config)
+  onEditConfig;
+  final Future<void> Function(
+    core_proxy.CoreOperitModelTtsConfigTtsConfig config,
+  )
+  onTestConfig;
   final Future<void> Function(String id) onSetCurrent;
 
   @override
   Widget build(BuildContext context) {
     if (groups.isEmpty) {
-      return const SizedBox.shrink();
+      return const _VoiceEmptyState(
+        icon: OperitIcons.record_voice_over_outlined,
+        title: '还没有 TTS 供应商',
+        message: '点击上方「添加」，接入一个语音合成供应商后即可选择音色。',
+      );
     }
     return Column(
       children: <Widget>[
@@ -143,124 +175,143 @@ class _TtsProviderGroupTile extends StatelessWidget {
   final VoidCallback onToggleExpanded;
   final VoidCallback onAddVoice;
   final VoidCallback onEditProvider;
-  final void Function(core_proxy.CoreOperitModelTtsConfigTtsConfig config) onEditConfig;
-  final Future<void> Function(core_proxy.CoreOperitModelTtsConfigTtsConfig config) onTestConfig;
+  final void Function(core_proxy.CoreOperitModelTtsConfigTtsConfig config)
+  onEditConfig;
+  final Future<void> Function(
+    core_proxy.CoreOperitModelTtsConfigTtsConfig config,
+  )
+  onTestConfig;
   final Future<void> Function(String id) onSetCurrent;
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+    final scheme = Theme.of(context).colorScheme;
     final currentProvider = group.configs.any(
       (config) => config.id == currentConfigId,
     );
-    final radius = BorderRadius.circular(8);
+    final radius = BorderRadius.circular(14);
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Material(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: expanded
+              ? scheme.surface.withValues(alpha: 0.2)
+              : Colors.transparent,
+          borderRadius: radius,
+          border: Border.all(
             color: expanded
-                ? colorScheme.surfaceContainerHighest.withValues(alpha: 0.34)
-                : Colors.transparent,
-            borderRadius: radius,
-            child: InkWell(
+                ? scheme.primary.withValues(alpha: 0.22)
+                : scheme.outlineVariant.withValues(alpha: 0.18),
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            InkWell(
               borderRadius: radius,
               onTap: onToggleExpanded,
               child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 8,
-                ),
+                padding: const EdgeInsets.fromLTRB(11, 10, 9, 10),
                 child: Row(
                   children: <Widget>[
-                    Icon(
-                      expanded
-                          ? OperitIcons.keyboard_arrow_down_rounded
-                          : OperitIcons.chevron_right_rounded,
-                      size: 18,
-                      color: colorScheme.onSurfaceVariant,
-                    ),
-                    const SizedBox(width: 6),
-                    Container(
-                      width: 8,
-                      height: 8,
-                      decoration: BoxDecoration(
-                        color: currentProvider
-                            ? colorScheme.primary
-                            : colorScheme.outlineVariant.withValues(alpha: 0.7),
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                    const SizedBox(width: 12),
+                    _VoiceAvatar(label: group.title, size: 36),
+                    const SizedBox(width: 10),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(
-                            group.title,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.titleSmall
-                                ?.copyWith(fontWeight: FontWeight.w700),
+                          Row(
+                            children: <Widget>[
+                              Flexible(
+                                child: Text(
+                                  group.title,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: Theme.of(context).textTheme.titleSmall
+                                      ?.copyWith(fontWeight: FontWeight.w700),
+                                ),
+                              ),
+                              if (currentProvider) ...<Widget>[
+                                const SizedBox(width: 6),
+                                const _CurrentBadge(),
+                              ],
+                            ],
                           ),
-                          const SizedBox(height: 2),
+                          const SizedBox(height: 3),
                           Text(
-                            '${group.providerType} · ${group.configs.length}',
+                            '${group.configs.length} 个音色 · ${group.providerType}',
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.bodySmall!
-                                .copyWith(color: colorScheme.onSurfaceVariant),
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(color: scheme.onSurfaceVariant),
                           ),
                         ],
                       ),
                     ),
-                    if (expanded) ...<Widget>[
-                      TextButton.icon(
-                        onPressed: onAddVoice,
-                        style: SettingsControlStyles.sectionTextButton(),
-                        icon: const Icon(OperitIcons.playlist_add_rounded, size: 18),
-                        label: const Text('添加'),
+                    const SizedBox(width: 4),
+                    AnimatedRotation(
+                      turns: expanded ? 0.5 : 0,
+                      duration: const Duration(milliseconds: 160),
+                      child: Icon(
+                        OperitIcons.keyboard_arrow_down_rounded,
+                        size: 19,
+                        color: scheme.onSurfaceVariant,
                       ),
-                      SettingsEntityIconButton(
-                        tooltip: '编辑供应商',
-                        icon: OperitIcons.edit_outlined,
-                        onPressed: onEditProvider,
-                      ),
-                    ],
+                    ),
                   ],
                 ),
               ),
             ),
-          ),
-          if (expanded)
-            Padding(
-              padding: const EdgeInsets.only(left: 24, top: 6),
-              child: IntrinsicHeight(
-                child: Row(
+            if (expanded) ...<Widget>[
+              Divider(
+                height: 1,
+                indent: 12,
+                endIndent: 12,
+                color: scheme.outlineVariant.withValues(alpha: 0.24),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 8, 10, 10),
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    Container(
-                      width: 1,
-                      margin: const EdgeInsets.only(top: 2, bottom: 8),
-                      color: colorScheme.outlineVariant.withValues(alpha: 0.34),
+                    _TtsVoiceList(
+                      configs: group.configs,
+                      currentConfigId: currentConfigId,
+                      testingConfigId: testingConfigId,
+                      onEditConfig: onEditConfig,
+                      onTestConfig: onTestConfig,
+                      onSetCurrent: onSetCurrent,
                     ),
-                    const SizedBox(width: 14),
-                    Expanded(
-                      child: _TtsVoiceList(
-                        configs: group.configs,
-                        currentConfigId: currentConfigId,
-                        testingConfigId: testingConfigId,
-                        onEditConfig: onEditConfig,
-                        onTestConfig: onTestConfig,
-                        onSetCurrent: onSetCurrent,
-                      ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: OutlinedButton.icon(
+                            onPressed: onAddVoice,
+                            icon: const Icon(
+                              OperitIcons.playlist_add_rounded,
+                              size: 17,
+                            ),
+                            label: const Text('添加音色'),
+                            style: OutlinedButton.styleFrom(
+                              minimumSize: const Size.fromHeight(38),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        TextButton.icon(
+                          onPressed: onEditProvider,
+                          icon: const Icon(OperitIcons.edit_outlined, size: 17),
+                          label: const Text('编辑供应商'),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
-            ),
-        ],
+            ],
+          ],
+        ),
       ),
     );
   }
@@ -279,8 +330,12 @@ class _TtsVoiceList extends StatelessWidget {
   final List<core_proxy.CoreOperitModelTtsConfigTtsConfig> configs;
   final String currentConfigId;
   final String? testingConfigId;
-  final void Function(core_proxy.CoreOperitModelTtsConfigTtsConfig config) onEditConfig;
-  final Future<void> Function(core_proxy.CoreOperitModelTtsConfigTtsConfig config) onTestConfig;
+  final void Function(core_proxy.CoreOperitModelTtsConfigTtsConfig config)
+  onEditConfig;
+  final Future<void> Function(
+    core_proxy.CoreOperitModelTtsConfigTtsConfig config,
+  )
+  onTestConfig;
   final Future<void> Function(String id) onSetCurrent;
 
   @override
@@ -289,16 +344,14 @@ class _TtsVoiceList extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         for (var index = 0; index < configs.length; index++) ...<Widget>[
-          if (index > 0) const SizedBox(height: 4),
+          if (index > 0) const SizedBox(height: 6),
           _TtsVoiceTile(
             config: configs[index],
             current: configs[index].id == currentConfigId,
             testing: configs[index].id == testingConfigId,
             onEdit: () => onEditConfig(configs[index]),
             onTest: () => onTestConfig(configs[index]),
-            onSetCurrent: () {
-              onSetCurrent(configs[index].id);
-            },
+            onSetCurrent: () => onSetCurrent(configs[index].id),
           ),
         ],
       ],
@@ -325,67 +378,96 @@ class _TtsVoiceTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+    final scheme = Theme.of(context).colorScheme;
+    final meta = <String>[
+      if (config.responseFormat.trim().isNotEmpty) config.responseFormat.trim(),
+      '${config.speed.toStringAsFixed(2)}×',
+      if (config.httpMethod.trim().isNotEmpty) config.httpMethod.trim(),
+    ].join(' · ');
     return Material(
       color: current
-          ? colorScheme.primaryContainer.withValues(alpha: 0.24)
-          : Colors.transparent,
-      borderRadius: BorderRadius.circular(8),
+          ? scheme.primaryContainer.withValues(alpha: 0.18)
+          : scheme.surface.withValues(alpha: 0.16),
+      borderRadius: BorderRadius.circular(12),
       child: InkWell(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(12),
         onTap: onEdit,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+          padding: const EdgeInsets.fromLTRB(8, 8, 6, 8),
           child: Row(
             children: <Widget>[
-              SizedBox(
-                width: 16,
-                height: 16,
+              _SelectionMark(
+                selected: current,
+                tooltip: current ? '当前使用的音色' : '设为当前音色',
+                onPressed: current ? null : onSetCurrent,
+              ),
+              const SizedBox(width: 8),
+              Container(
+                width: 30,
+                height: 30,
+                decoration: BoxDecoration(
+                  color: scheme.primary.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(9),
+                ),
                 child: Icon(
                   OperitIcons.graphic_eq_outlined,
                   size: 16,
-                  color: current
-                      ? colorScheme.primary
-                      : colorScheme.onSurfaceVariant,
+                  color: scheme.primary,
                 ),
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: 9),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Flexible(
+                          child: Text(
+                            _ttsConfigModelVoiceText(config),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.bodyMedium
+                                ?.copyWith(fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        if (current) ...<Widget>[
+                          const SizedBox(width: 6),
+                          const _CurrentBadge(),
+                        ],
+                      ],
+                    ),
+                    const SizedBox(height: 2),
                     Text(
-                      _ttsConfigModelVoiceText(config),
+                      meta,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: scheme.onSurfaceVariant,
                       ),
                     ),
-                    const SizedBox(height: 3),
-                    _TtsVoiceMeta(config: config),
                   ],
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 4),
               if (testing)
                 const SizedBox.square(
-                  dimension: 24,
-                  child: Center(child: M3LoadingIndicator(size: 24)),
+                  dimension: 34,
+                  child: Center(child: M3LoadingIndicator(size: 22)),
                 )
               else
-                SettingsEntityIconButton(
+                IconButton(
                   tooltip: '试听',
-                  icon: OperitIcons.volume_up_outlined,
                   onPressed: () {
                     onTest();
                   },
+                  visualDensity: VisualDensity.compact,
+                  icon: Icon(
+                    OperitIcons.volume_up_outlined,
+                    size: 19,
+                    color: scheme.onSurfaceVariant,
+                  ),
                 ),
-              const SizedBox(width: 4),
-              if (current)
-                const SettingsActivePill(label: '全局当前')
-              else
-                SettingsSetActiveButton(label: '设为全局', onPressed: onSetCurrent),
             ],
           ),
         ),
@@ -394,66 +476,265 @@ class _TtsVoiceTile extends StatelessWidget {
   }
 }
 
-class _TtsVoiceMeta extends StatelessWidget {
-  const _TtsVoiceMeta({required this.config});
+class _VoiceEmptyState extends StatelessWidget {
+  const _VoiceEmptyState({
+    required this.icon,
+    required this.title,
+    required this.message,
+  });
 
-  final core_proxy.CoreOperitModelTtsConfigTtsConfig config;
+  final IconData icon;
+  final String title;
+  final String message;
 
   @override
   Widget build(BuildContext context) {
-    final color = Theme.of(context).colorScheme.onSurfaceVariant;
-    return Wrap(
-      spacing: 8,
-      runSpacing: 4,
-      children: <Widget>[
-        _TtsMetaIcon(
-          icon: OperitIcons.audiotrack_outlined,
-          tooltip: config.responseFormat,
-          color: color,
-        ),
-        _TtsMetaIcon(
-          icon: OperitIcons.speed_outlined,
-          tooltip: config.speed.toStringAsFixed(2),
-          color: color,
-        ),
-        _TtsMetaIcon(
-          icon: OperitIcons.http_outlined,
-          tooltip: config.httpMethod,
-          color: color,
-        ),
-      ],
+    final scheme = Theme.of(context).colorScheme;
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 22, horizontal: 8),
+      child: Column(
+        children: <Widget>[
+          Container(
+            width: 46,
+            height: 46,
+            decoration: BoxDecoration(
+              color: scheme.primary.withValues(alpha: 0.1),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(icon, size: 22, color: scheme.primary),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            title,
+            textAlign: TextAlign.center,
+            style: Theme.of(
+              context,
+            ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            message,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: scheme.onSurfaceVariant,
+              height: 1.45,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
 
-class _TtsMetaIcon extends StatelessWidget {
-  const _TtsMetaIcon({
-    required this.icon,
-    required this.tooltip,
-    required this.color,
-  });
+class _VoiceAvatar extends StatelessWidget {
+  const _VoiceAvatar({required this.label, required this.size});
 
-  final IconData icon;
-  final String tooltip;
-  final Color color;
+  final String label;
+  final double size;
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final initial = label.trim().isEmpty
+        ? '?'
+        : String.fromCharCode(label.trim().runes.first);
+    return Container(
+      width: size,
+      height: size,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: scheme.primary.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(size * 0.3),
+        border: Border.all(color: scheme.primary.withValues(alpha: 0.18)),
+      ),
+      child: Text(
+        initial,
+        style: TextStyle(
+          color: scheme.primary,
+          fontSize: size * 0.42,
+          fontWeight: FontWeight.w800,
+        ),
+      ),
+    );
+  }
+}
+
+class _CurrentBadge extends StatelessWidget {
+  const _CurrentBadge();
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+      decoration: BoxDecoration(
+        color: scheme.primary.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Text(
+        '当前',
+        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+          color: scheme.primary,
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+    );
+  }
+}
+
+class _SelectionMark extends StatelessWidget {
+  const _SelectionMark({
+    required this.selected,
+    required this.tooltip,
+    required this.onPressed,
+  });
+
+  final bool selected;
+  final String tooltip;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     return Tooltip(
       message: tooltip,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Icon(icon, size: 15, color: color),
-          const SizedBox(width: 3),
-          Text(
-            tooltip,
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: color,
-              fontWeight: FontWeight.w600,
+      child: InkResponse(
+        onTap: onPressed,
+        radius: 18,
+        child: Container(
+          width: 24,
+          height: 24,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: selected
+                ? scheme.primary.withValues(alpha: 0.14)
+                : Colors.transparent,
+            border: Border.all(
+              color: selected
+                  ? scheme.primary
+                  : scheme.outlineVariant.withValues(alpha: 0.55),
+              width: 1.2,
             ),
           ),
-        ],
+          child: selected
+              ? Icon(Icons.check_rounded, size: 15, color: scheme.primary)
+              : null,
+        ),
+      ),
+    );
+  }
+}
+
+class _VoiceHero extends StatelessWidget {
+  const _VoiceHero();
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 24),
+      child: OperitGlassSurface(
+        color: scheme.primary.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: scheme.primary.withValues(alpha: 0.16)),
+        layer: OperitGlassSurfaceLayer.card,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(18, 18, 18, 18),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Container(
+                    width: 48,
+                    height: 48,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: <Color>[
+                          scheme.primary.withValues(alpha: 0.22),
+                          scheme.primary.withValues(alpha: 0.06),
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(
+                        color: scheme.primary.withValues(alpha: 0.2),
+                      ),
+                    ),
+                    child: Icon(
+                      OperitIcons.graphic_eq_rounded,
+                      size: 23,
+                      color: scheme.primary,
+                    ),
+                  ),
+                  const SizedBox(width: 13),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          '朗读与听写',
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: -0.3,
+                              ),
+                        ),
+                        const SizedBox(height: 3),
+                        Text(
+                          '为对话选择更自然的声音，也为语音输入选择更准确的识别。',
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(
+                                color: scheme.onSurfaceVariant,
+                                height: 1.45,
+                              ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 14),
+              Wrap(
+                spacing: 8,
+                runSpacing: 6,
+                children: const <Widget>[
+                  _VoiceCapability(label: 'TTS · 朗读'),
+                  _VoiceCapability(label: 'STT · 听写'),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _VoiceCapability extends StatelessWidget {
+  const _VoiceCapability({required this.label});
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
+      decoration: BoxDecoration(
+        color: scheme.surface.withValues(alpha: 0.22),
+        borderRadius: BorderRadius.circular(7),
+        border: Border.all(
+          color: scheme.outlineVariant.withValues(alpha: 0.22),
+        ),
+      ),
+      child: Text(
+        label,
+        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+          color: scheme.onSurfaceVariant,
+          fontWeight: FontWeight.w600,
+        ),
       ),
     );
   }
