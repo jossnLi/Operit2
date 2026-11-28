@@ -8,7 +8,7 @@ import 'package:operit2/ui/common/icons/operit_icons.dart';
 /// Provider brand marks stay in `ProviderLogo`; this file only covers UI
 /// affordances and runtime concepts.
 abstract final class ModelAiIcons {
-  static const back = OperitIcons.arrow_back_rounded;
+  static const back = OperitIcons.chevron_left_rounded;
   static const close = OperitIcons.close_rounded;
   static const chevron = OperitIcons.chevron_right_rounded;
   static const expandMore = OperitIcons.keyboard_arrow_down_rounded;

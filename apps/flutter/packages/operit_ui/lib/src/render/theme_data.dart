@@ -90,6 +90,10 @@ ThemeData buildOperitThemeData(
     ),
     // ignore: deprecated_member_use
     progressIndicatorTheme: const ProgressIndicatorThemeData(year2023: false),
+    actionIconTheme: ActionIconThemeData(
+      backButtonIconBuilder: (context) =>
+          const Icon(Icons.chevron_left_rounded),
+    ),
     appBarTheme: AppBarTheme(
       backgroundColor: appBarBackgroundColor,
       foregroundColor: colorScheme.onSurface,
