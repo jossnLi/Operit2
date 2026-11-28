@@ -10,6 +10,7 @@ import '../components/StoreVisuals.dart';
 import '../model/ExtensionCatalogController.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
+
 enum ExtensionGrouping { kind, location, status }
 
 /// "我的扩展": what needs attention first, then every installed extension
@@ -247,6 +248,7 @@ class _ExtensionsPaneState extends State<ExtensionsPane> {
           final grid = width >= 1024;
           var order = 0;
           return CustomScrollView(
+            cacheExtent: 1200,
             physics: const AlwaysScrollableScrollPhysics(),
             slivers: <Widget>[
               SliverPadding(
@@ -262,6 +264,13 @@ class _ExtensionsPaneState extends State<ExtensionsPane> {
                   ),
                 ),
               ),
+              if (query.isEmpty)
+                SliverPadding(
+                  padding: padding.copyWith(top: 12),
+                  sliver: SliverToBoxAdapter(
+                    child: _ImportTile(onTap: widget.onAdd),
+                  ),
+                ),
               if (showAttention)
                 SliverPadding(
                   padding: padding.copyWith(top: 16),
@@ -427,7 +436,6 @@ class _ExtensionsPaneState extends State<ExtensionsPane> {
   Future<void> _showDiagnostics() {
     return showModalBottomSheet<void>(
       context: context,
-      showDragHandle: true,
       isScrollControlled: true,
       constraints: const BoxConstraints(maxWidth: 720),
       builder: (context) => ListenableBuilder(
@@ -517,6 +525,70 @@ class _ExtensionsPaneState extends State<ExtensionsPane> {
   }
 }
 
+/// Quiet entry for bringing a package in from local storage.
+class _ImportTile extends StatelessWidget {
+  const _ImportTile({required this.onTap});
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colors = theme.colorScheme;
+    return StorePressable(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
+        child: Row(
+          children: <Widget>[
+            Container(
+              width: 38,
+              height: 38,
+              decoration: BoxDecoration(
+                color: colors.primary.withValues(alpha: 0.09),
+                borderRadius: BorderRadius.circular(11),
+              ),
+              child: Icon(
+                OperitIcons.file_upload_outlined,
+                size: 19,
+                color: colors.primary,
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    '导入本地包',
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    '从文件或目录添加插件、技能与 MCP',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: colors.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(
+              OperitIcons.chevron_right_rounded,
+              size: 20,
+              color: colors.onSurfaceVariant.withValues(alpha: 0.7),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 /// Counts and the update check on one line.
 class _SummaryBar extends StatelessWidget {
   const _SummaryBar({
@@ -540,57 +612,149 @@ class _SummaryBar extends StatelessWidget {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final lastCheck = this.lastCheck;
-    return Wrap(
-      alignment: WrapAlignment.spaceBetween,
-      crossAxisAlignment: WrapCrossAlignment.center,
-      spacing: 12,
-      runSpacing: 8,
-      children: <Widget>[
-        Text.rich(
-          TextSpan(
-            children: <InlineSpan>[
-              TextSpan(
-                text: '$total',
-                style: theme.textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.w700,
+    return Container(
+      padding: const EdgeInsets.fromLTRB(18, 16, 18, 16),
+      decoration: storeHeroDecoration(theme),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                width: 42,
+                height: 42,
+                decoration: BoxDecoration(
+                  color: colorScheme.primary.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(13),
+                ),
+                child: Icon(
+                  OperitIcons.extension_rounded,
+                  color: colorScheme.primary,
+                  size: 22,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      '扩展与包',
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: -0.2,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '已安装的能力都在这台设备上，随时启用、更新或移除',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
+                        height: 1.4,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: _SummaryMetric(
+                  value: '$total',
+                  label: '已安装',
                   color: colorScheme.onSurface,
                 ),
               ),
-              const TextSpan(text: ' 个扩展 · '),
-              TextSpan(
-                text: '$enabled',
-                style: TextStyle(
+              Expanded(
+                child: _SummaryMetric(
+                  value: '$enabled',
+                  label: '已启用',
                   color: colorScheme.primary,
-                  fontWeight: FontWeight.w700,
                 ),
               ),
-              const TextSpan(text: ' 个已启用'),
+              Expanded(
+                child: _SummaryMetric(
+                  value: '$updates',
+                  label: '可更新',
+                  color: updates > 0
+                      ? colorScheme.tertiary
+                      : colorScheme.onSurfaceVariant,
+                ),
+              ),
             ],
           ),
-          style: theme.textTheme.bodyMedium?.copyWith(
-            color: colorScheme.onSurfaceVariant,
-          ),
-        ),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            if (lastCheck != null && !checking)
-              Padding(
-                padding: const EdgeInsets.only(right: 8),
+          const SizedBox(height: 14),
+          Row(
+            children: <Widget>[
+              Expanded(
                 child: Text(
-                  updates > 0 ? '发现 $updates 个更新' : '未发现可用更新',
+                  lastCheck == null
+                      ? '检查更新，让已安装的扩展保持最新'
+                      : updates > 0
+                      ? '发现 $updates 个更新'
+                      : '未发现可用更新',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                   style: theme.textTheme.labelSmall?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                   ),
                 ),
               ),
-            StoreGetButton(
-              label: '检查更新',
-              icon: OperitIcons.refresh_rounded,
-              busy: checking,
-              onPressed: onCheck,
-            ),
-          ],
+              const SizedBox(width: 10),
+              StoreGetButton(
+                label: '检查更新',
+                icon: OperitIcons.refresh_rounded,
+                busy: checking,
+                onPressed: onCheck,
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// One number and its caption inside the extensions hero.
+class _SummaryMetric extends StatelessWidget {
+  const _SummaryMetric({
+    required this.value,
+    required this.label,
+    required this.color,
+  });
+
+  final String value;
+  final String label;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          value,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: theme.textTheme.headlineSmall?.copyWith(
+            fontWeight: FontWeight.w700,
+            color: color,
+            letterSpacing: -0.4,
+          ),
+        ),
+        const SizedBox(height: 2),
+        Text(
+          label,
+          style: theme.textTheme.labelSmall?.copyWith(
+            color: theme.colorScheme.onSurfaceVariant,
+          ),
         ),
       ],
     );
@@ -624,60 +788,137 @@ class _AttentionBlock extends StatelessWidget {
     final updating = updates.any(
       (entry) => controller.isBusy(ExtensionCatalogController.entryKey(entry)),
     );
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        StoreSectionHeader(
-          icon: OperitIcons.notifications_active_outlined,
-          title: '需要处理',
-          count: count,
-          trailing: updates.length > 1
-              ? TextButton.icon(
+    final rows = <Widget>[
+      for (final entry in problems)
+        ExtensionListRow(
+          controller: controller,
+          entry: entry,
+          trailing: Icon(
+            OperitIcons.chevron_right_rounded,
+            color: theme.colorScheme.onSurfaceVariant,
+          ),
+        ),
+      for (final entry in updates)
+        ExtensionListRow(
+          controller: controller,
+          entry: entry,
+          trailing: StoreGetButton(
+            label: '更新',
+            prominent: true,
+            busy: controller.isBusy(ExtensionCatalogController.entryKey(entry)),
+            onPressed: () => run(() => controller.update(entry)),
+          ),
+        ),
+      if (diagnostics.isNotEmpty)
+        StoreListRow(
+          leading: StoreRowGlyph(
+            icon: OperitIcons.report_gmailerrorred_rounded,
+            color: theme.colorScheme.tertiary,
+          ),
+          title: '${diagnostics.length} 条加载诊断',
+          subtitle: '查看加载错误和重复安装警告',
+          trailing: const Icon(OperitIcons.chevron_right_rounded),
+          onTap: onShowDiagnostics,
+        ),
+    ];
+    return Container(
+      padding: const EdgeInsets.fromLTRB(14, 14, 14, 8),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.tertiaryContainer.withValues(alpha: 0.34),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: theme.colorScheme.tertiary.withValues(alpha: 0.26),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Container(
+                width: 34,
+                height: 34,
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.tertiary.withValues(alpha: 0.14),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Icon(
+                  OperitIcons.notifications_active_outlined,
+                  color: theme.colorScheme.tertiary,
+                  size: 19,
+                ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Text(
+                          '需要处理',
+                          style: theme.textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(width: 6),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 7,
+                            vertical: 1,
+                          ),
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.tertiary.withValues(
+                              alpha: 0.16,
+                            ),
+                            borderRadius: BorderRadius.circular(999),
+                          ),
+                          child: Text(
+                            '$count',
+                            style: theme.textTheme.labelSmall?.copyWith(
+                              color: theme.colorScheme.onTertiaryContainer,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 3),
+                    Text(
+                      updates.isNotEmpty
+                          ? '${updates.length} 个扩展可以更新，更新后立即生效'
+                          : '有扩展需要确认或修复',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              if (updates.length > 1)
+                TextButton(
                   onPressed: updating ? null : onUpdateAll,
                   style: SettingsControlStyles.sectionTextButton(),
-                  icon: const Icon(OperitIcons.system_update_alt_rounded, size: 18),
-                  label: const Text('全部更新'),
-                )
-              : null,
-        ),
-        StoreGroupedList(
-          children: <Widget>[
-            for (final entry in problems)
-              ExtensionListRow(
-                controller: controller,
-                entry: entry,
-                trailing: Icon(
-                  OperitIcons.chevron_right_rounded,
-                  color: theme.colorScheme.onSurfaceVariant,
+                  child: const Text('全部更新'),
                 ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          for (var index = 0; index < rows.length; index += 1) ...<Widget>[
+            if (index > 0)
+              Divider(
+                height: 1,
+                thickness: 1,
+                indent: 12,
+                endIndent: 12,
+                color: theme.colorScheme.outlineVariant.withValues(alpha: 0.3),
               ),
-            for (final entry in updates)
-              ExtensionListRow(
-                controller: controller,
-                entry: entry,
-                trailing: StoreGetButton(
-                  label: '更新',
-                  prominent: true,
-                  busy: controller.isBusy(
-                    ExtensionCatalogController.entryKey(entry),
-                  ),
-                  onPressed: () => run(() => controller.update(entry)),
-                ),
-              ),
-            if (diagnostics.isNotEmpty)
-              StoreListRow(
-                leading: StoreRowGlyph(
-                  icon: OperitIcons.report_gmailerrorred_rounded,
-                  color: theme.colorScheme.tertiary,
-                ),
-                title: '${diagnostics.length} 条加载诊断',
-                subtitle: '查看加载错误和重复安装警告',
-                trailing: const Icon(OperitIcons.chevron_right_rounded),
-                onTap: onShowDiagnostics,
-              ),
+            rows[index],
           ],
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -696,7 +937,9 @@ class _EmptyLibrary extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Icon(
-            query.isEmpty ? OperitIcons.extension_outlined : OperitIcons.search_off_rounded,
+            query.isEmpty
+                ? OperitIcons.extension_outlined
+                : OperitIcons.search_off_rounded,
             size: 40,
             color: theme.colorScheme.onSurfaceVariant,
           ),

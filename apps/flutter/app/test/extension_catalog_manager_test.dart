@@ -22,6 +22,7 @@ import 'package:operit2/ui/features/packages/screens/OfficialExtensionsScreen.da
 import 'package:operit2/ui/features/packages/market/MarketStatsSupport.dart';
 import 'package:operit2/ui/features/packages/screens/PackageManagerScreen.dart';
 import 'package:operit2/ui/features/packages/screens/ExtensionDetailScreen.dart';
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 import 'package:operit2/ui/main/MainLayoutController.dart';
 import 'package:operit2/ui/main/TopBarController.dart';
 import 'package:operit2/ui/main/components/AppContent.dart';
@@ -943,13 +944,16 @@ void main() {
     // Let the transient message disappear before inspecting the detail page.
     await tester.pump(const Duration(seconds: 6));
     await tester.pumpAndSettle();
-    final scrollable = find.descendant(
-      of: find.byType(ExtensionDetailScreen),
-      matching: find.byWidgetPredicate(
-        (widget) =>
-            widget is Scrollable && widget.axisDirection == AxisDirection.down,
-      ),
-    ).first;
+    final scrollable = find
+        .descendant(
+          of: find.byType(ExtensionDetailScreen),
+          matching: find.byWidgetPredicate(
+            (widget) =>
+                widget is Scrollable &&
+                widget.axisDirection == AxisDirection.down,
+          ),
+        )
+        .first;
     tester.state<ScrollableState>(scrollable).position.jumpTo(0);
     await tester.pumpAndSettle();
     expect(find.text('MCP 服务启动失败'), findsOneWidget);
@@ -957,7 +961,11 @@ void main() {
     expect(bridge.mcpStartAttempts, 1);
 
     bridge.mcpStartupFailure = null;
-    await tester.scrollUntilVisible(find.text('启动'), 500, scrollable: scrollable);
+    await tester.scrollUntilVisible(
+      find.text('启动'),
+      500,
+      scrollable: scrollable,
+    );
     await tester.pumpAndSettle();
     await tester.tap(find.text('启动'));
     await tester.pumpAndSettle();
@@ -978,6 +986,11 @@ void main() {
 
     expect(find.text('Demo toolpkg'), findsOneWidget);
     expect(find.text('Demo skill'), findsOneWidget);
+    await tester.drag(
+      find.byType(CustomScrollView).first,
+      const Offset(0, -360),
+    );
+    await tester.pumpAndSettle();
     expect(find.text('Demo mcp'), findsOneWidget);
     expect(_sectionHeader('插件'), findsOneWidget);
     expect(_sectionHeader('技能'), findsOneWidget);
@@ -998,11 +1011,18 @@ void main() {
     final bridge = _CatalogBridge()..onEnabledChanged = changes.add;
     await tester.pumpWidget(_manager(bridge));
     await tester.pumpAndSettle();
+    await tester.drag(
+      find.byType(CustomScrollView).first,
+      const Offset(0, -360),
+    );
+    await tester.pumpAndSettle();
 
     final switches = find.byType(Switch);
     expect(switches, findsNWidgets(3));
     expect(tester.widget<Switch>(switches.first).value, isFalse);
 
+    await tester.ensureVisible(switches.first);
+    await tester.pumpAndSettle();
     await tester.tap(switches.first);
     await tester.pumpAndSettle();
 
@@ -1117,7 +1137,7 @@ void main() {
 
     expect(find.byTooltip('此加载错误没有可删除的安装来源'), findsOneWidget);
     expect(find.byTooltip('已使用设备空间版本，本机副本和数据保留'), findsOneWidget);
-    expect(find.byIcon(Icons.warning_amber_rounded), findsOneWidget);
+    expect(find.byIcon(OperitIcons.warning_amber_rounded), findsWidgets);
     expect(find.byTooltip('删除失败来源'), findsOneWidget);
     await tester.tap(find.byTooltip('删除失败来源'));
     await tester.pumpAndSettle();
@@ -1489,7 +1509,10 @@ class _CatalogBridge extends OperitRuntimeBridge {
         mcpStartAttempts += 1;
         final failure = mcpStartupFailure;
         if (failure != null) throw failure;
-        return <String, Object?>{'stdout': 'MCP server started: mcp', 'stderr': ''};
+        return <String, Object?>{
+          'stdout': 'MCP server started: mcp',
+          'stderr': '',
+        };
       case 'readSkillContent':
         return '# Demo skill';
       case 'deleteSkill':

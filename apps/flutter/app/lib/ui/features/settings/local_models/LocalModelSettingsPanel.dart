@@ -473,237 +473,438 @@ class _LocalModelSettingsPanelState extends State<LocalModelSettingsPanel>
           );
         }
         final colors = Theme.of(context).colorScheme;
-        return CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildCatalogHeader(
-                      context,
-                      source,
-                      data.fileImportEngines,
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            final gutter = constraints.maxWidth > 920
+                ? (constraints.maxWidth - 760) / 2
+                : 20.0;
+            return CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(gutter, 12, gutter, 0),
+                    child: _buildOverviewHero(context, data, statuses, source),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(gutter, 24, gutter, 0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildCatalogHeader(context, source),
+                        const SizedBox(height: 12),
+                        TextField(
+                          controller: _searchController,
+                          onChanged: (value) =>
+                              setState(() => _catalogQuery = value),
+                          decoration: InputDecoration(
+                            isDense: true,
+                            filled: true,
+                            fillColor: colors.surfaceContainerHighest
+                                .withValues(alpha: 0.28),
+                            prefixIcon: const Icon(
+                              OperitIcons.search_rounded,
+                              size: 20,
+                            ),
+                            hintText: l10n.localModelsSearchCatalog,
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 14,
+                              vertical: 13,
+                            ),
+                            suffixIcon: _catalogQuery.isEmpty
+                                ? null
+                                : IconButton(
+                                    tooltip: l10n.clear,
+                                    icon: const Icon(
+                                      OperitIcons.close_rounded,
+                                      size: 18,
+                                    ),
+                                    onPressed: () {
+                                      _searchController.clear();
+                                      setState(() => _catalogQuery = '');
+                                    },
+                                  ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(16),
+                              borderSide: BorderSide.none,
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(16),
+                              borderSide: BorderSide(
+                                color: colors.outlineVariant.withValues(
+                                  alpha: 0.2,
+                                ),
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(16),
+                              borderSide: BorderSide(
+                                color: colors.primary.withValues(alpha: 0.55),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              for (final scope in _CatalogScope.values)
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 8),
+                                  child: ChoiceChip(
+                                    label: Text(switch (scope) {
+                                      _CatalogScope.all =>
+                                        l10n.localModelsFilterAll,
+                                      _CatalogScope.installed =>
+                                        l10n.localModelsFilterInstalled,
+                                      _CatalogScope.downloads =>
+                                        l10n.localModelsFilterDownloads,
+                                    }),
+                                    selected: _scope == scope,
+                                    showCheckmark: false,
+                                    onSelected: (_) =>
+                                        setState(() => _scope = scope),
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              for (final kind in <core_proxy.LocalModelKind?>[
+                                null,
+                                core_proxy.LocalModelKind.chat,
+                                ...core_proxy.LocalModelKind.values.where(
+                                  (kind) =>
+                                      kind != core_proxy.LocalModelKind.chat,
+                                ),
+                              ])
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 6),
+                                  child: FilterChip(
+                                    label: Text(
+                                      kind == null
+                                          ? l10n.localModelsAllTypes
+                                          : _localModelKindTitle(l10n, kind),
+                                    ),
+                                    selected: _kind == kind,
+                                    showCheckmark: false,
+                                    onSelected: (_) =>
+                                        setState(() => _kind = kind),
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 6),
+                          child: Text(
+                            l10n.localModelsResultCount(
+                              visible.length,
+                              data.catalog.length,
+                            ),
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(color: colors.onSurfaceVariant),
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 12),
-                    TextField(
-                      controller: _searchController,
-                      onChanged: (value) =>
-                          setState(() => _catalogQuery = value),
-                      decoration: InputDecoration(
-                        isDense: true,
-                        prefixIcon: const Icon(OperitIcons.search_rounded, size: 20),
-                        hintText: l10n.localModelsSearchCatalog,
-                        suffixIcon: _catalogQuery.isEmpty
-                            ? null
-                            : IconButton(
-                                tooltip: l10n.clear,
-                                icon: const Icon(OperitIcons.close_rounded, size: 18),
+                  ),
+                ),
+                const SliverToBoxAdapter(child: Divider(height: 1)),
+                SliverPadding(
+                  padding: EdgeInsets.fromLTRB(gutter, 8, gutter, 8),
+                  sliver: SliverList(
+                    key: ValueKey('$_scope:$_kind:$_catalogQuery'),
+                    delegate: SliverChildBuilderDelegate((context, index) {
+                      if (visible.isEmpty) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 36),
+                          child: Column(
+                            children: [
+                              Icon(
+                                OperitIcons.search_off_rounded,
+                                size: 36,
+                                color: colors.onSurfaceVariant,
+                              ),
+                              const SizedBox(height: 12),
+                              Text(l10n.localModelsNoMatches),
+                              const SizedBox(height: 12),
+                              TextButton(
                                 onPressed: () {
                                   _searchController.clear();
-                                  setState(() => _catalogQuery = '');
+                                  setState(() {
+                                    _catalogQuery = '';
+                                    _scope = _CatalogScope.all;
+                                    _kind = null;
+                                  });
                                 },
+                                child: Text(l10n.localModelsResetFilters),
                               ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
+                            ],
+                          ),
+                        );
+                      }
+                      final status = visible[index];
+                      return Padding(
+                        key: ValueKey(
+                          '${status.manifest.id}@${status.manifest.version}',
                         ),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: [
-                          for (final scope in _CatalogScope.values)
-                            Padding(
-                              padding: const EdgeInsets.only(right: 8),
-                              child: ChoiceChip(
-                                label: Text(switch (scope) {
-                                  _CatalogScope.all =>
-                                    l10n.localModelsFilterAll,
-                                  _CatalogScope.installed =>
-                                    l10n.localModelsFilterInstalled,
-                                  _CatalogScope.downloads =>
-                                    l10n.localModelsFilterDownloads,
-                                }),
-                                selected: _scope == scope,
-                                showCheckmark: false,
-                                onSelected: (_) =>
-                                    setState(() => _scope = scope),
-                              ),
-                            ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: [
-                          for (final kind in <core_proxy.LocalModelKind?>[
-                            null,
-                            core_proxy.LocalModelKind.chat,
-                            ...core_proxy.LocalModelKind.values.where(
-                              (kind) => kind != core_proxy.LocalModelKind.chat,
-                            ),
-                          ])
-                            Padding(
-                              padding: const EdgeInsets.only(right: 6),
-                              child: FilterChip(
-                                label: Text(
-                                  kind == null
-                                      ? l10n.localModelsAllTypes
-                                      : _localModelKindTitle(l10n, kind),
-                                ),
-                                selected: _kind == kind,
-                                showCheckmark: false,
-                                onSelected: (_) => setState(() => _kind = kind),
-                              ),
-                            ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 6),
-                      child: Text(
-                        l10n.localModelsResultCount(
-                          visible.length,
-                          data.catalog.length,
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: _buildModelItem(
+                          context,
+                          status,
+                          statuses,
+                          data.registry,
                         ),
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: colors.onSurfaceVariant,
-                        ),
-                      ),
-                    ),
-                  ],
+                      );
+                    }, childCount: visible.isEmpty ? 1 : visible.length),
+                  ),
                 ),
-              ),
-            ),
-            const SliverToBoxAdapter(child: Divider(height: 1)),
-            SliverPadding(
-              padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
-              sliver: SliverList(
-                key: ValueKey('$_scope:$_kind:$_catalogQuery'),
-                delegate: SliverChildBuilderDelegate((context, index) {
-                  if (index == (visible.isEmpty ? 1 : visible.length)) {
-                    return Padding(
-                      padding: const EdgeInsets.only(top: 16),
-                      child: ExpansionTile(
-                        tilePadding: EdgeInsets.zero,
-                        leading: const Icon(
-                          OperitIcons.developer_board_outlined,
-                          size: 20,
-                        ),
-                        title: Text(
-                          l10n.localModelsInstalledEngines,
-                          style: Theme.of(context).textTheme.titleSmall,
-                        ),
-                        subtitle: Text(
-                          '${data.target.platform.value} · ${data.target.architecture.value} · ${data.registry.installedEngines.length}',
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                        children: [
-                          if (data.registry.installedEngines.isEmpty)
-                            Padding(
-                              padding: const EdgeInsets.all(16),
-                              child: Text(l10n.localModelsNoInstalledEngines),
-                            )
-                          else
-                            for (final engine in data.registry.installedEngines)
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 8),
-                                child: _buildEngineItem(context, engine),
-                              ),
-                        ],
-                      ),
-                    );
-                  }
-                  if (visible.isEmpty) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 36),
-                      child: Column(
-                        children: [
-                          Icon(
-                            OperitIcons.search_off_rounded,
-                            size: 36,
-                            color: colors.onSurfaceVariant,
-                          ),
-                          const SizedBox(height: 12),
-                          Text(l10n.localModelsNoMatches),
-                          const SizedBox(height: 12),
-                          TextButton(
-                            onPressed: () {
-                              _searchController.clear();
-                              setState(() {
-                                _catalogQuery = '';
-                                _scope = _CatalogScope.all;
-                                _kind = null;
-                              });
-                            },
-                            child: Text(l10n.localModelsResetFilters),
-                          ),
-                        ],
-                      ),
-                    );
-                  }
-                  final status = visible[index];
-                  return Padding(
-                    key: ValueKey(
-                      '${status.manifest.id}@${status.manifest.version}',
-                    ),
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: _buildModelItem(
-                      context,
-                      status,
-                      statuses,
-                      data.registry,
-                    ),
-                  );
-                }, childCount: (visible.isEmpty ? 1 : visible.length) + 1),
-              ),
-            ),
-          ],
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(gutter, 12, gutter, 28),
+                    child: _buildEnginesSection(context, data),
+                  ),
+                ),
+              ],
+            );
+          },
         );
       },
     );
   }
 
-  /// Keeps both add actions labeled while moving them below the title on phones.
+  /// Hero card that explains where inference runs and what is installed.
+  Widget _buildOverviewHero(
+    BuildContext context,
+    _LocalModelSettingsData data,
+    List<core_proxy.LocalModelInstallStatus> statuses,
+    core_proxy.LocalModelSourceKind source,
+  ) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final colors = theme.colorScheme;
+    final dark = theme.brightness == Brightness.dark;
+    final installed = data.registry.installedModels.length;
+    final engines = data.registry.installedEngines.length;
+    final activeDownloads = statuses
+        .where(
+          (status) =>
+              status.phase != core_proxy.LocalModelInstallPhase.completed,
+        )
+        .length;
+    final actions = <Widget>[
+      if (data.fileImportEngines.isNotEmpty)
+        FilledButton.icon(
+          onPressed: () => _openFileImport(data.fileImportEngines),
+          style: FilledButton.styleFrom(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          ),
+          icon: const Icon(OperitIcons.file_upload_outlined, size: 18),
+          label: Text(l10n.localModelsImportFromDevice),
+        ),
+      OutlinedButton.icon(
+        onPressed: () => _openHubExploreDialog(context, source),
+        style: OutlinedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        ),
+        icon: const Icon(OperitIcons.travel_explore_outlined, size: 18),
+        label: Text(l10n.localModelsAddModel),
+      ),
+    ];
+    return Container(
+      padding: const EdgeInsets.fromLTRB(20, 18, 20, 16),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: colors.primary.withValues(alpha: dark ? 0.18 : 0.22),
+        ),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: <Color>[
+            Color.alphaBlend(
+              colors.primary.withValues(alpha: dark ? 0.08 : 0.11),
+              dark ? colors.surfaceContainerLow : colors.surfaceContainerLowest,
+            ),
+            colors.surface.withValues(alpha: dark ? 0.6 : 0.82),
+          ],
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                width: 42,
+                height: 42,
+                decoration: BoxDecoration(
+                  color: colors.primary.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(13),
+                ),
+                child: Icon(
+                  OperitIcons.memory_rounded,
+                  color: colors.primary,
+                  size: 22,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      l10n.settingsCategoryLocalModelsTitle,
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: -0.2,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      l10n.settingsCategoryLocalModelsDescription,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: colors.onSurfaceVariant,
+                        height: 1.4,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 18),
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: _OverviewMetric(
+                  icon: OperitIcons.inventory_2_outlined,
+                  value: '$installed / ${data.catalog.length}',
+                  label: l10n.localModelsCatalog,
+                ),
+              ),
+              Expanded(
+                child: _OverviewMetric(
+                  icon: OperitIcons.developer_board_outlined,
+                  value: '$engines',
+                  label: l10n.localModelsInstalledEngines,
+                ),
+              ),
+              Expanded(
+                child: _OverviewMetric(
+                  icon: OperitIcons.download_rounded,
+                  value: '$activeDownloads',
+                  label: l10n.localModelsInstalling,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 14),
+          Wrap(spacing: 8, runSpacing: 8, children: actions),
+        ],
+      ),
+    );
+  }
+
+  /// Engines keep their management actions but read as a section, not a fold.
+  Widget _buildEnginesSection(
+    BuildContext context,
+    _LocalModelSettingsData data,
+  ) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final colors = theme.colorScheme;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(bottom: 10),
+          child: Row(
+            children: <Widget>[
+              Icon(
+                OperitIcons.developer_board_outlined,
+                size: 18,
+                color: colors.primary,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                l10n.localModelsInstalledEngines,
+                style: theme.textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  '${data.target.platform.value} · ${data.target.architecture.value}',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: colors.onSurfaceVariant,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        if (data.registry.installedEngines.isEmpty)
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: colors.surfaceContainerHighest.withValues(alpha: 0.28),
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(
+                color: colors.outlineVariant.withValues(alpha: 0.25),
+              ),
+            ),
+            child: Text(
+              l10n.localModelsNoInstalledEngines,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: colors.onSurfaceVariant,
+              ),
+            ),
+          )
+        else
+          for (final engine in data.registry.installedEngines)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: _buildEngineItem(context, engine),
+            ),
+      ],
+    );
+  }
+
+  /// Section title plus the download source and refresh controls.
   Widget _buildCatalogHeader(
     BuildContext context,
     core_proxy.LocalModelSourceKind source,
-    List<core_proxy.LocalEngineKind> fileImportEngines,
   ) {
     final l10n = AppLocalizations.of(context)!;
-    final actions = Wrap(
-      spacing: 8,
-      runSpacing: 4,
-      children: [
-        if (fileImportEngines.isNotEmpty)
-          FilledButton.icon(
-            onPressed: () => _openFileImport(fileImportEngines),
-            style: FilledButton.styleFrom(
-              padding: const EdgeInsets.symmetric(horizontal: 14),
-            ),
-            icon: const Icon(OperitIcons.file_upload_outlined, size: 18),
-            label: Text(l10n.localModelsImportFromDevice),
-          ),
-        OutlinedButton.icon(
-          onPressed: () => _openHubExploreDialog(context, source),
-          style: OutlinedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(horizontal: 14),
-          ),
-          icon: const Icon(OperitIcons.travel_explore_outlined, size: 18),
-          label: Text(l10n.localModelsAddModel),
-        ),
-      ],
-    );
+    final theme = Theme.of(context);
+    final colors = theme.colorScheme;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Expanded(child: actions),
-        const SizedBox(width: 4),
+        Icon(OperitIcons.inventory_2_outlined, size: 18, color: colors.primary),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            l10n.localModelsCatalog,
+            style: theme.textTheme.titleSmall?.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
         PopupMenuButton<core_proxy.LocalModelSourceKind>(
           tooltip:
               '${l10n.localModelsDownloadSource}: ${_sourceKindTitle(l10n, source)}',
@@ -864,7 +1065,9 @@ class _LocalModelSettingsPanelState extends State<LocalModelSettingsPanel>
                 ? () => _install(manifest)
                 : null,
             icon: Icon(
-              isPaused ? OperitIcons.play_arrow_rounded : OperitIcons.download_outlined,
+              isPaused
+                  ? OperitIcons.play_arrow_rounded
+                  : OperitIcons.download_outlined,
               size: 18,
             ),
             label: Text(
@@ -921,11 +1124,14 @@ class _LocalModelSettingsPanelState extends State<LocalModelSettingsPanel>
           ),
       ],
     );
-    return OperitGlassSurface(
-      color: colors.surfaceContainerLow.withValues(alpha: 0.72),
-      layer: OperitGlassSurfaceLayer.control,
-      borderRadius: BorderRadius.circular(12),
-      border: Border.all(color: colors.outlineVariant.withValues(alpha: 0.35)),
+    return Container(
+      decoration: BoxDecoration(
+        color: colors.surfaceContainerHighest.withValues(alpha: 0.30),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: colors.outlineVariant.withValues(alpha: 0.24),
+        ),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(14),
         child: Column(
@@ -979,11 +1185,28 @@ class _LocalModelSettingsPanelState extends State<LocalModelSettingsPanel>
                       spacing: 10,
                       runSpacing: 4,
                       children: [
-                        Text(
-                          stateLabel,
-                          style: Theme.of(
-                            context,
-                          ).textTheme.labelSmall?.copyWith(color: stateColor),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              width: 6,
+                              height: 6,
+                              decoration: BoxDecoration(
+                                color: stateColor,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                            const SizedBox(width: 5),
+                            Flexible(
+                              child: Text(
+                                stateLabel,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context).textTheme.labelSmall
+                                    ?.copyWith(color: stateColor),
+                              ),
+                            ),
+                          ],
                         ),
                         Text(
                           '${_localModelKindTitle(l10n, manifest.kind)} · ${_localEngineTitle(manifest.engine)}',
@@ -1016,16 +1239,16 @@ class _LocalModelSettingsPanelState extends State<LocalModelSettingsPanel>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          width: 36,
-                          height: 36,
+                          width: 44,
+                          height: 44,
                           decoration: BoxDecoration(
-                            color: colors.primary.withValues(alpha: 0.08),
-                            borderRadius: BorderRadius.circular(10),
+                            color: colors.primary.withValues(alpha: 0.10),
+                            borderRadius: BorderRadius.circular(13),
                           ),
                           child: Icon(
                             _modelKindIcon(manifest.kind),
                             color: colors.primary,
-                            size: 20,
+                            size: 22,
                           ),
                         ),
                         const SizedBox(width: 12),
@@ -1044,12 +1267,12 @@ class _LocalModelSettingsPanelState extends State<LocalModelSettingsPanel>
             if (hasDownloadTask) const SizedBox(height: 12),
             if (hasDownloadTask) ...<Widget>[
               Container(
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: colors.surfaceContainerHighest.withValues(alpha: 0.45),
-                  borderRadius: BorderRadius.circular(8),
+                  color: colors.primary.withValues(alpha: 0.06),
+                  borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: colors.outlineVariant.withValues(alpha: 0.2),
+                    color: colors.primary.withValues(alpha: 0.14),
                   ),
                 ),
                 child: Column(
@@ -1127,26 +1350,29 @@ class _LocalModelSettingsPanelState extends State<LocalModelSettingsPanel>
   ) {
     final l10n = AppLocalizations.of(context)!;
     final colors = Theme.of(context).colorScheme;
-    return OperitGlassSurface(
-      color: colors.surfaceContainerLow.withValues(alpha: 0.72),
-      layer: OperitGlassSurfaceLayer.control,
-      borderRadius: BorderRadius.circular(8),
-      border: Border.all(color: colors.outlineVariant.withValues(alpha: 0.3)),
+    return Container(
+      decoration: BoxDecoration(
+        color: colors.surfaceContainerHighest.withValues(alpha: 0.26),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(
+          color: colors.outlineVariant.withValues(alpha: 0.22),
+        ),
+      ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
         child: Row(
           children: <Widget>[
             Container(
-              width: 36,
-              height: 36,
+              width: 40,
+              height: 40,
               decoration: BoxDecoration(
-                color: colors.primary.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(8),
+                color: colors.primary.withValues(alpha: 0.10),
+                borderRadius: BorderRadius.circular(11),
               ),
               child: Icon(
                 OperitIcons.developer_board_outlined,
                 color: colors.primary,
-                size: 20,
+                size: 21,
               ),
             ),
             const SizedBox(width: 12),
@@ -1188,12 +1414,66 @@ class _LocalModelSettingsPanelState extends State<LocalModelSettingsPanel>
               onPressed: _activeOperations.isEmpty
                   ? () => _deleteEngine(engine)
                   : null,
-              icon: Icon(OperitIcons.delete_outline_rounded, color: colors.error),
+              icon: Icon(
+                OperitIcons.delete_outline_rounded,
+                color: colors.error,
+              ),
               tooltip: l10n.localModelsDeleteEngine,
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+/// Compact hero metric: icon, count and a quiet label.
+class _OverviewMetric extends StatelessWidget {
+  const _OverviewMetric({
+    required this.icon,
+    required this.value,
+    required this.label,
+  });
+
+  final IconData icon;
+  final String value;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colors = theme.colorScheme;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Row(
+          children: <Widget>[
+            Icon(icon, size: 14, color: colors.primary),
+            const SizedBox(width: 6),
+            Flexible(
+              child: Text(
+                value,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: -0.2,
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 3),
+        Text(
+          label,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          style: theme.textTheme.labelSmall?.copyWith(
+            color: colors.onSurfaceVariant,
+            height: 1.2,
+          ),
+        ),
+      ],
     );
   }
 }
@@ -1360,7 +1640,8 @@ core_proxy.LocalModelInstallStatus? _findInstallStatus(
 IconData _modelKindIcon(core_proxy.LocalModelKind kind) {
   return switch (kind) {
     core_proxy.LocalModelKind.speechToText => OperitIcons.mic_none_rounded,
-    core_proxy.LocalModelKind.textToSpeech => OperitIcons.record_voice_over_outlined,
+    core_proxy.LocalModelKind.textToSpeech =>
+      OperitIcons.record_voice_over_outlined,
     core_proxy.LocalModelKind.chat => OperitIcons.chat_bubble_outline_rounded,
     core_proxy.LocalModelKind.embedding => OperitIcons.data_array_outlined,
   };
@@ -1604,7 +1885,10 @@ class _LocalModelHubDialogState extends State<_LocalModelHubDialog> {
                     decoration: InputDecoration(
                       hintText: l10n.localModelsHubSearchHint,
                       isDense: true,
-                      prefixIcon: const Icon(OperitIcons.search_rounded, size: 20),
+                      prefixIcon: const Icon(
+                        OperitIcons.search_rounded,
+                        size: 20,
+                      ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),

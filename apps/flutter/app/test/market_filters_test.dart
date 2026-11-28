@@ -15,6 +15,7 @@ import 'package:operit2/data/preferences/UserPreferencesManager.dart';
 import 'package:operit2/ui/features/packages/market/MarketFilters.dart';
 import 'package:operit2/ui/features/packages/screens/StoreBrowseScreen.dart';
 import 'package:operit2/ui/features/packages/screens/MarketPane.dart';
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 import 'package:operit2/ui/features/packages/model/ExtensionCatalogController.dart';
 import 'package:operit2/ui/theme/OperitTheme.dart';
 
@@ -178,7 +179,7 @@ void main() {
         ),
       ),
     );
-    await tester.tap(find.byIcon(Icons.sort_rounded));
+    await tester.tap(find.byIcon(OperitIcons.sort_rounded));
     await tester.pumpAndSettle();
     expect(
       tester
@@ -193,13 +194,13 @@ void main() {
     await tester.pumpAndSettle();
     expect(filters.timeRange, MarketTimeRange.week);
     expect(filters.categoryId, 'dev_code');
-    await tester.tap(find.byIcon(Icons.sort_rounded));
+    await tester.tap(find.byIcon(OperitIcons.sort_rounded));
     await tester.pumpAndSettle();
     await tester.tap(find.text('全部时间'));
     await tester.tap(find.byTooltip('关闭'));
     await tester.pumpAndSettle();
     expect(filters.timeRange, MarketTimeRange.week);
-    await tester.tap(find.byIcon(Icons.sort_rounded));
+    await tester.tap(find.byIcon(OperitIcons.sort_rounded));
     await tester.pumpAndSettle();
     await tester.tap(find.text('重置'));
     await tester.tap(find.text('应用筛选'));
@@ -317,8 +318,8 @@ void main() {
       await tester.pumpAndSettle();
       // Open the original type tab and sorting control, without a preview
       // app bar or extra filter entry on the home page.
-      expect(find.byIcon(Icons.sort_rounded), findsNothing);
-      expect(find.byIcon(Icons.tune_rounded), findsNothing);
+      expect(find.byIcon(OperitIcons.sort_rounded), findsNothing);
+      expect(find.byIcon(OperitIcons.tune_rounded), findsNothing);
       await tester.ensureVisible(find.text('技能').first);
       await tester.pumpAndSettle();
       await tester.tap(find.text('技能').first);
@@ -331,7 +332,7 @@ void main() {
           'original-sort-entry-${width.toInt()}',
         );
       }
-      await tester.tap(find.byIcon(Icons.sort_rounded));
+      await tester.tap(find.byIcon(OperitIcons.sort_rounded));
       await tester.pumpAndSettle();
       await tester.tap(find.text('最受欢迎'));
       await tester.pumpAndSettle();
@@ -358,8 +359,8 @@ void main() {
       expect(listing.sort, MarketSortOption.likes);
       expect(listing.timeRange, MarketTimeRange.week);
       expect(listing.categoryId, 'dev_code');
-      expect(find.byIcon(Icons.sort_rounded), findsOneWidget);
-      expect(find.byIcon(Icons.tune_rounded), findsNothing);
+      expect(find.byIcon(OperitIcons.sort_rounded), findsOneWidget);
+      expect(find.byIcon(OperitIcons.tune_rounded), findsNothing);
       expect(tester.takeException(), isNull);
     });
   }

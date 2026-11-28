@@ -343,8 +343,20 @@ class _MarketPaneState extends State<MarketPane> {
           );
           final contentWidth = width - padding.horizontal;
           return CustomScrollView(
+            cacheExtent: 1200,
             physics: const AlwaysScrollableScrollPhysics(),
             slivers: <Widget>[
+              if (_recommendations.isNotEmpty)
+                SliverPadding(
+                  padding: padding.copyWith(top: 12),
+                  sliver: SliverToBoxAdapter(
+                    child: StoreSectionHeader(
+                      icon: OperitIcons.auto_awesome_rounded,
+                      title: '本周精选',
+                      subtitle: '编辑挑选，覆盖效率、开发与连接',
+                    ),
+                  ),
+                ),
               if (_recommendations.isNotEmpty)
                 SliverToBoxAdapter(
                   child: _FeaturedCarousel(
@@ -389,18 +401,11 @@ class _MarketPaneState extends State<MarketPane> {
                   ),
                 )
               else ...<Widget>[
-                if (_recent.isNotEmpty)
-                  _section(
-                    padding: padding,
-                    title: '最近更新',
-                    subtitle: '社区刚刚发布或更新的扩展',
-                    onSeeAll: () => openMarketBrowse(heading: '最近更新'),
-                    child: _cardShelf(_recent),
-                  ),
                 if (_popular.isNotEmpty)
                   _section(
                     padding: padding,
-                    title: '下载排行',
+                    title: '热门扩展',
+                    subtitle: '本周下载最多',
                     onSeeAll: () => openMarketBrowse(
                       heading: '下载排行',
                       sort: MarketSortOption.downloads,
@@ -415,10 +420,18 @@ class _MarketPaneState extends State<MarketPane> {
                       ),
                     ),
                   ),
+                if (_recent.isNotEmpty)
+                  _section(
+                    padding: padding,
+                    title: '新上架',
+                    subtitle: '社区刚刚发布或更新的扩展',
+                    onSeeAll: () => openMarketBrowse(heading: '最近更新'),
+                    child: _cardShelf(_recent),
+                  ),
                 if (_loved.isNotEmpty)
                   _section(
                     padding: padding,
-                    title: '大家都喜欢',
+                    title: '社区口碑',
                     subtitle: '获得点赞最多的扩展',
                     onSeeAll: () => openMarketBrowse(
                       heading: '大家都喜欢',

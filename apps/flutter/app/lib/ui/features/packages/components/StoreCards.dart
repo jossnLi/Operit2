@@ -11,6 +11,7 @@ import 'ExtensionNavigation.dart';
 import 'StoreVisuals.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
+
 /// "获取" pill bound to the shared marketplace installation state.
 class StoreMarketGetButton extends StatelessWidget {
   const StoreMarketGetButton({
@@ -402,21 +403,25 @@ class StoreFeaturedBanner extends StatelessWidget {
     final theme = Theme.of(context);
     final dark = theme.brightness == Brightness.dark;
     final kind = StoreKind.of(entry.type);
-    final seed = marketEntryAvatarSeed(entry);
-    final palette = ExtensionAvatarPalette.of(context, seed);
     final publisher = marketEntryPublisher(entry);
-    final radius = BorderRadius.circular(16);
-    final ink = palette.onContainer;
+    final colors = theme.colorScheme;
+    final radius = BorderRadius.circular(20);
+    final ink = colors.onSurface;
     return DecoratedBox(
       decoration: BoxDecoration(
         borderRadius: radius,
-        border: Border.all(color: ink.withValues(alpha: dark ? 0.12 : 0.08)),
+        border: Border.all(
+          color: colors.primary.withValues(alpha: dark ? 0.20 : 0.24),
+        ),
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: <Color>[
-            Color.lerp(palette.container, Colors.white, dark ? 0.05 : 0.3)!,
-            palette.container,
+            Color.alphaBlend(
+              colors.primary.withValues(alpha: dark ? 0.12 : 0.16),
+              dark ? colors.surfaceContainerLow : colors.surfaceContainerLowest,
+            ),
+            colors.surface.withValues(alpha: dark ? 0.72 : 0.9),
           ],
         ),
       ),
@@ -429,41 +434,57 @@ class StoreFeaturedBanner extends StatelessWidget {
             child: Stack(
               children: <Widget>[
                 Positioned(
-                  right: -12,
-                  bottom: -56,
-                  child: Text(
-                    extensionMonogram(entry.title),
-                    maxLines: 1,
-                    softWrap: false,
-                    textScaler: TextScaler.noScaling,
-                    style: TextStyle(
-                      fontSize: 200,
-                      height: 1,
-                      fontWeight: FontWeight.w800,
-                      color: ink.withValues(alpha: dark ? 0.08 : 0.07),
-                    ),
+                  right: -20,
+                  bottom: -28,
+                  child: Icon(
+                    kind.icon,
+                    size: 148,
+                    color: colors.primary.withValues(alpha: 0.08),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(22, 20, 22, 18),
+                  padding: const EdgeInsets.fromLTRB(20, 18, 20, 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(
-                        '${entry.featured ? '精选' : '推荐'} · ${kind.label}',
-                        style: theme.textTheme.labelMedium?.copyWith(
-                          color: ink.withValues(alpha: 0.72),
-                          fontWeight: FontWeight.w600,
-                        ),
+                      Row(
+                        children: <Widget>[
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 9,
+                              vertical: 3,
+                            ),
+                            decoration: BoxDecoration(
+                              color: colors.primary.withValues(alpha: 0.12),
+                              borderRadius: BorderRadius.circular(999),
+                            ),
+                            child: Text(
+                              entry.featured
+                                  ? '本周精选 · ${kind.label}'
+                                  : '推荐 · ${kind.label}',
+                              style: theme.textTheme.labelSmall?.copyWith(
+                                color: colors.primary,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                          const Spacer(),
+                          Icon(
+                            OperitIcons.chevron_right_rounded,
+                            size: 18,
+                            color: colors.onSurfaceVariant,
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 6),
+                      const SizedBox(height: 10),
                       Text(
                         entry.title,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.titleLarge?.copyWith(
+                        style: theme.textTheme.headlineSmall?.copyWith(
                           color: ink,
                           fontWeight: FontWeight.w700,
+                          letterSpacing: -0.3,
                         ),
                       ),
                       const SizedBox(height: 6),
@@ -471,8 +492,8 @@ class StoreFeaturedBanner extends StatelessWidget {
                         entry.description,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: ink.withValues(alpha: 0.8),
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: colors.onSurfaceVariant,
                           height: 1.45,
                         ),
                       ),
@@ -496,7 +517,7 @@ class StoreFeaturedBanner extends StatelessWidget {
                                 const SizedBox(height: 2),
                                 _MarketStats(
                                   entry: entry,
-                                  color: ink.withValues(alpha: 0.7),
+                                  color: colors.onSurfaceVariant,
                                 ),
                               ],
                             ),

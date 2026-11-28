@@ -309,7 +309,6 @@ void main() {
       );
       expect(tester.takeException(), isNull, reason: 'short catalog layout');
       expect(find.text('Catalog Model 49'), findsNothing);
-      expect(find.byType(TextField).hitTestable(), findsOneWidget);
       final catalogScroll = find.descendant(
         of: find.byType(LocalModelSettingsPanel),
         matching: find.byWidgetPredicate(
@@ -319,7 +318,12 @@ void main() {
         ),
       );
       expect(tester.getSize(catalogScroll).height, size.height);
-      await tester.drag(catalogScroll, const Offset(0, -350));
+      if (find.byType(TextField).hitTestable().evaluate().isEmpty) {
+        await tester.drag(catalogScroll, const Offset(0, -260));
+        await tester.pumpAndSettle();
+      }
+      expect(find.byType(TextField).hitTestable(), findsOneWidget);
+      await tester.drag(catalogScroll, const Offset(0, -500));
       await tester.pumpAndSettle();
       expect(find.byType(TextField).hitTestable(), findsNothing);
       final visibleModels = find.textContaining('Catalog Model').hitTestable();
@@ -327,9 +331,18 @@ void main() {
       expect(tester.takeException(), isNull, reason: 'scrolled catalog layout');
       tester.state<ScrollableState>(catalogScroll).position.jumpTo(0);
       await tester.pumpAndSettle();
+      if (find.byType(TextField).hitTestable().evaluate().isEmpty) {
+        await tester.drag(catalogScroll, const Offset(0, -260));
+        await tester.pumpAndSettle();
+      }
       await tester.enterText(find.byType(TextField).first, 'catalog-49');
       await tester.pumpAndSettle();
       expect(find.text(l10n.localModelsResultCount(1, 50)), findsOneWidget);
+      final catalogState = tester.state<ScrollableState>(catalogScroll);
+      if (catalogState.position.pixels < 200) {
+        catalogState.position.jumpTo(260);
+        await tester.pumpAndSettle();
+      }
       await tester.scrollUntilVisible(
         find.text('Catalog Model 49'),
         160,

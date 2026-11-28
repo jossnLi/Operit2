@@ -23,6 +23,7 @@ import 'package:operit2/ui/main/MainLayoutController.dart';
 import 'package:operit2/ui/main/components/AppContent.dart';
 import 'package:operit2/ui/main/navigation/AppNavigationModels.dart';
 import 'package:operit2/ui/main/screens/OperitScreens.dart';
+import 'package:operit2/ui/common/icons/operit_icons.dart';
 import 'package:operit2/ui/features/packages/screens/StoreBrowseScreen.dart';
 import 'package:operit2/ui/features/packages/components/StoreDetailKit.dart';
 import 'package:operit2/ui/features/packages/market/MarketStatsSupport.dart';
@@ -595,7 +596,7 @@ void main() {
     expect(bridge.installCalls, 1);
     // The action shows its done state and the header badge agrees.
     expect(find.text('已安装'), findsNWidgets(2));
-    expect(find.byIcon(Icons.check_rounded), findsOneWidget);
+    expect(find.byIcon(OperitIcons.check_rounded), findsOneWidget);
     expect(find.byType(SnackBar), findsNothing);
     expect(tester.takeException(), isNull);
   });
