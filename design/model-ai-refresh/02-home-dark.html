@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>模型与 AI · 主页（深色）</title>
+<link rel="stylesheet" href="assets/app.css">
+<style>
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .gtile {
+    background: var(--inset); border-radius: 13px; padding: 11px 6px 9px;
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+  }
+  .gtile .nm { font-size: 12px; font-weight: 600; letter-spacing: -.1px; }
+  .gtile .st { font-size: 10.5px; color: var(--text-3); display: flex; align-items: center; gap: 4px; }
+  .gtile .st.ok { color: var(--ok); }
+  .gtile .st.warn { color: var(--warn); }
+  .stats { display: flex; align-items: center; gap: 0; }
+  .stat { flex: 1; }
+  .stat .n { font-size: 17px; font-weight: 650; letter-spacing: -.4px; }
+  .stat .l { font-size: 11px; color: var(--text-3); margin-top: 1px; }
+  .stat + .stat { border-left: 1px solid var(--sep); padding-left: 14px; }
+</style>
+</head>
+<body class="dark">
+<div class="phone">
+  <div class="statusbar">
+    <span>9:41</span>
+    <div class="right">
+      <svg class="sb-icon" width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7.4" width="2.6" height="3.6" rx=".8"/><rect x="4.4" y="5.2" width="2.6" height="5.8" rx=".8"/><rect x="8.8" y="2.6" width="2.6" height="8.4" rx=".8"/><rect x="13.2" y="0" width="2.6" height="11" rx=".8"/></svg>
+      <svg class="sb-icon" width="15" height="11" viewBox="0 0 15 11" fill="currentColor"><path d="M7.5 10.4 4.9 7.7a3.7 3.7 0 0 1 5.2 0z"/><path d="M2.6 5.3a7 7 0 0 1 9.8 0l-1.4 1.5a5 5 0 0 0-7 0z"/><path d="M.3 2.8a10.4 10.4 0 0 1 14.4 0L13.4 4.3a8.4 8.4 0 0 0-11.8 0z"/></svg>
+      <svg class="sb-icon" width="25" height="12" viewBox="0 0 25 12"><rect x="0" y=".5" width="21" height="11" rx="3.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/><rect x="2" y="2.5" width="15" height="7" rx="2" fill="currentColor"/><path d="M23 4.2v3.6" stroke="currentColor" stroke-width="1.4" opacity=".45"/></svg>
+    </div>
+  </div>
+
+  <div class="nav">
+    <div class="nav-back"><i data-ic="chevleft" data-s="21" data-w="2"></i></div>
+    <div class="nav-title">模型与 AI</div>
+    <div class="nav-action"><i data-ic="chart" data-s="22" data-w="1.8"></i></div>
+  </div>
+
+  <div class="content">
+    <!-- 当前默认模型 -->
+    <div class="hero" style="margin-top:8px">
+      <div class="row" style="padding:0;min-height:0;gap:11px">
+        <div class="logo mk-gemini"><i data-brand="gemini" data-bs="25"></i></div>
+        <div class="grow">
+          <div class="s tight" style="color:var(--text-3);margin:0 0 2px">默认聊天模型</div>
+          <div class="t" style="font-size:16.5px">gemini-3.1-pro</div>
+          <div class="s">账号登录 · 1M 上下文</div>
+        </div>
+        <span class="pill ok"><i class="dot"></i>已连接</span>
+      </div>
+      <div class="divider" style="margin:13px 0 12px"></div>
+      <div class="stats">
+        <div class="stat"><div class="n">5</div><div class="l">已连接供应商</div></div>
+        <div class="stat"><div class="n">34</div><div class="l">可用模型</div></div>
+        <div class="stat"><div class="n">18</div><div class="l">已启用</div></div>
+        <div class="stat"><div class="n" style="color:var(--warn)">1</div><div class="l">需重新授权</div></div>
+      </div>
+    </div>
+
+    <!-- 供应商 -->
+    <div class="sec">
+      <div class="sec-head">
+        <h3>供应商</h3>
+        <div class="sec-action">管理</div>
+      </div>
+      <div class="grid3">
+        <div class="gtile"><div class="logo xs mk-gemini"><i data-brand="gemini" data-bs="16"></i></div><div class="nm">Gemini</div><div class="st ok"><i class="dot"></i>已连接</div></div>
+        <div class="gtile"><div class="logo xs mk-claude"><i data-brand="claude" data-bs="16"></i></div><div class="nm">Claude</div><div class="st ok"><i class="dot"></i>已连接</div></div>
+        <div class="gtile"><div class="logo xs mk-codex"><i data-brand="codex" data-bs="16"></i></div><div class="nm">Codex</div><div class="st ok"><i class="dot"></i>已连接</div></div>
+        <div class="gtile"><div class="logo xs mk-xai"><i data-brand="xai" data-bs="16"></i></div><div class="nm">xAI</div><div class="st warn"><i class="dot"></i>需重新授权</div></div>
+        <div class="gtile"><div class="logo xs mk-kimi"><i data-brand="kimi" data-bs="16"></i></div><div class="nm">Kimi</div><div class="st ok"><i class="dot"></i>已连接</div></div>
+        <div class="gtile"><div class="logo xs mk-openrouter"><i data-brand="openrouter" data-bs="16"></i></div><div class="nm">OpenRouter</div><div class="st ok"><i class="dot"></i>已连接</div></div>
+      </div>
+    </div>
+
+    <!-- 模型 -->
+    <div class="sec">
+      <div class="sec-head"><h3>模型</h3><div class="sec-action">全部</div></div>
+      <div class="group">
+        <div class="row">
+          <div class="itile blue"><i data-ic="grid" data-s="19"></i></div>
+          <div class="grow"><div class="t sm">模型库</div><div class="s">34 个模型 · 按供应商、能力筛选</div></div>
+          <div class="chev"><i data-ic="chevright" data-s="19"></i></div>
+        </div>
+        <div class="row">
+          <div class="itile n"><i data-ic="branch" data-s="19"></i></div>
+          <div class="grow"><div class="t sm">功能模型分配</div><div class="s">11 项功能 · 默认跟随聊天模型</div></div>
+          <div class="val">1 项自定义</div>
+          <div class="chev"><i data-ic="chevright" data-s="19"></i></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI 设置 -->
+    <div class="sec">
+      <div class="sec-head"><h3>AI 设置</h3></div>
+      <div class="group">
+        <div class="row">
+          <div class="itile n"><i data-ic="gauge" data-s="18"></i></div>
+          <div class="grow"><div class="t sm">调用策略</div><div class="s">流式输出 · 并发 3 · 失败重试 2 次</div></div>
+          <div class="chev"><i data-ic="chevright" data-s="19"></i></div>
+        </div>
+        <div class="row">
+          <div class="itile n"><i data-ic="layers" data-s="18"></i></div>
+          <div class="grow"><div class="t sm">上下文与媒体</div><div class="s">图片历史 3 轮 · 媒体历史 1 轮</div></div>
+          <div class="chev"><i data-ic="chevright" data-s="19"></i></div>
+        </div>
+        <div class="row">
+          <div class="itile n"><i data-ic="database" data-s="18"></i></div>
+          <div class="grow"><div class="t sm">模型目录</div><div class="s">2 小时前自动同步 · 远端 36 家供应商</div></div>
+          <div class="chev"><i data-ic="chevright" data-s="19"></i></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footnote">API Key 与账号凭据仅保存在本机，使用系统安全存储加密；不会上传到任何服务器。</div>
+  </div>
+
+  <div class="home-ind"><i></i></div>
+</div>
+<script src="assets/icons.js"></script>
+<script src="assets/brands.js"></script>
+<script>/* 主题模拟：?theme=dark / ?theme=light 仅用于生成本地预览图 */ (function(){var m=/[?&]theme=(dark|light)/.exec(location.search);if(m){document.body.classList.toggle("dark",m[1]==="dark");}})();</script>
+</body>
+</html>

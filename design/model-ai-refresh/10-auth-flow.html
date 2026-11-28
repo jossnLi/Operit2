@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>账号授权流程</title>
+<link rel="stylesheet" href="assets/app.css">
+<style>
+  .row{min-height:50px;padding:11px 15px}
+  .phone{min-height:0}
+  .steps3{position:relative;display:grid;grid-template-columns:repeat(3,1fr);align-items:center}
+  .steps3::before{content:"";position:absolute;left:16.66%;right:16.66%;top:50%;height:1px;background:var(--sep)}
+  .st3{display:flex;justify-content:center;position:relative;z-index:1}
+  .step-labels3{display:grid;grid-template-columns:repeat(3,1fr);margin-top:8px;font-size:11.5px;color:var(--text-3);text-align:center}
+  .step-labels3 b{display:block;font-weight:600;color:var(--text)}
+  .footnote{padding:8px 4px 0}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="statusbar">
+    <span>9:41</span>
+    <div class="right">
+      <svg class="sb-icon" width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7.4" width="2.6" height="3.6" rx=".8"/><rect x="4.4" y="5.2" width="2.6" height="5.8" rx=".8"/><rect x="8.8" y="2.6" width="2.6" height="8.4" rx=".8"/><rect x="13.2" y="0" width="2.6" height="11" rx=".8"/></svg>
+      <svg class="sb-icon" width="15" height="11" viewBox="0 0 15 11" fill="currentColor"><path d="M7.5 10.4 4.9 7.7a3.7 3.7 0 0 1 5.2 0z"/><path d="M2.6 5.3a7 7 0 0 1 9.8 0l-1.4 1.5a5 5 0 0 0-7 0z"/><path d="M.3 2.8a10.4 10.4 0 0 1 14.4 0L13.4 4.3a8.4 8.4 0 0 0-11.8 0z"/></svg>
+      <svg class="sb-icon" width="25" height="12" viewBox="0 0 25 12"><rect x="0" y=".5" width="21" height="11" rx="3.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/><rect x="2" y="2.5" width="15" height="7" rx="2" fill="currentColor"/><path d="M23 4.2v3.6" stroke="currentColor" stroke-width="1.4" opacity=".45"/></svg>
+    </div>
+  </div>
+
+  <div class="nav">
+    <div class="nav-back"><i data-ic="chevleft" data-s="21" data-w="2"></i></div>
+    <div class="nav-title">账号授权</div>
+    <div class="nav-action muted" style="font-size:14px;font-weight:500">取消</div>
+  </div>
+
+  <div class="content">
+    <div style="display:flex;gap:11px;align-items:center;padding:8px 2px 0">
+      <div class="logo xs mk-codex"><i data-brand="codex" data-bs="18"></i></div>
+      <div class="grow">
+        <div style="font-size:16.5px;font-weight:650;letter-spacing:-.3px">使用 ChatGPT 账号登录</div>
+        <div class="s" style="margin-top:2px">Codex · 浏览器 PKCE · 订阅额度</div>
+      </div>
+    </div>
+
+    <div style="margin:20px 4px 0">
+      <div class="steps3">
+        <div class="st3"><div class="stepdot done"><i data-ic="check" data-s="13" data-w="2.4"></i></div></div>
+        <div class="st3"><div class="stepdot on">2</div></div>
+        <div class="st3"><div class="stepdot">3</div></div>
+      </div>
+      <div class="step-labels3">
+        <b>打开授权页</b>
+        <b style="color:var(--accent)">登录并确认</b>
+        <span>完成</span>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px;padding:18px 15px;text-align:center">
+      <div style="display:flex;justify-content:center">
+        <div class="ring" style="width:24px;height:24px;border-width:2.5px"></div>
+      </div>
+      <div style="font-size:15.5px;font-weight:650;margin-top:11px">等待浏览器完成授权</div>
+      <div class="s" style="margin-top:5px;line-height:1.5">已打开 <b style="color:var(--text);font-weight:600">auth.openai.com</b>，登录后点「允许」自动返回</div>
+      <div style="display:flex;justify-content:center;gap:8px;margin-top:13px">
+        <span class="chip">localhost:1455</span>
+        <span class="chip">已等待 00:38</span>
+      </div>
+    </div>
+
+    <div class="btn-row" style="margin-top:10px">
+      <div class="btn tint sm" style="flex:1;width:auto"><i data-ic="refresh" data-s="16" data-w="1.8"></i>重新打开页面</div>
+      <div class="btn quiet sm" style="flex:1;width:auto"><i data-ic="copy" data-s="16" data-w="1.8"></i>复制授权链接</div>
+    </div>
+
+    <div class="sec" style="margin-top:18px">
+      <div class="group">
+        <div class="row">
+          <div class="itile n"><i data-ic="phone" data-s="18"></i></div>
+          <div class="grow"><div class="t sm">打不开浏览器？改用设备码</div><div class="s">auth.openai.com/codex/device</div></div>
+          <div class="chev"><i data-ic="chevright" data-s="19"></i></div>
+        </div>
+      </div>
+      <div class="footnote">同一账号同时只能有一处授权在进行，切换会作废上一个代码。</div>
+    </div>
+
+    <div class="sec">
+      <div class="note plain">
+        <i data-ic="shield" data-s="16"></i>
+        <div>只申请 Codex 调用所需的最小范围，令牌加密存在本机，退出登录即失效。</div>
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:center;margin-top:18px">
+      <span style="font-size:13px;color:var(--text-3)">取消并返回</span>
+    </div>
+  </div>
+
+  <div class="home-ind"><i></i></div>
+</div>
+<script src="assets/icons.js"></script>
+<script src="assets/brands.js"></script>
+<script>/* 主题模拟：?theme=dark / ?theme=light 仅用于生成本地预览图 */ (function(){var m=/[?&]theme=(dark|light)/.exec(location.search);if(m){document.body.classList.toggle("dark",m[1]==="dark");}})();</script>
+</body>
+</html>
+

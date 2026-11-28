@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>配置 API Key</title>
+<link rel="stylesheet" href="assets/app.css">
+<style>
+  .row{min-height:50px;padding:11px 15px}
+  .phone{min-height:0}
+  .footnote{padding:8px 4px 0}
+  .krow{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px;padding:8px 0}
+  .krow span{color:var(--text-2);flex:none}
+  .krow b{font-weight:500;color:var(--text);font-family:'Cascadia Mono',monospace;font-size:11.5px;text-align:right;overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="statusbar">
+    <span>9:41</span>
+    <div class="right">
+      <svg class="sb-icon" width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7.4" width="2.6" height="3.6" rx=".8"/><rect x="4.4" y="5.2" width="2.6" height="5.8" rx=".8"/><rect x="8.8" y="2.6" width="2.6" height="8.4" rx=".8"/><rect x="13.2" y="0" width="2.6" height="11" rx=".8"/></svg>
+      <svg class="sb-icon" width="15" height="11" viewBox="0 0 15 11" fill="currentColor"><path d="M7.5 10.4 4.9 7.7a3.7 3.7 0 0 1 5.2 0z"/><path d="M2.6 5.3a7 7 0 0 1 9.8 0l-1.4 1.5a5 5 0 0 0-7 0z"/><path d="M.3 2.8a10.4 10.4 0 0 1 14.4 0L13.4 4.3a8.4 8.4 0 0 0-11.8 0z"/></svg>
+      <svg class="sb-icon" width="25" height="12" viewBox="0 0 25 12"><rect x="0" y=".5" width="21" height="11" rx="3.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/><rect x="2" y="2.5" width="15" height="7" rx="2" fill="currentColor"/><path d="M23 4.2v3.6" stroke="currentColor" stroke-width="1.4" opacity=".45"/></svg>
+    </div>
+  </div>
+
+  <div class="nav">
+    <div class="nav-back"><i data-ic="chevleft" data-s="21" data-w="2"></i></div>
+    <div class="nav-title">配置 API Key</div>
+    <div class="nav-action muted" style="font-size:14px;font-weight:500">关闭</div>
+  </div>
+
+  <div class="content">
+    <div style="display:flex;gap:12px;align-items:center;padding:8px 2px 0">
+      <div class="logo sm"><i data-brand="kimi" data-bs="20"></i></div>
+      <div class="grow">
+        <div style="font-size:16.5px;font-weight:650;letter-spacing:-.3px">Kimi 平台 API Key</div>
+        <div class="s" style="margin-top:2px">仅保存在本机 · 可随时更换或删除</div>
+      </div>
+    </div>
+
+    <div class="sec" style="margin-top:18px">
+      <div class="group">
+        <div style="padding:13px 15px 0">
+          <div class="keyfield" style="border-color:var(--err)">
+            <i data-ic="key" data-s="16" style="color:var(--err)"></i>
+            <span class="mask" style="color:var(--text)">sk-kimi-••••••••••••••••</span>
+            <i data-ic="eye" data-s="16" style="color:var(--text-3)"></i>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;margin-top:10px">
+            <span class="pill err"><i class="dot"></i>401</span>
+            <div class="grow">
+              <div style="font-size:12.5px;font-weight:600;color:var(--err)">invalid_api_key · 校验未通过</div>
+              <div style="font-size:11.5px;color:var(--text-3);margin-top:3px;line-height:1.45">Key 与当前端点不同源，或已在控制台撤销。失败时不会写入任何凭据。</div>
+            </div>
+          </div>
+          <div class="divider" style="margin:10px 0 0"></div>
+          <div class="krow"><span>端点</span><span style="display:flex;align-items:center;gap:6px"><b>Kimi Code · api.kimi.com/coding/v1</b><i data-ic="chevright" data-s="16" style="color:var(--text-3)"></i></span></div>
+        </div>
+        <div class="row" style="gap:8px">
+          <div class="btn primary sm" style="flex:1;width:auto"><i data-ic="edit" data-s="15" data-w="1.8"></i>重新输入</div>
+          <div class="btn quiet sm" style="flex:1;width:auto"><i data-ic="plug" data-s="15" data-w="1.8"></i>换个端点</div>
+        </div>
+        <div class="row">
+          <div class="itile n"><i data-ic="external" data-s="18"></i></div>
+          <div class="grow"><div class="t sm">获取开放平台 Key</div><div class="s">platform.moonshot.cn · 与 Code 不通用</div></div>
+          <div class="chev"><i data-ic="chevright" data-s="19"></i></div>
+        </div>
+      </div>
+      <div class="footnote">Kimi Code 与开放平台是两套账户，Key 不能混用；切换端点会重新校验。</div>
+    </div>
+
+    <div class="sec" style="margin-top:18px">
+      <div class="sec-head"><h3>排查</h3></div>
+      <div class="group">
+        <div class="row">
+          <div class="itile n"><i data-ic="code" data-s="18"></i></div>
+          <div class="grow"><div class="t sm">查看原始响应</div><div class="s">POST /messages → 401 · req 8f21c4</div></div>
+          <div class="chev"><i data-ic="chevright" data-s="19"></i></div>
+        </div>
+        <div class="row">
+          <div class="itile n"><i data-ic="server" data-s="18"></i></div>
+          <div class="grow"><div class="t sm">端点对照</div><div class="s">Code / 国内开放平台 / 海外开放平台 三选一</div></div>
+          <div class="chev"><i data-ic="chevright" data-s="19"></i></div>
+        </div>
+      </div>
+      <div class="note plain" style="margin-top:12px">
+        <i data-ic="shield" data-s="16"></i>
+        <div>校验只发一次最小请求（约 120 tokens），不读取或上传你的对话内容。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="home-ind"><i></i></div>
+</div>
+<script src="assets/icons.js"></script>
+<script src="assets/brands.js"></script>
+<script>/* 主题模拟：?theme=dark / ?theme=light 仅用于生成本地预览图 */ (function(){var m=/[?&]theme=(dark|light)/.exec(location.search);if(m){document.body.classList.toggle("dark",m[1]==="dark");}})();</script>
+</body>
+</html>
+

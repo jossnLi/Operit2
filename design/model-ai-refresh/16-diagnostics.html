@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>连接诊断</title>
+<link rel="stylesheet" href="assets/app.css">
+<style>
+  .diag { padding: 14px 15px; }
+  .diag + .diag { border-top: 1px solid var(--sep); }
+  .diag .head { display: flex; align-items: center; gap: 9px; }
+  .diag .ttl { font-size: 14.5px; font-weight: 650; flex: 1; letter-spacing: -.1px; }
+  .diag .msg { font-size: 12.5px; color: var(--text-2); line-height: 1.5; margin-top: 7px; }
+  .codebox { font-family: "Cascadia Mono", monospace; font-size: 11.5px; color: var(--text-3); background: var(--inset); border-radius: 8px; padding: 7px 9px; margin-top: 9px; line-height: 1.5; overflow-wrap: anywhere; word-break: normal; }
+  .acts { display: flex; gap: 8px; margin-top: 11px; }
+  .mini-btn { height: 32px; padding: 0 12px; border-radius: 9px; display: inline-flex; align-items: center; font-size: 12.5px; font-weight: 600; transition: transform .12s ease, filter .12s ease; }
+  .mini-btn:active { transform: scale(.98); filter: brightness(.97); }
+  .mini-btn.pri { background: linear-gradient(180deg, var(--primary-1), var(--primary-2)); color: #fff; box-shadow: 0 1px 2px rgba(16,24,40,.10); }
+  .mini-btn.ghost { background: transparent; border: 1px solid var(--group-b); color: var(--text); }
+  .mini-btn.link { color: var(--text-3); }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="statusbar">
+    <span>9:41</span>
+    <div class="right">
+      <svg class="sb-icon" width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7.4" width="2.6" height="3.6" rx=".8"/><rect x="4.4" y="5.2" width="2.6" height="5.8" rx=".8"/><rect x="8.8" y="2.6" width="2.6" height="8.4" rx=".8"/><rect x="13.2" y="0" width="2.6" height="11" rx=".8"/></svg>
+      <svg class="sb-icon" width="15" height="11" viewBox="0 0 15 11" fill="currentColor"><path d="M7.5 10.4 4.9 7.7a3.7 3.7 0 0 1 5.2 0z"/><path d="M2.6 5.3a7 7 0 0 1 9.8 0l-1.4 1.5a5 5 0 0 0-7 0z"/><path d="M.3 2.8a10.4 10.4 0 0 1 14.4 0L13.4 4.3a8.4 8.4 0 0 0-11.8 0z"/></svg>
+      <svg class="sb-icon" width="25" height="12" viewBox="0 0 25 12"><rect x="0" y=".5" width="21" height="11" rx="3.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/><rect x="2" y="2.5" width="15" height="7" rx="2" fill="currentColor"/><path d="M23 4.2v3.6" stroke="currentColor" stroke-width="1.4" opacity=".45"/></svg>
+    </div>
+  </div>
+
+  <div class="nav">
+    <div class="nav-back"><i data-ic="chevleft" data-s="21" data-w="2"></i></div>
+    <div class="nav-title">连接诊断</div>
+    <div class="nav-action"><i data-ic="refresh" data-s="20" data-w="1.8"></i></div>
+  </div>
+
+  <div class="content">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 4px 0">
+      <span style="font-size:12px;color:var(--text-3)">最近 24 小时 · 4 个问题</span>
+      <span style="font-size:12px;color:var(--text-3)">2 个需要处理</span>
+    </div>
+
+    <div class="card" style="margin-top:12px;border-color:color-mix(in srgb, var(--err) 34%, transparent);background:var(--err-tint)">
+      <div style="display:flex;align-items:center;gap:9px">
+        <div class="itile" style="background:transparent;color:var(--err)"><i data-ic="alert" data-s="19"></i></div>
+        <div class="grow">
+          <div style="font-size:14.5px;font-weight:650;color:var(--err)">Codex 授权已失效</div>
+          <div style="font-size:12px;color:var(--err);opacity:.85;margin-top:2px">刷新令牌被上游拒绝，Codex 请求将失败</div>
+        </div>
+      </div>
+      <div class="acts">
+        <div class="mini-btn pri">重新授权</div>
+        <div class="mini-btn ghost" style="background:var(--group)">查看详情</div>
+      </div>
+    </div>
+
+    <div class="sec" style="margin-top:22px">
+      <div class="sec-head"><h3>需要处理</h3></div>
+      <div class="group">
+        <div class="diag">
+          <div class="head">
+            <div class="logo xs mk-kimi"><i data-brand="kimi" data-bs="16"></i></div>
+            <div class="ttl">Kimi · 密钥无效</div>
+            <span class="pill err">401</span>
+          </div>
+          <div class="msg">上次请求于 19:04 失败：密钥可能已在控制台被撤销，或与当前端点不同源。</div>
+          <div class="codebox">POST /coding/v1/messages → 401 · invalid_api_key<br>req 8f21c4</div>
+          <div class="acts">
+            <div class="mini-btn pri">更换密钥</div>
+            <div class="mini-btn ghost">切换端点</div>
+            <div class="mini-btn link">忽略</div>
+          </div>
+        </div>
+
+        <div class="diag">
+          <div class="head">
+            <div class="logo xs mk-or"><i data-brand="openrouter" data-bs="16"></i></div>
+            <div class="ttl">OpenRouter · 余额不足</div>
+            <span class="pill err">402</span>
+          </div>
+          <div class="msg">账户 credits 已用尽，请求被网关拒绝；已自动切换到 gemini-3.1-pro 继续会话。</div>
+          <div class="codebox">credits remaining $0.00 · key "Operit2"</div>
+          <div class="acts">
+            <div class="mini-btn pri">去充值</div>
+            <div class="mini-btn ghost">调整默认模型</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><h3>可自动恢复</h3></div>
+      <div class="group">
+        <div class="diag">
+          <div class="head">
+            <div class="logo xs mk-codex"><i data-brand="codex" data-bs="16"></i></div>
+            <div class="ttl">Codex · 触发限流</div>
+            <span class="pill warn">429</span>
+          </div>
+          <div class="msg">5 小时窗口额度已用尽，3 分 12 秒后自动恢复。</div>
+          <div class="acts">
+            <div class="mini-btn ghost">稍后重试</div>
+            <div class="mini-btn link">改用 API Key</div>
+          </div>
+        </div>
+
+        <div class="diag">
+          <div class="head">
+            <div class="logo xs mk-xai"><i data-brand="xai" data-bs="16"></i></div>
+            <div class="ttl">xAI · 地区/套餐限制</div>
+            <span class="pill warn">403</span>
+          </div>
+          <div class="msg">授权返回 access_denied，该账号当前地区或套餐不支持设备码登录。</div>
+          <div class="acts">
+            <div class="mini-btn ghost">了解详情</div>
+            <div class="mini-btn link">改用 API Key</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><h3>诊断工具</h3></div>
+      <div class="group">
+        <div class="row">
+          <div class="itile n"><i data-ic="wifi" data-s="18"></i></div>
+          <div class="grow"><div class="t sm">网络连通性</div><div class="s">api.kimi.com · 42ms</div></div>
+          <span class="pill ok"><i class="dot"></i>正常</span>
+        </div>
+        <div class="row">
+          <div class="itile n"><i data-ic="globe" data-s="18"></i></div>
+          <div class="grow"><div class="t sm">代理与 DNS</div><div class="s">直连 · 系统 DNS</div></div>
+          <span class="val">未启用代理</span>
+        </div>
+        <div class="row">
+          <div class="itile blue"><i data-ic="flask" data-s="18"></i></div>
+          <div class="grow"><div class="t sm">一键诊断</div><div class="s">依次测试 3 家已连接供应商</div></div>
+          <span style="font-size:12.5px;font-weight:600;color:var(--accent)">开始</span>
+        </div>
+      </div>
+      <div class="footnote">诊断只发起最小请求（各 1 次，约 120 tokens），不会读取或上传你的对话内容。</div>
+    </div>
+  </div>
+
+  <div class="home-ind"><i></i></div>
+</div>
+<script src="assets/icons.js"></script>
+<script src="assets/brands.js"></script>
+<script>/* 主题模拟：?theme=dark / ?theme=light 仅用于生成本地预览图 */ (function(){var m=/[?&]theme=(dark|light)/.exec(location.search);if(m){document.body.classList.toggle("dark",m[1]==="dark");}})();</script>
+</body>
+</html>

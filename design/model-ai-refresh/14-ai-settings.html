@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI 设置</title>
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body>
+<div class="phone">
+  <div class="statusbar">
+    <span>9:41</span>
+    <div class="right">
+      <svg class="sb-icon" width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7.4" width="2.6" height="3.6" rx=".8"/><rect x="4.4" y="5.2" width="2.6" height="5.8" rx=".8"/><rect x="8.8" y="2.6" width="2.6" height="8.4" rx=".8"/><rect x="13.2" y="0" width="2.6" height="11" rx=".8"/></svg>
+      <svg class="sb-icon" width="15" height="11" viewBox="0 0 15 11" fill="currentColor"><path d="M7.5 10.4 4.9 7.7a3.7 3.7 0 0 1 5.2 0z"/><path d="M2.6 5.3a7 7 0 0 1 9.8 0l-1.4 1.5a5 5 0 0 0-7 0z"/><path d="M.3 2.8a10.4 10.4 0 0 1 14.4 0L13.4 4.3a8.4 8.4 0 0 0-11.8 0z"/></svg>
+      <svg class="sb-icon" width="25" height="12" viewBox="0 0 25 12"><rect x="0" y=".5" width="21" height="11" rx="3.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/><rect x="2" y="2.5" width="15" height="7" rx="2" fill="currentColor"/><path d="M23 4.2v3.6" stroke="currentColor" stroke-width="1.4" opacity=".45"/></svg>
+    </div>
+  </div>
+
+  <div class="nav">
+    <div class="nav-back"><i data-ic="chevleft" data-s="21" data-w="2"></i></div>
+    <div class="nav-title">AI 设置</div>
+    <div class="nav-action"></div>
+  </div>
+
+  <div class="content">
+    <div class="sec" style="margin-top:10px">
+      <div class="sec-head"><h3>默认与分配</h3></div>
+      <div class="group">
+        <div class="row">
+          <div class="logo xs mk-gemini" style="margin-right:-2px"><i data-brand="gemini" data-bs="16"></i></div>
+          <div class="grow"><div class="t sm">默认聊天模型</div><div class="s">新会话默认使用</div></div>
+          <span class="val" style="font-family:'Cascadia Mono',monospace;font-size:11.5px">gemini-3.1-pro</span>
+          <div class="chev"><i data-ic="chevright" data-s="19"></i></div>
+        </div>
+        <div class="row">
+          <div class="itile n"><i data-ic="branch" data-s="18"></i></div>
+          <div class="grow"><div class="t sm">功能模型分配</div><div class="s">总结、翻译、图片理解等 11 项</div></div>
+          <span class="val">1 项自定义</span>
+          <div class="chev"><i data-ic="chevright" data-s="19"></i></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><h3>调用策略</h3></div>
+      <div class="group">
+        <div class="row">
+          <div class="grow"><div class="t sm">流式输出</div><div class="s">逐字返回，长回复更快看到内容</div></div>
+          <div class="sw on"><i></i></div>
+        </div>
+        <div class="row">
+          <div class="grow"><div class="t sm">并发请求</div><div class="s">同时进行的最大请求数</div></div>
+          <div class="stepper"><div class="pm"><i data-ic="minus" data-s="13"></i></div><div class="n">3</div><div class="pm"><i data-ic="plus" data-s="13"></i></div></div>
+        </div>
+        <div class="row">
+          <div class="grow"><div class="t sm">每分钟上限</div><div class="s">超出后排队，避免触发 429</div></div>
+          <div class="stepper"><div class="pm"><i data-ic="minus" data-s="13"></i></div><div class="n">60</div><div class="pm"><i data-ic="plus" data-s="13"></i></div></div>
+        </div>
+        <div class="row">
+          <div class="grow"><div class="t sm">失败重试</div><div class="s">仅对网络错误与 5xx 生效</div></div>
+          <span class="val">2 次</span>
+          <div class="chev"><i data-ic="chevright" data-s="19"></i></div>
+        </div>
+        <div class="row">
+          <div class="grow"><div class="t sm">请求超时</div><div class="s">非流式请求的整体超时</div></div>
+          <span class="val">120 秒</span>
+          <div class="chev"><i data-ic="chevright" data-s="19"></i></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><h3>上下文与媒体</h3></div>
+      <div class="group">
+        <div class="row">
+          <div class="grow"><div class="t sm">图片历史</div><div class="s">随对话携带最近几轮的图片</div></div>
+          <div class="stepper"><div class="pm"><i data-ic="minus" data-s="13"></i></div><div class="n">3 轮</div><div class="pm"><i data-ic="plus" data-s="13"></i></div></div>
+        </div>
+        <div class="row">
+          <div class="grow"><div class="t sm">媒体文件历史</div><div class="s">音频、视频等大文件的有效轮数</div></div>
+          <div class="stepper"><div class="pm"><i data-ic="minus" data-s="13"></i></div><div class="n">1 轮</div><div class="pm"><i data-ic="plus" data-s="13"></i></div></div>
+        </div>
+      </div>
+      <div class="footnote">轮数越多上下文越完整，但 token 消耗与请求体积也会上升。</div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><h3>模型目录</h3><span class="sec-action" style="display:inline-flex;align-items:center;gap:5px"><i data-ic="refresh" data-s="14" data-w="1.8"></i>立即同步</span></div>
+      <div class="group">
+        <div class="row">
+          <div class="grow"><div class="t sm">自动同步</div><div class="s">每天一次，仅更新元数据与模型列表</div></div>
+          <div class="sw on"><i></i></div>
+        </div>
+        <div class="row">
+          <div class="grow"><div class="t sm">上次同步</div><div class="s">11 月 27 日 18:42 · 36 家供应商</div></div>
+          <span class="pill ok"><i class="dot"></i>成功</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><h3>用量与成本</h3></div>
+      <div class="group">
+        <div class="row">
+          <div class="itile blue"><i data-ic="chart" data-s="18"></i></div>
+          <div class="grow"><div class="t sm">本月用量</div><div class="s">1.24M tokens · 触发 3 次 429</div></div>
+          <span class="val">¥18.90</span>
+          <div class="chev"><i data-ic="chevright" data-s="19"></i></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><h3>数据</h3></div>
+      <div class="group">
+        <div class="row">
+          <div class="itile n"><i data-ic="download" data-s="18"></i></div>
+          <div class="grow"><div class="t sm">导出配置</div><div class="s">不含密钥，可跨设备导入</div></div>
+          <div class="chev"><i data-ic="chevright" data-s="19"></i></div>
+        </div>
+        <div class="row">
+          <div class="itile red"><i data-ic="trash" data-s="18"></i></div>
+          <div class="grow"><div class="t sm" style="color:var(--err)">清除所有供应商凭据</div><div class="s">保留模型启停与参数设置</div></div>
+          <div class="chev" style="color:var(--err);opacity:.7"><i data-ic="chevright" data-s="19"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="home-ind"><i></i></div>
+</div>
+<script src="assets/icons.js"></script>
+<script src="assets/brands.js"></script>
+<script>/* 主题模拟：?theme=dark / ?theme=light 仅用于生成本地预览图 */ (function(){var m=/[?&]theme=(dark|light)/.exec(location.search);if(m){document.body.classList.toggle("dark",m[1]==="dark");}})();</script>
+</body>
+</html>

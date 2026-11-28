@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>功能模型分配</title>
+<link rel="stylesheet" href="assets/app.css">
+<style>
+  .fname { font-size: 14.5px; font-weight: 600; letter-spacing: -.1px; display: flex; align-items: center; gap: 7px; }
+  .fname svg { flex: none; }
+  .fsub { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+</style>
+</head>
+<body class="dark">
+<div class="phone">
+  <div class="statusbar">
+    <span>9:41</span>
+    <div class="right">
+      <svg class="sb-icon" width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7.4" width="2.6" height="3.6" rx=".8"/><rect x="4.4" y="5.2" width="2.6" height="5.8" rx=".8"/><rect x="8.8" y="2.6" width="2.6" height="8.4" rx=".8"/><rect x="13.2" y="0" width="2.6" height="11" rx=".8"/></svg>
+      <svg class="sb-icon" width="15" height="11" viewBox="0 0 15 11" fill="currentColor"><path d="M7.5 10.4 4.9 7.7a3.7 3.7 0 0 1 5.2 0z"/><path d="M2.6 5.3a7 7 0 0 1 9.8 0l-1.4 1.5a5 5 0 0 0-7 0z"/><path d="M.3 2.8a10.4 10.4 0 0 1 14.4 0L13.4 4.3a8.4 8.4 0 0 0-11.8 0z"/></svg>
+      <svg class="sb-icon" width="25" height="12" viewBox="0 0 25 12"><rect x="0" y=".5" width="21" height="11" rx="3.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/><rect x="2" y="2.5" width="15" height="7" rx="2" fill="currentColor"/><path d="M23 4.2v3.6" stroke="currentColor" stroke-width="1.4" opacity=".45"/></svg>
+    </div>
+  </div>
+
+  <div class="nav">
+    <div class="nav-back"><i data-ic="chevleft" data-s="21" data-w="2"></i></div>
+    <div class="nav-title">功能模型分配</div>
+    <div class="nav-action"></div>
+  </div>
+
+  <div class="content">
+    <div class="note plain" style="margin-top:12px">
+      <i data-ic="info" data-s="16"></i>
+      <div>未单独指定的功能会跟随默认聊天模型（gemini-3.1-pro）。修改后立即生效，无需重启。</div>
+    </div>
+
+    <div class="sec" style="margin-top:18px">
+      <div class="sec-head"><h3>主对话</h3></div>
+      <div class="group">
+        <div class="row">
+          <div class="grow"><div class="fname"><i data-ic="message" data-s="16" style="color:var(--text-3)"></i>聊天对话</div><div class="fsub">用户直接发起的会话</div></div>
+          <span class="val">跟随默认</span>
+          <div class="chev"><i data-ic="chevright" data-s="19"></i></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><h3>后台辅助</h3></div>
+      <div class="group">
+        <div class="row">
+          <div class="grow"><div class="fname"><i data-ic="doc" data-s="16" style="color:var(--text-3)"></i>会话总结</div><div class="fsub">长对话压缩与摘要</div></div>
+          <span class="val" style="color:var(--accent)">gemini-3.1-flash</span>
+          <div class="chev"><i data-ic="chevright" data-s="19"></i></div>
+        </div>
+        <div class="row">
+          <div class="grow"><div class="fname"><i data-ic="tag" data-s="16" style="color:var(--text-3)"></i>会话标题</div><div class="fsub">根据首轮内容生成标题</div></div>
+          <span class="val">跟随默认</span>
+          <div class="chev"><i data-ic="chevright" data-s="19"></i></div>
+        </div>
+        <div class="row">
+          <div class="grow"><div class="fname"><i data-ic="database" data-s="16" style="color:var(--text-3)"></i>记忆提取</div><div class="fsub">抽取长期偏好与事实</div></div>
+          <span class="val">跟随默认</span>
+          <div class="chev"><i data-ic="chevright" data-s="19"></i></div>
+        </div>
+        <div class="row">
+          <div class="grow"><div class="fname"><i data-ic="translate" data-s="16" style="color:var(--text-3)"></i>翻译</div><div class="fsub">消息内联翻译</div></div>
+          <span class="val">跟随默认</span>
+          <div class="chev"><i data-ic="chevright" data-s="19"></i></div>
+        </div>
+        <div class="row">
+          <div class="grow"><div class="fname"><i data-ic="search" data-s="16" style="color:var(--text-3)"></i>文本检索</div><div class="fsub">会话与文件的关键词检索</div></div>
+          <span class="val">跟随默认</span>
+          <div class="chev"><i data-ic="chevright" data-s="19"></i></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><h3>多模态</h3></div>
+      <div class="group">
+        <div class="row">
+          <div class="grow"><div class="fname"><i data-ic="image" data-s="16" style="color:var(--text-3)"></i>图片理解</div><div class="fsub">识图、OCR 与截图理解</div></div>
+          <span class="val" style="color:var(--accent)">gemini-3.1-pro</span>
+          <div class="chev"><i data-ic="chevright" data-s="19"></i></div>
+        </div>
+        <div class="row">
+          <div class="grow"><div class="fname"><i data-ic="audio" data-s="16" style="color:var(--text-3)"></i>音频转写</div><div class="fsub">语音输入与录音整理</div></div>
+          <span class="pill off">未指定</span>
+          <div class="chev"><i data-ic="chevright" data-s="19"></i></div>
+        </div>
+        <div class="row">
+          <div class="grow"><div class="fname"><i data-ic="video" data-s="16" style="color:var(--text-3)"></i>视频理解</div><div class="fsub">抽帧与视频内容分析</div></div>
+          <span class="pill off">未指定</span>
+          <div class="chev"><i data-ic="chevright" data-s="19"></i></div>
+        </div>
+      </div>
+      <div class="footnote">“未指定”的功能在需要时会回落到默认模型；若默认模型不具备该能力，会提示选择。</div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><h3>其他</h3></div>
+      <div class="group">
+        <div class="row">
+          <div class="grow"><div class="fname"><i data-ic="route" data-s="16" style="color:var(--text-3)"></i>界面操作规划</div><div class="fsub">Agent 自动化步骤拆解</div></div>
+          <span class="val">跟随默认</span>
+          <div class="chev"><i data-ic="chevright" data-s="19"></i></div>
+        </div>
+        <div class="row">
+          <div class="grow"><div class="fname"><i data-ic="users" data-s="16" style="color:var(--text-3)"></i>群聊发言规划</div><div class="fsub">多角色群聊中决定谁发言</div></div>
+          <span class="val">跟随默认</span>
+          <div class="chev"><i data-ic="chevright" data-s="19"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="home-ind"><i></i></div>
+</div>
+<script src="assets/icons.js"></script>
+<script src="assets/brands.js"></script>
+<script>/* 主题模拟：?theme=dark / ?theme=light 仅用于生成本地预览图 */ (function(){var m=/[?&]theme=(dark|light)/.exec(location.search);if(m){document.body.classList.toggle("dark",m[1]==="dark");}})();</script>
+</body>
+</html>

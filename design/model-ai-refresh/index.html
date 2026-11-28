@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>模型与 AI · 产品重构设计（第一阶段）</title>
+<style>
+:root{
+  --bg:#FFFFFF; --bg2:#F7F8F9; --bg3:#F0F2F5; --bd:#E3E6EA; --bd2:#D7DBE0;
+  --t1:#14161A; --t2:#5A6169; --t3:#878E97;
+  --accent:#3B82F6; --btn:#2563EB; --link:#2563EB;
+  --ok:#1E8F52; --warn:#9A6A12; --err:#C4314B;
+  --okbg:#E8F5EE; --warnbg:#FCF2DF; --errbg:#FBE9EC;
+  --mono:"Cascadia Mono","SF Mono",Consolas,monospace;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--t1);
+  font-family:"HarmonyOS Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  font-size:15px;line-height:1.75;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1140px;margin:0 auto;padding:0 40px}
+
+/* hero */
+.hero{padding:72px 0 40px;border-bottom:1px solid var(--bd)}
+.eyebrow{font-size:12.5px;letter-spacing:.12em;color:var(--accent);font-weight:700}
+h1{font-size:42px;line-height:1.25;margin:14px 0 12px;letter-spacing:-.02em;font-weight:800}
+.lede{font-size:17px;color:var(--t2);max-width:760px;margin:0}
+.meta{display:grid;grid-template-columns:repeat(4,auto);gap:8px 56px;margin-top:30px;
+  padding-top:22px;border-top:1px solid var(--bd);justify-content:start}
+.meta div{font-size:13px;color:var(--t2);line-height:1.6}
+.meta div em{display:block;font-style:normal;font-size:11.5px;color:var(--t3);
+  letter-spacing:.08em;margin-bottom:3px}
+
+/* nav */
+nav{position:sticky;top:0;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--bd);z-index:9}
+nav .wrap{display:flex;gap:26px;height:52px;align-items:center;overflow-x:auto}
+nav a{color:var(--t2);text-decoration:none;font-size:13.5px;white-space:nowrap}
+nav a:hover{color:var(--accent)}
+
+/* section */
+section{padding:60px 0;border-bottom:1px solid var(--bd)}
+.sec-h{display:flex;align-items:baseline;gap:14px;margin-bottom:8px}
+.sec-n{font-family:var(--mono);font-size:13px;color:var(--accent);font-weight:700}
+h2{font-size:27px;margin:0;letter-spacing:-.01em;font-weight:750}
+h3{font-size:18px;margin:38px 0 10px;font-weight:700}
+h4{font-size:15px;margin:22px 0 8px;font-weight:700;color:var(--t1)}
+p{margin:10px 0}
+ul,ol{margin:10px 0;padding-left:22px}
+li{margin:5px 0}
+.small{font-size:13.5px;color:var(--t2)}
+.mute{color:var(--t3)}
+code,.mono{font-family:var(--mono);font-size:12.8px;background:var(--bg2);
+  border:1px solid var(--bd);border-radius:5px;padding:1px 5px}
+pre{font-family:var(--mono);font-size:12.6px;background:var(--bg2);border:1px solid var(--bd);
+  border-radius:10px;padding:16px 18px;overflow:auto;line-height:1.65;margin:14px 0}
+
+/* cards */
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.card{border:1px solid var(--bd);border-radius:14px;padding:20px 22px;background:var(--bg)}
+.card h4{margin-top:0}
+.card p{margin:6px 0}
+.kv{display:flex;justify-content:space-between;gap:16px;padding:9px 0;border-bottom:1px solid var(--bg3);font-size:13.5px}
+.kv:last-child{border:0}
+.kv span:first-child{color:var(--t2)}
+.kv span:last-child{font-weight:600;text-align:right}
+
+/* table */
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13.5px}
+th,td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--bd);vertical-align:top}
+th{background:var(--bg2);font-weight:650;font-size:12.8px;color:var(--t2);letter-spacing:.02em}
+td b{font-weight:650}
+
+/* pills */
+.pill{display:inline-flex;align-items:center;gap:5px;height:22px;padding:0 9px;border-radius:11px;
+  font-size:12px;font-weight:650;white-space:nowrap}
+.p-ok{background:var(--okbg);color:var(--ok)}
+.p-warn{background:var(--warnbg);color:var(--warn)}
+.p-err{background:var(--errbg);color:var(--err)}
+.p-info{background:#EAF0FE;color:var(--link)}
+.p-gray{background:var(--bg3);color:var(--t2)}
+
+/* callout */
+.call{border-left:3px solid var(--accent);background:var(--bg2);padding:14px 18px;border-radius:0 10px 10px 0;margin:16px 0}
+.call.warn{border-color:#D99A24;background:var(--warnbg)}
+.call.danger{border-color:#C4314B;background:var(--errbg)}
+.call p{margin:4px 0}
+.call .t{font-weight:700;font-size:13.5px}
+
+/* ia tree */
+.tree{font-family:var(--mono);font-size:13px;line-height:2;background:var(--bg2);
+  border:1px solid var(--bd);border-radius:12px;padding:22px 26px;overflow-x:auto;white-space:pre}
+
+/* flow */
+.flow{display:grid;gap:10px;margin:18px 0}
+.step{display:flex;gap:14px;align-items:flex-start;border:1px solid var(--bd);border-radius:12px;padding:13px 16px}
+.step b{font-family:var(--mono);font-size:12px;color:#fff;background:var(--accent);
+  width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none;margin-top:3px}
+.step p{margin:0;font-size:13.8px}
+.step p b{background:none;color:var(--t1);width:auto;height:auto;border-radius:0;display:inline;font-family:inherit;font-size:13.8px}
+
+/* previews */
+.shots{display:grid;grid-template-columns:1fr;gap:46px;margin-top:26px}
+.shot{display:flex;flex-direction:column;gap:13px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.shot .frame{position:relative;border:1px solid var(--bd);border-radius:20px;overflow:hidden;background:var(--bg2);
+  box-shadow:0 8px 28px rgba(16,24,40,.07)}
+.shot .frame .tag{position:absolute;bottom:10px;left:10px;z-index:2;font-size:11px;font-weight:600;
+  color:#fff;background:rgba(17,18,20,.60);border-radius:8px;padding:2px 8px;letter-spacing:.02em}
+.shot img{width:100%;display:block}
+.shot h4{margin:0;font-size:14.5px}
+.shot .desc{font-size:13px;color:var(--t2);margin:0}
+.legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+
+/* swatches */
+.sw-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin:14px 0}
+.sw{border:1px solid var(--bd);border-radius:10px;overflow:hidden}
+.sw .c{height:56px}
+.sw .l{padding:8px 10px;font-size:11.5px;line-height:1.5}
+.sw .l b{display:block;font-family:var(--mono);font-size:11px;color:var(--t2);font-weight:400}
+
+footer{padding:44px 0 70px;font-size:12.8px;color:var(--t3)}
+footer a{color:var(--t2);text-decoration:none;border-bottom:1px solid var(--bd2)}
+.src{font-size:12.8px;color:var(--t3);word-break:break-all}
+@media(max-width:900px){
+  .wrap{padding:0 20px}
+  .g2,.g3,.shots{grid-template-columns:1fr}
+  h1{font-size:32px}
+  .sw-grid{grid-template-columns:repeat(3,1fr)}
+}
+</style>
+</head>
+<body>
+
+<div class="hero"><div class="wrap">
+  <div class="eyebrow">OPERIT2 · 设计交付 · 第一阶段</div>
+  <h1>模型与 AI<br>产品重构设计</h1>
+  <p class="lede">把现有「一堆设置项」重构为「连接 → 模型 → 策略」三段式结构：供应商按真实授权能力分流，账号登录与 API Key 用分段切换、互斥生效，模型配置从列表内联表单升级为独立详情页，并补齐诊断与状态反馈。</p>
+  <div class="meta">
+    <div><em>范围</em>UI / IA / 授权层设计（不含代码）</div>
+    <div><em>供应商</em>Gemini · Claude · Codex · xAI · Kimi · OpenRouter</div>
+    <div><em>页面</em>16 页 × 浅/深 两版（30 张整页稿）</div>
+    <div><em>状态</em>待评审</div>
+  </div>
+</div></div>
+
+<nav><div class="wrap">
+  <a href="#s0">交付说明</a>
+  <a href="#s1">01 现状分析</a>
+  <a href="#s2">02 技术调研</a>
+  <a href="#s3">03 产品架构</a>
+  <a href="#s4">04 设计规范</a>
+  <a href="#s5">05 页面预览</a>
+  <a href="#s6">06 实施规划</a>
+  <a href="#s7">来源</a>
+</div></nav>
+
+<div class="wrap">
+
+<!-- ======================= 0 ======================= -->
+<section id="s0" style="padding-top:44px">
+  <div class="sec-h"><span class="sec-n">00</span><h2>交付说明</h2></div>
+  <p>本阶段<b>只做分析与设计</b>：不动 <code>apps/flutter</code> 与 <code>core/crates</code> 的任何源码，所有产物都是 <code>design/model-ai-refresh/</code> 下的新增文件（HTML 稿 + PNG 预览 + 本文档）。确认视觉与交互后再进入第二阶段的开发。</p>
+
+  <div class="grid g3" style="margin-top:22px">
+    <div class="card"><h4>不虚构能力</h4><p class="small">六家供应商的「账号登录」只有四种真实可行路径：OAuth 回环、设备码、手工码、项目授权。Claude 的手工码已接入但合规风险最高，默认不推荐；Gemini 个人 Google 登录已关闭，只保留项目授权与 API Key。</p></div>
+    <div class="card"><h4>不为统一牺牲功能</h4><p class="small">Key 池与轮换、RPM/并发、自定义 Header、五类能力测试、余额与用量、11 项功能映射全部保留，只是换了位置与层级。</p></div>
+    <div class="card"><h4>不破坏现有数据</h4><p class="small">沿用 <code>ProviderProfile</code> / <code>ModelProfile</code> / <code>ApiPreferences</code>，新增字段均可缺省，旧配置读出来照常可用。</p></div>
+  </div>
+
+  <div class="call" style="margin-top:26px">
+    <p class="t">先设计后开发</p>
+    <p class="small">阶段一只产出设计；阶段二按第 06 节的顺序实施。若评审中要调整，改动集中在本目录，不产生返工成本。</p>
+  </div>
+</section>
+
+<!-- ======================= 1 ======================= -->
+<section id="s1">
+  <div class="sec-h"><span class="sec-n">01</span><h2>现状分析</h2></div>
+  <p class="small">依据：<span class="mono">apps/flutter/app/lib/ui/features/settings/model/ModelSettingsPanel.dart</span>（307 KB / 约 7 000 行）、<span class="mono">core/crates/foundation/model/src/ModelConfigData.rs</span>、<span class="mono">core/crates/provider/services/src/chat/llmprovider/CodexOAuth.rs</span>，以及 <span class="mono">D:\Downloads\eta</span>（Kotlin 端已实现的六家 OAuth）。</p>
+
+  <h3>1.1 现有能力盘点（必须全部保留）</h3>
+  <div class="grid g2">
+    <div class="card">
+      <h4>供应商与凭据</h4>
+      <ul class="small">
+        <li>供应商增删改，三类接入：自定义 OpenAI 兼容 / Anthropic 原生 / Gemini 原生</li>
+        <li>API Key、<b>Key 池与轮换</b>（<code>apiKeyPool</code> / <code>keyRotation</code>）、自定义 Headers</li>
+        <li>RPM 与并发限制、Endpoint 覆盖</li>
+        <li>模型列表拉取 / 手动添加 / 刷新（<code>list_models</code>）</li>
+        <li>余额查询（<code>balance</code>）、按供应商与模型统计用量与花费</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>模型与编排</h4>
+      <ul class="small">
+        <li>启用停用、五类能力测试（chat / image / audio / video / toolCall）</li>
+        <li>工具调用、图像、音频、视频能力标记；内置联网搜索</li>
+        <li>思考档位与预算、上下文窗口、摘要阈值、Claude 1h Prompt 缓存、采样参数</li>
+        <li><b>11 项功能模型映射</b>（chat / summary / title / memory / translation / textSearch / image / audio / video / uiControl / groupChatSpeaker）</li>
+        <li>当前聊天模型、聊天内模型选择器（含思考强度滑杆）</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>1.2 结构性问题</h3>
+  <table>
+    <thead><tr><th style="width:23%">问题</th><th style="width:40%">现状</th><th>设计对策</th></tr></thead>
+    <tbody>
+      <tr><td><b>账号登录名不副实</b></td><td><code>ProviderAccountLoginDialog</code> 对绝大多数供应商只是打开浏览器控制台让用户粘贴 Key，与 API Key 方式完全重复，用户会误以为「登录了账号」。</td><td>按真实能力重写：可用则做完整授权流（步骤条 + 等待 + 设备码兜底），不可用则页面显式说明原因并只留 Key。</td></tr>
+      <tr><td><b>唯一真实授权不成体系</b></td><td>只有 Codex 有 OAuth（<code>CodexOAuth.rs</code>，PKCE + <code>localhost:1455</code>），凭据与「供应商」概念平行存在，详情页无法表达「当前这个供应商是靠账号还是 Key 在工作」。</td><td>引入「接入方式」概念：同一供应商下分段切换，只展开当前方式，另一种折叠为一行摘要；当前生效方式单独标注。</td></tr>
+      <tr><td><b>一页装下所有东西</b></td><td>供应商详情 = AppBar（品牌胶囊 + 添加模型 + 更多）+ 模型列表 + 每个模型展开的内联设置表单，滚动极长；编辑供应商又是一个独立分节表单页。</td><td>三层：列表（扫读）→ 详情（连接与状态）→ 模型详情（参数），列表项不再承载表单。</td></tr>
+      <tr><td><b>缺少全局视角</b></td><td>进入设置先看到两个 <code>_SectionCard</code>，看不到「几家已连上、有没有失效、本月花了多少」。</td><td>模块主页给三张入口卡 + 需处理清单 + 用量速览。</td></tr>
+      <tr><td><b>失败状态不可操作</b></td><td>测试失败、401、限流多以 SnackBar 或一行文本呈现，用户不知道下一步做什么。</td><td>状态 pill + 独立「连接诊断」页（401/402/429/403 分类处置 + 就地测试）。</td></tr>
+      <tr><td><b>隐藏能力未暴露</b></td><td><code>maxImageHistoryUserTurns</code> / <code>maxMediaHistoryUserTurns</code> 后端已有，前端没入口。</td><td>放回 AI 设置「上下文与媒体」分组。</td></tr>
+      <tr><td><b>单文件维护成本</b></td><td>7 000 行 / 307 KB，UI、状态、网络、文案混在一起。</td><td>按页拆文件（供应商页 / 模型页 / 设置页 / 诊断页）+ 共享组件层，详见第 06 节。</td></tr>
+    </tbody>
+  </table>
+
+  <h3>1.3 数据结构现状</h3>
+  <pre>ProviderProfile  { id, name, providerTypeId, endpoint, apiKey, apiKeyPool[], keyRotation,
+                   customHeaders{}, rateLimit{rpm, concurrency}, models[] }
+ModelProfile     { id, displayName?, capabilities{toolCall,image,audio,video},
+                   builtinTools{webSearch}, thinking{enabled,levels,budget},
+                   contextWindow, summaryThreshold, parameters{temperature,topP,maxTokens…},
+                   claudePromptCache1h, localRuntime }
+ApiPreferences   { currentChatModelId, functionModelBindings{}, providerOrder[],
+                   disableStreamOutput, enableTools, maxImageHistoryUserTurns,
+                   maxMediaHistoryUserTurns, mcpStartupTimeout… }</pre>
+  <p class="small">目录侧 <code>ModelCatalog.rs</code> 覆盖 36 种 <code>providerType</code>（含 <code>endpointOptions</code> 与 <code>operations</code>：<code>list_models</code> / <code>balance</code>），内置固定模型表仅 <code>OPENAI_CODEX</code> 有 20 个（该端点不提供模型列表）。模型元数据走 models.dev 拉取并本地缓存，用户编辑写入 <code>ModelCatalogEntry.overrides</code>。</p>
+
+  <h3>1.4 参考实现：ETA（Android / Kotlin）</h3>
+  <p class="small">六家 OAuth 在 <code>ProviderOAuthClient</code> 里已全部打通：OPENAI 回环、XAI 设备码、ANTHROPIC 手工码、KIMI 设备码、OPENROUTER 回环（另有 QWEN 设备码）。可复用的是<b>协议细节</b>（client id、scope、端点、PKCE 生成、轮询节奏、刷新与撤销），不可复用的是<b>合规判断</b>：ETA 的 Claude 路径是靠 CLI 指纹复用订阅，属高风险实现；本产品仅在用户主动选择时提供，登录页写明条款与封号风险。</p>
+  <div class="grid g2" style="margin-top:14px">
+    <div class="card"><h4>可直接移植（Rust 侧）</h4><ul class="small"><li>PKCE（S256）生成与校验、回环监听与超时</li><li>RFC 8628 设备码：请求码 → 展示 → 轮询 → 换 token</li><li>手工码（authorize 后粘贴 code）</li><li>token 刷新、失效判定、撤销</li><li>登录阶段状态机（idle / pending / waiting / success / error）</li></ul></div>
+    <div class="card"><h4>只借鉴结构，不照搬</h4><ul class="small"><li>供应商详情双 Tab（配置 / 模型）→ 改为「连接」页 + 独立模型库</li><li>模型别名 <code>displayName</code>（Operit2 目前没有，建议本期作为可选字段）</li><li>账号控件（登录 / 退出 / 设备码展示 / 粘贴码）→ 收敛进授权流程页</li></ul></div>
+  </div>
+</section>
+
+<!-- ======================= 2 ======================= -->
+<section id="s2">
+  <div class="sec-h"><span class="sec-n">02</span><h2>技术调研：两种接入方式到底能不能做</h2></div>
+  <p>结论先行：<b>五家已接入真实账号登录</b>（OpenRouter、Kimi、Codex、xAI、Claude Code），Gemini 的个人 Google 登录通道已在 2026 年 6 月关闭。Claude 采用 Claude Code 的手动授权码，合规风险最高，只作为用户主动选择的可退路径。所有「账号登录」最终都必须能回答三个问题：凭据怎么来、额度算什么、失败怎么退。</p>
+
+  <table>
+    <thead><tr><th style="width:12%">供应商</th><th style="width:20%">方式一 · 账号登录</th><th style="width:15%">额度/计费</th><th style="width:33%">可行性与依据</th><th>风险与控制</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><b>OpenRouter</b></td>
+        <td>OAuth 2.0 + PKCE，<span class="pill p-ok">官方支持</span><br><span class="small">无需注册 client，回调可用 localhost</span></td>
+        <td>账户信用额度（credits）</td>
+        <td>授权后 <code>POST /api/v1/auth/keys</code> 换取 user-controlled key，本质是「用账号换一把属于用户的 Key」。官方文档明确 PKCE 强制。</td>
+        <td><span class="pill p-ok">低</span> 与 Key 方式同源，授权失败直接退回粘贴 Key。</td>
+      </tr>
+      <tr>
+        <td><b>Kimi</b></td>
+        <td>Kimi Code 设备码（<span class="small">auth.kimi.com</span>）<span class="pill p-ok">官方</span></td>
+        <td>会员额度（Kimi Code 套餐）</td>
+        <td>官方 CLI 文档给出的标准设备码流程；<b>请求时必须完全省略 scope 参数</b>；端点 <code>api.kimi.com/coding/v1</code> 同时兼容 OpenAI 与 Anthropic 协议。</td>
+        <td><span class="pill p-warn">中</span> 设备 30 天未活动失效；Kimi Code 与开放平台是两套账户，Key 不可混用，页内必须写清。</td>
+      </tr>
+      <tr>
+        <td><b>Codex</b></td>
+        <td>ChatGPT 账号 OAuth（PKCE 回环 <code>localhost:1455</code> + 设备码兜底）<span class="pill p-ok">已实现</span></td>
+        <td>订阅额度（5h / 周窗口）</td>
+        <td>Codex CLI 公开 client id；仓内 <code>CodexOAuth.rs</code> 已跑通刷新与额度查询，属本项目既有能力，重构只换皮不换协议。</td>
+        <td><span class="pill p-warn">中</span> 非官方客户端复用订阅，存在风控可能；保留 Platform API Key 作为备选，页内说明。</td>
+      </tr>
+      <tr>
+        <td><b>xAI</b></td>
+        <td>设备码（<code>accounts.x.ai</code>）<span class="pill p-warn">半官方</span></td>
+        <td>SuperGrok / X Premium+ 订阅</td>
+        <td>设备码授权在第三方工具中广泛可用（Grok CLI 亦有 <code>--device-auth</code>），但未进入公开 API 文档，client id 靠社区维护。</td>
+        <td><span class="pill p-warn">中高</span> 部分账号/地区返回 <code>access_denied</code>；不做余额接口，只显示订阅档位。</td>
+      </tr>
+      <tr>
+        <td><b>Gemini</b></td>
+        <td>Vertex AI 项目授权（Google 账号 + 项目 + 区域）<span class="pill p-info">官方替代</span></td>
+        <td>GCP 计费 / Vertex 配额</td>
+        <td>Gemini Code Assist 个人版自 2026-06-18 起停止为 IDE 与 Gemini CLI 提供「使用 Google 登录」；且以第三方软件直接访问 Code Assist 服务违反条款。剩下可行的只有 AI Studio Key 与 Vertex（项目授权或 ADC）。</td>
+        <td><span class="pill p-ok">低</span> 项目授权合规，需用户自备 GCP 项目与结算方式。</td>
+      </tr>
+      <tr>
+        <td><b>Claude</b></td>
+        <td>Claude Code 手动授权码（<code>platform.claude.com/oauth/code/callback</code>）<span class="pill p-warn">已实现 · 高风险</span></td>
+        <td>Claude 订阅额度</td>
+        <td>复用 Claude Code 官方 CLI 的 OAuth 端点与客户端指纹，用户在授权页复制 <code>code#state</code> 回贴完成换码。Anthropic 合规文档仍明确限制第三方提供 Claude.ai 登录与代路由订阅凭据，本实现仅响应用户主动选择。</td>
+        <td><span class="pill p-err">高</span> 默认不推荐，仅在对应用户主动发起时可用；保留 Console API Key / Bedrock / Vertex 作为可退路径，登录失败或账号受限时回退。</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="call danger">
+    <p class="t">一条底线</p>
+    <p class="small">任何「账号登录」都不得把订阅凭据转卖给第三方或代他人路由请求。因此本设计里账号方式只用于<b>用户自己的账号、自己的额度</b>，且始终保留 API Key 方式作为可退路径。</p>
+  </div>
+
+  <h3>2.1 技术路线收口</h3>
+  <div class="grid g2">
+    <div class="card">
+      <h4>统一授权引擎（Rust）</h4>
+      <p class="small">一个 <code>ProviderAuthEngine</code>，三种 flow 实现同一状态机：<b>LoopbackFlow</b>（Codex / OpenRouter，起本地端口收 code）、<b>DeviceFlow</b>（xAI / Kimi，展示码 + 轮询）、<b>ManualCodeFlow</b>（Claude Code，浏览器授权后回贴 <code>code#state</code>）。</p>
+      <p class="small">凭据统一落 <code>ProviderCredential{ authMode, accessToken, refreshToken, expiresAt, accountId, email, planLabel, scopes }</code>，由 Rust 侧加密存储，UI 只读状态。</p>
+    </div>
+    <div class="card">
+      <h4>判定「当前生效」的唯一规则</h4>
+      <p class="small">每个供应商同一时间只有一个生效凭据：账号凭据有效 → 账号；否则 → Key；都没有 → 未连接。切换方式是显式动作（「切换为 API Key」），不做自动混用，避免掉额度与账单归属不清。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 3 ======================= -->
+<section id="s3">
+  <div class="sec-h"><span class="sec-n">03</span><h2>产品架构</h2></div>
+
+  <h3>3.1 信息架构</h3>
+  <div class="tree">模型与 AI
+│
+├── 1 供应商 ··· 谁在提供服务
+│   ├── 供应商总览：6 家卡片 + 状态 + 当前生效方式
+│   └── 供应商详情
+│       ├── 接入方式：分段切换，只展开当前方式，另一种折叠为摘要行
+│       ├── 账号登录 → 授权流程页（等待 / 设备码兜底）
+│       ├── API Key → Key 配置页（输入 / 校验 / 结果同屏）
+│       ├── 端点与高级：Endpoint、Header、RPM 与并发、Key 池与轮换
+│       ├── 模型：该供应商下模型，点击进模型详情
+│       └── 用量与余额
+│
+├── 2 模型 ··· 用哪些模型
+│   ├── 模型库：34 个，筛选 + 启用
+│   ├── 模型详情：能力 / 上下文 / 思考 / 采样 / 摘要 / 别名
+│   └── 功能模型分配：11 项 FunctionType
+│
+└── 3 AI 设置 ··· 怎么调用
+    ├── 调用策略：流式、工具、并发
+    ├── 上下文与媒体：图片与视频历史轮数、摘要阈值
+    ├── 模型目录：同步、默认模型、别名
+    └── 用量统计
+
+横切：连接诊断（401 / 402 / 429 / 403）· 任一失败态均可直达</div>
+
+  <h3>3.2 页面清单与跳转关系</h3>
+  <table>
+    <thead><tr><th style="width:26%">页面</th><th style="width:36%">从哪来</th><th>去哪</th></tr></thead>
+    <tbody>
+      <tr><td>模块主页</td><td>设置 → 模型与 AI</td><td>供应商总览 / 模型库 / AI 设置 / 当前聊天模型选择器</td></tr>
+      <tr><td>供应商总览</td><td>主页 ①</td><td>六家详情；右上「添加自定义供应商」</td></tr>
+      <tr><td>供应商详情（×6）</td><td>总览卡片 / 主页需处理项</td><td>授权流程、Key 配置、模型详情、连接诊断</td></tr>
+      <tr><td>授权流程页</td><td>详情「登录」</td><td>成功回详情（状态变已连接）；失败留重试与改用 Key</td></tr>
+      <tr><td>API Key 配置页</td><td>详情「配置 Key」/「切换为 Key」</td><td>成功回详情；失败就地看原因</td></tr>
+      <tr><td>模型库</td><td>主页 ② / 详情「模型」</td><td>模型详情；同步；设默认</td></tr>
+      <tr><td>模型详情</td><td>模型库行</td><td>能力测试、参数、返回列表</td></tr>
+      <tr><td>功能模型分配</td><td>主页 ② / AI 设置</td><td>选择器就地展开，不跳页</td></tr>
+      <tr><td>AI 设置</td><td>主页 ③</td><td>子项就地展开；跳模型目录与用量</td></tr>
+      <tr><td>连接诊断</td><td>任意失败态 / 详情「诊断」</td><td>就地重测、切方式、看文档</td></tr>
+    </tbody>
+  </table>
+
+  <h3>3.3 核心流程</h3>
+  <h4>流程 A · 首次接入一个供应商（以账号方式）</h4>
+  <div class="flow">
+    <div class="step"><b>1</b><p>总览点卡片 → 详情。顶部「当前生效：未连接」，方式一卡片为主动作。</p></div>
+    <div class="step"><b>2</b><p>点「使用 ChatGPT 账号登录」→ 授权流程页：生成 PKCE、拉起系统浏览器、页面进入<b>等待授权</b>（同时提供「改用设备码」）。</p></div>
+    <div class="step"><b>3</b><p>回调成功 → 换 token → 拉账号信息（邮箱 / 档位）→ 回详情，方式一显示<b>已连接 + 邮箱 + 档位</b>，方式二降级为「可切换」。</p></div>
+    <div class="step"><b>4</b><p>自动同步该供应商模型（Codex 走内置 20 个固定型号）。默认全部关闭，用户在模型库显式启用。</p></div>
+  </div>
+
+  <h4>流程 B · API Key 方式（含校验四态）</h4>
+  <div class="flow">
+    <div class="step"><b>1</b><p>详情「配置 Key」→ Key 配置页，输入框 + 显示/隐藏 + 从剪贴板粘贴。</p></div>
+    <div class="step"><b>2</b><p>点「校验并保存」→ <b>校验中</b>（1 次最小 chat 请求 + 1 次 list_models）。</p></div>
+    <div class="step"><b>3</b><p>成功：显示可用模型数、是否支持余额查询，回详情；失败：就地展开错误分类（Key 无效 / 区域受限 / 额度不足 / 网络）。</p></div>
+    <div class="step"><b>4</b><p>若当前是账号方式在生效，保存 Key 后需二次确认「切换为 Key 生效」——避免静默换掉正在用的额度。</p></div>
+  </div>
+
+  <h4>流程 C · 授权失效与恢复</h4>
+  <div class="flow">
+    <div class="step"><b>1</b><p>刷新失败 → 凭据标记 <b>需重新授权</b>：详情卡片变黄、主页「需处理」出现该供应商、相关模型标灰并注释「暂不可用」。</p></div>
+    <div class="step"><b>2</b><p>点「重新授权」→ 同一授权流程页，保留上次账号提示，成功后恢复；连续失败给出「改用 API Key」的一键出口。</p></div>
+  </div>
+
+  <div class="call">
+    <p class="t">交互原则</p>
+    <p class="small">页内展开优先于弹窗：只有「删除供应商 / 切换生效方式 / 清空 Key 池」三个不可逆或影响计费的动作才二次确认；其余全部就地完成，返回即保存。</p>
+  </div>
+</section>
+
+<!-- ======================= 4 ======================= -->
+<section id="s4">
+  <div class="sec-h"><span class="sec-n">04</span><h2>设计规范</h2></div>
+  <p class="small">沿用项目既有 Material 3 + tonalSpot 的品牌底（seed <code>#3B82F6</code>），但把列表语言收成 iOS grouped 风：白底、大圆角分组、发丝分隔线、克制的状态色。目标是让「AI 应用」而不是「系统设置页」。</p>
+
+  <h3>4.1 颜色：全部映射到 ColorScheme 角色</h3>
+  <p class="small">不引入第二套色板。每个颜色都能在 <code>OperitTheme</code> 的 <code>ColorScheme</code> 里找到对应角色，UI 只消费角色，不消费十六进制——这是「适配主题配置」能成立的前提。</p>
+  <table>
+    <thead><tr><th style="width:26%">用途</th><th style="width:20%">ColorScheme 角色</th><th style="width:18%">浅色</th><th style="width:18%">深色</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td>页面底</td><td>surface</td><td><code>#FFFFFF</code></td><td><code>#161616</code></td><td>深色中性面已解耦 seed，无青色偏</td></tr>
+      <tr><td>分组卡 / 输入底</td><td>surfaceContainer / High</td><td><code>#FFFFFF</code> / <code>#F6F7F9</code></td><td><code>#18181A</code> / <code>#202023</code></td><td>浅色靠描边分层，深色靠明度分层</td></tr>
+      <tr><td>分隔线</td><td>outlineVariant</td><td><code>#EDEFF2</code></td><td><code>#262628</code></td><td>仅行间，不画整块外框阴影</td></tr>
+      <tr><td>正文 / 次级</td><td>onSurface / onSurfaceVariant</td><td><code>#111214</code> / <code>#5C6067</code></td><td><code>#ECECEC</code> / <code>#A0A1A7</code></td><td>深色正文不用纯白，避免眩光</td></tr>
+      <tr><td>强调 / 选中 / 开关</td><td>primary</td><td><code>#3B82F6</code></td><td><code>#83B0FF</code></td><td>开关、勾选圆点、滑杆统一用它</td></tr>
+      <tr><td>实心按钮</td><td>primary（加饱和）</td><td><code>#2563EB</code></td><td><code>#3E76F6</code></td><td>深色下浅蓝底不承载白字</td></tr>
+      <tr><td>已连接 / 成功</td><td>自定义语义色</td><td><code>#1E8F52</code></td><td><code>#5CC98A</code></td><td>仅状态 pill 与检测结果</td></tr>
+      <tr><td>需处理 / 限额</td><td>自定义语义色</td><td><code>#9A6A12</code></td><td><code>#E0A544</code></td><td>设备码、失效提示</td></tr>
+      <tr><td>失败 / 危险</td><td>error</td><td><code>#C4314B</code></td><td><code>#F0808E</code></td><td>出口、撤销、删除</td></tr>
+    </tbody>
+  </table>
+
+  <h3>4.2 主题适配</h3>
+  <div class="grid g2">
+    <div class="card">
+      <h4>跟随用户的主题配置</h4>
+      <ul class="small">
+        <li>主题来源：<code>ColorScheme.fromSeed(seed: #3B82F6, DynamicSchemeVariant.tonalSpot)</code>，暗色再用 <code>copyWith</code> 覆盖中性面</li>
+        <li>用户开启 <code>useCustomColors</code> 或导入 <code>ThemeVisualSpecV1</code> 调色板时，强调色整体换掉，版式与层级完全不动</li>
+        <li>因此设计里所有「蓝」都只出现在 primary 一个变量上，没有一处写死品牌蓝</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>深色下的九处具体处理</h4>
+      <ul class="small">
+        <li>Codex 结环 / xAI 的 X 由黑转白（品牌 mark 的官方浅色版）</li>
+        <li>Gemini / Kimi / OpenRouter 的渐变在深色下保持原色相，只降一点明度</li>
+        <li>开关由 iOS 绿改为 primary，避免蓝绿两套强调色打架</li>
+        <li>浅色下的白底次要按钮改 <code>surfaceContainer</code>，防止白字消失</li>
+        <li>账号头像底色改为 token（浅紫 → 暗紫），不再出现刺眼白圆</li>
+        <li>警示 / 失败条用暗色 tint + 提亮文字，不用亮色块</li>
+        <li>代码块用 <code>surfaceContainerHigh</code>，长串改 <code>overflow-wrap</code> 不在词中断行</li>
+        <li>卡片阴影减到 35% 黑，深色下靠明度而非投影分层</li>
+        <li>分割线降到 <code>#262628</code>，避免深色里出现灰白网格</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>4.3 字体与栅格</h3>
+  <table>
+    <thead><tr><th style="width:22%">项</th><th>规范</th></tr></thead>
+    <tbody>
+      <tr><td>字体</td><td><code>HarmonyOS Sans SC</code>（正文与标题）；<code>Cascadia Mono</code> 用于模型 id、端点、Key 片段</td></tr>
+      <tr><td>字号</td><td>页面标题 17 / 分组标题 13（次级语义）/ 行标题 16 / 行副标 13 / 说明 12.5</td></tr>
+      <tr><td>栅格</td><td>左右留白 16，分组圆角 16，行内边距 14/16，行高最小 56，图标 28–34</td></tr>
+      <tr><td>分隔线</td><td>1px <code>#E9ECEF</code>，仅行间，不画分组外框线以外的东西</td></tr>
+      <tr><td>触控</td><td>可点区域 ≥ 44×44；开关 42×25；勾选圆点 24</td></tr>
+    </tbody>
+  </table>
+
+  <h3>4.4 组件语汇</h3>
+  <div class="grid g2">
+    <div class="card"><h4>基础件</h4><ul class="small"><li><b>Group / Row</b>：分组卡 + 行（图标、标题、副标、右侧值或控件）</li><li><b>StatusStrip</b>：供应商详情首屏三格结论（生效方式 / 型号与启用数 / 最近测试或额度）</li><li><b>MethodSwitch</b>：账号登录 / API Key 分段切换，互斥生效</li><li><b>FoldedMethod</b>：未选方式折成一行（状态摘要 + 动作），点按才展开配置</li><li><b>StatusPill</b>：已连接 / 需重新授权 / 校验中 / 不可用</li><li><b>Segmented</b>：方式切换、端点选择、筛选</li><li><b>InlinePanel</b>：页内展开的高级项（端点、Header、Key 池）</li><li><b>KeyField</b>：密钥输入（<code>key</code> 前缀 + 掩码 + <code>eye</code> 可见性切换）</li><li><b>Steps</b>：授权流程三步条</li><li><b>QuotaBar</b>：5h / 周窗口、credits 用量</li></ul></div>
+    <div class="card"><h4>语义规则</h4><ul class="small"><li>开关只用于<b>布尔设置</b>（流式、缓存、自动同步）</li><li>勾选圆点用于<b>「启用/选中」语义</b>（模型库），减少绿色噪音</li><li>状态 pill 一律「颜色 + 文字」，不靠颜色单独表意（色觉友好）</li><li>危险动作：红字 + 二次确认，且确认里写清后果（影响哪个模型）</li><li>空态必须给下一步动作，不写「暂无数据」了事</li></ul></div>
+  </div>
+
+  <h3>4.5 图标政策（硬性）</h3>
+  <div class="call warn">
+    <p class="t">供应商图标必须使用官方 brand mark</p>
+    <p class="small">六家一律使用官方 logo 的矢量路径（Simple Icons / Lobe Icons 源，内联为 SVG，本地渲染，无外链）：Gemini 渐变四角星、Claude 放射花、OpenAI 结、xAI 的 X、Kimi 的 K 折角、OpenRouter 双箭头。深色模式切浅色版本（Codex / xAI 由黑转白）。不复刻、不重绘、不用字母标替代。</p>
+  </div>
+  <p class="small">功能性线性图标（返回、钥匙、刷新、警告等）统一走 <code>assets/icons.js</code> 的 1.7px 描边库，24 网格、圆头端点；行内语义小图标 16px，卡片入口 18px，导航 20–22px。与品牌图标同排时垂直居中，尺寸差不超过 6px。<b>图形只换语义，供应商 mark 一个像素都不动。</b></p>
+
+  <h4>4.5.1 场景—图标对照（本轮修订）</h4>
+  <p class="small">按「这一行到底在做什么」重选图标，而不是沿用通用符号。本轮把六个供应商详情页、模型详情、功能分配、模型库逐行过了一遍：凡是只有文字没有图标的清单行，都补了语义图标；图标底板改成主题角色色，换主题自动跟随。</p>
+  <table>
+    <thead><tr><th style="width:30%">场景 / 行</th><th style="width:22%">图标</th><th>理由与替换前</th></tr></thead>
+    <tbody>
+      <tr><td>模型库、模型列表</td><td><code>grid</code></td><td>「一组模型」是集合语义；原先用 <code>model</code>（单块+圆点）更像单个模型</td></tr>
+      <tr><td>功能模型分配（11 项）</td><td><code>branch</code></td><td>一项功能分流到一个模型；原先用 <code>tune</code>（滑杆）会被读成调参</td></tr>
+      <tr><td>工具调用、工具权限</td><td><code>wrench</code></td><td>函数/工具是“可用的工具”，扳手比四角拼图在 16px 下更易辨认；拼图只留给“插件”概念</td></tr>
+      <tr><td>调用策略</td><td><code>gauge</code></td><td>并发、RPM、超时都是限值与阈值；原先用 <code>bolt</code> 只表达“快”</td></tr>
+      <tr><td>模型目录、目录同步</td><td><code>database</code></td><td>远端元数据仓库；原先用 <code>refresh</code> 把“状态”当成了“对象”</td></tr>
+      <tr><td>端点 / Base URL</td><td><code>link</code></td><td>同源地址是链接关系；原先用 <code>globe</code>（全球）或 <code>key</code>（凭证）都不对</td></tr>
+      <tr><td>连接测试、测试此模型、一键诊断</td><td><code>flask</code></td><td>发一次最小请求做验证，是“试验”而非“网络”；原先统一用 <code>wifi</code></td></tr>
+      <tr><td>默认模型</td><td><code>star</code></td><td>默认是标记而非速度；原先用 <code>bolt</code></td></tr>
+      <tr><td>用量、额度、本机统计</td><td><code>chart</code> / <code>coin</code></td><td>有余额接口给曲线，没有余额接口就标“本机统计”，同一图标两种口径</td></tr>
+      <tr><td>网络连通性 / 代理与 DNS</td><td><code>wifi</code> / <code>globe</code></td><td>诊断工具三行补齐前置图标（连通、出口、探测），与上方问题卡区分</td></tr>
+      <tr><td>授权失效、令牌被拒</td><td><code>alert</code></td><td>原先 <code>wifioff</code> 会误导成“没网”；实际是凭据问题</td></tr>
+      <tr><td>聊天对话、主会话</td><td><code>message</code></td><td>原先用 <code>spark</code>（AI 闪光）只有“智能”没有“对话”，且与其它功能行不一致</td></tr>
+      <tr><td>会话总结、自动摘要</td><td><code>doc</code></td><td>产出是一段摘要文本；<code>compress</code> 的四个角标在 16px 下会被读成“四角框”</td></tr>
+      <tr><td>会话标题</td><td><code>tag</code></td><td>标题是给会话打标签，不是“命名”</td></tr>
+      <tr><td>记忆提取</td><td><code>cpu</code></td><td>抽取与写入长期记忆，偏“处理”而非“收藏”</td></tr>
+      <tr><td>翻译</td><td><code>translate</code></td><td>“文/A”是最通用的翻译符号，避免与“语言/地球”混淆</td></tr>
+      <tr><td>文本检索</td><td><code>search</code></td><td>关键词检索；与“搜索供应商”同一语义，降低学习成本</td></tr>
+      <tr><td>图片输入 / 图片理解 / 图片历史</td><td><code>image</code></td><td>同一能力在模型详情、功能分配、设置页用同一图标</td></tr>
+      <tr><td>音频输入 / 音频转写</td><td><code>audio</code></td><td>用波形而不是“喇叭”，强调内容而非播放</td></tr>
+      <tr><td>视频输入 / 视频理解</td><td><code>video</code></td><td>摄像机轮廓，与 <code>play</code>（播放动作）区分</td></tr>
+      <tr><td>界面操作规划</td><td><code>route</code></td><td>拆解成步骤路径；原先无图标</td></tr>
+      <tr><td>群聊发言规划</td><td><code>users</code></td><td>多角色决策，强调“多人”而不是“消息”</td></tr>
+      <tr><td>目录供应商</td><td><code>list</code></td><td>一份可浏览的厂商清单；原先用 <code>globe</code> 只表达“全球”</td></tr>
+      <tr><td>导出配置</td><td><code>download</code></td><td>落盘动作；原先无图标</td></tr>
+      <tr><td>清除供应商凭据</td><td><code>trash</code></td><td>破坏性操作必须有图标 + <code>err</code> 色底板，不能只靠红字</td></tr>
+      <tr><td>换个端点</td><td><code>plug</code></td><td>动作是“换接口”，用插头；<code>link</code> 留给“查看地址”</td></tr>
+      <tr><td>查看原始响应</td><td><code>code</code></td><td>展示 HTTP/JSON 原文</td></tr>
+    </tbody>
+  </table>
+
+  <h4>4.5.2 主题适配</h4>
+  <p class="small">图标底板不再写内联颜色，统一用 <code>.itile.blue / .amber / .green / .red / .n</code> 五个语义类，分别映射到主题的 <code>primaryContainer</code>、<code>warningContainer</code>、<code>successContainer</code>、<code>errorContainer</code>、<code>surfaceContainerHigh</code>。改主题种子色或切深浅色，底板与描边同步变，不需要逐页改样式。</p>
+  <table>
+    <thead><tr><th style="width:30%">项</th><th>规则</th></tr></thead>
+    <tbody>
+      <tr><td>描边颜色</td><td>全部 <code>stroke: currentColor</code>，由外层 <code>color</code> 决定；只用 <code>primary</code> / <code>onSurfaceVariant</code> / <code>outline</code> / 语义色，不写死十六进制</td></tr>
+      <tr><td>图标底板</td><td>五档语义类：账号与模型 <code>blue</code>、Key 与额度 <code>amber</code>、测试通过 <code>green</code>、清除与失效 <code>red</code>、诊断与高级设置 <code>n</code>；同一分组里最多两种，避免彩虹色</td></tr>
+      <tr><td>语义图标底色</td><td>成功 <code>ok</code>、警示 <code>warn</code>、失败 <code>err</code> 用各自的 tint；失败条描边改为 <code>err</code> 34% 透明，不再写死 <code>#f0cfd5</code></td></tr>
+      <tr><td>深色切换</td><td>只换描边与底板颜色，图形不动；线宽在深色下保持 1.7，不因对比度提高而加粗</td></tr>
+      <tr><td>与品牌图标共存</td><td>品牌 mark 保留官方原色（Codex / xAI 深色转白），线性图标永远跟随主题色，两者不互相取色</td></tr>
+      <tr><td>箭头对比度</td><td>行尾 <code>chevron</code> 统一 <code>onSurfaceVariant</code>（不再用最浅的 <code>text-4</code>），深色下也看得见可点</td></tr>
+      <tr><td>输入框前缀</td><td>Key 输入框左侧固定 <code>key</code>、右侧 <code>eye</code>：只表达“这是什么”和“是否可见”，不放锁形图标（锁会被误读为“已加密不可改”）</td></tr>
+      <tr><td>不可用状态</td><td>未授权模型的勾选位改成灰底 <code>minus</code>（<code>.chk.dis</code>），不再留一个看起来能点的空圆</td></tr>
+    </tbody>
+  </table>
+
+  <h4>4.6 细节与交互反馈</h4>
+  <table>
+    <thead><tr><th style="width:30%">项</th><th>规则</th></tr></thead>
+    <tbody>
+      <tr><td>行按压</td><td>整行可点时给 <code>:active</code> 底色 <code>--pressed</code>（浅 4.5% 黑 / 深 5.5% 白），过渡 140ms；不改变布局，只给触觉替代</td></tr>
+      <tr><td>按钮按压</td><td>主按钮 <code>scale(.982)</code> + 亮度 97%，180ms 内回弹；主按钮加 6px 低透明度投影，深色下改用更低的黑色投影</td></tr>
+      <tr><td>焦点环</td><td>键盘/无障碍焦点统一 3px <code>--ring</code>，所有可聚焦行、开关、分段项、chip 共用一套，不用浏览器默认虚线</td></tr>
+      <tr><td>开关与分段</td><td>开关滑块 180ms 曲线 <code>cubic-bezier(.3,.9,.3,1)</code>，开启态带 4px 主色投影；分段选中态用“抬起的卡片”隐喻（浅色白底 + 阴影，深色 <code>#2C2D31</code>）</td></tr>
+      <tr><td>数字稳定性</td><td>统计值、额度、token 数、端口全部 <code>tabular-nums</code>，刷新时数字不跳宽</td></tr>
+      <tr><td>动作可预期</td><td>可点行必须有 <code>chevron</code> 或动作词（去配置 / 重新测试 / 了解原因）；只靠颜色变化不算可点</td></tr>
+      <tr><td>破坏性操作</td><td>红字 + <code>trash</code> + <code>err</code> tint 三层同时出现，且不与主按钮同排；确认在页内展开，不弹系统弹窗</td></tr>
+      <tr><td>等待态</td><td>授权等待用 24px 旋转环 + 已等待计时；超过 90 秒才把“改用设备码”提升为主入口，避免一开始就分散注意力</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ======================= 5 ======================= -->
+<section id="s5">
+  <div class="sec-h"><span class="sec-n">05</span><h2>页面预览</h2></div>
+  <p>16 个页面，每页给<b>浅色 / 深色</b>两版，均为 390pt 宽、3× 输出（1170px），按页面自上而下完整截取，不含局部裁切或拼贴。主题切换只换 token，不改任何布局与层级——这一点在每一对图里可以直接比对。</p>
+  <p class="small">每对图<b>左为浅色、右为深色</b>；15 号例外（左为深色主稿）。01 的深色版是独立页面 02，其余为同一页面的换肤结果。</p>
+
+  <h3>5.1 入口与总览</h3>
+  <div class="shots">
+    <div class="shot">
+      <div class="pair">
+        <div class="frame"><img src="previews/01-home-light.png" alt="模块主页 浅色"></div>
+        <div class="frame"><img src="previews/02-home-dark.png" alt="模块主页 深色"></div>
+      </div>
+      <h4>01 / 02 · 模块主页</h4>
+      <p class="desc">三段式入口卡：供应商 5/6 已连接（xAI 待重新授权）、模型 18 启用、AI 设置。深色下品牌 logo 自动切浅色版本，状态色提亮，分组层次靠明度差而非描边。</p>
+    </div>
+    <div class="shot">
+      <div class="pair">
+        <div class="frame"><img src="previews/03-providers-list.png" alt="供应商总览 浅色"></div>
+        <div class="frame"><img src="previews/03-providers-list-dark.png" alt="供应商总览 深色"></div>
+      </div>
+      <h4>03 · 供应商总览</h4>
+      <p class="desc">按状态分成「已连接 / 需要处理」两组，每行明示当前生效方式（账号 / API Key）与模型数；筛选条给 6 家总数与各状态计数。</p>
+    </div>
+  </div>
+
+  <h3>5.2 六家供应商详情</h3>
+  <div class="shots">
+    <div class="shot">
+      <div class="pair">
+        <div class="frame"><img src="previews/04-gemini.png" alt="Gemini 浅色"></div>
+        <div class="frame"><img src="previews/04-gemini-dark.png" alt="Gemini 深色"></div>
+      </div>
+      <h4>04 · Gemini</h4>
+      <p class="desc">顶部三格状态条（生效方式 / 型号 / 最近测试）先给结论，再进入「账号登录 / API Key」分段切换：只展开账号一条，Vertex 只需项目与区域两步；Key 方式折叠成一行，合规说明收进脚注，不再占一整块警示条。</p>
+    </div>
+    <div class="shot">
+      <div class="pair">
+        <div class="frame"><img src="previews/05-claude.png" alt="Claude 浅色"></div>
+        <div class="frame"><img src="previews/05-claude-dark.png" alt="Claude 深色"></div>
+      </div>
+      <h4>05 · Claude</h4>
+      <p class="desc">Key 生效时只展开 Key 一条：密钥、测试结果、Base URL 与 API 版本、1h 缓存、更换/删除；「账号登录」折成一行标「不提供」，原因收进「了解原因」页内说明。</p>
+    </div>
+    <div class="shot">
+      <div class="pair">
+        <div class="frame"><img src="previews/06-codex.png" alt="Codex 浅色"></div>
+        <div class="frame"><img src="previews/06-codex-dark.png" alt="Codex 深色"></div>
+      </div>
+      <h4>06 · Codex</h4>
+      <p class="desc">ChatGPT 账号已连接：状态条直接把额度（PLUS / 5h 68%）提到首屏；卡片内只留账号、两条额度条、回调方式与账号标识；Platform Key 折叠一行，随时可切换。</p>
+    </div>
+    <div class="shot">
+      <div class="pair">
+        <div class="frame"><img src="previews/07-xai.png" alt="xAI 浅色"></div>
+        <div class="frame"><img src="previews/07-xai-dark.png" alt="xAI 深色"></div>
+      </div>
+      <h4>07 · xAI</h4>
+      <p class="desc">授权失效态：状态条写「账号 · 已失效」，卡片内设备码收成一行（码 + 复制），点重新授权才展开倒计时；区域限制原因放在脚注，不再整块警示。</p>
+    </div>
+    <div class="shot">
+      <div class="pair">
+        <div class="frame"><img src="previews/08-kimi.png" alt="Kimi 浅色"></div>
+        <div class="frame"><img src="previews/08-kimi-dark.png" alt="Kimi 深色"></div>
+      </div>
+      <h4>08 · Kimi</h4>
+      <p class="desc">账号已连接（Kimi Code 会员）：会员有效期、设备保活、授权域名三行；开放平台 Key 折叠为一行并注明「与 Code 账户不通用」，端点三选一移入 Key 配置页。</p>
+    </div>
+    <div class="shot">
+      <div class="pair">
+        <div class="frame"><img src="previews/09-openrouter.png" alt="OpenRouter 浅色"></div>
+        <div class="frame"><img src="previews/09-openrouter-dark.png" alt="OpenRouter 深色"></div>
+      </div>
+      <h4>09 · OpenRouter</h4>
+      <p class="desc">OAuth 已连接：Key 已用额度条 + 授权形态（PKCE 回环、无需 client id）+ Key 权限；API Key 折叠一行，说明授权本质是换一把属于你的 Key。</p>
+    </div>
+  </div>
+
+  <h3>5.3 授权、Key 与模型</h3>
+  <div class="shots">
+    <div class="shot">
+      <div class="pair">
+        <div class="frame"><img src="previews/10-auth-flow.png" alt="授权流程 浅色"></div>
+        <div class="frame"><img src="previews/10-auth-flow-dark.png" alt="授权流程 深色"></div>
+      </div>
+      <h4>10 · 授权流程页</h4>
+      <p class="desc">三步条 + 等待卡（回调端口与计时）+ 重开/复制两个动作；设备码兜底从整块面板收成一行入口，展开后再给码与倒计时。</p>
+    </div>
+    <div class="shot">
+      <div class="pair">
+        <div class="frame"><img src="previews/11-apikey-flow.png" alt="API Key 配置 浅色"></div>
+        <div class="frame"><img src="previews/11-apikey-flow-dark.png" alt="API Key 配置 深色"></div>
+      </div>
+      <h4>11 · API Key 配置（单屏校验）</h4>
+      <p class="desc">不再用四屏堆叠状态：一屏内完成输入、端点选择与校验，失败就地给 401 原文、两句原因与「重新输入 / 换个端点」；排查入口（原始响应、端点对照）折叠在下方。</p>
+    </div>
+    <div class="shot">
+      <div class="pair">
+        <div class="frame"><img src="previews/12-model-library.png" alt="模型库 浅色"></div>
+        <div class="frame"><img src="previews/12-model-library-dark.png" alt="模型库 深色"></div>
+      </div>
+      <h4>12 · 模型库</h4>
+      <p class="desc">搜索 + 四类筛选；行内显示供应商、上下文、能力 chip；启用态用勾选圆点（非开关），不可用模型置灰并注明原因。底部给同步与默认模型入口。</p>
+    </div>
+    <div class="shot">
+      <div class="pair">
+        <div class="frame"><img src="previews/13-model-detail.png" alt="模型详情 浅色"></div>
+        <div class="frame"><img src="previews/13-model-detail-dark.png" alt="模型详情 深色"></div>
+      </div>
+      <h4>13 · 模型详情</h4>
+      <p class="desc">能力检测（五类，可单测/全测）、上下文与摘要、思考档位与预算、采样参数、Claude 1h 缓存、别名。全部页内展开，底部「测试此模型」。</p>
+    </div>
+  </div>
+
+  <h3>5.4 设置、映射与诊断</h3>
+  <div class="shots">
+    <div class="shot">
+      <div class="pair">
+        <div class="frame"><img src="previews/14-ai-settings.png" alt="AI 设置 浅色"></div>
+        <div class="frame"><img src="previews/14-ai-settings-dark.png" alt="AI 设置 深色"></div>
+      </div>
+      <h4>14 · AI 设置</h4>
+      <p class="desc">调用策略（流式、工具、并发）、上下文与媒体（图片/视频历史轮数——后端已有但此前未暴露）、模型目录、用量。分组即语义，不需要跳页。</p>
+    </div>
+    <div class="shot">
+      <div class="pair">
+        <div class="frame"><img src="previews/15-function-mapping.png" alt="功能模型分配 深色"></div>
+        <div class="frame"><img src="previews/15-function-mapping-light.png" alt="功能模型分配 浅色"></div>
+      </div>
+      <h4>15 · 功能模型分配（左：深色主稿 · 右：浅色）</h4>
+      <p class="desc">11 项 FunctionType 一一对应，未设置的显示「跟随聊天模型」；点行就地展开模型选择器，不弹窗。两版对照用来验证深色不是另做一套，而是同一套语义的换肤。</p>
+    </div>
+    <div class="shot">
+      <div class="pair">
+        <div class="frame"><img src="previews/16-diagnostics.png" alt="连接诊断 浅色"></div>
+        <div class="frame"><img src="previews/16-diagnostics-dark.png" alt="连接诊断 深色"></div>
+      </div>
+      <h4>16 · 连接诊断</h4>
+      <p class="desc">401 / 402 / 429 / 403 四类归因与处置建议，附一键重测、切换方式、查看文档；底部是最近 5 次请求的原始状态，便于反馈问题。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 6 ======================= -->
+<section id="s6">
+  <div class="sec-h"><span class="sec-n">06</span><h2>重构实施规划</h2></div>
+  <p class="small">原则：先补底层凭据模型，再换 UI 外壳；每一步都可独立发版，且旧数据旧入口始终可用（灰度双入口），不做一次性大爆炸替换。</p>
+
+  <h3>6.1 阶段与交付物</h3>
+  <table>
+    <thead><tr><th style="width:9%">阶段</th><th style="width:24%">内容</th><th style="width:32%">关键改动</th><th>验收</th></tr></thead>
+    <tbody>
+      <tr><td><b>P0</b></td><td>授权层与组件库</td><td>Rust 新增 <code>ProviderAuthEngine</code>（Loopback / Device / ManualCode 三 flow）与 <code>ProviderCredential</code>；把 <code>CodexOAuth</code> 迁到引擎上；Flutter 抽 <code>components/model_ai/</code>（Group、Row、StatusPill、KeyField、Steps、QuotaBar）</td><td>Codex 登录回归通过；五家授权（含 Claude Code 手工码）在真机跑通；旧页面 UI 不变</td></tr>
+      <tr><td><b>P1</b></td><td>新壳 + 主页 + 总览</td><td>新增 <code>ModelAiHomeScreen</code>、<code>ProvidersOverviewScreen</code>；所有颜色走 <code>ColorScheme</code> 角色（不写死十六进制），浅/深/自定义强调色一套布局；旧 <code>ModelSettingsPanel</code> 保留为「高级（旧版）」入口</td><td>两个入口并存，数据同源；主页状态与旧页一致</td></tr>
+      <tr><td><b>P2</b></td><td>供应商详情 ×6</td><td>按供应商能力矩阵渲染方式卡；Gemini 接 Vertex 项目授权；Claude 走说明态；Kimi 端点三选一；xAI 设备码</td><td>六家逐一走通「连上 → 拉模型 → 发一条 chat」</td></tr>
+      <tr><td><b>P3</b></td><td>模型库 + 模型详情</td><td>从内联表单迁到详情页；别名 <code>displayName</code> 字段；勾选启用；同步与默认模型</td><td>旧配置全部正确回显；启用状态变更即时反映到聊天选择器</td></tr>
+      <tr><td><b>P4</b></td><td>AI 设置 / 功能映射 / 诊断</td><td>补 <code>maxImageHistoryUserTurns</code> 等入口；11 项映射就地选择；诊断页接真实错误码</td><td>11 项映射与旧页一一对应；错误归因可复现</td></tr>
+      <tr><td><b>P5</b></td><td>收尾</td><td>旧面板降级为迁移工具，两个版本后移除；补齐 zh/en 文案</td><td>lint / 全量测试 / 无障碍对比度通过</td></tr>
+    </tbody>
+  </table>
+
+  <h3>6.2 数据结构兼容</h3>
+  <pre>// 只增不改，全部可缺省；旧配置读出来 authMode 由现有状态推导
+ProviderProfile += credentialSource?  // apiKey | account | none
+                += accountLink?       // { email, planLabel, expiresAt } 仅作展示缓存
+                += models[]           // 结构不变
+ModelProfile    += displayName?       // 别名（可选，来自 ETA 的实践）
+ProviderCredential (新表，Rust 侧加密存储，与 providerTypeId 一对一)</pre>
+  <ul class="small">
+    <li><b>迁移策略</b>：读取时推导 —— 有 Codex token → <code>account</code>；有 apiKey → <code>apiKey</code>；否则 <code>none</code>。不回写、不批量改造旧 JSON。</li>
+    <li><b>Key 池不动</b>：<code>apiKeyPool</code> / <code>keyRotation</code> 保持原字段与语义，切到账号方式时仅置为「暂停使用」，不清空。</li>
+    <li><b>绑定关系不动</b>：<code>functionModelBindings</code> 与 <code>currentChatModelId</code> 仍按 model id 索引，模型被停用只影响选择器可见性，不改绑定值。</li>
+  </ul>
+
+  <h3>6.3 供应商接入模块划分</h3>
+  <div class="grid g2">
+    <div class="card"><h4>Rust（core/crates）</h4><ul class="small"><li><code>provider/auth/engine.rs</code>：flow 调度与状态机</li><li><code>provider/auth/flows/</code>：loopback.rs / device.rs / manual.rs</li><li><code>provider/auth/registry.rs</code>：六家 client id、scope、端点表（数据化，便于随官方变更热修）</li><li><code>provider/auth/credential.rs</code>：加密存取、刷新、撤销</li><li><code>foundation/model</code>：字段扩展与迁移推导</li></ul></div>
+    <div class="card"><h4>Flutter（apps/flutter/app/lib）</h4><ul class="small"><li><code>ui/features/settings/model_ai/</code>：home / providers / provider_detail / auth_flow / api_key / model_library / model_detail / ai_settings / function_mapping / diagnostics</li><li><code>ui/components/model_ai/</code>：与业务无关的展示件</li><li><code>data/model_ai/</code>：Repository 聚合（provider、catalog、usage、diagnostics）</li><li>旧 <code>ModelSettingsPanel</code> 仅做入口转发与迁移提示</li></ul></div>
+  </div>
+
+  <h3>6.4 风险清单</h3>
+  <table>
+    <thead><tr><th style="width:26%">风险</th><th style="width:12%">等级</th><th>应对</th></tr></thead>
+    <tbody>
+      <tr><td>Claude 账号登录引发封号</td><td><span class="pill p-err">高</span></td><td>已实现但默认不推荐；仅用户主动选择，登录页写明风险，失败或受限时回退 API Key</td></tr>
+      <tr><td>Gemini 复用 Code Assist 凭据</td><td><span class="pill p-err">高</span></td><td>不提供该入口；只保留 AI Studio Key 与 Vertex 项目授权</td></tr>
+      <tr><td>xAI client id / 流程变动</td><td><span class="pill p-warn">中</span></td><td>端点与 client id 数据化配置；失败即引导 Key，不阻断主链</td></tr>
+      <tr><td>Kimi 设备 30 天失效、双账户体系混淆</td><td><span class="pill p-warn">中</span></td><td>详情页常驻说明；失效 pill 提前提示，不等到报错</td></tr>
+      <tr><td>非官方客户端风控（Codex / xAI）</td><td><span class="pill p-warn">中</span></td><td>保留 Key 兜底；账号方式明确标注「使用你的订阅额度」</td></tr>
+      <tr><td>凭据泄露</td><td><span class="pill p-err">高</span></td><td>Rust 侧加密落盘，UI 只读状态；Key 输入框仅显示后四位</td></tr>
+      <tr><td>大目录性能（36 provider / 34 model）</td><td><span class="pill p-gray">低</span></td><td>列表懒加载 + 元数据本地缓存，筛选在内存做</td></tr>
+    </tbody>
+  </table>
+
+  <h3>6.5 待确认项</h3>
+  <ol class="small">
+    <li><b>模型别名</b>（<code>displayName</code>）是否本期纳入？纳入则模型详情多一个字段，模型库行标题可自定义。</li>
+    <li>是否需要补 <b>Gemini / Claude 深色稿</b>与<b>平板宽屏稿</b>（现有 SettingsScreen 已有 260px 侧栏宽屏布局）。</li>
+    <li>xAI 账号方式是否默认隐藏、仅在用户主动展开时出现（当前设计为可见但标注「实验性」）。</li>
+    <li>是否保留「高级（旧版）」双入口一段时间，还是直接替换。</li>
+  </ol>
+</section>
+
+<!-- ======================= 7 ======================= -->
+<section id="s7">
+  <div class="sec-h"><span class="sec-n">07</span><h2>依据与来源</h2></div>
+  <ul class="src" style="line-height:2.1">
+    <li>Anthropic 合规文档（第三方不得提供 Claude.ai 登录 / 不得代路由订阅凭据）：<br>https://code.claude.com/docs/en/legal-and-compliance</li>
+    <li>Gemini Code Assist 个人版停止对 Gemini CLI 提供 Google 登录（2026-06-18）：<br>https://developers.google.cn/gemini-code-assist/docs/deprecations/code-assist-individuals</li>
+    <li>Gemini CLI 条款：以第三方软件直接访问 Code Assist 服务属违规：<br>https://geminicli.com/docs/resources/tos-privacy/</li>
+    <li>OpenRouter OAuth PKCE（授权 URL 与换取 user-controlled key）：<br>https://openrouter.ai/docs/guides/overview/auth/oauth</li>
+    <li>Kimi Code CLI 设备码授权与端点说明：<br>https://www.kimi.com/zh-sg/help/kimi-code/cli-getting-started</li>
+    <li>xAI 设备码登录（accounts.x.ai）第三方实现参考：<br>https://docs.agno.com/examples/models/xai/oauth-device-login</li>
+    <li>仓库内实现：<code>core/crates/provider/services/src/chat/llmprovider/CodexOAuth.rs</code>、<code>foundation/model/src/ModelConfigData.rs</code>、<code>ui/features/settings/model/ModelSettingsPanel.dart</code>；参考仓库 <code>D:\Downloads\eta</code>（<code>agent/auth/ProviderAuthModels.kt</code>）。</li>
+    <li>品牌图标：Simple Icons（simpleicons.org）与 Lobe Icons（lobehub.com/icons），均为官方 brand mark 矢量。</li>
+  </ul>
+</section>
+
+</div>
+
+<footer><div class="wrap">
+  第一阶段交付 · 仅设计不改代码 · 16 页高保真稿位于 <code>design/model-ai-refresh/previews/</code> · 源文件为同目录 HTML（390pt 基准，可直接改样式重渲染）
+</div></footer>
+
+</body>
+</html>
+
+

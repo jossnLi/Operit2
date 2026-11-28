@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>模型库</title>
+<link rel="stylesheet" href="assets/app.css">
+<style>
+  .mrow .right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+  .mrow .sw { margin-top: 2px; }
+  .cap-warn { color: var(--warn); }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="statusbar">
+    <span>9:41</span>
+    <div class="right">
+      <svg class="sb-icon" width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7.4" width="2.6" height="3.6" rx=".8"/><rect x="4.4" y="5.2" width="2.6" height="5.8" rx=".8"/><rect x="8.8" y="2.6" width="2.6" height="8.4" rx=".8"/><rect x="13.2" y="0" width="2.6" height="11" rx=".8"/></svg>
+      <svg class="sb-icon" width="15" height="11" viewBox="0 0 15 11" fill="currentColor"><path d="M7.5 10.4 4.9 7.7a3.7 3.7 0 0 1 5.2 0z"/><path d="M2.6 5.3a7 7 0 0 1 9.8 0l-1.4 1.5a5 5 0 0 0-7 0z"/><path d="M.3 2.8a10.4 10.4 0 0 1 14.4 0L13.4 4.3a8.4 8.4 0 0 0-11.8 0z"/></svg>
+      <svg class="sb-icon" width="25" height="12" viewBox="0 0 25 12"><rect x="0" y=".5" width="21" height="11" rx="3.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/><rect x="2" y="2.5" width="15" height="7" rx="2" fill="currentColor"/><path d="M23 4.2v3.6" stroke="currentColor" stroke-width="1.4" opacity=".45"/></svg>
+    </div>
+  </div>
+
+  <div class="nav">
+    <div class="nav-back"><i data-ic="chevleft" data-s="21" data-w="2"></i></div>
+    <div class="nav-title">模型库</div>
+    <div class="nav-action"><i data-ic="filter" data-s="21" data-w="1.9"></i></div>
+  </div>
+
+  <div class="content">
+    <div class="search" style="margin-top:10px">
+      <i data-ic="search" data-s="17"></i>
+      <span class="ph">搜索模型、供应商</span>
+    </div>
+
+    <div class="filters">
+      <div class="fchip on">已启用 18</div>
+      <div class="fchip">全部 34</div>
+      <div class="fchip">支持工具 22</div>
+      <div class="fchip">多模态 9</div>
+    </div>
+
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 4px 8px">
+      <span style="font-size:12px;color:var(--text-3)">按最近使用排序 · 3 家供应商</span>
+      <span style="font-size:12.5px;font-weight:600;color:var(--accent);display:inline-flex;align-items:center;gap:5px"><i data-ic="refresh" data-s="14" data-w="1.8"></i>同步</span>
+    </div>
+
+    <div class="group">
+      <div class="mrow">
+        <div class="logo xs mk-gemini"><i data-brand="gemini" data-bs="16"></i></div>
+        <div class="grow">
+          <div class="nm">gemini-3.1-pro <span class="tag-def">默认</span></div>
+          <div class="meta">Gemini · 1M 上下文 · 思考档位</div>
+          <div class="chiprow"><span class="chip on"><i data-ic="wrench" data-s="12"></i>工具调用</span><span class="chip on"><i data-ic="image" data-s="12"></i>图像</span></div>
+        </div>
+        <div class="right"><div class="chk on"><i data-ic="check" data-s="14" data-w="2.4"></i></div></div>
+      </div>
+
+      <div class="mrow">
+        <div class="logo xs mk-gemini"><i data-brand="gemini" data-bs="16"></i></div>
+        <div class="grow">
+          <div class="nm">gemini-3.1-flash</div>
+          <div class="meta">Gemini · 1M 上下文 · 低延迟</div>
+          <div class="chiprow"><span class="chip on"><i data-ic="wrench" data-s="12"></i>工具调用</span><span class="chip on"><i data-ic="image" data-s="12"></i>图像</span></div>
+        </div>
+        <div class="right"><div class="chk on"><i data-ic="check" data-s="14" data-w="2.4"></i></div></div>
+      </div>
+
+      <div class="mrow">
+        <div class="logo xs mk-codex"><i data-brand="codex" data-bs="16"></i></div>
+        <div class="grow">
+          <div class="nm">gpt-5.5</div>
+          <div class="meta">Codex · 128K · 订阅额度</div>
+          <div class="chiprow"><span class="chip on"><i data-ic="wrench" data-s="12"></i>工具调用</span><span class="chip"><i data-ic="image" data-s="12"></i>图像</span></div>
+        </div>
+        <div class="right"><div class="chk on"><i data-ic="check" data-s="14" data-w="2.4"></i></div></div>
+      </div>
+
+      <div class="mrow">
+        <div class="logo xs mk-codex"><i data-brand="codex" data-bs="16"></i></div>
+        <div class="grow">
+          <div class="nm">gpt-5.6-terra</div>
+          <div class="meta">Codex · 128K · 更快更省</div>
+          <div class="chiprow"><span class="chip on"><i data-ic="wrench" data-s="12"></i>工具调用</span></div>
+        </div>
+        <div class="right"><div class="chk on"><i data-ic="check" data-s="14" data-w="2.4"></i></div></div>
+      </div>
+
+      <div class="mrow">
+        <div class="logo xs mk-claude"><i data-brand="claude" data-bs="16"></i></div>
+        <div class="grow">
+          <div class="nm">claude-4.5-sonnet</div>
+          <div class="meta">Claude · 200K · 1h 缓存</div>
+          <div class="chiprow"><span class="chip on"><i data-ic="wrench" data-s="12"></i>工具调用</span><span class="chip on"><i data-ic="image" data-s="12"></i>图像</span></div>
+        </div>
+        <div class="right"><div class="chk on"><i data-ic="check" data-s="14" data-w="2.4"></i></div></div>
+      </div>
+
+      <div class="mrow">
+        <div class="logo xs mk-kimi"><i data-brand="kimi" data-bs="16"></i></div>
+        <div class="grow">
+          <div class="nm">kimi-k2.6</div>
+          <div class="meta">Kimi · 256K · 中文长文本</div>
+          <div class="chiprow"><span class="chip on"><i data-ic="wrench" data-s="12"></i>工具调用</span></div>
+        </div>
+        <div class="right"><div class="chk on"><i data-ic="check" data-s="14" data-w="2.4"></i></div></div>
+      </div>
+
+      <div class="mrow">
+        <div class="logo xs mk-xai"><i data-brand="xai" data-bs="16"></i></div>
+        <div class="grow">
+          <div class="nm">grok-4.3</div>
+          <div class="meta cap-warn">xAI · 授权失效，暂不可用</div>
+          <div class="chiprow"><span class="chip warn"><i data-ic="alert" data-s="12"></i>需重新授权</span></div>
+        </div>
+        <div class="right"><div class="chk dis"><i data-ic="minus" data-s="14" data-w="2"></i></div></div>
+      </div>
+    </div>
+
+    <div class="group" style="margin-top:12px">
+      <div class="row">
+        <div class="grow" style="text-align:center;display:flex;align-items:center;justify-content:center;gap:4px"><span style="font-size:13.5px;color:var(--accent);font-weight:600">查看全部 34 个模型</span><i data-ic="chevright" data-s="16" style="color:var(--accent)"></i></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="group">
+        <div class="row">
+          <div class="itile n"><i data-ic="refresh" data-s="18"></i></div>
+          <div class="grow"><div class="t sm">从供应商同步模型</div><div class="s">新增模型会默认关闭，需手动启用</div></div>
+          <div class="chev"><i data-ic="chevright" data-s="19"></i></div>
+        </div>
+        <div class="row">
+          <div class="itile n"><i data-ic="star" data-s="18"></i></div>
+          <div class="grow"><div class="t sm">默认模型</div><div class="s">新会话使用 gemini-3.1-pro</div></div>
+          <span class="val">Gemini</span>
+          <div class="chev"><i data-ic="chevright" data-s="19"></i></div>
+        </div>
+      </div>
+      <div class="footnote">模型启用状态保存在本机，不会因为供应商刷新而改变；被停用的模型不会出现在聊天选择器中。</div>
+    </div>
+  </div>
+
+  <div class="home-ind"><i></i></div>
+</div>
+<script src="assets/icons.js"></script>
+<script src="assets/brands.js"></script>
+<script>/* 主题模拟：?theme=dark / ?theme=light 仅用于生成本地预览图 */ (function(){var m=/[?&]theme=(dark|light)/.exec(location.search);if(m){document.body.classList.toggle("dark",m[1]==="dark");}})();</script>
+</body>
+</html>
