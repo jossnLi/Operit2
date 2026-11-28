@@ -10,7 +10,7 @@ import '../about/AboutOperitScreen.dart';
 import '../data/DataSettingsPanel.dart';
 import '../data/UsageStatisticsDetailScreen.dart';
 import '../global_behavior/GlobalBehaviorSettingsPanel.dart';
-import '../model/ModelSettingsPanel.dart';
+import '../model_ai/ModelAiSettingsEntry.dart';
 import '../local_models/LocalModelSettingsPanel.dart';
 import '../models/SettingsModels.dart';
 import '../profile/UserProfileSettingsPanel.dart';
@@ -40,7 +40,7 @@ class SettingsDetailView extends StatelessWidget {
       SettingsCategory.profile => UserProfileSettingsPanel(
         onProfileChanged: onProfileChanged,
       ),
-      SettingsCategory.model => const ModelSettingsPanel(),
+      SettingsCategory.model => const ModelAiSettingsEntry(),
       SettingsCategory.characters => const ToolPkgComposeDslScreenRoute(
         containerPackageName: 'com.operit.character_cards',
         uiModuleId: 'main',

@@ -13,6 +13,8 @@ pub mod GitHubOAuthBrokerService;
 pub mod LocalModelService;
 #[path = "LocalProviderService.rs"]
 pub mod LocalProviderService;
+#[path = "ProviderAuthService.rs"]
+pub mod ProviderAuthService;
 #[path = "ProviderRuntimeSupportService.rs"]
 pub mod ProviderRuntimeSupportService;
 #[path = "RuntimeBrowserService.rs"]
@@ -47,6 +49,7 @@ pub use GitHubOAuthBrokerService::*;
 pub use LocalModelService::*;
 pub use LocalProviderService::*;
 pub use ProviderRuntimeSupportService::*;
+pub use ProviderAuthService::*;
 pub use RuntimeBrowserService::*;
 pub use RuntimeEventIngressService::*;
 pub use RemoteAnnouncementService::*;

@@ -32,6 +32,8 @@ pub mod PreferenceStorageManager;
 pub(crate) mod PreferenceSpaceMerge;
 #[path = "PromptVersionManager.rs"]
 pub mod PromptVersionManager;
+#[path = "ProviderAuthPreferences.rs"]
+pub mod ProviderAuthPreferences;
 #[path = "RemoteAnnouncementPreferences.rs"]
 pub mod RemoteAnnouncementPreferences;
 #[path = "SkillVisibilityPreferences.rs"]

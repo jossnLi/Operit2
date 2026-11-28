@@ -9,6 +9,7 @@ const Map<String, String> providerLogoAssets = <String, String>{
   'ALIPAY_BAILING': 'assets/model_logos/ALIPAY_BAILING.svg',
   'ALIYUN': 'assets/model_logos/ALIYUN.svg',
   'ANTHROPIC': 'assets/model_logos/ANTHROPIC.svg',
+  'ANTHROPIC_CLAUDE': 'assets/model_logos/ANTHROPIC.svg',
   'ANTHROPIC_GENERIC': 'assets/model_logos/ANTHROPIC_GENERIC.svg',
   'BAICHUAN': 'assets/model_logos/BAICHUAN.svg',
   'BAIDU': 'assets/model_logos/BAIDU.svg',

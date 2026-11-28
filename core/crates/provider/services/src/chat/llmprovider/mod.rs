@@ -65,6 +65,12 @@ pub mod RequestConcurrencyRegistry;
 pub mod SlidingWindowRateLimiter;
 #[path = "StreamingResponseLines.rs"]
 mod StreamingResponseLines;
+#[path = "ProviderAuthEngine.rs"]
+pub mod ProviderAuthEngine;
+#[path = "ProviderAuthModels.rs"]
+pub mod ProviderAuthModels;
+#[path = "ProviderAuthRegistry.rs"]
+pub mod ProviderAuthRegistry;
 #[path = "ProviderHttp.rs"]
 mod ProviderHttp;
 #[path = "StructuredToolCallBridge.rs"]

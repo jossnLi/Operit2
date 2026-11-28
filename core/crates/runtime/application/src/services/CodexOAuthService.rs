@@ -1,13 +1,16 @@
 use operit_host_api::HostManager::defaultHostRuntimeTaskSchedulerHost;
 use operit_host_api::{HostManager, HttpHost, HttpRequestData};
 use operit_providers::chat::llmprovider::CodexOAuth::{
-    account_id_from_tokens, browser_authorization, ensure_fresh_tokens, exchange_browser_code,
-    poll_device_authorization_once, start_device_authorization, CodexBrowserAuthorization,
-    CodexDeviceAuthorization, CodexOAuthTokens,
+    account_id_from_tokens, browser_authorization, poll_device_authorization_once,
+    start_device_authorization, CodexBrowserAuthorization, CodexDeviceAuthorization,
+    CodexOAuthTokens,
 };
+use operit_providers::chat::llmprovider::ProviderAuthEngine;
+use operit_providers::chat::llmprovider::ProviderAuthModels::ProviderCredential;
+use operit_providers::chat::llmprovider::ProviderAuthRegistry;
 use serde::{Deserialize, Serialize};
 
-use crate::data::preferences::CodexAuthPreferences::CodexAuthPreferences;
+use crate::data::preferences::ProviderAuthPreferences::ProviderAuthPreferences;
 
 /// Codex subscription usage endpoint owned by ChatGPT's subscription backend.
 const CODEX_USAGE_URL: &str = "https://chatgpt.com/backend-api/wham/usage";
@@ -85,10 +88,15 @@ impl CodexOAuthService {
         if state != expectedState {
             return Err("Codex authorization state does not match".to_string());
         }
-        let tokens = exchange_browser_code(&code, &codeVerifier)
-            .await
-            .map_err(|error| error.to_string())?;
-        self.store(tokens).await
+        let credential = ProviderAuthEngine::complete_browser_login(
+            ProviderAuthRegistry::CODEX_PROVIDER_TYPE_ID,
+            &code,
+            &codeVerifier,
+            "",
+        )
+        .await
+        .map_err(|error| error.message)?;
+        self.store(&credential)
     }
 
     /// Requests a device code for a headless Codex login.
@@ -104,16 +112,16 @@ impl CodexOAuthService {
         authorization: CodexDeviceAuthorization,
     ) -> Result<CodexLoginResult, String> {
         let tokens = poll_codex_device(&authorization).await?;
-        self.store(tokens).await
+        self.store(&credentialFromTokens(tokens)?)
     }
 
     /// Returns whether a ChatGPT Codex session is stored, without exposing tokens.
     pub fn sessionStatus(&self) -> Result<CodexSessionStatus, String> {
-        match CodexAuthPreferences::getInstance().load()? {
-            Some(tokens) => Ok(CodexSessionStatus {
+        match self.loadCredential()? {
+            Some(credential) => Ok(CodexSessionStatus {
                 signedIn: true,
-                email: tokens.email,
-                accountId: tokens.accountId,
+                email: credential.email.unwrap_or_default(),
+                accountId: credential.account_id.unwrap_or_default(),
             }),
             None => Ok(CodexSessionStatus {
                 signedIn: false,
@@ -126,23 +134,30 @@ impl CodexOAuthService {
     /// Returns a fresh access token and the ChatGPT account id for inference.
     #[operit_route_macros::operit_core_internal]
     pub async fn accessForRequest(&self) -> Result<(String, String), String> {
-        let stored = CodexAuthPreferences::getInstance()
-            .load()?
+        let stored = self
+            .loadCredential()?
             .ok_or_else(|| "Codex authorization is required".to_string())?;
-        let previousExpiry = stored.expiresAtMillis;
-        let tokens = ensure_fresh_tokens(stored)
+        let storedExpiry = stored.expires_at_millis;
+        let refreshed = ProviderAuthEngine::refresh_credential(stored)
             .await
-            .map_err(|error| error.to_string())?;
-        if tokens.expiresAtMillis != previousExpiry {
-            CodexAuthPreferences::getInstance().save(&tokens)?;
+            .map_err(|error| error.message)?;
+        if refreshed.expires_at_millis != storedExpiry {
+            self.store(&refreshed)?;
         }
-        let accountId = account_id_from_tokens(&tokens).map_err(|error| error.to_string())?;
-        Ok((tokens.accessToken, accountId))
+        let accountId = refreshed
+            .account_id
+            .clone()
+            .filter(|value| !value.is_empty())
+            .ok_or_else(|| "Codex authorization is missing the ChatGPT account id".to_string())?;
+        Ok((refreshed.access_token, accountId))
     }
 
-    /// Removes the saved Codex session.
+    /// Removes the saved Codex session from both the unified and legacy stores.
     pub fn logout(&self) -> Result<(), String> {
-        CodexAuthPreferences::getInstance().clear()
+        ProviderAuthPreferences::getInstance()
+            .clear(ProviderAuthRegistry::CODEX_PROVIDER_TYPE_ID)?;
+        crate::data::preferences::CodexAuthPreferences::CodexAuthPreferences::getInstance()
+            .clear()
     }
 
     /// Queries live subscription usage for the signed-in ChatGPT account.
@@ -164,14 +179,47 @@ impl CodexOAuthService {
         parse_codex_usage(&body)
     }
 
-    async fn store(&self, tokens: CodexOAuthTokens) -> Result<CodexLoginResult, String> {
-        let accountId = account_id_from_tokens(&tokens).map_err(|error| error.to_string())?;
-        CodexAuthPreferences::getInstance().save(&tokens)?;
+    fn loadCredential(&self) -> Result<Option<ProviderCredential>, String> {
+        ProviderAuthPreferences::getInstance().migrateLegacyCodex()
+    }
+
+    fn store(&self, credential: &ProviderCredential) -> Result<CodexLoginResult, String> {
+        ProviderAuthPreferences::getInstance().save(credential)?;
         Ok(CodexLoginResult {
-            email: tokens.email,
-            accountId,
+            email: credential.email.clone().unwrap_or_default(),
+            accountId: credential.account_id.clone().unwrap_or_default(),
         })
     }
+}
+
+/// Projects legacy token documents into the unified credential shape.
+fn credentialFromTokens(tokens: CodexOAuthTokens) -> Result<ProviderCredential, String> {
+    let accountId = account_id_from_tokens(&tokens).map_err(|error| error.to_string())?;
+    let provider = ProviderAuthRegistry::provider(ProviderAuthRegistry::CODEX_PROVIDER_TYPE_ID)
+        .map_err(|error| error.message)?;
+    Ok(ProviderCredential {
+        provider_type_id: provider.provider_type_id.to_string(),
+        auth_mode: provider.auth_mode.to_string(),
+        client_id: provider.client_id.to_string(),
+        subject: if accountId.is_empty() {
+            "openai_chatgpt".to_string()
+        } else {
+            format!("openai_chatgpt:{accountId}")
+        },
+        email: (!tokens.email.is_empty()).then(|| tokens.email.clone()),
+        display_name: None,
+        access_token: tokens.accessToken,
+        refresh_token: tokens.refreshToken,
+        id_token: tokens.idToken,
+        account_id: (!accountId.is_empty()).then_some(accountId),
+        expires_at_millis: tokens.expiresAtMillis,
+        scopes: provider
+            .scopes
+            .iter()
+            .map(|scope| (*scope).to_string())
+            .collect(),
+        obtained_at_millis: operit_host_api::TimeUtils::currentTimeMillis(),
+    })
 }
 
 /// Polls until the device login is approved or the Codex device timeout elapses.

@@ -73,6 +73,8 @@ class UserPreferencesManager {
 
   static const String _fileName = 'user_preferences.preferences.json';
   static const String _KEY_CHAT_SIDEBAR_TAB = 'chat_sidebar_tab_v1';
+  /// Opts into the model settings shell while the legacy panel stays available.
+  static const String _KEY_MODEL_AI_V2 = 'model_ai_v2_enabled';
 
   /// Maps the shared snapshot onto the existing Space preference keys.
   static const Map<String, String> _appearancePreferenceKeys = <String, String>{
@@ -271,6 +273,21 @@ class UserPreferencesManager {
       throw ArgumentError.value(tabId, 'tabId', 'must not be blank');
     }
     await _setValues(<String, Object?>{_KEY_CHAT_SIDEBAR_TAB: tabId});
+  }
+
+  /// Returns whether the model and AI shell is enabled. Missing values default
+  /// to the new shell so a fresh install exercises the redesigned surface.
+  Future<bool> loadModelAiV2Enabled() async {
+    final values = await _getValues(<String>[_KEY_MODEL_AI_V2]);
+    if (!values.containsKey(_KEY_MODEL_AI_V2)) {
+      return true;
+    }
+    return _decodeBool(values[_KEY_MODEL_AI_V2]!);
+  }
+
+  /// Persists the model and AI shell rollout flag.
+  Future<void> saveModelAiV2Enabled(bool enabled) async {
+    await _setValues(<String, Object?>{_KEY_MODEL_AI_V2: enabled});
   }
 
   /// Loads the global settings for converting long pasted text to attachments.

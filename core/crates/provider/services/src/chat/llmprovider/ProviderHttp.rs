@@ -520,3 +520,45 @@ mod tests;
 #[cfg(test)]
 #[path = "../../../../tests/ApiKeyPoolTransportTests.rs"]
 mod key_pool_tests;
+
+/// Sends an unauthenticated OAuth form POST and returns the raw status and body.
+///
+/// Authorization endpoints answer errors with JSON instead of a status code, so the
+/// caller must see both parts. Keeping the helper here reuses the Host transport and
+/// preserves the provider layer's timeout and redirect policy.
+pub(crate) async fn auth_post_form(
+    url: &str,
+    pairs: &[(&str, &str)],
+) -> Result<(u16, String), String> {
+    let response = post(url)
+        .form(pairs)
+        .send()
+        .await
+        .map_err(|error| error.to_string())?;
+    let status = response.status().as_u16();
+    let body = response.text().await.map_err(|error| error.to_string())?;
+    Ok((status, body))
+}
+
+/// Sends an unauthenticated OAuth JSON POST with optional protocol headers.
+pub(crate) async fn auth_post_json(
+    url: &str,
+    value: &serde_json::Value,
+    headers: &[(&str, &str)],
+) -> Result<(u16, String), String> {
+    let mut map = HeaderMap::new();
+    for (name, value) in headers {
+        let name = HeaderName::try_from(*name).map_err(|error| error.to_string())?;
+        let value = HeaderValue::try_from(*value).map_err(|error| error.to_string())?;
+        map.insert(name, value);
+    }
+    let response = post(url)
+        .headers(map)
+        .json(value)
+        .send()
+        .await
+        .map_err(|error| error.to_string())?;
+    let status = response.status().as_u16();
+    let body = response.text().await.map_err(|error| error.to_string())?;
+    Ok((status, body))
+}
