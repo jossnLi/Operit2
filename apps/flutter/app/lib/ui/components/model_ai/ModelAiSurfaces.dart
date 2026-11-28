@@ -92,17 +92,21 @@ class ModelAiPageScaffold extends StatelessWidget {
     required this.body,
     this.actions = const <Widget>[],
     this.leading,
+    this.bottomNavigationBar,
   });
 
   final String title;
   final Widget body;
   final List<Widget> actions;
   final Widget? leading;
+  final Widget? bottomNavigationBar;
 
   @override
   Widget build(BuildContext context) {
     final palette = ModelAiPalette.of(context);
     return Scaffold(
+      backgroundColor: Colors.transparent,
+      bottomNavigationBar: bottomNavigationBar,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
@@ -129,6 +133,57 @@ class ModelAiPageScaffold extends StatelessWidget {
         actions: <Widget>[...actions, const SizedBox(width: 8)],
       ),
       body: body,
+    );
+  }
+}
+
+/// Floating action footer shared by full-screen editors.
+///
+/// It deliberately uses the same glass surface as the page cards instead of an
+/// opaque scaffold colour, so light and transparent-surface themes keep the
+/// wallpaper visible and the footer readable.
+class ModelAiBottomBar extends StatelessWidget {
+  const ModelAiBottomBar({super.key, required this.child, this.hint});
+
+  final Widget child;
+  final String? hint;
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = ModelAiPalette.of(context);
+    return SafeArea(
+      top: false,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 8, 20, 10),
+        child: OperitGlassSurface(
+          color: palette.group,
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(color: palette.border.withValues(alpha: 0.5)),
+          layer: OperitGlassSurfaceLayer.card,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                if (hint != null) ...<Widget>[
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(2, 0, 2, 9),
+                    child: Text(
+                      hint!,
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: palette.textTertiary,
+                        height: 1.35,
+                      ),
+                    ),
+                  ),
+                ],
+                child,
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

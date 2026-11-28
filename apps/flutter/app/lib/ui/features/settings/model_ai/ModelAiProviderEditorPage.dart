@@ -283,13 +283,17 @@ class _ModelAiProviderEditorPageState extends State<ModelAiProviderEditorPage> {
   }
 
   void _save() {
-    final formValid = _formKey.currentState?.validate() ?? false;
-    if (!formValid || _providerTypeId == null) {
-      if (!_advancedOpen) {
-        setState(() => _advancedOpen = true);
-      }
+    if (_providerTypeId == null) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('请先选择供应商类型')));
       return;
     }
+    final formValid = _formKey.currentState?.validate() ?? false;
+    if (!formValid) {
+      return;
+    }
+    FocusManager.instance.primaryFocus?.unfocus();
     final requestLimit = int.tryParse(_requestLimitController.text.trim()) ?? 0;
     final concurrency = int.tryParse(_concurrencyController.text.trim()) ?? 1;
     Navigator.of(context).pop(
@@ -317,20 +321,21 @@ class _ModelAiProviderEditorPageState extends State<ModelAiProviderEditorPage> {
   Widget build(BuildContext context) {
     final palette = ModelAiPalette.of(context);
     final editing = widget.provider != null;
-    return Scaffold(
-      backgroundColor: palette.background,
-      appBar: AppBar(
-        backgroundColor: palette.background,
-        surfaceTintColor: Colors.transparent,
-        scrolledUnderElevation: 0,
-        leading: IconButton(
-          onPressed: () => Navigator.of(context).pop(),
-          icon: const Icon(ModelAiIcons.close),
+    return ModelAiPageScaffold(
+      title: editing ? '编辑供应商' : '添加供应商',
+      leading: IconButton(
+        tooltip: '关闭',
+        onPressed: () => Navigator.of(context).pop(),
+        icon: const Icon(ModelAiIcons.close),
+      ),
+      actions: <Widget>[TextButton(onPressed: _save, child: const Text('保存'))],
+      bottomNavigationBar: ModelAiBottomBar(
+        hint: editing ? '保存后会立即应用新的连接参数；模型配置不会丢失。' : '凭据只保存在本机，添加后可继续管理模型。',
+        child: FilledButton(
+          onPressed: _save,
+          style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(46)),
+          child: Text(editing ? '保存修改' : '添加供应商'),
         ),
-        title: Text(editing ? '编辑供应商' : '添加供应商'),
-        actions: <Widget>[
-          TextButton(onPressed: _save, child: const Text('保存')),
-        ],
       ),
       body: SafeArea(
         top: false,
@@ -339,7 +344,10 @@ class _ModelAiProviderEditorPageState extends State<ModelAiProviderEditorPage> {
             constraints: const BoxConstraints(maxWidth: 760),
             child: Form(
               key: _formKey,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
               child: ListView(
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
                 padding: const EdgeInsets.fromLTRB(
                   ModelAiMetrics.pagePadding,
                   8,
@@ -423,97 +431,68 @@ class _ModelAiProviderEditorPageState extends State<ModelAiProviderEditorPage> {
           ),
         ),
       ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          color: palette.background,
-          border: Border(
-            top: BorderSide(color: palette.border.withValues(alpha: 0.5)),
-          ),
-        ),
-        padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
-        child: SafeArea(
-          top: false,
-          child: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 760),
-              child: SizedBox(
-                width: double.infinity,
-                child: FilledButton(
-                  onPressed: _save,
-                  style: FilledButton.styleFrom(
-                    minimumSize: const Size.fromHeight(46),
-                  ),
-                  child: Text(editing ? '保存修改' : '添加供应商'),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
     );
   }
 
   Widget _typeCard(BuildContext context) {
     final palette = ModelAiPalette.of(context);
     final catalog = _catalog;
-    return InkWell(
-      borderRadius: BorderRadius.circular(ModelAiMetrics.cardRadius),
-      onTap: _pickProviderType,
-      child: Container(
-        padding: const EdgeInsets.all(18),
-        decoration: BoxDecoration(
-          color: palette.group,
-          borderRadius: BorderRadius.circular(ModelAiMetrics.cardRadius),
-          border: Border.all(color: palette.border.withValues(alpha: 0.52)),
-        ),
-        child: Row(
-          children: <Widget>[
-            ProviderLogo(
-              providerTypeId: _providerTypeId ?? '',
-              fallbackName: catalog?.displayName ?? '供应商',
-              size: 54,
-              preserveBrandColor: true,
-            ),
-            const SizedBox(width: 14),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    '供应商类型',
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: palette.textTertiary,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    catalog?.displayName ?? '选择供应商',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: palette.text,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    _providerTypeId == null
-                        ? '选择官方供应商或兼容端点'
-                        : '${catalog?.models.length ?? 0} 个模型 · ${_providerTypeId!}',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: palette.textTertiary,
-                    ),
-                  ),
-                ],
+    return ModelAiSection(
+      padding: EdgeInsets.zero,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(ModelAiMetrics.cardRadius),
+        onTap: _pickProviderType,
+        child: Padding(
+          padding: const EdgeInsets.all(18),
+          child: Row(
+            children: <Widget>[
+              ProviderLogo(
+                providerTypeId: _providerTypeId ?? '',
+                fallbackName: catalog?.displayName ?? '供应商',
+                size: 54,
+                preserveBrandColor: true,
               ),
-            ),
-            Icon(
-              ModelAiIcons.expandMore,
-              size: 18,
-              color: palette.textTertiary,
-            ),
-          ],
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      '供应商类型',
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: palette.textTertiary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      catalog?.displayName ?? '选择供应商',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: palette.text,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      _providerTypeId == null
+                          ? '选择官方供应商或兼容端点'
+                          : '${catalog?.models.length ?? 0} 个模型 · ${_providerTypeId!}',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: palette.textTertiary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Icon(
+                ModelAiIcons.expandMore,
+                size: 18,
+                color: palette.textTertiary,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -702,115 +681,135 @@ class _ModelAiProviderEditorPageState extends State<ModelAiProviderEditorPage> {
               ),
             ),
           ),
-          if (_advancedOpen) ...<Widget>[
-            Divider(
-              height: 1,
-              indent: 14,
-              endIndent: 14,
-              color: palette.border.withValues(alpha: 0.5),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 14, 16, 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  _field(
-                    context,
-                    controller: _headersController,
-                    label: '自定义请求头',
-                    hint: '{"X-Org": "operit"}',
-                    maxLines: 4,
-                    validator: _jsonValidator,
-                  ),
-                  const SizedBox(height: 14),
-                  Row(
+          AnimatedSize(
+            duration: const Duration(milliseconds: 180),
+            curve: Curves.easeOutCubic,
+            alignment: Alignment.topCenter,
+            child: _advancedOpen
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
-                      Expanded(
-                        child: _field(
-                          context,
-                          controller: _requestLimitController,
-                          label: '每分钟请求上限',
-                          hint: '0',
-                          keyboardType: TextInputType.number,
-                          validator: _nonNegativeIntValidator,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly,
-                          ],
-                        ),
+                      Divider(
+                        height: 1,
+                        indent: 14,
+                        endIndent: 14,
+                        color: palette.border.withValues(alpha: 0.5),
                       ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: _field(
-                          context,
-                          controller: _concurrencyController,
-                          label: '最大并发',
-                          hint: '1',
-                          keyboardType: TextInputType.number,
-                          validator: _positiveIntValidator,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly,
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 14, 16, 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            _field(
+                              context,
+                              controller: _headersController,
+                              label: '自定义请求头',
+                              hint: '{"X-Org": "operit"}',
+                              maxLines: 4,
+                              validator: _jsonValidator,
+                            ),
+                            const SizedBox(height: 14),
+                            Row(
+                              children: <Widget>[
+                                Expanded(
+                                  child: _field(
+                                    context,
+                                    controller: _requestLimitController,
+                                    label: '每分钟请求上限',
+                                    hint: '0',
+                                    keyboardType: TextInputType.number,
+                                    validator: _nonNegativeIntValidator,
+                                    inputFormatters: <TextInputFormatter>[
+                                      FilteringTextInputFormatter.digitsOnly,
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: _field(
+                                    context,
+                                    controller: _concurrencyController,
+                                    label: '最大并发',
+                                    hint: '1',
+                                    keyboardType: TextInputType.number,
+                                    validator: _positiveIntValidator,
+                                    inputFormatters: <TextInputFormatter>[
+                                      FilteringTextInputFormatter.digitsOnly,
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            if (!_isCodex && !_isLocal) ...<Widget>[
+                              const SizedBox(height: 14),
+                              ApiKeyPoolEditor(
+                                singleKey: _apiKeyController.text,
+                                onResetHealth: widget.provider == null
+                                    ? null
+                                    : () => widget
+                                          .clients
+                                          .preferencesModelConfigManager
+                                          .clearProviderApiKeyFailures(
+                                            providerId: widget.provider!.id,
+                                          ),
+                                enabled: _useKeyPool,
+                                entries: _keyPool,
+                                onEnabledChanged: (value) =>
+                                    setState(() => _useKeyPool = value),
+                                onChanged: (entries) =>
+                                    setState(() => _keyPool = entries),
+                                onTestingChanged: (_) {},
+                                onTestEntry:
+                                    widget.provider?.models.isNotEmpty == true
+                                    ? (entry) => widget.clients.application
+                                          .testProviderApiKey(
+                                            provider: core.ProviderProfile(
+                                              id: widget.provider!.id,
+                                              name: _nameController.text.trim(),
+                                              providerTypeId: _providerTypeId!,
+                                              providerType:
+                                                  core.ApiProviderType.fromJson(
+                                                    _providerTypeId!,
+                                                  ),
+                                              endpoint: _endpointController.text
+                                                  .trim(),
+                                              apiKey: _apiKeyController.text,
+                                              useMultipleApiKeys: _useKeyPool,
+                                              apiKeyPool: _keyPool,
+                                              currentKeyIndex: widget
+                                                  .provider!
+                                                  .currentKeyIndex,
+                                              keyRotationMode: widget
+                                                  .provider!
+                                                  .keyRotationMode,
+                                              customHeaders:
+                                                  _headersController.text,
+                                              requestLimitPerMinute:
+                                                  int.tryParse(
+                                                    _requestLimitController.text
+                                                        .trim(),
+                                                  ) ??
+                                                  0,
+                                              maxConcurrentRequests:
+                                                  int.tryParse(
+                                                    _concurrencyController.text
+                                                        .trim(),
+                                                  ) ??
+                                                  1,
+                                              models: widget.provider!.models,
+                                            ),
+                                            keyId: entry.id,
+                                          )
+                                    : null,
+                              ),
+                            ],
                           ],
                         ),
                       ),
                     ],
-                  ),
-                  if (!_isCodex && !_isLocal) ...<Widget>[
-                    const SizedBox(height: 14),
-                    ApiKeyPoolEditor(
-                      singleKey: _apiKeyController.text,
-                      onResetHealth: widget.provider == null
-                          ? null
-                          : () => widget.clients.preferencesModelConfigManager
-                                .clearProviderApiKeyFailures(
-                                  providerId: widget.provider!.id,
-                                ),
-                      enabled: _useKeyPool,
-                      entries: _keyPool,
-                      onEnabledChanged: (value) =>
-                          setState(() => _useKeyPool = value),
-                      onChanged: (entries) =>
-                          setState(() => _keyPool = entries),
-                      onTestingChanged: (_) {},
-                      onTestEntry: widget.provider?.models.isNotEmpty == true
-                          ? (entry) =>
-                                widget.clients.application.testProviderApiKey(
-                                  provider: core.ProviderProfile(
-                                    id: widget.provider!.id,
-                                    name: _nameController.text.trim(),
-                                    providerTypeId: _providerTypeId!,
-                                    providerType: core.ApiProviderType.fromJson(
-                                      _providerTypeId!,
-                                    ),
-                                    endpoint: _endpointController.text.trim(),
-                                    apiKey: _apiKeyController.text,
-                                    useMultipleApiKeys: _useKeyPool,
-                                    apiKeyPool: _keyPool,
-                                    currentKeyIndex:
-                                        widget.provider!.currentKeyIndex,
-                                    keyRotationMode:
-                                        widget.provider!.keyRotationMode,
-                                    customHeaders: _headersController.text,
-                                    requestLimitPerMinute:
-                                        int.tryParse(
-                                          _requestLimitController.text.trim(),
-                                        ) ??
-                                        0,
-                                    maxConcurrentRequests:
-                                        int.tryParse(
-                                          _concurrencyController.text.trim(),
-                                        ) ??
-                                        1,
-                                    models: widget.provider!.models,
-                                  ),
-                                  keyId: entry.id,
-                                )
-                          : null,
-                    ),
-                  ],
-                ],
-              ),
-            ),
-          ],
+                  )
+                : const SizedBox(width: double.infinity),
+          ),
         ],
       ),
     );
