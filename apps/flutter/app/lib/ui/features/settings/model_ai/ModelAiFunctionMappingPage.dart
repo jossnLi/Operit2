@@ -445,7 +445,7 @@ class _ModelAiFunctionMappingPageState
               ),
             ),
             if (selected)
-              Icon(ModelAiIcons.check, size: 17, color: palette.accent),
+              Icon(ModelAiIcons.selection, size: 18, color: palette.accent),
           ],
         ),
       ),

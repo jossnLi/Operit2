@@ -51,6 +51,7 @@ abstract final class ModelAiIcons {
 
   /// Status and result feedback.
   static const check = OperitIcons.check_rounded;
+  static const selection = OperitIcons.check_box_rounded;
   static const success = OperitIcons.check_circle_rounded;
   static const error = OperitIcons.error_outline_rounded;
   static const warning = OperitIcons.warning_amber_rounded;
