@@ -7,8 +7,9 @@ import 'package:operit2/ui/components/model_ai/ModelAiIcons.dart';
 import 'package:operit2/ui/components/model_ai/ModelAiSurfaces.dart';
 import 'package:operit2/ui/features/settings/model/ProviderLogo.dart';
 
+import 'ModelAiAccountDetailPage.dart';
 import 'ModelAiHomeData.dart';
-import 'ProviderAuthLoginDialog.dart';
+import 'ModelAiProviderDetailPage.dart';
 
 /// Dedicated account-authorization surface.
 ///
@@ -38,13 +39,40 @@ class _ModelAiAccountsPageState extends State<ModelAiAccountsPage> {
     }
   }
 
-  Future<void> _login(core.ProviderAuthProviderView provider) async {
-    final result = await showProviderAuthLoginDialog(
-      context: context,
-      clients: widget.clients,
-      provider: provider,
-    );
-    if (result != null && mounted) {
+  core.ProviderProfile? _configuredProvider(
+    core.ProviderAuthProviderView provider,
+  ) {
+    for (final item in _data.providers) {
+      if (item.providerTypeId.toUpperCase() ==
+          provider.providerTypeId.toUpperCase()) {
+        return item;
+      }
+    }
+    return null;
+  }
+
+  Future<void> _openAccount(core.ProviderAuthProviderView provider) async {
+    final configured = _configuredProvider(provider);
+    if (configured != null) {
+      await Navigator.of(context).push<void>(
+        MaterialPageRoute<void>(
+          builder: (context) => ModelAiProviderDetailPage(
+            providerId: configured.id,
+            clients: widget.clients,
+          ),
+        ),
+      );
+    } else {
+      await Navigator.of(context).push<void>(
+        MaterialPageRoute<void>(
+          builder: (context) => ModelAiAccountDetailPage(
+            provider: provider,
+            clients: widget.clients,
+          ),
+        ),
+      );
+    }
+    if (mounted) {
       await _reload();
     }
   }
@@ -60,14 +88,9 @@ class _ModelAiAccountsPageState extends State<ModelAiAccountsPage> {
   @override
   Widget build(BuildContext context) {
     final palette = ModelAiPalette.of(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('账号授权'),
-        leading: IconButton(
-          icon: const Icon(ModelAiIcons.back),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-      ),
+    final total = _data.authProviders.length;
+    return ModelAiPageScaffold(
+      title: '账号授权',
       body: ListView(
         padding: const EdgeInsets.fromLTRB(
           ModelAiMetrics.pagePadding,
@@ -84,11 +107,11 @@ class _ModelAiAccountsPageState extends State<ModelAiAccountsPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  _summary(context),
-                  const SizedBox(height: ModelAiMetrics.sectionGap),
                   ModelAiSection(
                     title: '可授权供应商',
-                    subtitle: '授权后在对话里直接使用订阅账号',
+                    subtitle: total == 0
+                        ? '授权后在对话里直接使用订阅账号'
+                        : '$_connectedCount / $total 已连接 · 授权后可直接在对话里使用',
                     padding: EdgeInsets.zero,
                     child: _data.authProviders.isEmpty
                         ? Padding(
@@ -161,64 +184,11 @@ class _ModelAiAccountsPageState extends State<ModelAiAccountsPage> {
     );
   }
 
-  Widget _summary(BuildContext context) {
-    final palette = ModelAiPalette.of(context);
-    final total = _data.authProviders.length;
-    return Container(
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: palette.group,
-        borderRadius: BorderRadius.circular(ModelAiMetrics.cardRadius),
-        border: Border.all(color: palette.border.withValues(alpha: 0.52)),
-      ),
-      child: Row(
-        children: <Widget>[
-          const ModelAiIconTile(
-            icon: ModelAiIcons.account,
-            tone: ModelAiIconTone.blue,
-            size: 44,
-          ),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  '订阅账号',
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    color: palette.text,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  total == 0 ? '暂无可授权供应商' : '$_connectedCount / $total 已连接',
-                  style: Theme.of(
-                    context,
-                  ).textTheme.bodySmall?.copyWith(color: palette.textTertiary),
-                ),
-              ],
-            ),
-          ),
-          if (total > 0)
-            ModelAiStatusPill(
-              label: _connectedCount == total ? '全部已连接' : '可登录',
-              tone: _connectedCount == total
-                  ? ModelAiStatusTone.success
-                  : ModelAiStatusTone.accent,
-              compact: true,
-            ),
-        ],
-      ),
-    );
-  }
-
   Widget _accountRow(
     BuildContext context,
     core.ProviderAuthProviderView provider,
     core.ProviderAuthStatus? status,
   ) {
-    final palette = ModelAiPalette.of(context);
     final signedIn = status?.signedIn ?? false;
     final planEnabled = status?.planEnabled ?? false;
     final detail = signedIn
@@ -238,33 +208,20 @@ class _ModelAiAccountsPageState extends State<ModelAiAccountsPage> {
       ),
       title: provider.displayName,
       subtitle: detail,
-      showChevron: false,
+      showChevron: true,
+      onTap: () => _openAccount(provider),
       trailing: signedIn
-          ? Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                ModelAiStatusPill(
-                  label: planEnabled ? '订阅已启用' : '已连接',
-                  tone: planEnabled
-                      ? ModelAiStatusTone.success
-                      : ModelAiStatusTone.neutral,
-                  compact: true,
-                ),
-                const SizedBox(width: 4),
-                IconButton(
-                  tooltip: '重新授权',
-                  onPressed: () => _login(provider),
-                  icon: Icon(
-                    ModelAiIcons.refresh,
-                    size: 17,
-                    color: palette.textTertiary,
-                  ),
-                ),
-              ],
+          ? ModelAiStatusPill(
+              label: planEnabled ? '订阅已启用' : '已连接',
+              tone: planEnabled
+                  ? ModelAiStatusTone.success
+                  : ModelAiStatusTone.neutral,
+              compact: true,
             )
-          : TextButton(
-              onPressed: () => _login(provider),
-              child: const Text('登录'),
+          : const ModelAiStatusPill(
+              label: '未连接',
+              tone: ModelAiStatusTone.neutral,
+              compact: true,
             ),
     );
   }

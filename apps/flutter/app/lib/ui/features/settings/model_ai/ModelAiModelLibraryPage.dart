@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:operit2/core/proxy/generated/CoreProxyClients.g.dart';
 import 'package:operit2/core/proxy/generated/CoreProxyModels.g.dart' as core;
 import 'package:operit2/ui/components/model_ai/ModelAiIcons.dart';
 import 'package:operit2/ui/components/model_ai/ModelAiSurfaces.dart';
@@ -14,11 +15,11 @@ class ModelAiModelLibraryPage extends StatefulWidget {
   const ModelAiModelLibraryPage({
     super.key,
     required this.models,
-    required this.onOpenLegacy,
+    required this.clients,
   });
 
   final List<core.ProviderModelSummary> models;
-  final VoidCallback onOpenLegacy;
+  final GeneratedCoreProxyClients clients;
 
   @override
   State<ModelAiModelLibraryPage> createState() =>
@@ -30,6 +31,7 @@ class _ModelAiModelLibraryPageState extends State<ModelAiModelLibraryPage> {
   String _query = '';
   String? _providerFilter;
   String? _expandedKey;
+  String? _settingChatKey;
 
   @override
   void dispose() {
@@ -54,6 +56,33 @@ class _ModelAiModelLibraryPageState extends State<ModelAiModelLibraryPage> {
         .toList(growable: false);
   }
 
+  Future<void> _setAsChatModel(core.ProviderModelSummary model) async {
+    setState(() => _settingChatKey = '${model.providerId}:${model.modelId}');
+    try {
+      await widget.clients.preferencesFunctionalConfigManager
+          .setModelForFunction(
+            functionType: core.FunctionType.chat,
+            providerId: model.providerId,
+            modelId: model.modelId,
+          );
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('已设为对话模型：${model.modelId}')));
+      }
+    } catch (error) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('设置失败：$error')));
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _settingChatKey = null);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final palette = ModelAiPalette.of(context);
@@ -61,14 +90,8 @@ class _ModelAiModelLibraryPageState extends State<ModelAiModelLibraryPage> {
       for (final model in widget.models) model.providerName,
     }.toList(growable: false);
     final models = _visibleModels;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('模型库 · ${widget.models.length}'),
-        leading: IconButton(
-          icon: const Icon(ModelAiIcons.back),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-      ),
+    return ModelAiPageScaffold(
+      title: '模型库 · ${widget.models.length}',
       body: Column(
         children: <Widget>[
           Padding(
@@ -276,10 +299,18 @@ class _ModelAiModelLibraryPageState extends State<ModelAiModelLibraryPage> {
                 const SizedBox(height: 14),
                 Align(
                   alignment: Alignment.centerRight,
-                  child: TextButton.icon(
-                    onPressed: widget.onOpenLegacy,
-                    icon: const Icon(ModelAiIcons.settings, size: 16),
-                    label: const Text('在高级设置中配置'),
+                  child: FilledButton.tonalIcon(
+                    onPressed: _settingChatKey == key
+                        ? null
+                        : () => _setAsChatModel(model),
+                    icon: _settingChatKey == key
+                        ? const SizedBox(
+                            width: 14,
+                            height: 14,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : const Icon(ModelAiIcons.chatFunction, size: 16),
+                    label: Text(_settingChatKey == key ? '正在设置' : '设为对话模型'),
                   ),
                 ),
               ],

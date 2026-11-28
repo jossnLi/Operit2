@@ -167,20 +167,14 @@ class _ModelAiFunctionMappingPageState
     final following = _bindings.values
         .where((binding) => binding.followsChat)
         .length;
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('功能映射'),
-        leading: IconButton(
-          icon: const Icon(ModelAiIcons.back),
-          onPressed: () => Navigator.of(context).pop(),
+    return ModelAiPageScaffold(
+      title: '功能映射',
+      actions: <Widget>[
+        TextButton(
+          onPressed: _busy ? null : _followAll,
+          child: const Text('全部跟随'),
         ),
-        actions: <Widget>[
-          TextButton(
-            onPressed: _busy ? null : _followAll,
-            child: const Text('全部跟随'),
-          ),
-        ],
-      ),
+      ],
       body: ListView(
         padding: const EdgeInsets.fromLTRB(
           ModelAiMetrics.pagePadding,

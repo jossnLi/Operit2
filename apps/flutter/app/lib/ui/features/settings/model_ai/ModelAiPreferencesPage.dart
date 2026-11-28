@@ -5,6 +5,7 @@ import 'package:operit2/core/proxy/generated/CoreProxyClients.g.dart';
 import 'package:operit2/ui/components/model_ai/ModelAiIcons.dart';
 import 'package:operit2/ui/components/model_ai/ModelAiSurfaces.dart';
 import 'package:operit2/ui/features/settings/model/ProviderLogo.dart';
+import 'package:operit2/ui/features/settings/model_ai/ModelAiFunctionMappingPage.dart';
 import 'package:operit2/ui/features/settings/model_ai/ModelAiHomeData.dart';
 
 /// Model-independent generation and history preferences.
@@ -13,12 +14,10 @@ class ModelAiPreferencesPage extends StatefulWidget {
     super.key,
     required this.data,
     required this.clients,
-    required this.onOpenLegacy,
   });
 
   final ModelAiHomeData data;
   final GeneratedCoreProxyClients clients;
-  final VoidCallback onOpenLegacy;
 
   @override
   State<ModelAiPreferencesPage> createState() => _ModelAiPreferencesPageState();
@@ -85,18 +84,30 @@ class _ModelAiPreferencesPageState extends State<ModelAiPreferencesPage> {
     }
   }
 
+  Future<void> _openFunctionMapping() async {
+    final bindings = await widget.clients.preferencesFunctionalConfigManager
+        .functionModelBindingFlow()
+        .first;
+    if (!mounted) {
+      return;
+    }
+    await Navigator.of(context).push<void>(
+      MaterialPageRoute<void>(
+        builder: (context) => ModelAiFunctionMappingPage(
+          clients: widget.clients,
+          summaries: widget.data.summaries,
+          initialBindings: bindings,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final palette = ModelAiPalette.of(context);
     final config = widget.data.currentConfig;
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('AI 参数'),
-        leading: IconButton(
-          icon: const Icon(ModelAiIcons.back),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-      ),
+    return ModelAiPageScaffold(
+      title: 'AI 参数',
       body: ListView(
         padding: const EdgeInsets.fromLTRB(
           ModelAiMetrics.pagePadding,
@@ -128,7 +139,7 @@ class _ModelAiPreferencesPageState extends State<ModelAiPreferencesPage> {
                       title: config?.modelId ?? widget.data.chatBinding.modelId,
                       subtitle: config?.providerName ?? '尚未设置',
                       tone: ModelAiIconTone.blue,
-                      onTap: widget.onOpenLegacy,
+                      onTap: _openFunctionMapping,
                     ),
                   ),
                   const SizedBox(height: ModelAiMetrics.sectionGap),
@@ -162,27 +173,12 @@ class _ModelAiPreferencesPageState extends State<ModelAiPreferencesPage> {
                   ModelAiSection(
                     title: '模型行为',
                     padding: EdgeInsets.zero,
-                    child: Column(
-                      children: <Widget>[
-                        ModelAiRow(
-                          icon: ModelAiIcons.preferences,
-                          title: '采样参数',
-                          subtitle: '温度、Top P 与最大输出',
-                          onTap: widget.onOpenLegacy,
-                        ),
-                        Divider(
-                          height: 1,
-                          indent: 64,
-                          color: palette.border.withValues(alpha: 0.5),
-                        ),
-                        ModelAiRow(
-                          icon: ModelAiIcons.functionMapping,
-                          title: '功能映射',
-                          subtitle: '为标题、翻译、压缩等任务指定模型',
-                          tone: ModelAiIconTone.amber,
-                          onTap: widget.onOpenLegacy,
-                        ),
-                      ],
+                    child: ModelAiRow(
+                      icon: ModelAiIcons.functionMapping,
+                      title: '功能映射',
+                      subtitle: '为标题、翻译、压缩等任务指定模型',
+                      tone: ModelAiIconTone.amber,
+                      onTap: _openFunctionMapping,
                     ),
                   ),
                   const SizedBox(height: 18),

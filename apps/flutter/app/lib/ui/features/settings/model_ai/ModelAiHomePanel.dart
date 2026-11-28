@@ -19,18 +19,10 @@ import 'package:operit2/ui/features/settings/model_ai/ModelAiProviderEditorPage.
 
 /// High-fidelity overview for the model and AI settings module.
 class ModelAiHomePanel extends StatefulWidget {
-  const ModelAiHomePanel({
-    super.key,
-    required this.onOpenLegacy,
-    required this.useV2,
-    required this.onUseV2Changed,
-    GeneratedCoreProxyClients? clients,
-  }) : clients =
-           clients ?? const GeneratedCoreProxyClients(ProxyCoreRuntimeBridge());
+  const ModelAiHomePanel({super.key, GeneratedCoreProxyClients? clients})
+    : clients =
+          clients ?? const GeneratedCoreProxyClients(ProxyCoreRuntimeBridge());
 
-  final VoidCallback onOpenLegacy;
-  final bool useV2;
-  final ValueChanged<bool> onUseV2Changed;
   final GeneratedCoreProxyClients clients;
 
   @override
@@ -57,10 +49,13 @@ class _ModelAiHomePanelState extends State<ModelAiHomePanel> {
       MaterialPageRoute<void>(
         builder: (context) => ModelAiModelLibraryPage(
           models: data.summaries,
-          onOpenLegacy: widget.onOpenLegacy,
+          clients: widget.clients,
         ),
       ),
     );
+    if (mounted) {
+      _reload();
+    }
   }
 
   Future<void> _openFunctionMapping(ModelAiHomeData data) async {
@@ -81,11 +76,8 @@ class _ModelAiHomePanelState extends State<ModelAiHomePanel> {
   Future<void> _openPreferences(ModelAiHomeData data) async {
     await Navigator.of(context).push<void>(
       MaterialPageRoute<void>(
-        builder: (context) => ModelAiPreferencesPage(
-          data: data,
-          clients: widget.clients,
-          onOpenLegacy: widget.onOpenLegacy,
-        ),
+        builder: (context) =>
+            ModelAiPreferencesPage(data: data, clients: widget.clients),
       ),
     );
     if (mounted) {
@@ -96,11 +88,8 @@ class _ModelAiHomePanelState extends State<ModelAiHomePanel> {
   Future<void> _openDiagnostics(ModelAiHomeData data) async {
     await Navigator.of(context).push<void>(
       MaterialPageRoute<void>(
-        builder: (context) => ModelAiDiagnosticsPage(
-          data: data,
-          clients: widget.clients,
-          onOpenLegacy: widget.onOpenLegacy,
-        ),
+        builder: (context) =>
+            ModelAiDiagnosticsPage(data: data, clients: widget.clients),
       ),
     );
   }
@@ -123,7 +112,6 @@ class _ModelAiHomePanelState extends State<ModelAiHomePanel> {
         builder: (context) => ModelAiProviderDetailPage(
           providerId: provider.id,
           clients: widget.clients,
-          onOpenLegacy: widget.onOpenLegacy,
         ),
       ),
     );
@@ -232,8 +220,6 @@ class _ModelAiHomePanelState extends State<ModelAiHomePanel> {
                 _providersSection(context, data),
                 const SizedBox(height: ModelAiMetrics.sectionGap),
                 _accountsSection(context, data),
-                const SizedBox(height: ModelAiMetrics.sectionGap),
-                _interfaceSection(context),
               ],
             ),
           ),
@@ -254,7 +240,7 @@ class _ModelAiHomePanelState extends State<ModelAiHomePanel> {
       title: '当前使用',
       subtitle: '对话默认模型',
       action: TextButton(
-        onPressed: widget.onOpenLegacy,
+        onPressed: () => _openModelLibrary(data),
         child: Text(configured ? '更换' : '设置'),
       ),
       padding: const EdgeInsets.all(18),
@@ -515,36 +501,6 @@ class _ModelAiHomePanelState extends State<ModelAiHomePanel> {
                 ),
               ),
             ),
-        ],
-      ),
-    );
-  }
-
-  Widget _interfaceSection(BuildContext context) {
-    final palette = ModelAiPalette.of(context);
-    return ModelAiSection(
-      title: '界面与高级',
-      padding: EdgeInsets.zero,
-      child: Column(
-        children: <Widget>[
-          SwitchListTile.adaptive(
-            contentPadding: const EdgeInsets.fromLTRB(14, 2, 8, 2),
-            title: Text(
-              '使用新版界面',
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: palette.text,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            subtitle: Text(
-              '关闭后回到原始模型设置页',
-              style: Theme.of(
-                context,
-              ).textTheme.bodySmall?.copyWith(color: palette.textTertiary),
-            ),
-            value: widget.useV2,
-            onChanged: widget.onUseV2Changed,
-          ),
         ],
       ),
     );

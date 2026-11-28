@@ -14,12 +14,10 @@ class ModelAiDiagnosticsPage extends StatefulWidget {
     super.key,
     required this.data,
     required this.clients,
-    required this.onOpenLegacy,
   });
 
   final ModelAiHomeData data;
   final GeneratedCoreProxyClients clients;
-  final VoidCallback onOpenLegacy;
 
   @override
   State<ModelAiDiagnosticsPage> createState() => _ModelAiDiagnosticsPageState();
@@ -64,17 +62,8 @@ class _ModelAiDiagnosticsPageState extends State<ModelAiDiagnosticsPage> {
   Widget build(BuildContext context) {
     final palette = ModelAiPalette.of(context);
     final config = widget.data.currentConfig;
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('连接诊断'),
-        leading: IconButton(
-          icon: const Icon(ModelAiIcons.back),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        actions: <Widget>[
-          TextButton(onPressed: widget.onOpenLegacy, child: const Text('高级设置')),
-        ],
-      ),
+    return ModelAiPageScaffold(
+      title: '连接诊断',
       body: ListView(
         padding: const EdgeInsets.fromLTRB(
           ModelAiMetrics.pagePadding,
@@ -128,48 +117,43 @@ class _ModelAiDiagnosticsPageState extends State<ModelAiDiagnosticsPage> {
                     ),
                   ),
                   const SizedBox(height: ModelAiMetrics.sectionGap),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Text(
-                          '连接测试',
-                          style: Theme.of(context).textTheme.titleSmall
-                              ?.copyWith(
-                                color: palette.textSecondary,
-                                fontWeight: FontWeight.w700,
-                              ),
-                        ),
-                      ),
-                      FilledButton.icon(
-                        onPressed: _testing ? null : _test,
-                        icon: _testing
-                            ? const SizedBox(
-                                width: 14,
-                                height: 14,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                ),
-                              )
-                            : const Icon(ModelAiIcons.runTest, size: 16),
-                        label: Text(_testing ? '测试中' : '运行测试'),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  if (_error != null)
-                    ModelAiInlineError(message: _error!, onRetry: _test),
-                  if (_report != null) _reportCard(context, _report!),
-                  if (_report == null && _error == null)
-                    ModelAiSection(
-                      padding: const EdgeInsets.all(16),
-                      child: Text(
-                        '测试会使用当前模型发送一次最小请求，检查网络、凭据和响应格式。',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: palette.textTertiary,
-                          height: 1.45,
-                        ),
-                      ),
+                  ModelAiSection(
+                    title: '连接测试',
+                    subtitle: '使用当前模型发送一次最小请求',
+                    action: FilledButton.tonalIcon(
+                      onPressed: _testing ? null : _test,
+                      icon: _testing
+                          ? const SizedBox(
+                              width: 14,
+                              height: 14,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : const Icon(ModelAiIcons.runTest, size: 16),
+                      label: Text(_testing ? '测试中' : '运行测试'),
                     ),
+                    padding: EdgeInsets.zero,
+                    child: _report == null && _error == null
+                        ? Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Text(
+                              '检查网络、凭据和响应格式。测试不会修改模型配置。',
+                              style: Theme.of(context).textTheme.bodySmall
+                                  ?.copyWith(
+                                    color: palette.textTertiary,
+                                    height: 1.45,
+                                  ),
+                            ),
+                          )
+                        : _error != null
+                        ? Padding(
+                            padding: const EdgeInsets.all(14),
+                            child: ModelAiInlineError(
+                              message: _error!,
+                              onRetry: _test,
+                            ),
+                          )
+                        : _reportCard(context, _report!),
+                  ),
                   const SizedBox(height: ModelAiMetrics.sectionGap),
                   ModelAiSection(
                     title: '账号',
@@ -187,12 +171,6 @@ class _ModelAiDiagnosticsPageState extends State<ModelAiDiagnosticsPage> {
                             widget.data.authProviders[index],
                           ),
                         ],
-                        _line(context),
-                        ModelAiNavRow(
-                          label: '管理供应商与凭据',
-                          icon: ModelAiIcons.settings,
-                          onTap: widget.onOpenLegacy,
-                        ),
                       ],
                     ),
                   ),
@@ -210,84 +188,165 @@ class _ModelAiDiagnosticsPageState extends State<ModelAiDiagnosticsPage> {
     core.ModelConnectionTestReport report,
   ) {
     final palette = ModelAiPalette.of(context);
-    return ModelAiSection(
-      padding: EdgeInsets.zero,
+    final passed = report.items.where((item) => item.success).length;
+    final allPassed = report.success && passed == report.items.length;
+    final tone = allPassed ? palette.success : palette.danger;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 14, 16, 8),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 14, 16, 6),
-            child: Row(
-              children: <Widget>[
-                Icon(
-                  report.success ? ModelAiIcons.success : ModelAiIcons.error,
-                  color: report.success ? palette.success : palette.danger,
-                  size: 18,
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    report.success ? '连接成功' : '连接失败',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: report.success ? palette.success : palette.danger,
-                      fontWeight: FontWeight.w600,
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              _statusDot(tone, size: 9),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      allPassed
+                          ? '全部检查通过'
+                          : '$passed / ${report.items.length} 项通过',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: tone,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
-                  ),
+                    const SizedBox(height: 3),
+                    Text(
+                      '${report.providerName} · ${report.modelId}',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: palette.textTertiary,
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-          for (final item in report.items)
-            ListTile(
-              dense: true,
-              leading: Icon(
-                item.success ? ModelAiIcons.check : ModelAiIcons.close,
-                size: 16,
-                color: item.success ? palette.success : palette.danger,
               ),
-              title: Text('${item.type}'),
-              subtitle: (item.error ?? '').isEmpty ? null : Text(item.error!),
-            ),
+              const SizedBox(width: 8),
+              Text(
+                allPassed ? '通过' : '未通过',
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                  color: tone,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Container(height: 1, color: palette.border.withValues(alpha: 0.55)),
+          for (var index = 0; index < report.items.length; index++) ...<Widget>[
+            if (index > 0)
+              Container(
+                height: 1,
+                margin: const EdgeInsets.only(left: 17),
+                color: palette.border.withValues(alpha: 0.4),
+              ),
+            _testRow(context, report.items[index]),
+          ],
         ],
       ),
     );
+  }
+
+  Widget _testRow(
+    BuildContext context,
+    core.CoreOperitProvidersChatLlmproviderModelConfigConnectionTesterModelConnectionTestItem
+    item,
+  ) {
+    final palette = ModelAiPalette.of(context);
+    final tone = item.success ? palette.success : palette.danger;
+    final error = item.error?.trim() ?? '';
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 11),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          _statusDot(tone, size: 7),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  _testLabel(item.type),
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: palette.text,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                if (error.isNotEmpty) ...<Widget>[
+                  const SizedBox(height: 4),
+                  Text(
+                    error,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: palette.textTertiary,
+                      height: 1.4,
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+          const SizedBox(width: 10),
+          Text(
+            item.success ? '通过' : '失败',
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+              color: tone,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _statusDot(Color color, {required double size}) {
+    return Padding(
+      padding: EdgeInsets.only(top: size == 9 ? 2 : 3),
+      child: Container(
+        width: size,
+        height: size,
+        decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+      ),
+    );
+  }
+
+  String _testLabel(core.ModelConnectionTestType type) {
+    return switch (type) {
+      core.ModelConnectionTestType.chat => '基础对话',
+      core.ModelConnectionTestType.toolCall => '工具调用',
+      core.ModelConnectionTestType.image => '图像输入',
+      core.ModelConnectionTestType.audio => '音频输入',
+      core.ModelConnectionTestType.video => '视频输入',
+    };
   }
 
   Widget _accountLine(
     BuildContext context,
     core.ProviderAuthProviderView provider,
   ) {
-    final palette = ModelAiPalette.of(context);
     final account = widget.data.accounts[provider.providerTypeId.toUpperCase()];
     final signedIn = account?.signedIn ?? false;
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-      child: Row(
-        children: <Widget>[
-          ProviderLogo(
-            providerTypeId: provider.providerTypeId,
-            fallbackName: provider.displayName,
-            size: 32,
-            preserveBrandColor: true,
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Text(
-              provider.displayName,
-              style: Theme.of(
-                context,
-              ).textTheme.bodyMedium?.copyWith(color: palette.text),
-            ),
-          ),
-          ModelAiStatusPill(
-            label: signedIn
-                ? (account!.email.isEmpty ? '已连接' : account.email)
-                : '未连接',
-            tone: signedIn
-                ? ModelAiStatusTone.success
-                : ModelAiStatusTone.neutral,
-            compact: true,
-          ),
-        ],
+    final email = account?.email.trim() ?? '';
+    return ModelAiRow(
+      icon: ModelAiIcons.account,
+      leading: ProviderLogo(
+        providerTypeId: provider.providerTypeId,
+        fallbackName: provider.displayName,
+        size: 34,
+        preserveBrandColor: true,
+      ),
+      title: provider.displayName,
+      subtitle: signedIn ? (email.isEmpty ? '账号已连接' : email) : '尚未连接账号',
+      showChevron: false,
+      trailing: ModelAiStatusPill(
+        label: signedIn ? '已连接' : '未连接',
+        tone: signedIn ? ModelAiStatusTone.success : ModelAiStatusTone.neutral,
+        compact: true,
       ),
     );
   }

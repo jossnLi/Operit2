@@ -25,8 +25,10 @@ abstract final class ModelAiIcons {
   static const signIn = OperitIcons.login_rounded;
   static const signOut = OperitIcons.logout_rounded;
 
-  /// An API key or credential field.
-  static const apiKey = OperitIcons.key_outlined;
+  /// An API key or credential field. A fingerprint reads as a secret owned by
+  /// the user; the old key/lock glyph made every field look like a password
+  /// reset action.
+  static const apiKey = OperitIcons.badge_outlined;
 
   /// A model or model layer.
   static const model = OperitIcons.psychology_outlined;

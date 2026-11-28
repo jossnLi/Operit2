@@ -80,6 +80,59 @@ class ModelAiPalette {
   double get cardRadius => ModelAiMetrics.cardRadius;
 }
 
+/// Shared page frame for every full-screen model and AI surface.
+///
+/// The app bar is transparent and elevation-free so the wallpaper and the
+/// configured surface treatment run edge to edge instead of ending at a flat
+/// grey band under the title.
+class ModelAiPageScaffold extends StatelessWidget {
+  const ModelAiPageScaffold({
+    super.key,
+    required this.title,
+    required this.body,
+    this.actions = const <Widget>[],
+    this.leading,
+  });
+
+  final String title;
+  final Widget body;
+  final List<Widget> actions;
+  final Widget? leading;
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = ModelAiPalette.of(context);
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        titleSpacing: 0,
+        leading:
+            leading ??
+            IconButton(
+              tooltip: '返回',
+              icon: const Icon(ModelAiIcons.back),
+              onPressed: () => Navigator.of(context).maybePop(),
+            ),
+        title: Text(
+          title,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            color: palette.text,
+            fontWeight: FontWeight.w700,
+            letterSpacing: -0.2,
+          ),
+        ),
+        actions: <Widget>[...actions, const SizedBox(width: 8)],
+      ),
+      body: body,
+    );
+  }
+}
+
 /// A grouped settings card with an optional title and trailing action.
 ///
 /// The card is rendered through [OperitGlassSurface] so the wallpaper and the
@@ -303,18 +356,19 @@ class ModelAiIconTile extends StatelessWidget {
 }
 
 /// Compact status label used for connection, plan and validation results.
+///
+/// Tags and badges are text-only: an icon inside a pill adds noise and makes
+/// short states read like buttons.
 class ModelAiStatusPill extends StatelessWidget {
   const ModelAiStatusPill({
     super.key,
     required this.label,
     this.tone = ModelAiStatusTone.neutral,
-    this.icon,
     this.compact = false,
   });
 
   final String label;
   final ModelAiStatusTone tone;
-  final IconData? icon;
   final bool compact;
 
   @override
@@ -351,10 +405,6 @@ class ModelAiStatusPill extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          if (icon != null) ...<Widget>[
-            Icon(icon, size: compact ? 11 : 13, color: foreground),
-            const SizedBox(width: 4),
-          ],
           Text(
             label,
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
@@ -478,52 +528,6 @@ class ModelAiInlineConfirm extends StatelessWidget {
             ],
           ),
         ],
-      ),
-    );
-  }
-}
-
-/// Footer action with a trailing chevron, used for the legacy entry.
-class ModelAiNavRow extends StatelessWidget {
-  const ModelAiNavRow({
-    super.key,
-    required this.label,
-    this.icon,
-    this.onTap,
-    this.tone = ModelAiIconTone.neutral,
-  });
-
-  final String label;
-  final IconData? icon;
-  final VoidCallback? onTap;
-  final ModelAiIconTone tone;
-
-  @override
-  Widget build(BuildContext context) {
-    final palette = ModelAiPalette.of(context);
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
-        child: Row(
-          children: <Widget>[
-            if (icon != null) ...<Widget>[
-              ModelAiIconTile(icon: icon!, tone: tone, size: 32),
-              const SizedBox(width: 12),
-            ],
-            Expanded(
-              child: Text(
-                label,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: palette.textTertiary,
-                  height: 1.4,
-                ),
-              ),
-            ),
-            Icon(ModelAiIcons.chevron, color: palette.textTertiary, size: 16),
-          ],
-        ),
       ),
     );
   }

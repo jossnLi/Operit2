@@ -37,7 +37,6 @@ class ModelAiProviderCard extends StatelessWidget {
         ? const ModelAiStatusPill(
             label: '需重新登录',
             tone: ModelAiStatusTone.danger,
-            icon: ModelAiIcons.error,
             compact: true,
           )
         : hasAccount
@@ -46,13 +45,11 @@ class ModelAiProviderCard extends StatelessWidget {
             tone: planEnabled
                 ? ModelAiStatusTone.success
                 : ModelAiStatusTone.accent,
-            icon: ModelAiIcons.check,
             compact: true,
           )
         : const ModelAiStatusPill(
             label: 'API Key',
             tone: ModelAiStatusTone.neutral,
-            icon: ModelAiIcons.apiKey,
             compact: true,
           );
 

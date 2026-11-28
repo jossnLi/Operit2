@@ -9,6 +9,7 @@ import 'package:operit2/ui/features/settings/model/ProviderLogo.dart';
 import 'package:operit2/ui/features/settings/model/CodexLoginDialog.dart';
 import 'package:operit2/ui/features/settings/model_ai/ModelAiHomeData.dart';
 import 'package:operit2/ui/features/settings/model_ai/ModelAiProviderEditorPage.dart';
+import 'package:operit2/ui/features/settings/model_ai/ModelAiProviderModelsPage.dart';
 import 'package:operit2/ui/features/settings/model_ai/ProviderAuthLoginDialog.dart';
 
 /// Detail for one configured provider with read-only configuration and account
@@ -17,12 +18,10 @@ class ModelAiProviderDetailPage extends StatefulWidget {
   const ModelAiProviderDetailPage({
     super.key,
     required this.providerId,
-    required this.onOpenLegacy,
     required this.clients,
   });
 
   final String providerId;
-  final VoidCallback onOpenLegacy;
   final GeneratedCoreProxyClients clients;
 
   @override
@@ -106,6 +105,44 @@ class _ModelAiProviderDetailPageState extends State<ModelAiProviderDetailPage> {
     }
   }
 
+  Future<void> _setChatModel(core.ProviderModelSummary model) async {
+    try {
+      await widget.clients.preferencesFunctionalConfigManager
+          .setModelForFunction(
+            functionType: core.FunctionType.chat,
+            providerId: model.providerId,
+            modelId: model.modelId,
+          );
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('已设为对话模型：${model.modelId}')));
+        _reload();
+      }
+    } catch (error) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('设置失败：$error')));
+      }
+    }
+  }
+
+  Future<void> _openModels(core.ProviderProfile provider) async {
+    await Navigator.of(context).push<void>(
+      MaterialPageRoute<void>(
+        builder: (context) => ModelAiProviderModelsPage(
+          providerId: provider.id,
+          providerName: provider.name,
+          clients: widget.clients,
+        ),
+      ),
+    );
+    if (mounted) {
+      _reload();
+    }
+  }
+
   core.ProviderAuthProviderView? _accountProvider(
     ModelAiHomeData data,
     String providerTypeId,
@@ -151,26 +188,20 @@ class _ModelAiProviderDetailPageState extends State<ModelAiProviderDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('供应商详情'),
-        leading: IconButton(
-          icon: const Icon(ModelAiIcons.back),
-          onPressed: () => Navigator.of(context).pop(),
+    return ModelAiPageScaffold(
+      title: '供应商详情',
+      actions: <Widget>[
+        TextButton(
+          onPressed: () {
+            final data = _currentData;
+            final provider = data == null ? null : _provider(data);
+            if (provider != null) {
+              _openEditor(provider);
+            }
+          },
+          child: const Text('编辑'),
         ),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () {
-              final data = _currentData;
-              final provider = data == null ? null : _provider(data);
-              if (provider != null) {
-                _openEditor(provider);
-              }
-            },
-            child: const Text('编辑'),
-          ),
-        ],
-      ),
+      ],
       body: FutureBuilder<ModelAiHomeData>(
         future: _future,
         builder: (context, snapshot) {
@@ -217,8 +248,10 @@ class _ModelAiProviderDetailPageState extends State<ModelAiProviderDetailPage> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
                       _hero(context, provider, account, accountProvider),
-                      const SizedBox(height: 12),
-                      _actionBar(context, provider, account, accountProvider),
+                      if (accountProvider != null) ...<Widget>[
+                        const SizedBox(height: 12),
+                        _accountAction(context, account, accountProvider),
+                      ],
                       if (_confirmLogout) ...<Widget>[
                         const SizedBox(height: 12),
                         ModelAiInlineConfirm(
@@ -286,7 +319,7 @@ class _ModelAiProviderDetailPageState extends State<ModelAiProviderDetailPage> {
                         title: '模型',
                         subtitle: '${models.length} 个可用模型',
                         action: TextButton(
-                          onPressed: widget.onOpenLegacy,
+                          onPressed: () => _openModels(provider),
                           child: const Text('管理模型'),
                         ),
                         padding: EdgeInsets.zero,
@@ -384,21 +417,18 @@ class _ModelAiProviderDetailPageState extends State<ModelAiProviderDetailPage> {
                         tone: account.planEnabled
                             ? ModelAiStatusTone.success
                             : ModelAiStatusTone.accent,
-                        icon: ModelAiIcons.check,
                         compact: true,
                       )
                     else if (accountProvider != null)
                       const ModelAiStatusPill(
                         label: '账号未连接',
                         tone: ModelAiStatusTone.neutral,
-                        icon: ModelAiIcons.account,
                         compact: true,
                       )
                     else
                       const ModelAiStatusPill(
                         label: 'API Key 模式',
                         tone: ModelAiStatusTone.neutral,
-                        icon: ModelAiIcons.apiKey,
                         compact: true,
                       ),
                     ModelAiStatusPill(
@@ -416,35 +446,27 @@ class _ModelAiProviderDetailPageState extends State<ModelAiProviderDetailPage> {
     );
   }
 
-  Widget _actionBar(
+  Widget _accountAction(
     BuildContext context,
-    core.ProviderProfile provider,
     core.ProviderAuthStatus? account,
-    core.ProviderAuthProviderView? accountProvider,
+    core.ProviderAuthProviderView accountProvider,
   ) {
     final signedIn = account?.signedIn == true;
     return Wrap(
       spacing: 10,
       runSpacing: 10,
       children: <Widget>[
-        if (accountProvider != null)
-          if (signedIn)
-            OutlinedButton.icon(
-              onPressed: () => setState(() => _confirmLogout = true),
-              icon: const Icon(ModelAiIcons.signOut, size: 17),
-              label: const Text('退出账号'),
-            )
-          else
-            FilledButton.tonalIcon(
-              onPressed: () => _login(accountProvider),
-              icon: const Icon(ModelAiIcons.signIn, size: 17),
-              label: const Text('账号登录'),
-            ),
-        OutlinedButton.icon(
-          onPressed: () => _openEditor(provider),
-          icon: const Icon(ModelAiIcons.settings, size: 17),
-          label: const Text('编辑配置'),
+        FilledButton.tonalIcon(
+          onPressed: () => _login(accountProvider),
+          icon: const Icon(ModelAiIcons.signIn, size: 17),
+          label: Text(signedIn ? '重新授权' : '账号登录'),
         ),
+        if (signedIn)
+          OutlinedButton.icon(
+            onPressed: () => setState(() => _confirmLogout = true),
+            icon: const Icon(ModelAiIcons.signOut, size: 17),
+            label: const Text('退出账号'),
+          ),
       ],
     );
   }
@@ -454,8 +476,8 @@ class _ModelAiProviderDetailPageState extends State<ModelAiProviderDetailPage> {
       icon: ModelAiIcons.model,
       title: model.modelId,
       subtitle: model.capabilities.toolCall ? '支持工具调用' : null,
-      showChevron: false,
-      onTap: widget.onOpenLegacy,
+      showChevron: true,
+      onTap: () => _setChatModel(model),
       trailing: Wrap(
         spacing: 5,
         children: <Widget>[
