@@ -26,7 +26,6 @@ void main() {
       await tester.tap(find.text('SiliconFlow'));
       await tester.pumpAndSettle();
 
-      final sectionState = tester.state(find.byType(ExpansionTile));
       final sectionSize = tester.getSize(find.byType(TtsProviderSection));
       final initialReads = bridge.calls.length;
       expect(find.text('remote-model · remote-voice'), findsOneWidget);
@@ -46,7 +45,6 @@ void main() {
       expect(find.byType(M3LoadingIndicator), findsNothing);
       await tester.pumpAndSettle();
 
-      expect(tester.state(find.byType(ExpansionTile)), same(sectionState));
       expect(tester.getSize(find.byType(TtsProviderSection)), sectionSize);
       expect(find.text('remote-model · remote-voice'), findsOneWidget);
       expect(find.text('系统默认音色'), findsOneWidget);

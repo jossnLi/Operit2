@@ -673,11 +673,14 @@ class _SttProviderSectionState extends State<SttProviderSection> {
           title: 'STT 供应商',
           subtitle: '${data.sttConfigs.length} 个识别配置 · 用于语音输入与转写',
           icon: OperitIcons.mic_none_rounded,
-          action: TextButton.icon(
-            onPressed: () =>
-                _createSttProviderConfig(data.sttProviderCatalogEntries),
-            icon: const Icon(OperitIcons.add_rounded, size: 18),
-            label: const Text('添加'),
+          action: Tooltip(
+            message: '添加 STT 供应商',
+            child: TextButton.icon(
+              onPressed: () =>
+                  _createSttProviderConfig(data.sttProviderCatalogEntries),
+              icon: const Icon(OperitIcons.add_rounded, size: 18),
+              label: const Text('添加'),
+            ),
           ),
           children: <Widget>[
             _SttProviderManager(

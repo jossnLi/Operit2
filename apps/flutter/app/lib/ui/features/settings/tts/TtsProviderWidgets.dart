@@ -233,7 +233,7 @@ class _TtsProviderGroupTile extends StatelessWidget {
                               ),
                               if (currentProvider) ...<Widget>[
                                 const SizedBox(width: 6),
-                                const _CurrentBadge(),
+                                const _CurrentBadge(label: '全局当前'),
                               ],
                             ],
                           ),
@@ -248,7 +248,25 @@ class _TtsProviderGroupTile extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const SizedBox(width: 4),
+                    if (!currentProvider && group.configs.isNotEmpty)
+                      TextButton(
+                        onPressed: () => onSetCurrent(group.configs.first.id),
+                        style: TextButton.styleFrom(
+                          minimumSize: Size.zero,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          foregroundColor: scheme.primary,
+                        ),
+                        child: Text(
+                          '设为全局',
+                          style: Theme.of(context).textTheme.labelSmall
+                              ?.copyWith(fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                    const SizedBox(width: 2),
                     AnimatedRotation(
                       turns: expanded ? 0.5 : 0,
                       duration: const Duration(milliseconds: 160),
@@ -299,10 +317,16 @@ class _TtsProviderGroupTile extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(width: 8),
-                        TextButton.icon(
-                          onPressed: onEditProvider,
-                          icon: const Icon(OperitIcons.edit_outlined, size: 17),
-                          label: const Text('编辑供应商'),
+                        Tooltip(
+                          message: '编辑供应商',
+                          child: TextButton.icon(
+                            onPressed: onEditProvider,
+                            icon: const Icon(
+                              OperitIcons.edit_outlined,
+                              size: 17,
+                            ),
+                            label: const Text('编辑供应商'),
+                          ),
                         ),
                       ],
                     ),
@@ -560,7 +584,9 @@ class _VoiceAvatar extends StatelessWidget {
 }
 
 class _CurrentBadge extends StatelessWidget {
-  const _CurrentBadge();
+  const _CurrentBadge({this.label = '当前'});
+
+  final String label;
 
   @override
   Widget build(BuildContext context) {
@@ -572,7 +598,7 @@ class _CurrentBadge extends StatelessWidget {
         borderRadius: BorderRadius.circular(6),
       ),
       child: Text(
-        '当前',
+        label,
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
           color: scheme.primary,
           fontWeight: FontWeight.w700,
