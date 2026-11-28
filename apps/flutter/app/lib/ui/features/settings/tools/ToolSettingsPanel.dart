@@ -12,6 +12,7 @@ import '../../../theme/OperitGlassSurface.dart';
 import '../components/SettingsControlStyles.dart';
 
 import 'package:operit2/ui/common/icons/operit_icons.dart';
+
 class ToolSettingsPanel extends StatefulWidget {
   const ToolSettingsPanel({super.key, GeneratedCoreProxyClients? clients})
     : clients =
@@ -128,6 +129,16 @@ class _ToolSettingsPanelState extends State<ToolSettingsPanel>
     _reload();
   }
 
+  /// Explains what the selected mode actually permits, in one sentence.
+  String _permissionHint(core_proxy.AiPermissionMode mode) {
+    return switch (mode) {
+      core_proxy.AiPermissionMode.readOnly => '只读：可读取文件与目录，写入和命令一律拒绝。',
+      core_proxy.AiPermissionMode.workspaceWrite =>
+        '读写：工作区内可写，工作区外与命令执行仍需逐次确认。',
+      core_proxy.AiPermissionMode.full => '完整：跳过大部分确认，仅危险操作仍需你点头。',
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -147,16 +158,24 @@ class _ToolSettingsPanelState extends State<ToolSettingsPanel>
             _SectionCard(
               title: l10n.settingsToolsPermissionMode,
               children: <Widget>[
+                _PermissionModeSelector(
+                  selectedMode: data.permissionMode,
+                  onSelected: _setPermissionMode,
+                ),
+                const SizedBox(height: 10),
                 Text(
                   _modeFor(data.permissionMode).description,
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
                 ),
-                const SizedBox(height: 12),
-                _PermissionModeSelector(
-                  selectedMode: data.permissionMode,
-                  onSelected: _setPermissionMode,
+                const SizedBox(height: 6),
+                Text(
+                  _permissionHint(data.permissionMode),
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    height: 1.45,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
                 ),
               ],
             ),
@@ -263,23 +282,32 @@ class _PermissionModeSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      children: <Widget>[
-        for (final mode in _PermissionMode.values)
-          _ModeChip(
-            label: mode.label,
-            selected: selectedMode == mode.permissionMode,
-            onTap: () => onSelected(mode),
-          ),
-      ],
+    final colorScheme = Theme.of(context).colorScheme;
+    return Container(
+      height: 38,
+      padding: const EdgeInsets.all(3),
+      decoration: BoxDecoration(
+        color: colorScheme.surfaceContainer,
+        borderRadius: BorderRadius.circular(11),
+      ),
+      child: Row(
+        children: <Widget>[
+          for (final mode in _PermissionMode.values)
+            Expanded(
+              child: _ModeSegment(
+                label: mode.label,
+                selected: selectedMode == mode.permissionMode,
+                onTap: () => onSelected(mode),
+              ),
+            ),
+        ],
+      ),
     );
   }
 }
 
-class _ModeChip extends StatelessWidget {
-  const _ModeChip({
+class _ModeSegment extends StatelessWidget {
+  const _ModeSegment({
     required this.label,
     required this.selected,
     required this.onTap,
@@ -291,11 +319,53 @@ class _ModeChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChoiceChip(
-      label: Text(label),
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Semantics(
+      button: true,
       selected: selected,
-      showCheckmark: false,
-      onSelected: (_) => onTap(),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 160),
+        curve: Curves.easeOut,
+        decoration: BoxDecoration(
+          color: !selected
+              ? Colors.transparent
+              : isDark
+              ? colorScheme.surfaceContainerHigh
+              : colorScheme.surface,
+          borderRadius: BorderRadius.circular(9),
+          boxShadow: selected && !isDark
+              ? <BoxShadow>[
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.06),
+                    blurRadius: 4,
+                    offset: const Offset(0, 1),
+                  ),
+                ]
+              : null,
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(9),
+            onTap: onTap,
+            child: Center(
+              child: Text(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
+                  color: selected
+                      ? colorScheme.onSurface
+                      : colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

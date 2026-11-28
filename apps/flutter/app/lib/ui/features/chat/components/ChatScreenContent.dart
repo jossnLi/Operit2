@@ -322,6 +322,7 @@ class ChatScreenContent extends StatelessWidget {
                         ),
                         child: ChatToolPermissionPanel(
                           request: toolPermissionRequests.first,
+                          pendingCount: toolPermissionRequests.length,
                           onRespond: onToolPermissionDecision,
                         ),
                       ),
