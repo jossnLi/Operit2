@@ -114,18 +114,11 @@ class ModelAiPageScaffold extends StatelessWidget {
         scrolledUnderElevation: 0,
         toolbarHeight: 52,
         titleSpacing: 0,
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(0.5),
-          child: Container(
-            height: 0.5,
-            color: palette.border.withValues(alpha: 0.32),
-          ),
-        ),
         leading:
             leading ??
             IconButton(
               tooltip: '返回',
-              icon: const Icon(ModelAiIcons.back),
+              icon: const Icon(ModelAiIcons.back, size: 22),
               onPressed: () => Navigator.of(context).maybePop(),
             ),
         title: Text(
@@ -134,7 +127,7 @@ class ModelAiPageScaffold extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
             color: palette.text,
-            fontWeight: FontWeight.w700,
+            fontWeight: FontWeight.w600,
             letterSpacing: -0.2,
           ),
         ),

@@ -31,7 +31,7 @@ class ThemeTopBarTitle extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
-                style: theme.textTheme.titleSmall?.copyWith(
+                style: theme.textTheme.titleMedium?.copyWith(
                   color: contentColor,
                   fontWeight: FontWeight.w600,
                   letterSpacing: -0.2,
@@ -125,15 +125,18 @@ class ThemeTopBarChrome extends StatelessWidget {
         ? leadingExtent
         : trailingExtent;
     final titleInset = centered
-        ? EdgeInsetsDirectional.symmetric(
-            horizontal: symmetricExtent,
-          )
-        : EdgeInsetsDirectional.only(
-            start: leadingExtent,
-            end: trailingExtent,
-          );
-    return ColoredBox(
-      color: contentColor,
+        ? EdgeInsetsDirectional.symmetric(horizontal: symmetricExtent)
+        : EdgeInsetsDirectional.only(start: leadingExtent, end: trailingExtent);
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: contentColor,
+        border: Border(
+          bottom: BorderSide(
+            color: contentForeground.withValues(alpha: 0.08),
+            width: 0.5,
+          ),
+        ),
+      ),
       child: SizedBox(
         height: topPadding + (barHeight ?? toolbarHeight),
         child: Padding(
@@ -157,7 +160,8 @@ class ThemeTopBarChrome extends StatelessWidget {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    if (navIcon != null && navigationIconWidget != null) ...<Widget>[
+                    if (navIcon != null &&
+                        navigationIconWidget != null) ...<Widget>[
                       const SizedBox(width: 5),
                       SizedBox(
                         width: 34,

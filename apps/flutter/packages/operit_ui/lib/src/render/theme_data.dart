@@ -21,12 +21,12 @@ ThemeData buildOperitThemeData(
       : colorScheme.surface;
   // Overlays follow the same rule as pages: translucent over wallpaper and
   // transparent-skin themes, opaque only for solid themes.
-  final overlayBackground = backgroundVisible ||
-          themePreferenceSnapshot.transparentSurfaceEnabled
+  final overlayBackground =
+      backgroundVisible || themePreferenceSnapshot.transparentSurfaceEnabled
       ? colorScheme.surfaceContainerHigh.withValues(alpha: 0.86)
       : colorScheme.surfaceContainerHigh;
-  final sheetBackground = backgroundVisible ||
-          themePreferenceSnapshot.transparentSurfaceEnabled
+  final sheetBackground =
+      backgroundVisible || themePreferenceSnapshot.transparentSurfaceEnabled
       ? colorScheme.surface.withValues(alpha: 0.90)
       : colorScheme.surface;
   final baseTextTheme = typography.englishLike.merge(
@@ -84,9 +84,7 @@ ThemeData buildOperitThemeData(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
     ),
-    chipTheme: const ChipThemeData(
-      showCheckmark: false,
-    ),
+    chipTheme: const ChipThemeData(showCheckmark: false),
     segmentedButtonTheme: const SegmentedButtonThemeData(
       selectedIcon: SizedBox.shrink(),
     ),
@@ -103,12 +101,27 @@ ThemeData buildOperitThemeData(
       leadingWidth: 44,
       titleSpacing: 0,
       toolbarHeight: 52,
-      titleTextStyle: textTheme.titleSmall?.copyWith(
+      iconTheme: IconThemeData(color: colorScheme.onSurface, size: 22),
+      actionsIconTheme: IconThemeData(color: colorScheme.onSurface, size: 22),
+      shape: Border(
+        bottom: BorderSide(
+          color: colorScheme.outlineVariant.withValues(
+            alpha:
+                backgroundVisible ||
+                    themePreferenceSnapshot.transparentSurfaceEnabled
+                ? 0.18
+                : 0.35,
+          ),
+          width: 0.5,
+        ),
+      ),
+      titleTextStyle: textTheme.titleMedium?.copyWith(
         color: colorScheme.onSurface,
         fontFamily: fontFamily,
         fontFamilyFallback: fontFamilyFallback,
         fontWeight: FontWeight.w600,
         fontSize: 16,
+        letterSpacing: -0.2,
       ),
     ),
     fontFamily: fontFamily,
