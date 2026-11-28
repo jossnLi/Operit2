@@ -49,6 +49,22 @@ jobs:
         with:
           node-version: 24
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Create repository virtual environment
+        shell: pwsh
+        run: python -m venv .venv
+
+      - name: Enable Corepack and install TypeScript
+        shell: pwsh
+        run: |
+          corepack enable
+          npm install -g typescript@5.9.3
+          npm install --prefix .ci-tools/typescript --no-audit --no-fund typescript@5.9.3
+
       - name: Install FVM
         shell: pwsh
         run: |
